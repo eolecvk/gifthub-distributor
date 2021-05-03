@@ -1,10 +1,8 @@
 plugins {
-    id 'java'
+    id 'application'
 }
+mainClassName =  "host.techcoop.gifthub.Main"
 
-ext {
-    javaMainClass = "host.techcoop.gifthub.Main"
-}
 group 'host.techcoop.gifthub'
 version '1.0-SNAPSHOT'
 
