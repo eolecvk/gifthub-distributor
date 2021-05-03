@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+}
+
+ext {
+    javaMainClass = "host.techcoop.gifthub.Main"
+}
+group 'host.techcoop.gifthub'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.sparkjava:spark-core:2.9.3'
+}
+
+test {
+    useJUnitPlatform()
+}
