@@ -1,5 +1,7 @@
 plugins {
     id 'application'
+    id "com.diffplug.spotless" version "5.12.4"
+
 }
 mainClassName =  "host.techcoop.gifthub.Main"
 
@@ -8,6 +10,12 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+}
+
+spotless {
+    java {
+        googleJavaFormat()
+    }
 }
 
 dependencies {

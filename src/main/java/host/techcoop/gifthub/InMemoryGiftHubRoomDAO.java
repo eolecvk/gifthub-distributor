@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import host.techcoop.gifthub.domain.GiftHubRoom;
 import host.techcoop.gifthub.interfaces.GiftHubRoomDAO;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,22 +30,24 @@ public class InMemoryGiftHubRoomDAO implements GiftHubRoomDAO {
   public GiftHubRoom createRoom(int distributionCents, String name) {
     String code;
     while (true) {
-      code = Stream.of(1, 2, 3, 4)
-          .map(x -> (char) (random.nextInt(26) + 'a'))
-          .map(Character::toUpperCase)
-          .map(x -> "" + x)
-          .reduce((a, b) -> a + b).get();
+      code =
+          Stream.of(1, 2, 3, 4)
+              .map(x -> (char) (random.nextInt(26) + 'a'))
+              .map(Character::toUpperCase)
+              .map(x -> "" + x)
+              .reduce((a, b) -> a + b)
+              .get();
       if (!roomsByCode.containsKey(code)) {
         break;
       }
     }
-    GiftHubRoom room = GiftHubRoom
-        .builder()
-        .name(name)
-        .code(code)
-        .distributionCents(distributionCents)
-        .users(new ArrayList<>())
-        .build();
+    GiftHubRoom room =
+        GiftHubRoom.builder()
+            .name(name)
+            .code(code)
+            .distributionCents(distributionCents)
+            .users(new ArrayList<>())
+            .build();
     roomsByCode.put(code, room);
     return room;
   }

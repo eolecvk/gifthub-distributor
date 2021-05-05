@@ -38,6 +38,11 @@ public class GiftHubWebserver {
     get("/rooms/:roomCode", this::getRoomInfo);
     put("/rooms", this::createRoom);
     get("/rooms/join/:roomCode", this::joinRoom);
+    put("/rooms/:roomCode", this::vote);
+  }
+
+  private Object vote(Request request, Response response) {
+    return null;
   }
 
   private Object joinRoom(Request request, Response response) {
@@ -45,11 +50,10 @@ public class GiftHubWebserver {
   }
 
   private RoomInfoResponse createRoom(Request request, Response response) {
-    CreateGiftHubRoomRequest createRequest = gson
-        .fromJson(request.body(), CreateGiftHubRoomRequest.class);
-    GiftHubRoom room = roomDAO
-        .createRoom(createRequest.getDistributionCents(),
-            createRequest.getRoomName());
+    CreateGiftHubRoomRequest createRequest =
+        gson.fromJson(request.body(), CreateGiftHubRoomRequest.class);
+    GiftHubRoom room =
+        roomDAO.createRoom(createRequest.getDistributionCents(), createRequest.getRoomName());
     return RoomInfoResponse.from(room);
   }
 
@@ -58,5 +62,4 @@ public class GiftHubWebserver {
     GiftHubRoom room = roomDAO.getRoomByCode(roomCode);
     return RoomInfoResponse.from(room);
   }
-
 }

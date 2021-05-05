@@ -13,19 +13,23 @@ public class RoomInfoResponse {
   List<UserResponse> users;
 
   public static RoomInfoResponse from(GiftHubRoom room) {
-    ImmutableList<UserResponse> userResponses = room.getUsers()
-        .stream()
-        .map(User::getName)
-        .map(userName -> {
-          double averageVote = room.getUsers()
-              .stream().flatMapToDouble(
-                  user -> user.getVotes()
-                      .stream()
-                      .filter(vote -> vote.getUserName().equals(userName))
-                      .mapToDouble(UserVotes::getPercentSplit)
-              ).average().getAsDouble();
-          return new UserResponse(userName, averageVote);
-        }).collect(ImmutableList.toImmutableList());
+    ImmutableList<UserResponse> userResponses =
+        room.getUsers().stream()
+            .map(User::getName)
+            .map(
+                userName -> {
+                  double averageVote =
+                      room.getUsers().stream()
+                          .flatMapToDouble(
+                              user ->
+                                  user.getVotes().stream()
+                                      .filter(vote -> vote.getUserName().equals(userName))
+                                      .mapToDouble(UserVotes::getPercentSplit))
+                          .average()
+                          .getAsDouble();
+                  return new UserResponse(userName, averageVote);
+                })
+            .collect(ImmutableList.toImmutableList());
     return new RoomInfoResponse(userResponses);
   }
 }

@@ -18,7 +18,7 @@ public class GiftHubDistributorModule extends AbstractModule {
 
   @Provides
   @Singleton
-  public Gson provideGson(){
+  public Gson provideGson() {
     Gson gson = new Gson();
     return gson;
   }
