@@ -6,5 +6,5 @@ import lombok.Value;
 public class UserVotes {
 
   String userName;
-  float percentSplit;
+  double percentSplit;
 }

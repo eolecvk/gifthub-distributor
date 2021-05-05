@@ -37,6 +37,11 @@ public class GiftHubWebserver {
   public void route() {
     get("/rooms/:roomCode", this::getRoomInfo);
     put("/rooms", this::createRoom);
+    get("/rooms/join/:roomCode", this::joinRoom);
+  }
+
+  private Object joinRoom(Request request, Response response) {
+    return null;
   }
 
   private RoomInfoResponse createRoom(Request request, Response response) {
