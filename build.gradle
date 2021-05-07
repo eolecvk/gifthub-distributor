@@ -1,5 +1,7 @@
 plugins {
     id 'application'
+    id "com.diffplug.spotless" version "5.12.4"
+
 }
 mainClassName =  "host.techcoop.gifthub.Main"
 
@@ -10,8 +12,19 @@ repositories {
     mavenCentral()
 }
 
+spotless {
+    java {
+        googleJavaFormat()
+    }
+}
+
 dependencies {
     implementation 'com.sparkjava:spark-core:2.9.3'
+    implementation 'org.projectlombok:lombok:1.18.20'
+    implementation 'com.google.inject:guice:5.0.1'
+    implementation 'com.google.guava:guava:30.0-jre'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
 }
 
 test {
