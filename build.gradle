@@ -1,7 +1,7 @@
 plugins {
     id 'application'
     id "com.diffplug.spotless" version "5.12.4"
-
+    id 'net.eikehirsch.react' version '0.4.1'
 }
 mainClassName =  "host.techcoop.gifthub.Main"
 
@@ -17,6 +17,13 @@ spotless {
         googleJavaFormat()
     }
 }
+
+jsx {
+    sourcesDir = 'src/main/react'
+    destDir    = 'src/main/resources/public'
+}
+
+processResources.dependsOn jsx
 
 dependencies {
     implementation 'com.sparkjava:spark-core:2.9.3'

@@ -7,8 +7,10 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import host.techcoop.gifthub.domain.GiftHubRoom;
 import host.techcoop.gifthub.domain.requests.CreateGiftHubRoomRequest;
+import host.techcoop.gifthub.domain.requests.VoteRequest;
 import host.techcoop.gifthub.domain.responses.RoomInfoResponse;
 import host.techcoop.gifthub.interfaces.GiftHubRoomDAO;
+import host.techcoop.gifthub.interfaces.UserDAO;
 import spark.Request;
 import spark.Response;
 
@@ -16,10 +18,12 @@ import spark.Response;
 public class GiftHubWebserver {
 
   private final GiftHubRoomDAO roomDAO;
+  private final UserDAO userDAO;
   private final Gson gson;
 
   @Inject
-  GiftHubWebserver(GiftHubRoomDAO roomDAO, Gson gson) {
+  GiftHubWebserver(GiftHubRoomDAO roomDAO, Gson gson, UserDAO userDAO) {
+    this.userDAO = userDAO;
     this.roomDAO = roomDAO;
     this.gson = gson;
   }
@@ -42,6 +46,10 @@ public class GiftHubWebserver {
   }
 
   private Object vote(Request request, Response response) {
+    VoteRequest voteRequest = gson.fromJson(request.body(), VoteRequest.class).verify();
+    String roomCode = request.params(":roomCode");
+    GiftHubRoom room = roomDAO.getRoomByCode(roomCode);
+
     return null;
   }
 

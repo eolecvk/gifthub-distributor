@@ -4,7 +4,7 @@
 2. Make sure JDK is installed: `java --version`
 3. Set execution flag on gradlew file: `chmod +x gradlew`
 3. `./gradlew clean build run`
-5. When you see that the `:run` task is going server should now be available at http://localhost:4567
+5. When you see that the `:run` task is going server should now be available at http://localhost:8080
 
 ## Where to add front end files
 Front end files are hosted in `/src/main/resources/public`  
