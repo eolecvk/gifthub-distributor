@@ -23,7 +23,7 @@ jsx {
     destDir    = 'src/main/resources/public'
 }
 
-processResources.dependsOn jsx
+processResources.dependsOn 'jsx'
 
 dependencies {
     implementation 'com.sparkjava:spark-core:2.9.3'
