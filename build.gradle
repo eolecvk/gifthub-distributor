@@ -18,8 +18,6 @@ spotless {
 }
 
 dependencies {
-    implementation project(':frontend')
-
     implementation 'com.sparkjava:spark-core:2.9.3'
     implementation 'org.projectlombok:lombok:1.18.20'
     implementation 'com.google.inject:guice:5.0.1'
@@ -28,12 +26,17 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
 }
 
+clean.doFirst {
+    delete 'src/main/resources/public'
+}
+
 task copyReactToBackend(type: Copy) {
+    dependsOn(':frontend:bundle')
     from 'frontend/build'
     into 'src/main/resources/public'
 }
 
-run.dependsOn(copyReactToBackend)
+processResources.dependsOn(copyReactToBackend)
 
 test {
     useJUnitPlatform()
