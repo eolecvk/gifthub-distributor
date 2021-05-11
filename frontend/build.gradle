@@ -17,8 +17,6 @@ task uiTest(type: NpmTask) {
 task run(type: NpmTask) {
     args = ['start']
 }
-check.dependsOn(test)
-jar.dependsOn(bundle)
 
 task webjar(type: Jar) {
     from(fileTree("build")) {
@@ -27,4 +25,3 @@ task webjar(type: Jar) {
 }
 check.dependsOn(test)
 jar.dependsOn(bundle)
-jar.finalizedBy('webjar')
