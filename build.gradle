@@ -1,7 +1,6 @@
 plugins {
     id 'application'
     id "com.diffplug.spotless" version "5.12.4"
-
 }
 mainClassName =  "host.techcoop.gifthub.Main"
 
@@ -26,6 +25,18 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
 }
+
+clean.doFirst {
+    delete 'src/main/resources/public'
+}
+
+task copyReactToBackend(type: Copy) {
+    dependsOn(':frontend:bundle')
+    from 'frontend/build'
+    into 'src/main/resources/public'
+}
+
+processResources.dependsOn(copyReactToBackend)
 
 test {
     useJUnitPlatform()

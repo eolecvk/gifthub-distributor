@@ -4,6 +4,8 @@
 **/build/
 !src/**/build/
 
+/src/main/resources/public
+
 # Ignore Gradle GUI config
 gradle-app.setting
 
@@ -12,3 +14,9 @@ gradle-app.setting
 
 # Cache of project
 .gradletasknamecache
+
+# Ignore node modules
+/node_modules
+
+# Ignore ds_store
+**/.DS_Store

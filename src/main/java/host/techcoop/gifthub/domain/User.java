@@ -7,7 +7,7 @@ import lombok.Value;
 public class User {
 
   String name;
-  List<UserVotes> votes;
+  List<UserVote> votes;
   int needHigherCents;
   int needLowerCents;
 }

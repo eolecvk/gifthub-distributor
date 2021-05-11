@@ -3,7 +3,7 @@ package host.techcoop.gifthub.domain.responses;
 import com.google.common.collect.ImmutableList;
 import host.techcoop.gifthub.domain.GiftHubRoom;
 import host.techcoop.gifthub.domain.User;
-import host.techcoop.gifthub.domain.UserVotes;
+import host.techcoop.gifthub.domain.UserVote;
 import java.util.List;
 import lombok.Value;
 
@@ -24,7 +24,7 @@ public class RoomInfoResponse {
                               user ->
                                   user.getVotes().stream()
                                       .filter(vote -> vote.getUserName().equals(userName))
-                                      .mapToDouble(UserVotes::getPercentSplit))
+                                      .mapToDouble(UserVote::getPercentSplit))
                           .average()
                           .getAsDouble();
                   return new UserResponse(userName, averageVote);
