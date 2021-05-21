@@ -1,8 +1,10 @@
-import React, { Component } from 'react'
+import React from "react";
+import AdminViewSlider from "./AdminViewSlider"
 
-function AdminView() {
+export default function AdminView() {
     return (
-    <h1>Admin View</h1>
-    )
+        <div>
+            <AdminViewSlider />
+        </div>
+    );
 }
-export default AdminView
