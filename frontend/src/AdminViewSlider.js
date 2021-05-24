@@ -1,20 +1,35 @@
 import React from "react";
 import Slider from "@material-ui/core/Slider";
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles, createStyles } from "@material-ui/core/styles";
+import Typography from '@material-ui/core/Typography';
 
-const CustomSlider = withStyles(theme => ({
-  root: {
-    width: '80%',
-    margin:'10%' 
-  },
-  disabled: {
-    color: theme.palette.primary.main
-  },
-  thumb: {
-    color: "red"
-  }
-}))(Slider);
+// Storing this here as reference
+// https://stackoverflow.com/questions/61206613/how-to-change-material-ui-slider-thumb-style-when-its-disabled
 
+// TODO: Potentially move out into own/bootstrap css file
+const styles = theme => 
+    createStyles({
+        typography:{
+            textAlign: 'center',
+            marginBottom: '50px',
+        },
+        slider:{
+            width: '80%',
+            marginLeft: '10%',
+            marginRight: '10%',
+            "& .MuiSlider-thumb": {
+                color: theme.palette.primary.main,
+                // TODO: Figure out sizing of thumb/thumb label? (related to adding in)
+                //width: 200
+                //width: 50
+            }
+        }
+    });
+
+// TODO: For totalAmount/personName values, find out how to take dynamic inputs 
+const totalAmount = 100
+
+const personName = "Tyler"
 
 const marks = [
     {
@@ -22,33 +37,44 @@ const marks = [
       label: '0 $',
     },
     {
-      value: 20,
-      label: '20 $',
+      value: totalAmount * .25,
+      label: `${totalAmount * .25} $`,
     },
     {
-      value: 37,
-      label: '37 $',
+      value: totalAmount * .5,
+      label: `${totalAmount * .5} $`,
     },
     {
-      value: 100,
-      label: '100 $',
+      value: totalAmount * .75,
+      label: `${totalAmount * .75} $`,
+    },
+    {
+      value: totalAmount,
+      label: `${totalAmount} $`,
     },
   ];
   
-  function valuetext(value) {
+function valuetext(value) {
     return `${value} $`;
-  }
+}
 
-export default function AdminViewSlider() {
-  return (
+function AdminViewSlider(props) {
+  return ( 
     <div>
-        <CustomSlider
-          defaultValue={[10, 15, 20, 30]}
+       <Typography variant="h4" gutterBottom className={props.classes.typography}>
+            {personName}
+        </Typography>
+        <Slider
+          value={[5, 20, 100, 40]}
           valueLabelDisplay="on"
-          getAriaValueText={valuetext}
+          //valueLabelFormat={valuetext} // TODO: Looking into a way to insert name here along label?
+          getAriaValueText={valuetext} 
           disabled={true}
           marks={marks}
-        />
+          className={props.classes.slider}
+        />{" "}
     </div>
   );
 }
+
+export default withStyles(styles)(AdminViewSlider);
