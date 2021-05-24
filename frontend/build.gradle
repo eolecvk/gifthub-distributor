@@ -14,7 +14,7 @@ task uiTest(type: NpmTask) {
     environment = ['CI': 'true']
     args = ['run', 'test']
 }
-task run(type: NpmTask) {
+task run(type: NpmTask, dependsOn: npmInstall) {
     args = ['start']
 }
 
