@@ -1,14 +1,11 @@
-package host.techcoop.gifthub.domain;
+package host.techcoop.gifthub.domain.requests;
 
-import java.util.List;
 import lombok.Value;
 
 @Value
-public class User {
-
+public class JoinRoomRequest {
   String name;
   String needsDescription;
-  List<UserVote> votes;
   int needsUpperBoundCents;
   int needsLowerBoundCents;
 }

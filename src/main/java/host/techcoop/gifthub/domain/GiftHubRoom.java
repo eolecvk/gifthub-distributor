@@ -9,7 +9,7 @@ import lombok.Value;
 public class GiftHubRoom {
 
   String code;
-  String name;
-  List<User> users;
-  int distributionCents;
+  String roomName;
+  List<User> people;
+  int amountSplittingCents;
 }

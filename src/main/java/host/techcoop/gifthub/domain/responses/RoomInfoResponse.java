@@ -14,12 +14,12 @@ public class RoomInfoResponse {
 
   public static RoomInfoResponse from(GiftHubRoom room) {
     ImmutableList<UserResponse> userResponses =
-        room.getUsers().stream()
+        room.getPeople().stream()
             .map(User::getName)
             .map(
                 userName -> {
                   double averageVote =
-                      room.getUsers().stream()
+                      room.getPeople().stream()
                           .flatMapToDouble(
                               user ->
                                   user.getVotes().stream()

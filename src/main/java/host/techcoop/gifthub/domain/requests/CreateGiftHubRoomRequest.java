@@ -4,7 +4,6 @@ import lombok.Value;
 
 @Value
 public class CreateGiftHubRoomRequest {
-
   String roomName;
   int distributionCents;
 }

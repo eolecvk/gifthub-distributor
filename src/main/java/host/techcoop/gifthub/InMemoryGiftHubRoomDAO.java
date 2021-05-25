@@ -43,10 +43,10 @@ public class InMemoryGiftHubRoomDAO implements GiftHubRoomDAO {
     }
     GiftHubRoom room =
         GiftHubRoom.builder()
-            .name(name)
+            .roomName(name)
             .code(code)
-            .distributionCents(distributionCents)
-            .users(new ArrayList<>())
+            .amountSplittingCents(distributionCents)
+            .people(new ArrayList<>())
             .build();
     roomsByCode.put(code, room);
     return room;

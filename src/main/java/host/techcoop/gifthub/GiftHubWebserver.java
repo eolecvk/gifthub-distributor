@@ -7,7 +7,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import host.techcoop.gifthub.domain.GiftHubRoom;
 import host.techcoop.gifthub.domain.requests.CreateGiftHubRoomRequest;
-import host.techcoop.gifthub.domain.requests.VoteRequest;
+import host.techcoop.gifthub.domain.requests.UpdateRequest;
 import host.techcoop.gifthub.domain.responses.RoomInfoResponse;
 import host.techcoop.gifthub.interfaces.GiftHubRoomDAO;
 import host.techcoop.gifthub.interfaces.UserDAO;
@@ -39,14 +39,15 @@ public class GiftHubWebserver {
   }
 
   public void route() {
+    put("/api/:roomCode", this::processEvents);
+    get("/api/:roomCode/join", this::joinRoom);
+
     get("/rooms/:roomCode", this::getRoomInfo);
     put("/rooms", this::createRoom);
-    get("/rooms/join/:roomCode", this::joinRoom);
-    put("/rooms/:roomCode", this::vote);
   }
 
-  private Object vote(Request request, Response response) {
-    VoteRequest voteRequest = gson.fromJson(request.body(), VoteRequest.class).verify();
+  private Object processEvents(Request request, Response response) {
+    UpdateRequest voteRequest = gson.fromJson(request.body(), UpdateRequest.class);
     String roomCode = request.params(":roomCode");
     GiftHubRoom room = roomDAO.getRoomByCode(roomCode);
 
