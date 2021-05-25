@@ -8,10 +8,7 @@ class CreateRoomForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = { roomName: '', distributionCents: 0 };
-        this.onChangeName = this.onChangeName.bind(this);
-        this.onChangeDistributionCents = this.onChangeDistributionCents.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleCancel = this.handleCancel.bind(this);
+        // Binding is not needed as arrow functions handle binding
     }
 
     resetFieldValues = () => {
@@ -66,12 +63,7 @@ class JoinRoomForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = { roomCode: '', userName: '', needMin: 0, needMax: 0 };
-        this.onChangeRoomCode = this.onChangeRoomCode.bind(this);
-        this.onChangeUserName = this.onChangeUserName.bind(this);
-        this.onChangeNeedMin = this.onChangeNeedMin.bind(this);
-        this.onChangeNeedMax = this.onChangeNeedMax.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleCancel = this.handleCancel.bind(this);
+        // Binding is not needed as arrow functions handle binding
     }
 
     resetFieldValues = () => {
