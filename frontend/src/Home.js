@@ -1,4 +1,4 @@
-import { Component } from 'react'
+import React, { Component } from 'react'
 import Modal from 'react-modal'
 import { CreateRoomForm, JoinRoomForm } from './Forms'
 

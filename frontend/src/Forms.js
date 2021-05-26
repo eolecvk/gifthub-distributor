@@ -1,10 +1,6 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 
-//TODO: encapsulate form in a modal
-//TODO: Add CREATE ROOM button to display modal
-//TODO: Repeat for JOIN ROOM button and modal
-
-class CreateRoomForm extends React.Component {
+class CreateRoomForm extends Component {
     constructor(props) {
         super(props);
         this.state = { roomName: '', distributionCents: 0 };
@@ -62,7 +58,7 @@ class CreateRoomForm extends React.Component {
 }
 
 
-class JoinRoomForm extends React.Component {
+class JoinRoomForm extends Component {
     constructor(props) {
         super(props);
         this.state = { roomCode: '', userName: '', needMin: 0, needMax: 0 };
