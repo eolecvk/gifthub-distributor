@@ -61,8 +61,9 @@ public class GiftHubWebserver {
       switch (event.getKind()) {
         case ADJUST:
           AdjustEvent adjustEvent = (AdjustEvent) event;
-          user = user.withUpdatedUserVote(new UserVote(adjustEvent.getBarId(),
-              adjustEvent.getNewValue()));
+          user =
+              user.withUpdatedUserVote(
+                  new UserVote(adjustEvent.getBarId(), adjustEvent.getNewValue()));
           break;
         case EMOTIVE:
           EmotiveEvent emotiveEvent = (EmotiveEvent) event;
