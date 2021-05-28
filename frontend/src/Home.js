@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Modal from 'react-modal'
-import { CreateRoomForm, JoinRoomForm } from './Forms'
+import { CreateRoomForm} from './Forms/CreateRoomForm'
+import { JoinRoomForm} from './Forms/JoinRoomForm'
 
 
 class HomeMenu extends Component {
