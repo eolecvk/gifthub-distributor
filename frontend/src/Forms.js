@@ -92,6 +92,11 @@ class JoinRoomForm extends Component {
         this.setState({ needMax: event.target.value })
     }
 
+    // Refactor (onChangeRoomCode, onChangeUserName, ...)to:
+    // changeHandler = e => {
+    //     this.setState({e.target.name]: e.target.value})
+    // }
+
     handleSubmit = (event) => {
         event.preventDefault();
         const { roomCode, userName, needMin, needMax } = this.state;
