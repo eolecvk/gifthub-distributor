@@ -5,10 +5,6 @@ class CreateRoomForm extends Component {
     constructor(props) {
         super(props);
         this.state = { roomName: '', distributionCents: 0 };
-        this.onChangeName = this.onChangeName.bind(this);
-        this.onChangeDistributionCents = this.onChangeDistributionCents.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleCancel = this.handleCancel.bind(this);
     }
 
     resetFieldValues = () => {

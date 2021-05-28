@@ -5,12 +5,6 @@ class JoinRoomForm extends Component {
     constructor(props) {
         super(props);
         this.state = { roomCode: '', userName: '', needMin: 0, needMax: 0, needDescription: '' };
-        // this.onChangeRoomCode = this.onChangeRoomCode.bind(this);
-        // this.onChangeUserName = this.onChangeUserName.bind(this);
-        // this.onChangeNeedMin = this.onChangeNeedMin.bind(this);
-        // this.onChangeNeedMax = this.onChangeNeedMax.bind(this);
-        // this.handleSubmit = this.handleSubmit.bind(this);
-        // this.handleCancel = this.handleCancel.bind(this);
     }
 
     resetFieldValues = () => {
