@@ -5,6 +5,6 @@ import lombok.Value;
 @Value
 public class UserVote {
 
-  String userName;
+  int userId;
   double percentSplit;
 }
