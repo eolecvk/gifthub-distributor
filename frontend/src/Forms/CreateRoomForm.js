@@ -37,8 +37,13 @@ class CreateRoomForm extends Component {
         Room name: ${roomName} \n 
         Amount (cents): ${distributionCents}`);
 
+        const payload = {
+            'room_name': roomName,
+            'splitting_cents': distributionCents
+        }
+
         axios
-            .post('/api/rooms', this.state)
+            .post('/api/rooms', payload)
             .then(response => { console.log(response) })
             .catch(error => { console.log(error) });
 
