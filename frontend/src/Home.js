@@ -36,7 +36,7 @@ class HomeMenu extends Component {
                     <div class="modal-content">
                         <span class="close" onClick={this.handleCloseModalCreateRoom}>&times;</span>
                         <p>
-                            <CreateRoomForm></CreateRoomForm>
+                            <CreateRoomForm onChange={this.handleCloseModalCreateRoom} />
                         </p>
                     </div>
                 </Modal>
@@ -45,7 +45,7 @@ class HomeMenu extends Component {
                     <div class="modal-content">
                         <span class="close" onClick={this.handleCloseModalJoinRoom}>&times;</span>
                         <p>
-                            <JoinRoomForm></JoinRoomForm>
+                            <JoinRoomForm onChange={this.handleCloseModalJoinRoom}/>
                         </p>
                     </div>
                 </Modal>

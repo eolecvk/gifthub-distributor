@@ -46,6 +46,7 @@ class CreateRoomForm extends Component {
                 const buttonName = e.nativeEvent.submitter.name;
                 if (buttonName === "Submit") { this.handleSubmit(e) };
                 if (buttonName === "Cancel") { this.handleCancel(e) };
+                this.props.onChange(e.target.value);
             }}>
                 <h3>Create new room:</h3>
                 <label> Room name: <input type="text" required value={this.state.roomName} onChange={this.onChangeName} /></label>
@@ -116,6 +117,7 @@ class JoinRoomForm extends Component {
                 const buttonName = e.nativeEvent.submitter.name;
                 if (buttonName === "Submit") { this.handleSubmit(e) };
                 if (buttonName === "Cancel") { this.handleCancel(e) };
+                this.props.onChange(e.target.value);
             }}>
                 <h3>Join a room:</h3>
                 <label> Room code: <input type="text" required value={this.state.roomCode} onChange={this.onChangeRoomCode} /></label>
