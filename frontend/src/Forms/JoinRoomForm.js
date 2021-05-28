@@ -4,17 +4,17 @@ import axios from 'axios'
 class JoinRoomForm extends Component {
     constructor(props) {
         super(props);
-        this.state = { roomCode: '', userName: '', needMin: 0, needMax: 0 };
-        this.onChangeRoomCode = this.onChangeRoomCode.bind(this);
-        this.onChangeUserName = this.onChangeUserName.bind(this);
-        this.onChangeNeedMin = this.onChangeNeedMin.bind(this);
-        this.onChangeNeedMax = this.onChangeNeedMax.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleCancel = this.handleCancel.bind(this);
+        this.state = { roomCode: '', userName: '', needMin: 0, needMax: 0, needDescription: '' };
+        // this.onChangeRoomCode = this.onChangeRoomCode.bind(this);
+        // this.onChangeUserName = this.onChangeUserName.bind(this);
+        // this.onChangeNeedMin = this.onChangeNeedMin.bind(this);
+        // this.onChangeNeedMax = this.onChangeNeedMax.bind(this);
+        // this.handleSubmit = this.handleSubmit.bind(this);
+        // this.handleCancel = this.handleCancel.bind(this);
     }
 
     resetFieldValues = () => {
-        this.setState({ roomCode: '', userName: '', needMin: 0, needMax: 0 });
+        this.setState({ roomCode: '', userName: '', needMin: 0, needMax: 0, needDescription: '' });
     }
 
 
@@ -34,6 +34,10 @@ class JoinRoomForm extends Component {
         this.setState({ needMax: event.target.value })
     }
 
+    onChangeNeedDescription = (event) => {
+        this.setState({ needDescription: event.target.value })
+    }
+
     // Refactor (onChangeRoomCode, onChangeUserName, ...)to:
     // changeHandler = e => {
     //     this.setState({e.target.name]: e.target.value})
@@ -41,17 +45,25 @@ class JoinRoomForm extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        const { roomCode, userName, needMin, needMax } = this.state;
+        const { roomCode, userName, needMin, needMax, needDescription } = this.state;
 
         alert(`User session details: \n
         room code: ${roomCode} \n 
         username: ${userName} \n 
         need min (cents): ${needMin} \n
-        need max (cents): ${needMax}`);
+        need max (cents): ${needMax} \n
+        need description: ${needDescription}`);
+
+        const payload = {
+            name: userName,
+            needs_description: needDescription,
+            needs_upper_bound_cents: needMin,
+            needs_lower_bound_cents: needMax
+        }
 
 
         axios
-            .get(`/api/${roomCode}/join`, this.state)
+            .get(`/api/${roomCode}/join`, payload)
             .then(response => { console.log(response) })
             .catch(error => { console.log(error) });
 
@@ -79,6 +91,7 @@ class JoinRoomForm extends Component {
                 <label> Username: <input type="text" required value={this.state.userName} onChange={this.onChangeUserName} /></label>
                 <label> Need min (cents): <input type="number" required min="0" value={this.state.needMin} onChange={this.onChangeNeedMin} /></label>
                 <label> Need max (cents): <input type="number" required min={this.state.needMin} value={this.state.needMax} onChange={this.onChangeNeedMax} /></label>
+                <label> Need description: <input type="text" value={this.state.needDescription} onChange={this.onChangeNeedDescription} /></label>
                 <button type="submit" name="Submit">Submit</button>
                 <button type="submit" name="Cancel">Cancel</button>
             </form>
