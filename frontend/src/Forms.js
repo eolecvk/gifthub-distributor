@@ -1,4 +1,5 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
+import axios from 'axios'
 
 class CreateRoomForm extends Component {
     constructor(props) {
@@ -21,13 +22,26 @@ class CreateRoomForm extends Component {
     onChangeDistributionCents = (event) => {
         this.setState({ distributionCents: event.target.value })
     }
+    
+    // Refactor (onChangeName, onChangeDistributionCents)to:
+    // changeHandler = e => {
+    //     this.setState({e.target.name]: e.target.value})
+    // }
 
     handleSubmit = (event) => {
         event.preventDefault();
         const { roomName, distributionCents } = this.state;
+
+
         alert(`Your registration detail: \n 
         Room name: ${roomName} \n 
         Amount (cents): ${distributionCents}`);
+
+        axios
+            .post('/api/rooms', this.state)
+            .then(response => { console.log(response) })
+            .catch(error => { console.log(error) });
+
         this.resetFieldValues();
         event.target.reset();
     }
