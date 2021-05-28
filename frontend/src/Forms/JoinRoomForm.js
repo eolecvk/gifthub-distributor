@@ -4,11 +4,11 @@ import axios from 'axios'
 class JoinRoomForm extends Component {
     constructor(props) {
         super(props);
-        this.state = { roomCode: '', userName: '', needMin: 0, needMax: 0, needDescription: '' };
+        this.state = { roomCode: '', name: '', needsLowerBoundCents: 0, needsUpperBoundCents: 0, needsDescription: '' };
     }
 
     resetFieldValues = () => {
-        this.setState({ roomCode: '', userName: '', needMin: 0, needMax: 0, needDescription: '' });
+        this.setState({ roomCode: '', name: '', needsLowerBoundCents: 0, needsUpperBoundCents: 0, needsDescription: '' });
     }
 
 
@@ -16,20 +16,20 @@ class JoinRoomForm extends Component {
         this.setState({ roomCode: event.target.value })
     }
 
-    onChangeUserName = (event) => {
-        this.setState({ userName: event.target.value })
+    onChangeName = (event) => {
+        this.setState({ name: event.target.value })
     }
 
-    onChangeNeedMin = (event) => {
-        this.setState({ needMin: event.target.value })
+    onChangeNeedsLowerBoundCents = (event) => {
+        this.setState({ needsLowerBoundCents: event.target.value })
     }
 
-    onChangeNeedMax = (event) => {
-        this.setState({ needMax: event.target.value })
+    onChangeNeedsUpperBoundCents = (event) => {
+        this.setState({ needsUpperBoundCents: event.target.value })
     }
 
-    onChangeNeedDescription = (event) => {
-        this.setState({ needDescription: event.target.value })
+    onChangeNeedsDescription = (event) => {
+        this.setState({ needsDescription: event.target.value })
     }
 
     // Refactor (onChangeRoomCode, onChangeUserName, ...)to:
@@ -39,20 +39,20 @@ class JoinRoomForm extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        const { roomCode, userName, needMin, needMax, needDescription } = this.state;
+        const { roomCode, name, needsLowerBoundCents, needsUpperBoundCents, needsDescription } = this.state;
 
         alert(`User session details: \n
         room code: ${roomCode} \n 
-        username: ${userName} \n 
-        need min (cents): ${needMin} \n
-        need max (cents): ${needMax} \n
-        need description: ${needDescription}`);
+        username: ${name} \n 
+        need min (cents): ${needsLowerBoundCents} \n
+        need max (cents): ${needsUpperBoundCents} \n
+        need description: ${needsDescription}`);
 
         const payload = {
-            name: userName,
-            needs_description: needDescription,
-            needs_upper_bound_cents: needMin,
-            needs_lower_bound_cents: needMax
+            name: name,
+            needs_description: needsDescription,
+            needs_upper_bound_cents: needsLowerBoundCents,
+            needs_lower_bound_cents: needsUpperBoundCents
         }
 
 
@@ -82,10 +82,10 @@ class JoinRoomForm extends Component {
             }}>
                 <h3>Join a room:</h3>
                 <label> Room code: <input type="text" required value={this.state.roomCode} onChange={this.onChangeRoomCode} /></label>
-                <label> Username: <input type="text" required value={this.state.userName} onChange={this.onChangeUserName} /></label>
-                <label> Need min (cents): <input type="number" required min="0" value={this.state.needMin} onChange={this.onChangeNeedMin} /></label>
-                <label> Need max (cents): <input type="number" required min={this.state.needMin} value={this.state.needMax} onChange={this.onChangeNeedMax} /></label>
-                <label> Need description: <input type="text" value={this.state.needDescription} onChange={this.onChangeNeedDescription} /></label>
+                <label> Username: <input type="text" required value={this.state.name} onChange={this.onChangeName} /></label>
+                <label> Need min (cents): <input type="number" required min="0" value={this.state.needsLowerBoundCents} onChange={this.onChangeNeedsLowerBoundCents} /></label>
+                <label> Need max (cents): <input type="number" required min={this.state.needsLowerBoundCents} value={this.state.needsUpperBoundCents} onChange={this.onChangeNeedsUpperBoundCents} /></label>
+                <label> Need description: <input type="text" value={this.state.needsDescription} onChange={this.onChangeNeedsDescription} /></label>
                 <button type="submit" name="Submit">Submit</button>
                 <button type="submit" name="Cancel">Cancel</button>
             </form>

@@ -4,19 +4,19 @@ import axios from 'axios'
 class CreateRoomForm extends Component {
     constructor(props) {
         super(props);
-        this.state = { roomName: '', distributionCents: 0 };
+        this.state = { roomName: '', splittingCents: 0 };
     }
 
     resetFieldValues = () => {
-        this.setState({ roomName: '', distributionCents: 0 });
+        this.setState({ roomName: '', splittingCents: 0 });
     }
 
     onChangeName = (event) => {
         this.setState({ roomName: event.target.value })
     }
 
-    onChangeDistributionCents = (event) => {
-        this.setState({ distributionCents: event.target.value })
+    onChangeSplittingCents = (event) => {
+        this.setState({ splittingCents: event.target.value })
     }
 
     // Refactor (onChangeName, onChangeDistributionCents)to:
@@ -26,16 +26,16 @@ class CreateRoomForm extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        const { roomName, distributionCents } = this.state;
+        const { roomName, splittingCents } = this.state;
 
 
         alert(`Your registration detail: \n 
         Room name: ${roomName} \n 
-        Amount (cents): ${distributionCents}`);
+        Amount (cents): ${splittingCents}`);
 
         const payload = {
             'room_name': roomName,
-            'splitting_cents': distributionCents
+            'splitting_cents': splittingCents
         }
 
         axios
@@ -49,7 +49,7 @@ class CreateRoomForm extends Component {
 
     handleCancel = (event) => {
         event.preventDefault();
-        this.setState({ roomName: '', distributionCents: 0 });
+        this.setState({ roomName: '', splittingCents: 0 });
         alert(`Returning to selection menu...`);
         this.resetFieldValues();
         event.target.reset();
@@ -65,7 +65,7 @@ class CreateRoomForm extends Component {
             }}>
                 <h3>Create new room:</h3>
                 <label> Room name: <input type="text" required value={this.state.roomName} onChange={this.onChangeName} /></label>
-                <label> Amount (cents): <input type="number" required min="1" value={this.state.distributionCents} onChange={this.onChangeDistributionCents} /></label>
+                <label> Amount (cents): <input type="number" required min="1" value={this.state.splittingCents} onChange={this.onChangeSplittingCents} /></label>
                 <button type="submit" name="Submit">Submit</button>
                 <button type="submit" name="Cancel">Cancel</button>
             </form>
