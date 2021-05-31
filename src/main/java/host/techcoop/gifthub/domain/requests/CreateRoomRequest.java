@@ -3,8 +3,7 @@ package host.techcoop.gifthub.domain.requests;
 import lombok.Value;
 
 @Value
-public class CreateGiftHubRoomRequest {
-
+public class CreateRoomRequest {
   String roomName;
-  int distributionCents;
+  int splittingCents;
 }
