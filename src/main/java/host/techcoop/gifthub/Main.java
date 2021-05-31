@@ -1,7 +1,5 @@
 package host.techcoop.gifthub;
 
-import static spark.Spark.*;
-
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import host.techcoop.gifthub.modules.GiftHubDistributorModule;

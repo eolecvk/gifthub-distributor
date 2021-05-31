@@ -6,24 +6,30 @@ import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import host.techcoop.gifthub.domain.GiftHubRoom;
-import host.techcoop.gifthub.domain.requests.CreateGiftHubRoomRequest;
-import host.techcoop.gifthub.domain.requests.VoteRequest;
+import host.techcoop.gifthub.domain.User;
+import host.techcoop.gifthub.domain.UserVote;
+import host.techcoop.gifthub.domain.interfaces.Event;
+import host.techcoop.gifthub.domain.requests.CreateRoomRequest;
+import host.techcoop.gifthub.domain.requests.JoinRoomRequest;
+import host.techcoop.gifthub.domain.requests.UpdateRequest;
+import host.techcoop.gifthub.domain.requests.events.AdjustEvent;
+import host.techcoop.gifthub.domain.requests.events.EmotiveEvent;
+import host.techcoop.gifthub.domain.requests.events.NeedsUpdateEvent;
 import host.techcoop.gifthub.domain.responses.RoomInfoResponse;
 import host.techcoop.gifthub.interfaces.GiftHubRoomDAO;
-import host.techcoop.gifthub.interfaces.UserDAO;
 import spark.Request;
 import spark.Response;
 
 @Singleton
 public class GiftHubWebserver {
+  private static final String SESSION_ROOM_KEY = "room";
+  private static final String SESSION_USER_ID_KEY = "user_id";
 
   private final GiftHubRoomDAO roomDAO;
-  private final UserDAO userDAO;
   private final Gson gson;
 
   @Inject
-  GiftHubWebserver(GiftHubRoomDAO roomDAO, Gson gson, UserDAO userDAO) {
-    this.userDAO = userDAO;
+  GiftHubWebserver(GiftHubRoomDAO roomDAO, Gson gson) {
     this.roomDAO = roomDAO;
     this.gson = gson;
   }
@@ -39,29 +45,63 @@ public class GiftHubWebserver {
   }
 
   public void route() {
-    get("/rooms/:roomCode", this::getRoomInfo);
-    put("/rooms", this::createRoom);
-    get("/rooms/join/:roomCode", this::joinRoom);
-    put("/rooms/:roomCode", this::vote);
+    put("/api/:roomCode", this::processEvents, gson::toJson);
+    get("/api/:roomCode/join", this::joinRoom, gson::toJson);
+    post("/api/rooms", this::createRoom, gson::toJson);
+    get("/api/:roomCode", this::getRoomInfo, gson::toJson);
   }
 
-  private Object vote(Request request, Response response) {
-    VoteRequest voteRequest = gson.fromJson(request.body(), VoteRequest.class).verify();
+  private Object processEvents(Request request, Response response) {
+    UpdateRequest voteRequest = gson.fromJson(request.body(), UpdateRequest.class);
     String roomCode = request.params(":roomCode");
-    GiftHubRoom room = roomDAO.getRoomByCode(roomCode);
-
+    int userId = request.session().attribute(SESSION_USER_ID_KEY);
+    User user = roomDAO.getUserFromRoom(roomCode, userId);
+    for (Event event : voteRequest.getEvents()) {
+      switch (event.getKind()) {
+        case ADJUST:
+          AdjustEvent adjustEvent = (AdjustEvent) event;
+          user =
+              user.withUpdatedUserVote(
+                  new UserVote(adjustEvent.getBarId(), adjustEvent.getNewValue()));
+          break;
+        case EMOTIVE:
+          EmotiveEvent emotiveEvent = (EmotiveEvent) event;
+          break;
+        case NEEDS_UPDATE:
+          NeedsUpdateEvent needsUpdateEvent = (NeedsUpdateEvent) event;
+          User.UserBuilder userBuilder = user.toBuilder();
+          if (!"".equals(needsUpdateEvent.getNeedsDescription())) {
+            userBuilder.needsDescription(needsUpdateEvent.getNeedsDescription());
+          }
+          if (needsUpdateEvent.getNeedsUpperBoundCents() != null) {
+            userBuilder.needsUpperBoundCents(needsUpdateEvent.getNeedsUpperBoundCents());
+          }
+          if (needsUpdateEvent.getNeedsLowerBoundCents() != null) {
+            userBuilder.needsLowerBoundCents(needsUpdateEvent.getNeedsLowerBoundCents());
+          }
+          user = userBuilder.build();
+          break;
+      }
+    }
+    roomDAO.updateUserInRoom(roomCode, user);
     return null;
   }
 
-  private Object joinRoom(Request request, Response response) {
-    return null;
+  private RoomInfoResponse joinRoom(Request request, Response response) {
+    String roomCode = request.params(":roomCode");
+    JoinRoomRequest joinRequest = gson.fromJson(request.body(), JoinRoomRequest.class);
+    int userId = roomDAO.addUserToRoom(roomCode, joinRequest);
+    GiftHubRoom room = roomDAO.getRoomByCode(roomCode);
+    request.session().attribute(SESSION_ROOM_KEY, room.getCode());
+    request.session().attribute(SESSION_USER_ID_KEY, userId);
+    return RoomInfoResponse.from(room);
   }
 
   private RoomInfoResponse createRoom(Request request, Response response) {
-    CreateGiftHubRoomRequest createRequest =
-        gson.fromJson(request.body(), CreateGiftHubRoomRequest.class);
+    CreateRoomRequest createRequest = gson.fromJson(request.body(), CreateRoomRequest.class);
     GiftHubRoom room =
-        roomDAO.createRoom(createRequest.getDistributionCents(), createRequest.getRoomName());
+        roomDAO.createRoom(createRequest.getSplittingCents(), createRequest.getRoomName());
+    request.session().attribute(SESSION_ROOM_KEY, room.getCode());
     return RoomInfoResponse.from(room);
   }
 
