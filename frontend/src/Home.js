@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Modal from 'react-modal'
+import Button from '@material-ui/core/Button';
 import { CreateRoomForm} from './Forms/CreateRoomForm'
 import { JoinRoomForm} from './Forms/JoinRoomForm'
 
@@ -32,7 +33,7 @@ class HomeMenu extends Component {
     render() {
         return (
             <div>
-                <button type="button" name="createRoomButton" onClick={this.handleOpenModalCreateRoom} >New room</button>
+                <Button variant="contained" color="primary" name="createRoomButton" onClick={this.handleOpenModalCreateRoom} >New room</Button>
                 <Modal isOpen={this.state.createRoomModalIsOpen} onCloseModal={this.handleCloseModalCreateRoom}>
                     <div class="modal-content">
                         <span class="close" onClick={this.handleCloseModalCreateRoom}>&times;</span>
@@ -41,7 +42,7 @@ class HomeMenu extends Component {
                         </p>
                     </div>
                 </Modal>
-                <button type="button" name="joinRoomButton" onClick={this.handleOpenModalJoinRoom}>Join room</button>
+                <Button variant="contained" color="primary" name="joinRoomButton" onClick={this.handleOpenModalJoinRoom}>Join room</Button>
                 <Modal isOpen={this.state.joinRoomModalIsOpen} onCloseModal={this.handleCloseModalJoinRoom}>
                     <div class="modal-content">
                         <span class="close" onClick={this.handleCloseModalJoinRoom}>&times;</span>
