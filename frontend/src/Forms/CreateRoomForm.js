@@ -47,27 +47,16 @@ class CreateRoomForm extends Component {
         event.target.reset();
     }
 
-    handleCancel = (event) => {
-        event.preventDefault();
-        this.setState({ roomName: '', splittingCents: 0 });
-        alert(`Returning to selection menu...`);
-        this.resetFieldValues();
-        event.target.reset();
-    }
-
     render() {
         return (
             <form onSubmit={(e) => {
-                const buttonName = e.nativeEvent.submitter.name;
-                if (buttonName === "Submit") { this.handleSubmit(e) };
-                if (buttonName === "Cancel") { this.handleCancel(e) };
+                this.handleSubmit(e)
                 this.props.onChange(e.target.value);
             }}>
                 <h3>Create new room:</h3>
                 <label> Room name: <input type="text" required value={this.state.roomName} onChange={this.onChangeName} /></label>
                 <label> Amount (cents): <input type="number" required min="1" value={this.state.splittingCents} onChange={this.onChangeSplittingCents} /></label>
                 <button type="submit" name="Submit">Submit</button>
-                <button type="submit" name="Cancel">Cancel</button>
             </form>
         );
     }
