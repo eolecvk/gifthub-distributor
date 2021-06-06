@@ -51,8 +51,8 @@ class JoinRoomForm extends Component {
         const payload = {
             name: name,
             needs_description: needsDescription,
-            needs_upper_bound_cents: needsLowerBoundCents,
-            needs_lower_bound_cents: needsUpperBoundCents
+            needs_lower_bound_cents: needsLowerBoundCents,
+            needs_upper_bound_cents: needsUpperBoundCents
         }
 
 
