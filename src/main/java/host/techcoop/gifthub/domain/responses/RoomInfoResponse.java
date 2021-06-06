@@ -3,6 +3,7 @@ package host.techcoop.gifthub.domain.responses;
 import static com.google.common.collect.ImmutableList.toImmutableList;
 import static com.google.common.collect.ImmutableListMultimap.toImmutableListMultimap;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ListMultimap;
 import host.techcoop.gifthub.domain.GiftHubRoom;
 import host.techcoop.gifthub.domain.UserVote;
@@ -31,10 +32,13 @@ public class RoomInfoResponse {
             .map(
                 user -> {
                   Collection<UserVote> votes = votesByUserId.get(user.getUserId());
+                  ImmutableList<Double> anonVotes =
+                      votes.stream().map(UserVote::getPercentSplit).collect(toImmutableList());
                   double averageVote =
-                      votes.stream().mapToDouble(UserVote::getPercentSplit).average().orElse(0.0f);
+                      anonVotes.stream().mapToDouble(x -> x).average().orElse(0.0f);
                   return UserResponse.builder()
                       .name(user.getName())
+                      .votes(anonVotes)
                       .needsDescription(user.getNeedsDescription())
                       .needsLowerBoundCents(user.getNeedsLowerBoundCents())
                       .needsUpperBoundCents(user.getNeedsUpperBoundCents())
