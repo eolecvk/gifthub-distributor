@@ -8,6 +8,7 @@ import com.google.inject.Singleton;
 import host.techcoop.gifthub.domain.GiftHubRoom;
 import host.techcoop.gifthub.domain.User;
 import host.techcoop.gifthub.domain.UserVote;
+import host.techcoop.gifthub.domain.exceptions.RoomJoinException;
 import host.techcoop.gifthub.domain.exceptions.VerificationException;
 import host.techcoop.gifthub.domain.interfaces.Event;
 import host.techcoop.gifthub.domain.requests.CreateRoomRequest;
@@ -53,6 +54,12 @@ public class GiftHubWebserver {
     post("/api/:roomCode/join", this::joinRoom, gson::toJson);
     post("/api/rooms", this::createRoom, gson::toJson);
     get("/api/:roomCode", this::getRoomInfo, gson::toJson);
+
+    exception(RoomJoinException.class, (exception, request, response) -> {
+      response.status(500);
+      response.header("Content-Type", "application/json");
+      response.body("{\"error\": \"That room does not exist\"}");
+    });
 
     exception(VerificationException.class, (exception, request, response) -> {
       response.status(500);
