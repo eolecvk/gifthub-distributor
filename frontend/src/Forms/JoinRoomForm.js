@@ -65,19 +65,10 @@ class JoinRoomForm extends Component {
         event.target.reset();
     }
 
-    handleCancel = (event) => {
-        event.preventDefault();
-        this.resetFieldValues();
-        alert(`Returning to selection menu...`);
-        event.target.reset();
-    }
-
     render() {
         return (
             <form onSubmit={(e) => {
-                const buttonName = e.nativeEvent.submitter.name;
-                if (buttonName === "Submit") { this.handleSubmit(e) };
-                if (buttonName === "Cancel") { this.handleCancel(e) };
+                this.handleSubmit(e);
                 this.props.onChange(e.target.value);
             }}>
                 <h3>Join a room:</h3>
@@ -87,7 +78,6 @@ class JoinRoomForm extends Component {
                 <label> Need max (cents): <input type="number" required min={this.state.needsLowerBoundCents} value={this.state.needsUpperBoundCents} onChange={this.onChangeNeedsUpperBoundCents} /></label>
                 <label> Need description: <input type="text" value={this.state.needsDescription} onChange={this.onChangeNeedsDescription} /></label>
                 <button type="submit" name="Submit">Submit</button>
-                <button type="submit" name="Cancel">Cancel</button>
             </form>
         );
     }
