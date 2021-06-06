@@ -14,15 +14,15 @@ class App extends Component {
     render() {
         return (
             <div className="App">
-            <h1>Pile O' Money</h1>
-            <Router>
-                <Nav />
-                <Switch>
-                    <Route path="/" exact component={() => <Home/>}/>
-                    <Route path="/input-page" exact component={() => <InputPage/>}/>
-                    <Route path="/admin-view" exact component={() => <AdminView/>}/>
-                </Switch>
-            </Router>
+                <h1>Pile O' Money</h1>
+                <Router>
+                    <Nav />
+                    <Switch>
+                        <Route path="/" exact component={() => <Home />} />
+                        <Route path="/input-page" exact component={() => <InputPage />} />
+                        <Route path="/admin-view" exact component={() => <AdminView />} />
+                    </Switch>
+                </Router>
             </div>
         )
     }
