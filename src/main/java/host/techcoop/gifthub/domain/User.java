@@ -1,6 +1,7 @@
 package host.techcoop.gifthub.domain;
 
 import com.google.common.collect.ImmutableList;
+import host.techcoop.gifthub.domain.exceptions.VerificationException;
 import host.techcoop.gifthub.domain.requests.JoinRoomRequest;
 import lombok.Builder;
 import lombok.Value;
@@ -40,5 +41,12 @@ public class User {
     votes.stream().filter(vote -> vote.getUserId() != voteIn.getUserId()).forEach(voteBuilder::add);
     voteBuilder.add(voteIn);
     return this.toBuilder().votes(voteBuilder.build()).build();
+  }
+
+  public User verify(User oldState) {
+    if (votes.stream().mapToDouble(UserVote::getPercentSplit).sum() > 1d) {
+      throw new VerificationException("Votes add up to more than 1", oldState.getVotes());
+    }
+    return this;
   }
 }
