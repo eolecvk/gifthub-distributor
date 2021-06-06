@@ -61,6 +61,7 @@ class JoinRoomForm extends Component {
             .post(`/api/${roomCode}/join`, payload)
             .then(response => {
                 if (response.status === 200) {
+                    console.log("here it is")
                     this.setState({isSubmitted: true})
             }})
             .catch(error => { console.log(error) });
@@ -71,8 +72,10 @@ class JoinRoomForm extends Component {
 
     render() {
         if (this.state.isSubmitted){
+            console.log("did this rerender?")
             return <Redirect to = {{pathname: "/input-page"}} />
         }
+        else{
         return (
             <form onSubmit={(e) => {
                 this.handleSubmit(e);
@@ -87,6 +90,7 @@ class JoinRoomForm extends Component {
                 <button type="submit" name="Submit">Submit</button>
             </form>
         );
+    }
     }
 }
 
