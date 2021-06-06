@@ -2,15 +2,13 @@ package host.techcoop.gifthub.domain.responses;
 
 import static com.google.common.collect.ImmutableList.toImmutableList;
 import static com.google.common.collect.ImmutableListMultimap.toImmutableListMultimap;
-import static java.util.stream.Collectors.toMap;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ListMultimap;
 import host.techcoop.gifthub.domain.GiftHubRoom;
-import host.techcoop.gifthub.domain.User;
 import host.techcoop.gifthub.domain.UserVote;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import lombok.Builder;
 import lombok.Value;
 
@@ -24,28 +22,27 @@ public class RoomInfoResponse {
   List<UserResponse> people;
 
   public static RoomInfoResponse from(GiftHubRoom room) {
-    Map<Integer, User> usersById =
-        room.getPeople().stream().collect(toMap(User::getUserId, x -> x));
     ListMultimap<Integer, UserVote> votesByUserId =
         room.getPeople().stream()
             .flatMap(person -> person.getVotes().stream())
             .collect(toImmutableListMultimap(UserVote::getUserId, x -> x));
 
     List<UserResponse> userResponses =
-        votesByUserId.asMap().entrySet().stream()
+        room.getPeople().stream()
             .map(
-                (entry) -> {
-                  int userId = entry.getKey();
-                  Collection<UserVote> votes = entry.getValue();
-                  User user = usersById.get(userId);
+                user -> {
+                  Collection<UserVote> votes = votesByUserId.get(user.getUserId());
+                  ImmutableList<Double> anonVotes =
+                      votes.stream().map(UserVote::getPercentSplit).collect(toImmutableList());
                   double averageVote =
-                      votes.stream().mapToDouble(UserVote::getPercentSplit).average().orElse(0.0f);
+                      anonVotes.stream().mapToDouble(x -> x).average().orElse(0.0f);
                   return UserResponse.builder()
                       .name(user.getName())
+                      .votes(anonVotes)
                       .needsDescription(user.getNeedsDescription())
                       .needsLowerBoundCents(user.getNeedsLowerBoundCents())
                       .needsUpperBoundCents(user.getNeedsUpperBoundCents())
-                      .personId(userId)
+                      .personId(user.getUserId())
                       .voteTotal(averageVote)
                       .build();
                 })
