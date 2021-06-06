@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
+import { Redirect } from 'react-router-dom'
 import axios from 'axios'
 
 class JoinRoomForm extends Component {
     constructor(props) {
         super(props);
-        this.state = { roomCode: '', name: '', needsLowerBoundCents: 0, needsUpperBoundCents: 0, needsDescription: '' };
+        this.state = { isSubmitted: false, roomCode: '', name: '', needsLowerBoundCents: 0, needsUpperBoundCents: 0, needsDescription: '' };
     }
 
     resetFieldValues = () => {
@@ -58,7 +59,10 @@ class JoinRoomForm extends Component {
 
         axios
             .post(`/api/${roomCode}/join`, payload)
-            .then(response => { console.log(response) })
+            .then(response => {
+                if (response.status === 200) {
+                    this.setState({isSubmitted: true})
+            }})
             .catch(error => { console.log(error) });
 
         this.resetFieldValues();
@@ -66,6 +70,9 @@ class JoinRoomForm extends Component {
     }
 
     render() {
+        if (this.state.isSubmitted){
+            return <Redirect to = {{pathname: "/input-page"}} />
+        }
         return (
             <form onSubmit={(e) => {
                 this.handleSubmit(e);
