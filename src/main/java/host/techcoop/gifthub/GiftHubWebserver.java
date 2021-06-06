@@ -49,6 +49,12 @@ public class GiftHubWebserver {
     get("/api/:roomCode/join", this::joinRoom, gson::toJson);
     post("/api/rooms", this::createRoom, gson::toJson);
     get("/api/:roomCode", this::getRoomInfo, gson::toJson);
+
+    exception(
+        RuntimeException.class,
+        (exception, request, response) -> {
+          response.body(exception.toString());
+        });
   }
 
   private Object processEvents(Request request, Response response) {
