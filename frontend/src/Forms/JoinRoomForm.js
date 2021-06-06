@@ -57,7 +57,7 @@ class JoinRoomForm extends Component {
 
 
         axios
-            .get(`/api/${roomCode}/join`, payload)
+            .get(`/api/${roomCode}/join`, { params: payload })
             .then(response => { console.log(response) })
             .catch(error => { console.log(error) });
 
