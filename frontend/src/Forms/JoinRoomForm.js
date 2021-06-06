@@ -44,7 +44,7 @@ class JoinRoomForm extends Component {
 
         alert(`User session details: \n
         room code: ${roomCode} \n 
-        username: ${name} \n 
+        username: ${name} \n
         need min (cents): ${needsLowerBoundCents} \n
         need max (cents): ${needsUpperBoundCents} \n
         need description: ${needsDescription}`);
@@ -79,7 +79,7 @@ class JoinRoomForm extends Component {
         return (
             <form onSubmit={(e) => {
                 this.handleSubmit(e);
-                this.props.onChange(e.target.value);
+                //this.props.onChange(e.target.value);
             }}>
                 <h3>Join a room:</h3>
                 <label> Room code: <input type="text" required value={this.state.roomCode} onChange={this.onChangeRoomCode} /></label>
