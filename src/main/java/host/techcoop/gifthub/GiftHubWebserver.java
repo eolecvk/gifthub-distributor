@@ -8,6 +8,7 @@ import com.google.inject.Singleton;
 import host.techcoop.gifthub.domain.GiftHubRoom;
 import host.techcoop.gifthub.domain.User;
 import host.techcoop.gifthub.domain.UserVote;
+import host.techcoop.gifthub.domain.exceptions.VerificationException;
 import host.techcoop.gifthub.domain.interfaces.Event;
 import host.techcoop.gifthub.domain.requests.CreateRoomRequest;
 import host.techcoop.gifthub.domain.requests.JoinRoomRequest;
@@ -15,6 +16,7 @@ import host.techcoop.gifthub.domain.requests.UpdateRequest;
 import host.techcoop.gifthub.domain.requests.events.AdjustEvent;
 import host.techcoop.gifthub.domain.requests.events.EmotiveEvent;
 import host.techcoop.gifthub.domain.requests.events.NeedsUpdateEvent;
+import host.techcoop.gifthub.domain.responses.ErrorResponse;
 import host.techcoop.gifthub.domain.responses.RoomInfoResponse;
 import host.techcoop.gifthub.interfaces.GiftHubRoomDAO;
 import java.io.PrintWriter;
@@ -52,6 +54,12 @@ public class GiftHubWebserver {
     post("/api/rooms", this::createRoom, gson::toJson);
     get("/api/:roomCode", this::getRoomInfo, gson::toJson);
 
+    exception(VerificationException.class, (exception, request, response) -> {
+      response.status(500);
+      response.header("Content-Type", "application/json");
+      response.body(gson.toJson(ErrorResponse.from(exception)));
+    });
+
     exception(
         RuntimeException.class,
         (exception, request, response) -> {
@@ -67,7 +75,8 @@ public class GiftHubWebserver {
     UpdateRequest voteRequest = gson.fromJson(request.body(), UpdateRequest.class);
     String roomCode = request.params(":roomCode");
     int userId = request.session().attribute(SESSION_USER_ID_KEY);
-    User user = roomDAO.getUserFromRoom(roomCode, userId);
+    User oldUser = roomDAO.getUserFromRoom(roomCode, userId);
+    User user = oldUser;
     for (Event event : voteRequest.getEvents()) {
       switch (event.getKind()) {
         case ADJUST:
@@ -95,6 +104,7 @@ public class GiftHubWebserver {
           break;
       }
     }
+    user.verify(oldUser);
     roomDAO.updateUserInRoom(roomCode, user);
     return null;
   }
