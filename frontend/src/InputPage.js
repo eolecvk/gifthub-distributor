@@ -1,15 +1,12 @@
-import { Input } from '@material-ui/core';
 import React, { Component } from 'react'
 import InputSlider from './Sliders'
-
-
 
 
 
 function InputPage() {
 
     // Placeholder for return value of request:
-    // GET /api/[roomcode]/join
+    // POST /api/[roomcode]/join
     const response = {
         room_name: "TechCoop Money Pile #1",
         room_code: "CCCS",
