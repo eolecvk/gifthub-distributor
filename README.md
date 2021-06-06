@@ -11,6 +11,10 @@
 Front end files are hosted in `/src/main/resources/public`  
 Anything in this folder will be statically accessible from the server
 
+To run the server in iterative front end mode, run `./gradlew runDebug --parallel`
+This will run both the front and backend server, and proxy from one to the other, access the correct
+server on http://localhost:3000
+
 ## How to update code
 1. `git checkout master && git pull` to pull down master at head
 1. `git checkout -b <branchname>` to make a new branch

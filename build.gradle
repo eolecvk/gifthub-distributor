@@ -36,6 +36,10 @@ task copyReactToBackend(type: Copy) {
     into 'src/main/resources/public'
 }
 
+task runDebug {
+    dependsOn(':frontend:run', 'run')
+}
+
 processResources.dependsOn(copyReactToBackend)
 
 test {

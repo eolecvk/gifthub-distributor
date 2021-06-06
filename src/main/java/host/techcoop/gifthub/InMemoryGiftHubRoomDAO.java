@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import host.techcoop.gifthub.domain.GiftHubRoom;
 import host.techcoop.gifthub.domain.User;
+import host.techcoop.gifthub.domain.exceptions.RoomJoinException;
 import host.techcoop.gifthub.domain.requests.JoinRoomRequest;
 import host.techcoop.gifthub.interfaces.GiftHubRoomDAO;
 import java.util.HashMap;
@@ -47,6 +48,9 @@ public class InMemoryGiftHubRoomDAO implements GiftHubRoomDAO {
 
   @Override
   public int addUserToRoom(String roomCode, JoinRoomRequest request) {
+    if (!roomsByCode.containsKey(roomCode)) {
+      throw new RoomJoinException();
+    }
     GiftHubRoom room = roomsByCode.get(roomCode);
     synchronized (room) {
       int newUserId = room.getPeople().stream().mapToInt(User::getUserId).max().orElse(0) + 1;
