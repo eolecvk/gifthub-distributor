@@ -17,6 +17,8 @@ import host.techcoop.gifthub.domain.requests.events.EmotiveEvent;
 import host.techcoop.gifthub.domain.requests.events.NeedsUpdateEvent;
 import host.techcoop.gifthub.domain.responses.RoomInfoResponse;
 import host.techcoop.gifthub.interfaces.GiftHubRoomDAO;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import spark.Request;
 import spark.Response;
 
@@ -46,9 +48,19 @@ public class GiftHubWebserver {
 
   public void route() {
     put("/api/:roomCode", this::processEvents, gson::toJson);
-    get("/api/:roomCode/join", this::joinRoom, gson::toJson);
+    post("/api/:roomCode/join", this::joinRoom, gson::toJson);
     post("/api/rooms", this::createRoom, gson::toJson);
     get("/api/:roomCode", this::getRoomInfo, gson::toJson);
+
+    exception(
+        RuntimeException.class,
+        (exception, request, response) -> {
+          response.status(500);
+          StringWriter out = new StringWriter();
+          PrintWriter writer = new PrintWriter(out);
+          exception.printStackTrace(writer);
+          response.body(out.toString());
+        });
   }
 
   private Object processEvents(Request request, Response response) {
