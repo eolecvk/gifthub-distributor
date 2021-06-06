@@ -48,7 +48,7 @@ public class GiftHubWebserver {
 
   public void route() {
     put("/api/:roomCode", this::processEvents, gson::toJson);
-    get("/api/:roomCode/join", this::joinRoom, gson::toJson);
+    post("/api/:roomCode/join", this::joinRoom, gson::toJson);
     post("/api/rooms", this::createRoom, gson::toJson);
     get("/api/:roomCode", this::getRoomInfo, gson::toJson);
 
