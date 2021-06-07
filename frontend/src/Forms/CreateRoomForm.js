@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
+import { Redirect } from 'react-router-dom'
 import axios from 'axios'
 
 class CreateRoomForm extends Component {
     constructor(props) {
         super(props);
-        this.state = { roomName: '', splittingCents: 0 };
+        this.state = { isSubmitted: false, roomName: '', splittingCents: 0 };
     }
 
     resetFieldValues = () => {
@@ -28,11 +29,6 @@ class CreateRoomForm extends Component {
         event.preventDefault();
         const { roomName, splittingCents } = this.state;
 
-
-        alert(`Your registration detail: \n 
-        Room name: ${roomName} \n 
-        Amount (cents): ${splittingCents}`);
-
         const payload = {
             'room_name': roomName,
             'splitting_cents': splittingCents
@@ -40,7 +36,11 @@ class CreateRoomForm extends Component {
 
         axios
             .post('/api/rooms', payload)
-            .then(response => { console.log(response) })
+            .then(response => {
+                if (response.status === 200) {
+                    this.setState({ isSubmitted: true })
+                }
+            })
             .catch(error => { console.log(error) });
 
         this.resetFieldValues();
@@ -48,10 +48,12 @@ class CreateRoomForm extends Component {
     }
 
     render() {
+        if (this.state.isSubmitted) {
+            return <Redirect to={{ pathname: "/admin-view" }} />
+        }
         return (
             <form onSubmit={(e) => {
                 this.handleSubmit(e)
-                this.props.onChange(e.target.value);
             }}>
                 <h3>Create new room:</h3>
                 <label> Room name: <input type="text" required value={this.state.roomName} onChange={this.onChangeName} /></label>
