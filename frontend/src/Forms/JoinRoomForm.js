@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
+import { Redirect } from 'react-router-dom'
 import axios from 'axios'
 
 class JoinRoomForm extends Component {
     constructor(props) {
         super(props);
-        this.state = { roomCode: '', name: '', needsLowerBoundCents: 0, needsUpperBoundCents: 0, needsDescription: '' };
+        this.state = { isSubmitted: false, roomCode: '', name: '', needsLowerBoundCents: 0, needsUpperBoundCents: 0, needsDescription: '' };
     }
 
     resetFieldValues = () => {
@@ -41,13 +42,6 @@ class JoinRoomForm extends Component {
         event.preventDefault();
         const { roomCode, name, needsLowerBoundCents, needsUpperBoundCents, needsDescription } = this.state;
 
-        alert(`User session details: \n
-        room code: ${roomCode} \n 
-        username: ${name} \n 
-        need min (cents): ${needsLowerBoundCents} \n
-        need max (cents): ${needsUpperBoundCents} \n
-        need description: ${needsDescription}`);
-
         const payload = {
             name: name,
             needs_description: needsDescription,
@@ -55,10 +49,13 @@ class JoinRoomForm extends Component {
             needs_upper_bound_cents: needsUpperBoundCents
         }
 
-
         axios
             .post(`/api/${roomCode}/join`, payload)
-            .then(response => { console.log(response) })
+            .then(response => {
+                if (response.status === 200) {
+                    this.setState({ isSubmitted: true })
+                }
+            })
             .catch(error => { console.log(error) });
 
         this.resetFieldValues();
@@ -66,22 +63,25 @@ class JoinRoomForm extends Component {
     }
 
     render() {
-        return (
-            <form onSubmit={(e) => {
-                this.handleSubmit(e);
-                this.props.onChange(e.target.value);
-            }}>
-                <h3>Join a room:</h3>
-                <label> Room code: <input type="text" required value={this.state.roomCode} onChange={this.onChangeRoomCode} /></label>
-                <label> Username: <input type="text" required value={this.state.name} onChange={this.onChangeName} /></label>
-                <label> Need min (cents): <input type="number" required min="0" value={this.state.needsLowerBoundCents} onChange={this.onChangeNeedsLowerBoundCents} /></label>
-                <label> Need max (cents): <input type="number" required min={this.state.needsLowerBoundCents} value={this.state.needsUpperBoundCents} onChange={this.onChangeNeedsUpperBoundCents} /></label>
-                <label> Need description: <input type="text" value={this.state.needsDescription} onChange={this.onChangeNeedsDescription} /></label>
-                <button type="submit" name="Submit">Submit</button>
-            </form>
-        );
+        if (this.state.isSubmitted) {
+            return <Redirect to={{ pathname: "/input-page" }} />
+        }
+        else {
+            return (
+                <form onSubmit={(e) => {
+                    this.handleSubmit(e);
+                }}>
+                    <h3>Join a room:</h3>
+                    <label> Room code: <input type="text" required value={this.state.roomCode} onChange={this.onChangeRoomCode} /></label>
+                    <label> Username: <input type="text" required value={this.state.name} onChange={this.onChangeName} /></label>
+                    <label> Need min (cents): <input type="number" required min="0" value={this.state.needsLowerBoundCents} onChange={this.onChangeNeedsLowerBoundCents} /></label>
+                    <label> Need max (cents): <input type="number" required min={this.state.needsLowerBoundCents} value={this.state.needsUpperBoundCents} onChange={this.onChangeNeedsUpperBoundCents} /></label>
+                    <label> Need description: <input type="text" value={this.state.needsDescription} onChange={this.onChangeNeedsDescription} /></label>
+                    <button type="submit" name="Submit">Submit</button>
+                </form>
+            );
+        }
     }
 }
-
 
 export { JoinRoomForm };
