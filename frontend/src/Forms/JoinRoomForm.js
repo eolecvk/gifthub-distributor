@@ -1,15 +1,31 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import axios from 'axios'
+// import '../style.css'
+
+import './Forms.css' 
 
 class JoinRoomForm extends Component {
     constructor(props) {
         super(props);
-        this.state = { isSubmitted: false, roomCode: '', name: '', needsLowerBoundCents: 0, needsUpperBoundCents: 0, needsDescription: '' };
+        this.state = {
+            isSubmitted: false,
+            roomCode: '',
+            name: '',
+            needsLowerBoundCents: 0,
+            needsUpperBoundCents: 0,
+            needsDescription: ''
+        };
     }
 
     resetFieldValues = () => {
-        this.setState({ roomCode: '', name: '', needsLowerBoundCents: 0, needsUpperBoundCents: 0, needsDescription: '' });
+        this.setState({
+            roomCode: '',
+            name: '',
+            needsLowerBoundCents: 0,
+            needsUpperBoundCents: 0,
+            needsDescription: ''
+        });
     }
 
 
@@ -68,16 +84,56 @@ class JoinRoomForm extends Component {
         }
         else {
             return (
-                <form onSubmit={(e) => {
-                    this.handleSubmit(e);
-                }}>
+                <form
+                    onSubmit={(e) => {
+                        this.handleSubmit(e);
+                    }}>
+
                     <h3>Join a room:</h3>
-                    <label> Room code: <input type="text" required value={this.state.roomCode} onChange={this.onChangeRoomCode} /></label>
-                    <label> Username: <input type="text" required value={this.state.name} onChange={this.onChangeName} /></label>
-                    <label> Need min (cents): <input type="number" required min="0" value={this.state.needsLowerBoundCents} onChange={this.onChangeNeedsLowerBoundCents} /></label>
-                    <label> Need max (cents): <input type="number" required min={this.state.needsLowerBoundCents} value={this.state.needsUpperBoundCents} onChange={this.onChangeNeedsUpperBoundCents} /></label>
-                    <label> Need description: <input type="text" value={this.state.needsDescription} onChange={this.onChangeNeedsDescription} /></label>
-                    <button type="submit" name="Submit">Submit</button>
+
+                    <label> Room code:
+                        <input
+                            type="text"
+                            required
+                            value={this.state.roomCode}
+                            onChange={this.onChangeRoomCode} />
+                    </label>
+
+                    <label> Username:
+                        <input
+                            type="text"
+                            required
+                            value={this.state.name}
+                            onChange={this.onChangeName} />
+                    </label>
+
+                    <label> Need min (cents):
+                        <input type="number"
+                            required
+                            min="0"
+                            value={this.state.needsLowerBoundCents}
+                            onChange={this.onChangeNeedsLowerBoundCents} />
+                    </label>
+
+                    <label> Need max (cents):
+                        <input type="number"
+                            required
+                            min={this.state.needsLowerBoundCents}
+                            value={this.state.needsUpperBoundCents}
+                            onChange={this.onChangeNeedsUpperBoundCents} />
+                    </label>
+
+                    <label> Need description:
+                        <input type="text"
+                            value={this.state.needsDescription}
+                            onChange={this.onChangeNeedsDescription} />
+                    </label>
+
+                    <button
+                        type="submit"
+                        name="Submit">Submit
+                    </button>
+
                 </form>
             );
         }

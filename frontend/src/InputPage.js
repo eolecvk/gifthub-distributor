@@ -51,20 +51,16 @@ function InputPage() {
         ]
     };
 
-    const final = [];
+    const amountDollars = (response.splitting_cents / 100).toFixed(2);
 
-    for (let user of response.people) {
-        final.push( <InputSlider title={user.name} />);
-    }
-
-    const amount_dollars = (response.splitting_cents / 100).toFixed(2);;
+    const inputList = response.people.map( userData => <InputSlider title={userData.name} />)
 
     return (
         <div>
             <h1>Input Page</h1>
             <h2>{response.room_name}</h2>
-            <h2>Amount: ${amount_dollars}</h2>
-            {final}
+            <h2>Amount: ${amountDollars}</h2>
+            {inputList}
         </div>
     )
 }

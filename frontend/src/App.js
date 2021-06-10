@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import InputPage from "./InputPage"
 import AdminView from "./AdminView"
-import Home from "./Home"
+import Home from "./Home/Home"
 import Nav from "./Nav"
 import {
     BrowserRouter as Router,
