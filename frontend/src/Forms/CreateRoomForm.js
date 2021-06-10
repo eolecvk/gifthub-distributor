@@ -2,10 +2,17 @@ import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import axios from 'axios'
 
+import './Forms.css' 
+
+
 class CreateRoomForm extends Component {
     constructor(props) {
         super(props);
-        this.state = { isSubmitted: false, roomName: '', splittingCents: 0 };
+        this.state = {
+            isSubmitted: false,
+            roomName: '',
+            splittingCents: 0
+        };
     }
 
     resetFieldValues = () => {
@@ -52,13 +59,33 @@ class CreateRoomForm extends Component {
             return <Redirect to={{ pathname: "/admin-view" }} />
         }
         return (
-            <form onSubmit={(e) => {
-                this.handleSubmit(e)
-            }}>
+            <form
+                onSubmit={(e) => { this.handleSubmit(e) }}>
+
                 <h3>Create new room:</h3>
-                <label> Room name: <input type="text" required value={this.state.roomName} onChange={this.onChangeName} /></label>
-                <label> Amount (cents): <input type="number" required min="1" value={this.state.splittingCents} onChange={this.onChangeSplittingCents} /></label>
-                <button type="submit" name="Submit">Submit</button>
+
+                <label> Room name:
+                    <input
+                        type="text"
+                        required
+                        value={this.state.roomName}
+                        onChange={this.onChangeName} />
+                </label>
+
+                <label> Amount (cents):
+                    <input type="number"
+                        required
+                        min="1"
+                        value={this.state.splittingCents}
+                        onChange={this.onChangeSplittingCents} />
+                </label>
+
+                <button
+                    type="submit"
+                    name="Submit">
+                    Submit
+                </button>
+
             </form>
         );
     }
