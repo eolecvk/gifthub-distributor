@@ -22,7 +22,7 @@ function CreateRoomForm(props) {
         //form payload
         const payload = {
             room_name: roomName,
-            splitting_cents: splittingCents
+            splitting_cents: splittingCents * 100
         }
 
         //console.log(payload)
@@ -50,7 +50,7 @@ function CreateRoomForm(props) {
                     value={roomName}
                     onChange={(e) => setRoomName(e.target.value)} />
             </label>
-            <label> Amount (cents):
+            <label> Amount ($):
                 <input
                     type="number"
                     required

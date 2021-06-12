@@ -26,8 +26,8 @@ function JoinRoomForm(props) {
         const payload = {
             name: name,
             needs_description: needsDescription,
-            needs_lower_bound_cents: needsLowerBoundCents,
-            needs_upper_bound_cents: needsUpperBoundCents
+            needs_lower_bound_cents: needsLowerBoundCents * 100,
+            needs_upper_bound_cents: needsUpperBoundCents * 100
         }
 
         //console.log(payload)
@@ -116,14 +116,14 @@ function JoinRoomForm(props) {
                     value={name}
                     onChange={(e) => { setName(e.target.value) }} />
             </label>
-            <label> Need min (cents):
+            <label> Need min ($):
                 <input type="number"
                     required
                     min="0"
                     value={needsLowerBoundCents}
                     onChange={(e) => { setNeedsLowerBoundCents(e.target.value) }} />
             </label>
-            <label> Need max (cents):
+            <label> Need max ($):
                 <input type="number"
                     required
                     min={needsLowerBoundCents}
