@@ -1,7 +1,6 @@
 import React from 'react'
 import { useCookies } from "react-cookie";
-import ButtonGroup from '../ButtonGroup/ButtonGroup'
-import SliderGroup from '../SliderGroup/SliderGroup'
+import ButtonAndSliders from '../ButtonAndSliders/ButtonAndSliders';
 
 function InputPage() {
 
@@ -17,43 +16,43 @@ function InputPage() {
                 people_id: 1,
                 name: "Eole",
                 needs_description: "?",
-                needs_upper_bound_cents: 2000,
-                needs_lower_bound_cents: 4000,
+                needs_lower_bound_cents: 2000,
+                needs_upper_bound_cents: 9000  
             },
             {
                 people_id: 2,
                 name: "David",
                 needs_description: "?",
-                needs_upper_bound_cents: 2000,
-                needs_lower_bound_cents: 4000,
+                needs_lower_bound_cents: 2000,
+                needs_upper_bound_cents: 9000  
             },
             {
                 people_id: 3,
                 name: "Oliver",
                 needs_description: "?",
-                needs_upper_bound_cents: 2000,
-                needs_lower_bound_cents: 4000,
+                needs_lower_bound_cents: 2000,
+                needs_upper_bound_cents: 9000  
             },
             {
                 people_id: 4,
                 name: "Tyler",
                 needs_description: "?",
-                needs_upper_bound_cents: 2000,
-                needs_lower_bound_cents: 4000,
+                needs_lower_bound_cents: 2000,
+                needs_upper_bound_cents: 9000  
             },
             {
                 people_id: 5,
                 name: "Brent",
                 needs_description: "?",
-                needs_upper_bound_cents: 2000,
-                needs_lower_bound_cents: 4000,
+                needs_lower_bound_cents: 2000,
+                needs_upper_bound_cents: 9000  
             },
             {
                 people_id: 6,
                 name: "Roni",
                 needs_description: "?",
-                needs_upper_bound_cents: 2000,
-                needs_lower_bound_cents: 4000,
+                needs_lower_bound_cents: 2000,
+                needs_upper_bound_cents: 9000  
             },
         ]
     }
@@ -63,8 +62,9 @@ function InputPage() {
             <h1>Input Page</h1>
             <h2>{roomInfo.room_name}</h2>
             <h2>Amount: ${(roomInfo.splitting_cents / 100).toFixed(2)}</h2>
-            <ButtonGroup />
-            <SliderGroup people={roomInfo.people}/>
+            <ButtonAndSliders
+                roomInfo={roomInfo}
+            />
         </div>
     )
 }
