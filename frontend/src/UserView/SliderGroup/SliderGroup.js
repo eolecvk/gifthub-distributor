@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import InputSlider from '../InputSlider/InputSlider'
 
 
@@ -15,14 +15,10 @@ function distributionZero(roomInfo) {
                 maxValueCents={roomInfo.splitting_cents} />
         </li>)
 
-    const res = {
+    return {
         sliders: sliders,
         remainingAmountCents: remainingAmountCents
     }
-
-    console.log(res)
-
-    return res
 }
 
 function distributionEqual(roomInfo) {
@@ -40,14 +36,10 @@ function distributionEqual(roomInfo) {
                 maxValueCents={roomInfo.splitting_cents} />
         </li>)
 
-    const res = {
+    return {
         sliders: sliders,
         remainingAmountCents: remainingAmountCents
     }
-
-    console.log(res)
-
-    return res
 }
 
 
@@ -73,14 +65,10 @@ function distributionSurvive(roomInfo) {
     // What if totalSurviveAmountCents < 0 ???
     // Idea: input bars can grow to more than 100% to reflect the % we need to increase the budget to meet needs!
 
-    const res = {
+    return {
         sliders: sliders,
         remainingAmountCents: remainingAmountCents
     }
-
-    console.log(res)
-
-    return res
 }
 
 function distributionThrive(roomInfo) {
@@ -145,5 +133,47 @@ function SliderGroup(props) {
     )
 }
 
-export default SliderGroup
 
+// class SliderGroup extends Component {
+
+//     constructor(props) {
+//         super(props)
+//         this.state = {
+//             remainingAmount: this.props.startingValueCents / 100
+//         }
+//     }
+
+//     distribution(props) {
+
+//         let res
+//         switch (props.defaultDistribution) {
+//             case 'zero':
+//                 return distributionZero(props.roomInfo)
+//             case 'equal':
+//                 return distributionEqual(props.roomInfo)
+//             case 'survive':
+//                 return distributionSurvive(props.roomInfo)
+//             case 'thrive':
+//                 return distributionThrive(props.roomInfo)
+//             default:
+//                 return distributionZero(props.roomInfo)
+//         }
+//     }
+
+
+//     render() {
+
+//         const { sliders, remainingAmountCents } = this.distribution(this.props)
+
+//         return (
+//             <div>
+//                 <p className='remaining-amount'>
+//                     Remaining amount: ${remainingAmountCents / 100}
+//                 </p>
+//                 {sliders}
+//             </div >
+//         )
+//     }
+// }
+
+export default SliderGroup
