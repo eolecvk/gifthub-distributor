@@ -6,12 +6,15 @@ import Slider from '@material-ui/core/Slider';
 import Input from '@material-ui/core/Input';
 import FaceIcon from '@material-ui/icons/Face';
 
+
+const placeholderMaxValue = 300
+
 const useStyles = makeStyles({
     root: {
-        width: 250,
+        width: 750,
     },
     input: {
-        width: 42,
+        width: placeholderMaxValue.toString().length+'em'
     },
 });
 

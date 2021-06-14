@@ -5,7 +5,13 @@ class ButtonAndSliders extends Component {
 
     constructor(props) {
         super(props)
-        this.state = { defaultDistribution: 'zero' }
+        this.state = {
+            defaultDistribution: 'zero',
+            sliders: <SliderGroup
+                roomInfo={this.props.roomInfo}
+                defaultDistribution='zero'
+            />
+        }
     }
 
     render() {

@@ -43,65 +43,11 @@ function JoinRoomForm(props) {
             })
             .catch(error => {
                 console.log(error.response)
-                if (error.response.data.error === 'That room does not exist' ) {
+                if (error.response.data.error === 'That room does not exist') {
                     alert('That room does not exist')
                 }
             });
         close()
-
-        //FOR DEV ONLY
-        // const response = {
-        //     room_name: "TechCoop Money Pile #1",
-        //     room_code: "CCCS",
-        //     splitting_cents: 30000,
-        //     people: [
-        //         {
-        //             people_id : 1,
-        //             name: "Eole",
-        //             needs_description: "?",
-        //             needs_upper_bound_cents: 2000,
-        //             needs_lower_bound_cents: 4000,
-        //         },
-        //         {
-        //             people_id : 2,
-        //             name: "David",
-        //             needs_description: "?",
-        //             needs_upper_bound_cents: 2000,
-        //             needs_lower_bound_cents: 4000,
-        //         },
-        //         {
-        //             people_id : 3,
-        //             name: "Oliver",
-        //             needs_description: "?",
-        //             needs_upper_bound_cents: 2000,
-        //             needs_lower_bound_cents: 4000,
-        //         },
-        //         {
-        //             people_id : 4,
-        //             name: "Tyler",
-        //             needs_description: "?",
-        //             needs_upper_bound_cents: 2000,
-        //             needs_lower_bound_cents: 4000,
-        //         },
-        //         {
-        //             people_id : 5,
-        //             name: "Brent",
-        //             needs_description: "?",
-        //             needs_upper_bound_cents: 2000,
-        //             needs_lower_bound_cents: 4000,
-        //         },
-        //         {
-        //             people_id : 6,
-        //             name: "Roni",
-        //             needs_description: "?",
-        //             needs_upper_bound_cents: 2000,
-        //             needs_lower_bound_cents: 4000,
-        //         },
-        //     ]
-        // };
-        // saveRoomInfo(response)               
-        // history.push('/input-page');
-        // close()
     }
 
     return (
