@@ -1,0 +1,12 @@
+input {
+    display: block;
+    font-size: 18px;
+    padding: 4px 2px;
+    border: solid 3px #aacfe4;
+    width: 150px;
+    margin: 2px 0 20px 30px;
+}
+
+h3 {
+    position: center;
+}

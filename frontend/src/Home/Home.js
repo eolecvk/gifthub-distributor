@@ -1,19 +1,17 @@
-import React, { Component } from 'react'
-import { Helmet } from "react-helmet";
-import HomeMenu from './HomeMenu'
+import React from "react"
+import PopupGroup from './PopupGroup/PopupGroup'
 
+import './Home.css'
 
 function Home() {
+
     return (
-        <div className="home">
-            <Helmet>
-                <title>Home</title>
-                <meta
-                    name="viewport"
-                    content="minimum-scale=1, initial-scale=1, width=device-width"
-                />
-            </Helmet>
-            <HomeMenu />
+        <div className='home'>
+            <h1 className='main-title'>GiftHub</h1>
+            <div className="btn-group">
+                <PopupGroup buttonTitle='Create Room' />
+                <PopupGroup buttonTitle='Join Room' />
+            </div>
         </div>
     )
 }
