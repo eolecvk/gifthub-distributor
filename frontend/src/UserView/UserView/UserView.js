@@ -1,7 +1,6 @@
 import React from 'react'
 import { useCookies } from "react-cookie";
 import ButtonAndSliders from '../ButtonAndSliders/ButtonAndSliders';
-import ButtonAndSlidersDev from './ButtonAndSlidersDev'
 
 function InputPage() {
 

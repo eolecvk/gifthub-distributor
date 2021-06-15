@@ -6,45 +6,43 @@ import FaceIcon from '@material-ui/icons/Face'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 
-class CustomSliderDev extends Component {
+class CustomSlider extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            value: 0,  // is init in getDerivedStateFromProps()
+            value: this.props.startingValueCents/100,
         }
     }
 
-
-    //Sliders group gets re-renders
-    // when a button to set a default distribution is clicked
-    // HOWEVER
-    // IT SEEMS IT ALSO TRIGGERS WHEN MOVING A SLIDER, PREVENTING MOVING SLIDERS MANUALLY
-    // MAYBE USER shouldComponentUpdate to fix this.
-    static getDerivedStateFromProps(newProps, prevState) {
-        //console.log("GETTING DERIVED STATE FROM PROP")
-        return prevState.value === newProps.startingValueCents / 100
-            ? {}
-            : { value: newProps.startingValueCents / 100 }
-    }
-
     handleSliderChange = (event, newValue) => {
-        this.setState({ value: newValue })
+        this.setState({
+            value: newValue
+        })
     };
 
     handleInputChange = (event) => {
-        this.setState({ value: event.target.value === '' ? '' : Number(event.target.value) })
+        this.setState({
+            value: event.target.value === '' ? '' : Number(event.target.value)
+        })
     };
 
     handleBlur = () => {
         if (this.state.value < 0) {
-            this.setState({ value: 0 })
+            this.setState({
+                value: 0
+            })
         } else if (this.state.value > (this.props.maxValueCents / 100)) {
-            this.setState({ value: (this.props.maxValueCents / 100) })
+            this.setState({
+                value: (this.props.maxValueCents / 100)
+            })
         }
     };
 
     render() {
+
+        // NEED TO HAVE DYNAMIC STYLE BASED ON PROPS.MAXAMOUNT
+        // https://stackoverflow.com/questions/45966000/dynamically-changing-jss-values-when-using-withstyles-in-material-ui
 
         // const useStyles = makeStyles({
         //     root: {
@@ -108,4 +106,4 @@ class CustomSliderDev extends Component {
     }
 }
 
-export default CustomSliderDev
+export default CustomSlider

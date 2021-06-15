@@ -21,7 +21,8 @@ class ButtonAndSliders extends Component {
                             "surviveAmountCents": userData.needs_lower_bound_cents,
                             "thriveAmountCents": userData.needs_upper_bound_cents,
                             "startingValueCents": 0,
-                            "maxValueCents": props.roomInfo.splitting_cents
+                            "maxValueCents": props.roomInfo.splitting_cents,
+                            "key": new Date().getTime().toString()
                         }
                     )
                 )
@@ -38,7 +39,8 @@ class ButtonAndSliders extends Component {
                             "surviveAmountCents": userData.needs_lower_bound_cents,
                             "thriveAmountCents": userData.needs_upper_bound_cents,
                             "startingValueCents": props.roomInfo.splitting_cents / props.roomInfo.people.length,
-                            "maxValueCents": props.roomInfo.splitting_cents
+                            "maxValueCents": props.roomInfo.splitting_cents,
+                            "key": new Date().getTime().toString()
                         }
                     )
                 )
@@ -55,7 +57,8 @@ class ButtonAndSliders extends Component {
                             "surviveAmountCents": userData.needs_lower_bound_cents,
                             "thriveAmountCents": userData.needs_upper_bound_cents,
                             "startingValueCents": userData.needs_lower_bound_cents,
-                            "maxValueCents": props.roomInfo.splitting_cents
+                            "maxValueCents": props.roomInfo.splitting_cents,
+                            "key": new Date().getTime().toString()
                         }
                     )
                 )
@@ -72,7 +75,8 @@ class ButtonAndSliders extends Component {
                             "surviveAmountCents": userData.needs_lower_bound_cents,
                             "thriveAmountCents": userData.needs_upper_bound_cents,
                             "startingValueCents": userData.needs_upper_bound_cents,
-                            "maxValueCents": props.roomInfo.splitting_cents
+                            "maxValueCents": props.roomInfo.splitting_cents,
+                            "key": new Date().getTime().toString()
                         }
                     )
                 )
