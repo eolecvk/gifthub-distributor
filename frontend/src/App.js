@@ -1,30 +1,40 @@
-import React, { Component } from 'react'
-import InputPage from "./InputPage"
-import AdminView from "./AdminView"
-import Home from "./Home"
-import Nav from "./Nav"
+import React from "react"
 import {
-    BrowserRouter as Router,
-    Switch,
-    Link,
-    Route,
+  BrowserRouter as Router,
+  Switch,
+  Route,
 } from 'react-router-dom';
 
-class App extends Component {
-    render() {
-        return (
-            <div className="App">
-                <h1>Pile O' Money</h1>
-                <Router>
-                    <Nav />
-                    <Switch>
-                        <Route path="/" exact component={() => <Home />} />
-                        <Route path="/input-page" exact component={() => <InputPage />} />
-                        <Route path="/admin-view" exact component={() => <AdminView />} />
-                    </Switch>
-                </Router>
-            </div>
-        )
-    }
+import InputPage from "./UserView/UserView/UserView"
+import AdminView from "./AdminView/AdminView"
+import Home from "./Home/Home"
+import Header from "./Header"
+import Footer from "./Footer"
+
+function App() {
+
+  const styleContent = {
+    marginTop: '150px'
+  }
+
+  return (
+    <div className="App">
+      <Router>
+        <div>
+          <Header/>
+          <hr />
+          <div style={styleContent}>
+          <Switch>
+            <Route path="/" exact component={() => <Home />} />
+            <Route path="/input-page" exact component={() => <InputPage />} />
+            <Route path="/admin-view" exact component={() => <AdminView />} />
+          </Switch>
+          </div>
+          <Footer />
+        </div>
+      </Router>
+    </div>
+  );
 }
+
 export default App;
