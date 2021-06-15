@@ -5,16 +5,87 @@ class ButtonAndSliders extends Component {
 
     constructor(props) {
         super(props)
-        this.state = {
-            defaultDistribution: 'zero',
-            sliders: <SliderGroup
-                roomInfo={this.props.roomInfo}
-                defaultDistribution='zero'
-            />
+        this.state = { defaultDistribution: 'zero', items: [] }
+        this.getSlidersInitializationData = this.getSlidersInitializationData.bind(this)
+    }
+
+    getSlidersInitializationData(props) {
+
+        if (this.state.defaultDistribution === 'zero') {
+            return (
+                props.roomInfo.people.map(
+                    userData => (
+                        {
+                            "peopleId": userData.people_id,
+                            "title": userData.name,
+                            "surviveAmountCents": userData.needs_lower_bound_cents,
+                            "thriveAmountCents": userData.needs_upper_bound_cents,
+                            "startingValueCents": 0,
+                            "maxValueCents": props.roomInfo.splitting_cents
+                        }
+                    )
+                )
+            )
         }
+
+        if (this.state.defaultDistribution === 'equal') {
+            return (
+                props.roomInfo.people.map(
+                    userData => (
+                        {
+                            "peopleId": userData.people_id,
+                            "title": userData.name,
+                            "surviveAmountCents": userData.needs_lower_bound_cents,
+                            "thriveAmountCents": userData.needs_upper_bound_cents,
+                            "startingValueCents": props.roomInfo.splitting_cents / props.roomInfo.people.length,
+                            "maxValueCents": props.roomInfo.splitting_cents
+                        }
+                    )
+                )
+            )
+        }
+
+        if (this.state.defaultDistribution === 'survive') {
+            return (
+                props.roomInfo.people.map(
+                    userData => (
+                        {
+                            "peopleId": userData.people_id,
+                            "title": userData.name,
+                            "surviveAmountCents": userData.needs_lower_bound_cents,
+                            "thriveAmountCents": userData.needs_upper_bound_cents,
+                            "startingValueCents": userData.needs_lower_bound_cents,
+                            "maxValueCents": props.roomInfo.splitting_cents
+                        }
+                    )
+                )
+            )
+        }
+
+        if (this.state.defaultDistribution === 'thrive') {
+            return (
+                props.roomInfo.people.map(
+                    userData => (
+                        {
+                            "peopleId": userData.people_id,
+                            "title": userData.name,
+                            "surviveAmountCents": userData.needs_lower_bound_cents,
+                            "thriveAmountCents": userData.needs_upper_bound_cents,
+                            "startingValueCents": userData.needs_upper_bound_cents,
+                            "maxValueCents": props.roomInfo.splitting_cents
+                        }
+                    )
+                )
+            )
+        }
+
     }
 
     render() {
+
+        const slidersInitializationData = this.getSlidersInitializationData(this.props)
+        console.log(slidersInitializationData)
+
         return (
             <div>
                 <div>
@@ -25,8 +96,7 @@ class ButtonAndSliders extends Component {
                     <button onClick={e => this.setState({ defaultDistribution: 'thrive' })}>Thrive amounts</button>
                 </div>
                 <SliderGroup
-                    roomInfo={this.props.roomInfo}
-                    defaultDistribution={this.state.defaultDistribution}
+                    slidersInitializationData={slidersInitializationData}
                 />
             </div>
         )
