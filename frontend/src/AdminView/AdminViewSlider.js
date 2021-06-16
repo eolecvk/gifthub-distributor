@@ -25,6 +25,9 @@ const styles = theme =>
             "& .MuiSlider-mark": {
               "background-color": "#000",
               "height": "5px"
+            },
+            "& .MuiSlider-valueLabel" : {
+              "left": "auto"
             }
         }
     });
