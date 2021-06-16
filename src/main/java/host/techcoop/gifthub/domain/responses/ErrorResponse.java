@@ -13,5 +13,4 @@ public class ErrorResponse {
   public static ErrorResponse from(VerificationException e) {
     return new ErrorResponse(e.getCurrentState(), e.getErrorMessage());
   }
-
 }
