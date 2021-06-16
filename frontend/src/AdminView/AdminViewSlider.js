@@ -17,7 +17,7 @@ const styles = theme =>
             width: '80%',
             marginLeft: '10%',
             marginRight: '10%',
-            marginBottom: '50px',
+            marginBottom: '55px',
             "& .MuiSlider-thumb": {
                 color: theme.palette.primary.main,
                 "z-index": -1
@@ -37,7 +37,7 @@ function AdminViewSlider(props) {
   const needsLowerBound = props.needsLowerBound
   const votes = props.votes
   const max = Math.max(Math.max(...votes), needsUpperBound);
-  const avg = votes.reduce((sum, curr) => sum + Number(curr), 0) / votes.length
+  const avg = (votes.reduce((sum, curr) => sum + Number(curr), 0) / votes.length).toFixed(2)
 
   const name = props.name
 
