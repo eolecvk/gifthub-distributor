@@ -4,50 +4,7 @@ import { instanceOf } from 'prop-types';
 import { withCookies, Cookies } from 'react-cookie';
 import axios from 'axios'
 
-// Mock Input (while still figuring out backend integration)
-// const props = {
-//     roomName: "TechCoop Money Pile #1",
-//     roomCode: "CCCS",
-//     splittingCents: 30000,
-//     people: [
-//         {
-//             name: "Eole",
-//             needsUpperBound: 4000,
-//             needsLowerBound: 2000,
-//             votes: [2500, 3000, 3212, 5000, 1234]
-//         },
-//         {
-//             name: "David",
-//             needsUpperBound: 4000,
-//             needsLowerBound: 2000,
-//             votes: [2500, 3000, 3212, 5000, 1234]
-//         },
-//         {
-//             name: "Oliver",
-//             needsUpperBound: 4000,
-//             needsLowerBound: 2000,
-//             votes: [2500, 3000, 3212, 5000, 1234]
-//         },
-//         {
-//             name: "Tyler",
-//             needsUpperBound: 4000,
-//             needsLowerBound: 2000,
-//             votes: [2500, 3000, 3212, 5000, 1234]
-//         },
-//         {
-//             name: "Brent",
-//             needsUpperBound: 4000,
-//             needsLowerBound: 2000,
-//             votes: [2500, 3000, 3212, 5000, 1234]
-//         },
-//         {
-//             name: "Roni",
-//             needsUpperBound: 4000,
-//             needsLowerBound: 2000,
-//             votes: [2500, 3000, 3212, 5000, 1234]
-//         },
-//     ]
-// };
+// Example: https://blog.stvmlbrn.com/2019/02/20/automatically-refreshing-data-in-react.html
 class AdminView extends Component{
     static propTypes = {
         cookies: instanceOf(Cookies).isRequired
@@ -60,7 +17,6 @@ class AdminView extends Component{
         this.state = cookies.get("roomInfo") || "";
       }
 
-    // Example: https://blog.stvmlbrn.com/2019/02/20/automatically-refreshing-data-in-react.html
     intervalID;
 
     componentDidMount() {
