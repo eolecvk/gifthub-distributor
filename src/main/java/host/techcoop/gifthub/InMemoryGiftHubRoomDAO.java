@@ -1,5 +1,7 @@
 package host.techcoop.gifthub;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -8,32 +10,30 @@ import host.techcoop.gifthub.domain.User;
 import host.techcoop.gifthub.domain.exceptions.RoomJoinException;
 import host.techcoop.gifthub.domain.requests.JoinRoomRequest;
 import host.techcoop.gifthub.interfaces.GiftHubRoomDAO;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 @Singleton
 public class InMemoryGiftHubRoomDAO implements GiftHubRoomDAO {
 
-  private final Map<String, GiftHubRoom> roomsByCode;
+  private final Cache<String, GiftHubRoom> roomsByCode;
   private final Random random = new Random();
 
   @Inject
   InMemoryGiftHubRoomDAO() {
-    roomsByCode = new HashMap<>();
+    roomsByCode = CacheBuilder.newBuilder().expireAfterAccess(6, TimeUnit.HOURS).build();
   }
 
   @Override
   public GiftHubRoom getRoomByCode(String code) {
-    return roomsByCode.get(code.toUpperCase());
+    return roomsByCode.getIfPresent(code.toUpperCase());
   }
 
   @Override
   public GiftHubRoom createRoom(int distributionCents, String name) {
     synchronized (roomsByCode) {
       String code = getUniqueCode();
-
       GiftHubRoom room =
           GiftHubRoom.builder()
               .roomName(name)
@@ -48,11 +48,12 @@ public class InMemoryGiftHubRoomDAO implements GiftHubRoomDAO {
 
   @Override
   public int addUserToRoom(String roomCode, JoinRoomRequest request) {
-    if (!roomsByCode.containsKey(roomCode)) {
+    roomCode = roomCode.toUpperCase().intern();
+    if (roomsByCode.getIfPresent(roomCode) == null) {
       throw new RoomJoinException();
     }
-    GiftHubRoom room = roomsByCode.get(roomCode);
-    synchronized (room) {
+    synchronized (roomCode) {
+      GiftHubRoom room = roomsByCode.getIfPresent(roomCode);
       int newUserId = room.getPeople().stream().mapToInt(User::getUserId).max().orElse(0) + 1;
       User user = User.fromJoinRoomRequest(request, newUserId);
       GiftHubRoom newRoom = room.withUpdatedUser(user);
@@ -63,7 +64,7 @@ public class InMemoryGiftHubRoomDAO implements GiftHubRoomDAO {
 
   @Override
   public User getUserFromRoom(String roomCode, int userId) {
-    return roomsByCode.get(roomCode).getPeople().stream()
+    return roomsByCode.getIfPresent(roomCode).getPeople().stream()
         .filter(person -> person.getUserId() == userId)
         .findFirst()
         .get();
@@ -71,8 +72,9 @@ public class InMemoryGiftHubRoomDAO implements GiftHubRoomDAO {
 
   @Override
   public GiftHubRoom updateUserInRoom(String roomCode, User user) {
-    GiftHubRoom room = roomsByCode.get(roomCode);
-    synchronized (room) {
+    roomCode = roomCode.toUpperCase().intern();
+    synchronized (roomCode) {
+      GiftHubRoom room = roomsByCode.getIfPresent(roomCode);
       GiftHubRoom newRoom = room.withUpdatedUser(user);
       roomsByCode.put(roomCode, newRoom);
       return newRoom;
@@ -90,10 +92,10 @@ public class InMemoryGiftHubRoomDAO implements GiftHubRoomDAO {
               .map(x -> "" + x)
               .reduce((a, b) -> a + b)
               .get();
-      if (!roomsByCode.containsKey(code)) {
+      if (roomsByCode.getIfPresent(code) == null) {
         break;
       }
     }
-    return code;
+    return code.intern();
   }
 }

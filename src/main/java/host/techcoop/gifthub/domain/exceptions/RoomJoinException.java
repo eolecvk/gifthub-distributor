@@ -1,5 +1,3 @@
 package host.techcoop.gifthub.domain.exceptions;
 
-public class RoomJoinException extends RuntimeException {
-
-}
+public class RoomJoinException extends RuntimeException {}
