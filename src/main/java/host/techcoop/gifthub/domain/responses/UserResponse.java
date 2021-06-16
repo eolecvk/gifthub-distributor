@@ -14,5 +14,5 @@ public class UserResponse {
   ImmutableList<Double> votes;
   int needsUpperBoundCents;
   int needsLowerBoundCents;
-  double voteTotal;
+  double avg;
 }
