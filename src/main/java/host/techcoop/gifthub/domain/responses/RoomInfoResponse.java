@@ -35,7 +35,7 @@ public class RoomInfoResponse {
                   ImmutableList<Double> anonVotes =
                       votes.stream().map(UserVote::getPercentSplit).collect(toImmutableList());
                   double averageVote =
-                      anonVotes.stream().mapToDouble(x -> x).average().orElse(0.0f);
+                      anonVotes.stream().mapToDouble(x -> x).sum() / room.getPeople().size();
                   return UserResponse.builder()
                       .name(user.getName())
                       .votes(anonVotes)
@@ -43,7 +43,7 @@ public class RoomInfoResponse {
                       .needsLowerBoundCents(user.getNeedsLowerBoundCents())
                       .needsUpperBoundCents(user.getNeedsUpperBoundCents())
                       .personId(user.getUserId())
-                      .voteTotal(averageVote)
+                      .avg(averageVote)
                       .build();
                 })
             .collect(toImmutableList());
