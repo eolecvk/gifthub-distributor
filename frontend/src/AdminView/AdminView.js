@@ -60,7 +60,7 @@ class AdminView extends Component{
         this.state = cookies.get("roomInfo") || "";
       }
 
-    //Example: https://blog.stvmlbrn.com/2019/02/20/automatically-refreshing-data-in-react.html
+    // Example: https://blog.stvmlbrn.com/2019/02/20/automatically-refreshing-data-in-react.html
     intervalID;
 
     componentDidMount() {
@@ -83,7 +83,7 @@ class AdminView extends Component{
 
     render(){
         const people = this.state.people
-        const totalAmountDollars = this.state.splitting_cents
+        const totalAmountDollars = this.state.splitting_cents * 100
         const roomCode = this.state.room_code
         const roomName = this.state.room_name
     
@@ -94,7 +94,7 @@ class AdminView extends Component{
                 <h2>Room Code: {roomCode}</h2>
                 <h2>Total Amount: ${totalAmountDollars}</h2>
                 {people.map(p => <AdminViewSlider name={ p.name } needsUpperBound = {p.needsUpperBound} 
-                    needsLowerBound = {p.needsLowerBound} totalAmountDollars = {totalAmountDollars} votes = {p.votes}></AdminViewSlider>)}
+                    needsLowerBound = {p.needsLowerBound} totalAmountDollars = {totalAmountDollars} votes = {p.votes} avg = {p.avg}></AdminViewSlider>)}
             </div>
         );
     }
