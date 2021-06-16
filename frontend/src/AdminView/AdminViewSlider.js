@@ -19,7 +19,8 @@ const styles = theme =>
             marginRight: '10%',
             marginBottom: '50px',
             "& .MuiSlider-thumb": {
-                color: theme.palette.primary.main
+                color: theme.palette.primary.main,
+                "z-index": -1
             }
         }
     });
