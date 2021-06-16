@@ -21,6 +21,10 @@ const styles = theme =>
             "& .MuiSlider-thumb": {
                 color: theme.palette.primary.main,
                 "z-index": -1
+            },
+            "& .MuiSlider-mark": {
+              "background-color": "#000",
+              "height": "5px"
             }
         }
     });
