@@ -9,45 +9,39 @@ const props = {
     people: [
         {
             name: "Eole",
-            needsDescription: "Test Description",
             needsUpperBound: 4000,
             needsLowerBound: 2000,
-            votes: [2500, 3000, 3212, 4000, 1234]
+            votes: [2500, 3000, 3212, 5000, 1234]
         },
         {
             name: "David",
-            needsDescription: "Test Description",
             needsUpperBound: 4000,
             needsLowerBound: 2000,
-            votes: [2500, 3000, 3212, 4000, 1234]
+            votes: [2500, 3000, 3212, 5000, 1234]
         },
         {
             name: "Oliver",
-            needsDescription: "Test Description",
             needsUpperBound: 4000,
             needsLowerBound: 2000,
-            votes: [2500, 3000, 3212, 4000, 1234]
+            votes: [2500, 3000, 3212, 5000, 1234]
         },
         {
             name: "Tyler",
-            needsDescription: "Test Description",
             needsUpperBound: 4000,
             needsLowerBound: 2000,
-            votes: [2500, 3000, 3212, 4000, 1234]
+            votes: [2500, 3000, 3212, 5000, 1234]
         },
         {
             name: "Brent",
-            needsDescription: "Test Description",
             needsUpperBound: 4000,
             needsLowerBound: 2000,
-            votes: [2500, 3000, 3212, 4000, 1234]
+            votes: [2500, 3000, 3212, 5000, 1234]
         },
         {
             name: "Roni",
-            needsDescription: "Test Description",
             needsUpperBound: 4000,
             needsLowerBound: 2000,
-            votes: [2500, 3000, 3212, 4000, 1234]
+            votes: [2500, 3000, 3212, 5000, 1234]
         },
     ]
 };
@@ -65,9 +59,10 @@ class AdminView extends Component{
         return (
             <div>
                 <h1>Admin View Page</h1>
-                <h2>{props.room_name}</h2>
+                <h2>{props.roomName}</h2>
+                <h2>Room Code: {props.roomCode}</h2>
                 <h2>Total Amount: ${totalAmountDollars}</h2>
-                {people.map(p => <AdminViewSlider name={ p.name } needsDescription = {p.needsDescription} needsUpperBound = {p.needsUpperBound} 
+                {people.map(p => <AdminViewSlider name={ p.name } needsUpperBound = {p.needsUpperBound} 
                     needsLowerBound = {p.needsLowerBound} totalAmountDollars = {totalAmountDollars} votes = {p.votes}></AdminViewSlider>)}
             </div>
         );

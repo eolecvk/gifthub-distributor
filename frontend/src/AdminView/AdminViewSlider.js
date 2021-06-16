@@ -11,27 +11,24 @@ const styles = theme =>
     createStyles({
         typography:{
             textAlign: 'center',
-            marginBottom: '50px',
+            marginBottom: '40px',
         },
         slider:{
             width: '80%',
             marginLeft: '10%',
             marginRight: '10%',
-            marginBottom: '30px',
+            marginBottom: '50px',
             "& .MuiSlider-thumb": {
                 color: theme.palette.primary.main
             }
         }
     });
-  
-function valuetext(value) {
-    return `${value} $`;
-}
 
 function AdminViewSlider(props) {
   const needsUpperBound = props.needsUpperBound
   const needsLowerBound = props.needsLowerBound
   const votes = props.votes
+  const max = Math.max(Math.max(...votes), needsUpperBound);
   const avg = votes.reduce((sum, curr) => sum + Number(curr), 0) / votes.length
 
   const name = props.name
@@ -43,32 +40,33 @@ function AdminViewSlider(props) {
       },
       {
         value: needsLowerBound,
-        label: `Min Needs: ${needsLowerBound} $`,
+        label: ':)',
       },
       {
         value: needsUpperBound,
-        label: `Max Needs: ${needsUpperBound} $`,
+        label: ':D',
       },
+      {
+        value: avg,
+        label: 'Avg',
+      }
     ];
-  
-  const needsDescription = props.needsDescription
 
   return ( 
     <div>
        <Typography variant="h5" gutterBottom className={props.classes.typography}>
-            {name}: {needsDescription}
+            {name}
             <br />
             Current Avg: {avg} $
         </Typography>
         <Slider
           value={votes}
           valueLabelDisplay="on"
-          getAriaValueText={valuetext} 
           disabled={true}
           marks={marks}
           className={props.classes.slider}
-          max={needsUpperBound}
-        />{" "}
+          max={max}
+        />
     </div>
   );
 }
