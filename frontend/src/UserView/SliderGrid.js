@@ -37,11 +37,6 @@ class SliderGrid extends Component {
             this.setState(maxFutureState)
         }
         
-        
-
-        
-        
-
     }
 
     render() {

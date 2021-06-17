@@ -72,7 +72,7 @@ function InputSliderDev(props) {
                         onChange={handleInputChange}
                         onBlur={handleBlur}
                         inputProps={{
-                            step: 10,
+                            step: 1,
                             min: 0,
                             max: maxValue,
                             type: 'number',
