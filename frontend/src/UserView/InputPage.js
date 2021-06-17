@@ -35,7 +35,7 @@ class InputPage extends Component {
                 <RoomInfo roomInfo={roomInfo} />
                 <ButtonUpdateDefaultDistribution updateDefaultDistribution={this.updateDefaultDistribution} />
                 <SlidersGrid
-                    key={this.state.defaultDistribution} // force class rendering on defaultDistribution update!
+                    key={this.state.defaultDistribution + Date.now()} // force class rendering on defaultDistribution update!
                     distribution={this.state.defaultDistribution}
                     slidersInitializationData={slidersInitializationData}
                     roomInfo={roomInfo}

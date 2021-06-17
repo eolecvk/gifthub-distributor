@@ -78,7 +78,6 @@ function makeSliderGrid(slidersInitializationData, currentValues, handleUpdate, 
         slidersInitializationData.map(slData =>
             <li key={slData.peopleId.toString()}>
                 <InputSlider
-                    key={Date.now().toString()}
                     sliderId={slData.peopleId.toString()}
                     title={slData.title}
                     surviveValue={slData.surviveValue}
