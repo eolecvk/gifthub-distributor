@@ -1,5 +1,6 @@
 import React from 'react'
 import InputSlider from './InputSlider'
+import axios from 'axios'
 
 function getSlidersInitializationData(roomInfo, defaultDistribution) {
 
@@ -102,5 +103,20 @@ function getStartingValues(slidersInitializationData) {
     return startingValues
 }
 
+function registerVote(SliderValues, roomCode) {
+    const keys = Object.keys(sliderValues)
+    const events = keys.map(key => {
+        return {
+            kind: 'ADJUST',
+            bar_id: Number(key),
+            key: Number(sliderValues[key])
+        }
+    })
+    const payload = { events: events }
 
-export { getSlidersInitializationData, makeSliderGrid, getStartingValues }
+    axios.put(`/api/${roomCode}`, payload)
+        .then(response => { console.log(JSON.stringify(response)) })
+        .catch(error => { console.log(error) })
+}
+
+export { getSlidersInitializationData, makeSliderGrid, getStartingValues, registerVote }

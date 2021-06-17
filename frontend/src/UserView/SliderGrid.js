@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { getStartingValues, makeSliderGrid } from './utils'
+import { getStartingValues, makeSliderGrid, registerVote } from './utils'
 
 
 class SliderGrid extends Component {
@@ -13,30 +13,37 @@ class SliderGrid extends Component {
     }
 
 
-    handleUpdate = (id, newValue) => {
+    handleUpdate = (id, newValue, roomCode) => {
 
-        const futureState = {
+        let actualNewValue
+        actualNewValue = newValue
+
+        let futureState
+        futureState = {
             currentValues: { ...this.state.currentValues, [`${id}`]: newValue },
             reset: false
         }
-
         //Check if future state is valid (sum of money distributed <= totalAmount)
-        const futureTotalCost = Object.values(futureState.currentValues).reduce((a, b) => (a + b))
-        if (futureTotalCost <= this.props.roomAmount) {
-            this.setState(futureState)
-
         // If not, distribute as much as possible in the slider moved last
-        } else {
+        const futureTotalCost = Object.values(futureState.currentValues).reduce((a, b) => (a + b))
+
+        if (!futureTotalCost <= this.props.roomAmount) {
             const currentTotalCost = Object.values(this.state.currentValues).reduce((a, b) => (a + b))
             const currentValue = this.state.currentValues[id]
             const maxNewValue = this.props.roomAmount - currentTotalCost + currentValue
+            actualNewValue = maxNewValue
+
             const maxFutureState = {
-                currentValues: { ...this.state.currentValues, [`${id}`]: maxNewValue },
+                currentValues: { ...this.state.currentValues, [`${id}`]: actualNewValue },
                 reset: false
             }
-            this.setState(maxFutureState)
+            futureState = maxFutureState
         }
-        
+
+        //NEED TO PASS THE roomCode as global Context!
+        roomCode = 'CCCS'
+        registerVote({id, actualNewValue},  roomCode)
+        this.setState(futureState)
     }
 
     render() {
