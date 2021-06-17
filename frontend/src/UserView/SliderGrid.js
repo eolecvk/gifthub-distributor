@@ -12,9 +12,6 @@ class SliderGrid extends Component {
         }
     }
 
-    isValidState(currentValues, maxAmount) {
-        return Object.values(currentValues).reduce((a, b) => (a + b)) <= maxAmount
-    }
 
     handleUpdate = (id, newValue) => {
 
@@ -23,9 +20,27 @@ class SliderGrid extends Component {
             reset: false
         }
 
-        if (this.isValidState(futureState.currentValues, this.props.roomAmount)) {
+        //Check if future state is valid (sum of money distributed <= totalAmount)
+        const futureTotalCost = Object.values(futureState.currentValues).reduce((a, b) => (a + b))
+        if (futureTotalCost <= this.props.roomAmount) {
             this.setState(futureState)
+
+        // If not, distribute as much as possible in the slider moved last
+        } else {
+            const currentTotalCost = Object.values(this.state.currentValues).reduce((a, b) => (a + b))
+            const currentValue = this.state.currentValues[id]
+            const maxNewValue = this.props.roomAmount - currentTotalCost + currentValue
+            const maxFutureState = {
+                currentValues: { ...this.state.currentValues, [`${id}`]: maxNewValue },
+                reset: false
+            }
+            this.setState(maxFutureState)
         }
+        
+        
+
+        
+        
 
     }
 

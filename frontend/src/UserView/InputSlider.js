@@ -44,6 +44,7 @@ function InputSliderDev(props) {
         { value: thriveValue, label: ':D' }
     ]
 
+
     return (//<div className={classes.root}> <-- ADD FOR STYLING
         <div>
             <Typography id="input-slider" gutterBottom>
