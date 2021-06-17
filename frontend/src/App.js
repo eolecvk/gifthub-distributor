@@ -5,7 +5,7 @@ import {
   Route,
 } from 'react-router-dom';
 
-import InputPage from "./UserView/UserView/UserView"
+import InputPage from "./UserView/InputPage"
 import AdminView from "./AdminView/AdminView"
 import Home from "./Home/Home"
 import Header from "./Header"
