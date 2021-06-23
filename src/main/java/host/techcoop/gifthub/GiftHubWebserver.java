@@ -55,17 +55,21 @@ public class GiftHubWebserver {
     post("/api/rooms", this::createRoom, gson::toJson);
     get("/api/:roomCode", this::getRoomInfo, gson::toJson);
 
-    exception(RoomJoinException.class, (exception, request, response) -> {
-      response.status(500);
-      response.header("Content-Type", "application/json");
-      response.body("{\"error\": \"That room does not exist\"}");
-    });
+    exception(
+        RoomJoinException.class,
+        (exception, request, response) -> {
+          response.status(500);
+          response.header("Content-Type", "application/json");
+          response.body("{\"error\": \"That room does not exist\"}");
+        });
 
-    exception(VerificationException.class, (exception, request, response) -> {
-      response.status(500);
-      response.header("Content-Type", "application/json");
-      response.body(gson.toJson(ErrorResponse.from(exception)));
-    });
+    exception(
+        VerificationException.class,
+        (exception, request, response) -> {
+          response.status(500);
+          response.header("Content-Type", "application/json");
+          response.body(gson.toJson(ErrorResponse.from(exception)));
+        });
 
     exception(
         RuntimeException.class,

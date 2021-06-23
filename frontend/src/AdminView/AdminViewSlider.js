@@ -11,68 +11,71 @@ const styles = theme =>
     createStyles({
         typography:{
             textAlign: 'center',
-            marginBottom: '50px',
+            marginBottom: '40px',
         },
         slider:{
             width: '80%',
             marginLeft: '10%',
             marginRight: '10%',
+            marginBottom: '55px',
             "& .MuiSlider-thumb": {
                 color: theme.palette.primary.main,
-                // TODO: Figure out sizing of thumb/thumb label? (related to adding in)
-                //width: 200
-                //width: 50
+                "z-index": -1
+            },
+            "& .MuiSlider-mark": {
+              "background-color": "#000",
+              "height": "5px"
+            },
+            "& .MuiSlider-valueLabel" : {
+              "left": "auto"
             }
         }
     });
 
-// TODO: For totalAmount/personName values, find out how to take dynamic inputs 
-const totalAmount = 100
-
-const personName = "Tyler"
-
-const marks = [
-    {
-      value: 0,
-      label: '0 $',
-    },
-    {
-      value: totalAmount * .25,
-      label: `${totalAmount * .25} $`,
-    },
-    {
-      value: totalAmount * .5,
-      label: `${totalAmount * .5} $`,
-    },
-    {
-      value: totalAmount * .75,
-      label: `${totalAmount * .75} $`,
-    },
-    {
-      value: totalAmount,
-      label: `${totalAmount} $`,
-    },
-  ];
-  
-function valuetext(value) {
-    return `${value} $`;
-}
-
 function AdminViewSlider(props) {
+  const totalAmountDollars = props.totalAmountDollars
+  const needsUpperBound = props.needsUpperBound
+  const needsLowerBound = props.needsLowerBound
+  const votes = props.votes
+  const max = Math.max(Math.max(...votes), needsUpperBound);
+  const avg = (props.avg * totalAmountDollars).toFixed(2)
+
+  const name = props.name
+
+  const marks = [
+      {
+        value: 0,
+        label: '0 $',
+      },
+      {
+        value: needsLowerBound,
+        label: ':)',
+      },
+      {
+        value: needsUpperBound,
+        label: ':D',
+      },
+      {
+        value: avg,
+        label: 'Avg',
+      }
+    ];
+
   return ( 
     <div>
-       <Typography variant="h4" gutterBottom className={props.classes.typography}>
-            {personName}
+       <Typography variant="h5" gutterBottom className={props.classes.typography}>
+            {name}
+            <br />
+            Current Avg: {avg} $
         </Typography>
         <Slider
-          value={[5, 20, 100, 40]}
+          value={votes}
           valueLabelDisplay="on"
-          //valueLabelFormat={valuetext} // TODO: Looking into a way to insert name here along label?
-          getAriaValueText={valuetext} 
           disabled={true}
           marks={marks}
           className={props.classes.slider}
-        />{" "}
+          max={max}
+        />
     </div>
   );
 }
