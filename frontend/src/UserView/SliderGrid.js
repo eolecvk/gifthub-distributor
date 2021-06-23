@@ -58,7 +58,9 @@ class SliderGrid extends Component {
         return (
             <div>
                 <p>Amount distributed: {
-                    Object.values(this.state.currentValues).map(v => v ? v : 0).reduce((a, b) => a + b)
+                    Object.values(this.state.currentValues).length > 0 ?
+                    Object.values(this.state.currentValues).map(v => v ? v : 0).reduce((a, b) => a + b) :
+                    0
                 } / {this.props.roomAmount}</p>
                 {sliders}
             </div >

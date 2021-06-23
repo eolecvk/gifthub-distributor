@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-//import { useCookies } from "react-cookie"
+import { withCookies } from "react-cookie";
 import roomInfo from './roomInfoCookie';
 import RoomInfo from './RoomInfo';
 import ButtonUpdateDefaultDistribution from './ButtonUpdateDefaultDistribution'
@@ -8,15 +8,19 @@ import { getSlidersInitializationData, getStartingValues } from './utils'
 
 
 class InputPage extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
             defaultDistribution: 'zero',
-            reset: false
+            reset: false,
+            roomInfo: this.props.cookies.get("roomInfo") || ""
         }
     }
 
     updateDefaultDistribution = (defaultDistribution) => {
+
+        const roomInfo = this.state.roomInfo
+        console.log('roomInfo ' + JSON.stringify(roomInfo))
 
         // Upon clicking a default distribution button...
         const futureSlidersInitializationData = getSlidersInitializationData(roomInfo, defaultDistribution)
@@ -40,6 +44,7 @@ class InputPage extends Component {
     render() {
         // const [cookies, setCookie] = useCookies(["roomInfo"]);
         // const roomInfo = cookies.roomInfo
+        const roomInfo = this.state.roomInfo
 
         const slidersInitializationData = getSlidersInitializationData(roomInfo, this.state.defaultDistribution)
 
@@ -61,4 +66,4 @@ class InputPage extends Component {
 }
 
 
-export default InputPage
+export default withCookies(InputPage)

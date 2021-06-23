@@ -5,12 +5,15 @@ import debounce from "lodash/debounce";
 
 function getSlidersInitializationData(roomInfo, defaultDistribution) {
 
+    console.log('getSlidersInitializationData')
+    console.log(JSON.stringify(roomInfo))
+
     if (defaultDistribution === 'zero') {
         return (
             roomInfo.people.map(
                 userData => (
                     {
-                        "peopleId": userData.people_id,
+                        "personId": userData.person_id,
                         "title": userData.name,
                         "surviveValue": userData.needs_lower_bound_cents / 100,
                         "thriveValue": userData.needs_upper_bound_cents / 100,
@@ -27,7 +30,7 @@ function getSlidersInitializationData(roomInfo, defaultDistribution) {
             roomInfo.people.map(
                 userData => (
                     {
-                        "peopleId": userData.people_id,
+                        "personId": userData.person_id,
                         "title": userData.name,
                         "surviveValue": userData.needs_lower_bound_cents / 100,
                         "thriveValue": userData.needs_upper_bound_cents / 100,
@@ -44,7 +47,7 @@ function getSlidersInitializationData(roomInfo, defaultDistribution) {
             roomInfo.people.map(
                 userData => (
                     {
-                        "peopleId": userData.people_id,
+                        "personId": userData.person_id,
                         "title": userData.name,
                         "surviveValue": userData.needs_lower_bound_cents / 100,
                         "thriveValue": userData.needs_upper_bound_cents / 100,
@@ -61,7 +64,7 @@ function getSlidersInitializationData(roomInfo, defaultDistribution) {
             roomInfo.people.map(
                 userData => (
                     {
-                        "peopleId": userData.people_id,
+                        "personId": userData.person_id,
                         "title": userData.name,
                         "surviveValue": userData.needs_lower_bound_cents / 100,
                         "thriveValue": userData.needs_upper_bound_cents / 100,
@@ -76,15 +79,18 @@ function getSlidersInitializationData(roomInfo, defaultDistribution) {
 
 function makeSliderGrid(slidersInitializationData, currentValues, handleUpdate, reset) {
 
+    console.log('makeSliderGrid')
+    console.log(JSON.stringify(slidersInitializationData))
+
     return (
         slidersInitializationData.map(slData =>
-            <li key={slData.peopleId.toString()}>
+            <li key={slData.personId.toString()}>
                 <InputSlider
-                    sliderId={slData.peopleId.toString()}
+                    sliderId={slData.personId.toString()}
                     title={slData.title}
                     surviveValue={slData.surviveValue}
                     thriveValue={slData.thriveValue}
-                    startingValue={reset ? slData.startingValue : currentValues[slData.peopleId.toString()]}
+                    startingValue={reset ? slData.startingValue : currentValues[slData.personId.toString()]}
                     maxValue={slData.maxValue}
                     handleUpdate={handleUpdate}
                 />
@@ -98,7 +104,7 @@ function makeSliderGrid(slidersInitializationData, currentValues, handleUpdate, 
 function getStartingValues(slidersInitializationData) {
     let startingValues = {}
     for (const sliderData of slidersInitializationData) {
-        startingValues[sliderData["peopleId"]] = sliderData["startingValue"]
+        startingValues[sliderData["personId"]] = sliderData["startingValue"]
     }
 
     return startingValues
