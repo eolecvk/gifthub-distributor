@@ -38,7 +38,7 @@ class InputPage extends Component {
     }
 
     render() {
-        //const [cookies, setCookie] = useCookies(["roomInfo"]);
+        // const [cookies, setCookie] = useCookies(["roomInfo"]);
         // const roomInfo = cookies.roomInfo
 
         const slidersInitializationData = getSlidersInitializationData(roomInfo, this.state.defaultDistribution)

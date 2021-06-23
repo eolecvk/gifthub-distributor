@@ -27,7 +27,6 @@ function InputSliderDev(props) {
         } else if (props.startingValue > props.maxValue) {
             props.handleUpdate(props.sliderId, props.maxValue)
         }
-        //ADD CONDITION TO LIMIT IF TOTAL > MAX_AMOUNT!
     }
 
     const {

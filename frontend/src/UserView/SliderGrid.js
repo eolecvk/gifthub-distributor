@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { getStartingValues, makeSliderGrid, registerVote } from './utils'
 
-
 class SliderGrid extends Component {
 
     constructor(props) {
@@ -12,8 +11,7 @@ class SliderGrid extends Component {
         }
     }
 
-
-    handleUpdate = (id, newValue, roomCode) => {
+    handleUpdate = (id, newValue) => {
 
         let actualNewValue
         actualNewValue = newValue
@@ -27,7 +25,7 @@ class SliderGrid extends Component {
         // If not, distribute as much as possible in the slider moved last
         const futureTotalCost = Object.values(futureState.currentValues).reduce((a, b) => (a + b))
 
-        if (!futureTotalCost <= this.props.roomAmount) {
+        if (futureTotalCost > this.props.roomAmount) {
             const currentTotalCost = Object.values(this.state.currentValues).reduce((a, b) => (a + b))
             const currentValue = this.state.currentValues[id]
             const maxNewValue = this.props.roomAmount - currentTotalCost + currentValue
@@ -41,8 +39,9 @@ class SliderGrid extends Component {
         }
 
         //NEED TO PASS THE roomCode as global Context!
-        roomCode = 'CCCS'
-        registerVote({id, actualNewValue},  roomCode)
+        // roomCode = this.roomInfo.roomCode
+        // const roomCode = 'CCCS'
+        //registerVote({ [`${id}`]: [`${actualNewValue}`] }, roomCode)
         this.setState(futureState)
     }
 

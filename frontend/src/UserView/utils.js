@@ -1,6 +1,7 @@
 import React from 'react'
 import InputSlider from './InputSlider'
 import axios from 'axios'
+import debounce from "lodash/debounce";
 
 function getSlidersInitializationData(roomInfo, defaultDistribution) {
 
@@ -103,20 +104,27 @@ function getStartingValues(slidersInitializationData) {
     return startingValues
 }
 
-function registerVote(SliderValues, roomCode) {
+function registerVote(sliderValues, roomCode) {
     const keys = Object.keys(sliderValues)
     const events = keys.map(key => {
         return {
             kind: 'ADJUST',
             bar_id: Number(key),
-            key: Number(sliderValues[key])
+            new_value: Number(sliderValues[key])
         }
     })
     const payload = { events: events }
 
     axios.put(`/api/${roomCode}`, payload)
         .then(response => { console.log(JSON.stringify(response)) })
-        .catch(error => { console.log(error) })
+        .catch(error => {
+            console.log(error)
+            console.log(payload)
+        })
+
+    console.log('events ' + JSON.stringify(events))
 }
+
+//registerVote = _.debounce(registerVote, 1000)
 
 export { getSlidersInitializationData, makeSliderGrid, getStartingValues, registerVote }
