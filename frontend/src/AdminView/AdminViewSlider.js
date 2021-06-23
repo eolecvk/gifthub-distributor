@@ -33,11 +33,12 @@ const styles = theme =>
     });
 
 function AdminViewSlider(props) {
+  const totalAmountDollars = props.totalAmountDollars
   const needsUpperBound = props.needsUpperBound
   const needsLowerBound = props.needsLowerBound
   const votes = props.votes
   const max = Math.max(Math.max(...votes), needsUpperBound);
-  const avg = (votes.reduce((sum, curr) => sum + Number(curr), 0) / votes.length).toFixed(2)
+  const avg = (props.avg * totalAmountDollars).toFixed(2)
 
   const name = props.name
 
