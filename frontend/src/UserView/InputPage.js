@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { withCookies } from "react-cookie";
 //import roomInfo from './roomInfoCookie';
+import axios from 'axios'
 import RoomInfo from './RoomInfo';
 import ButtonUpdateDefaultDistribution from './ButtonUpdateDefaultDistribution'
 import SlidersGrid from './SliderGrid';
@@ -15,6 +16,27 @@ class InputPage extends Component {
             reset: false,
             roomInfo: this.props.cookies.get("roomInfo") || ""
         }
+    }
+    intervalID
+
+    componentDidMount() {
+        this.getData();
+    }
+
+    componentWillUnmount() {
+        clearTimeout(this.intervalID);
+    }
+
+    getData = () => {
+        axios
+            .get('/api/' + this.state.roomInfo.room_code)
+            .then(response => {
+                if (response.data.people.length !== this.state.roomInfo.people.length) {
+                    this.setState({ roomInfo: response.data });
+                }
+                // call getData() again in 5 seconds
+                this.intervalID = setTimeout(this.getData.bind(this), 5000);
+            });
     }
 
     updateDefaultDistribution = (defaultDistribution) => {
@@ -36,8 +58,6 @@ class InputPage extends Component {
         } else {
             alert("Not enough money to set this distribution: " + futureTotalCost + "/ " + roomAmount)
         }
-
-
     }
 
     render() {
