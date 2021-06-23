@@ -39,7 +39,7 @@ class AdminView extends Component{
 
     render(){
         const people = this.state.people
-        const totalAmountDollars = this.state.splitting_cents * 100
+        const totalAmountDollars = this.state.splitting_cents / 100
         const roomCode = this.state.room_code
         const roomName = this.state.room_name
     
