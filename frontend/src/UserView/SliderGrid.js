@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { withCookies } from "react-cookie";
 import { getStartingValues, makeSliderGrid, registerVote } from './utils'
 
 class SliderGrid extends Component {
@@ -7,7 +8,8 @@ class SliderGrid extends Component {
         super(props)
         this.state = {
             currentValues: getStartingValues(this.props.slidersInitializationData),
-            reset: this.props.reset
+            reset: this.props.reset,
+            roomInfo: this.props.cookies.get("roomInfo") || ""
         }
     }
 
@@ -55,6 +57,9 @@ class SliderGrid extends Component {
             this.state.reset
         )
 
+
+        registerVote(this.state.currentValues, this.state.roomInfo.room_code )
+
         return (
             <div>
                 <p>Amount distributed: {
@@ -69,4 +74,4 @@ class SliderGrid extends Component {
     }
 }
 
-export default SliderGrid
+export default withCookies(SliderGrid)

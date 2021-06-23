@@ -5,9 +5,6 @@ import debounce from "lodash/debounce";
 
 function getSlidersInitializationData(roomInfo, defaultDistribution) {
 
-    console.log('getSlidersInitializationData')
-    console.log(JSON.stringify(roomInfo))
-
     if (defaultDistribution === 'zero') {
         return (
             roomInfo.people.map(
@@ -78,9 +75,6 @@ function getSlidersInitializationData(roomInfo, defaultDistribution) {
 }
 
 function makeSliderGrid(slidersInitializationData, currentValues, handleUpdate, reset) {
-
-    console.log('makeSliderGrid')
-    console.log(JSON.stringify(slidersInitializationData))
 
     return (
         slidersInitializationData.map(slData =>
