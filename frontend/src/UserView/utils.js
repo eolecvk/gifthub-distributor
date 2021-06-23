@@ -104,13 +104,31 @@ function getStartingValues(slidersInitializationData) {
     return startingValues
 }
 
-function registerVote(sliderValues, roomCode) {
+function convertValuesToPercentiles(sliderValues, totalAmount) {
+    let percentilesValues = {}
     const keys = Object.keys(sliderValues)
+    Object.keys(sliderValues).map(function(key, index) {
+        percentilesValues[key] = sliderValues[key] / totalAmount;
+      });
+      
+    return percentilesValues
+}
+
+function registerVote(sliderValues, roomInfo) {
+
+    // DO NOT SEND REQUEST IF SLIDERS VALUES ARE NULL
+    if (Object.values(sliderValues).length === 0){
+        return
+    }
+
+    const sliderValuesPercentiles = convertValuesToPercentiles(sliderValues, roomInfo.splitting_cents/100)
+    const roomCode = roomInfo.room_code
+    const keys = Object.keys(sliderValuesPercentiles)
     const events = keys.map(key => {
         return {
             kind: 'ADJUST',
             bar_id: Number(key),
-            new_value: Number(sliderValues[key])
+            new_value: Number(sliderValuesPercentiles[key])
         }
     })
     const payload = { events: events }
@@ -124,7 +142,5 @@ function registerVote(sliderValues, roomCode) {
 
     console.log('events ' + JSON.stringify(events))
 }
-
-//registerVote = _.debounce(registerVote, 1000)
 
 export { getSlidersInitializationData, makeSliderGrid, getStartingValues, registerVote }

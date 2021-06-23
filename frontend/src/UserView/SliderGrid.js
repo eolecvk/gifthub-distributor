@@ -57,8 +57,7 @@ class SliderGrid extends Component {
             this.state.reset
         )
 
-
-        registerVote(this.state.currentValues, this.state.roomInfo.room_code )
+        registerVote(this.state.currentValues, this.state.roomInfo )
 
         return (
             <div>
