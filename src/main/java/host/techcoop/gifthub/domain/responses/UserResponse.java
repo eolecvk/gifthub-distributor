@@ -11,8 +11,8 @@ public class UserResponse {
   int personId;
   String name;
   String needsDescription;
-  ImmutableList<Double> votes;
+  ImmutableList<Long> votesCents;
   int needsUpperBoundCents;
   int needsLowerBoundCents;
-  double avg;
+  long avgCents;
 }

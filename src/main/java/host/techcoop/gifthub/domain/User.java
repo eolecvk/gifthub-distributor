@@ -43,9 +43,9 @@ public class User {
     return this.toBuilder().votes(voteBuilder.build()).build();
   }
 
-  public User verify(User oldState) {
-    if (votes.stream().mapToDouble(UserVote::getPercentSplit).sum() > 1d) {
-      throw new VerificationException("Votes add up to more than 1", oldState.getVotes());
+  public User verify(User oldState, GiftHubRoom room) {
+    if (votes.stream().mapToLong(UserVote::getCents).sum() > room.getSplittingCents()) {
+      throw new VerificationException("Votes add up to more than room total", oldState.getVotes());
     }
     return this;
   }
