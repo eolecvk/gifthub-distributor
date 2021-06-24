@@ -31,9 +31,12 @@ class AdminView extends Component {
     axios
       .get('/api/' + this.state.room_code)
       .then(response => {
+        // GETTING RESPONSE UNDEFINED ; NEED TO LOOK INTO THIS
         this.setState({ people: response.data.people });
         // call getData() again in 5 seconds
         this.intervalID = setTimeout(this.getData.bind(this), 5000);
+      }).catch((error) => {
+        console.error(error);
       });
   }
 
@@ -54,7 +57,7 @@ class AdminView extends Component {
         <h2>Room Code: {roomCode}</h2>
         <h2>Total Amount: ${totalAmountDollars}</h2>
         {people.map(p =>
-          <li key={p.person_id.toString()}>
+          <li key={p.person_id}>
             <AdminViewSlider
               //sliderId={p.person_id.toString()}
               name={p.name}
@@ -66,7 +69,7 @@ class AdminView extends Component {
               avg={p.avg_cents / 100}
             />
           </li>
-        )}
+        ).sort((a, b) => a.key - b.key)}
       </div>
     );
   }

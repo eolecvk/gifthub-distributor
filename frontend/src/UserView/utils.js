@@ -105,23 +105,21 @@ function getStartingValues(slidersInitializationData) {
 
 function registerVote(sliderValues, roomInfo) {
 
-    // DO NOT SEND REQUEST IF SLIDERS VALUES ARE NULL
-    if (Object.values(sliderValues).length === 0) {
+    if (roomInfo.people.length === 0) {
         return
     }
 
-    const roomCode = roomInfo.room_code
-    const keys = Object.keys(sliderValues)
-    const events = keys.map(key => {
+    const events = roomInfo.people.map(p => {
         return {
             kind: 'ADJUST',
-            bar_id: Number(key),
-            new_value_cents: Number(sliderValues[key] * 100)
+            bar_id: Number(p.person_id),
+            new_value_cents: (p.person_id in sliderValues) ? Number(sliderValues[p.person_id] * 100) : 0
         }
     })
+
     const payload = { events: events }
 
-    axios.put(`/api/${roomCode}`, payload)
+    axios.put(`/api/${roomInfo.room_code}`, payload)
         .then(response => { console.log(JSON.stringify(response)) })
         .catch(error => {
             console.log(error)
