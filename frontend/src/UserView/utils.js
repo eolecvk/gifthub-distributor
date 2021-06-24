@@ -104,15 +104,16 @@ function getStartingValues(slidersInitializationData) {
     return startingValues
 }
 
-function convertValuesToPercentiles(sliderValues, totalAmount) {
-    let percentilesValues = {}
-    const keys = Object.keys(sliderValues)
-    Object.keys(sliderValues).map(function(key, index) {
-        percentilesValues[key] = sliderValues[key] / totalAmount;
-      });
+//DEPRECATED votes are now in absolute value in cents in API
+// function convertValuesToPercentiles(sliderValues, totalAmount) {
+//     let percentilesValues = {}
+//     const keys = Object.keys(sliderValues)
+//     Object.keys(sliderValues).map(function(key, index) {
+//         percentilesValues[key] = sliderValues[key] / totalAmount;
+//       });
       
-    return percentilesValues
-}
+//     return percentilesValues
+// }
 
 function registerVote(sliderValues, roomInfo) {
 
@@ -121,14 +122,14 @@ function registerVote(sliderValues, roomInfo) {
         return
     }
 
-    const sliderValuesPercentiles = convertValuesToPercentiles(sliderValues, roomInfo.splitting_cents/100)
+    //const sliderValuesPercentiles = convertValuesToPercentiles(sliderValues, roomInfo.splitting_cents/100)
     const roomCode = roomInfo.room_code
-    const keys = Object.keys(sliderValuesPercentiles)
+    const keys = Object.keys(sliderValues) //sliderValuesPercentiles
     const events = keys.map(key => {
         return {
             kind: 'ADJUST',
             bar_id: Number(key),
-            new_value: Number(sliderValuesPercentiles[key])
+            new_value: Number(sliderValues[key] * 100) //sliderValuesPercentiles[key]
         }
     })
     const payload = { events: events }
