@@ -6,5 +6,5 @@ import lombok.Value;
 public class UserVote {
 
   int userId;
-  double percentSplit;
+  long cents;
 }
