@@ -54,16 +54,19 @@ class AdminView extends Component {
         <h2>Room Code: {roomCode}</h2>
         <h2>Total Amount: ${totalAmountDollars}</h2>
         {people.map(p =>
-          <AdminViewSlider
-            sliderId={p.person_id.toString()}
-            name={p.name}
-            needsUpperBound={p.needs_upper_bound_cents / 100}
-            needsLowerBound={p.needs_lower_bound_cents / 100}
-            totalAmountDollars={totalAmountDollars}
-            max={max}
-            votes={p.votes_cents.map(v => v / 100)}
-            avg={p.avg_cents / 100}
-          />)}
+          <li key={p.person_id.toString()}>
+            <AdminViewSlider
+              //sliderId={p.person_id.toString()}
+              name={p.name}
+              needsUpperBound={p.needs_upper_bound_cents / 100}
+              needsLowerBound={p.needs_lower_bound_cents / 100}
+              totalAmountDollars={totalAmountDollars}
+              max={max}
+              votes={p.votes_cents.map(v => v / 100)}
+              avg={p.avg_cents / 100}
+            />
+          </li>
+        )}
       </div>
     );
   }

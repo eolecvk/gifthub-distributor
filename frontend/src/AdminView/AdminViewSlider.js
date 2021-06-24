@@ -35,8 +35,6 @@ const styles = theme =>
 function AdminViewSlider(props) {
 
   const {
-    // sliderId,
-    // totalAmountDollars,
     needsUpperBound,
     needsLowerBound,
     votes,
