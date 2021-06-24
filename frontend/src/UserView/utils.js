@@ -129,7 +129,7 @@ function registerVote(sliderValues, roomInfo) {
         return {
             kind: 'ADJUST',
             bar_id: Number(key),
-            new_value: Number(sliderValues[key] * 100) //sliderValuesPercentiles[key]
+            new_value_cents: Number(sliderValues[key] * 100) //sliderValuesPercentiles[key]
         }
     })
     const payload = { events: events }
