@@ -87,6 +87,7 @@ public class GiftHubWebserver {
     String roomCode = request.params(":roomCode");
     int userId = request.session().attribute(SESSION_USER_ID_KEY);
     User oldUser = roomDAO.getUserFromRoom(roomCode, userId);
+    GiftHubRoom room = roomDAO.getRoomByCode(roomCode);
     User user = oldUser;
     for (Event event : voteRequest.getEvents()) {
       switch (event.getKind()) {
@@ -94,7 +95,7 @@ public class GiftHubWebserver {
           AdjustEvent adjustEvent = (AdjustEvent) event;
           user =
               user.withUpdatedUserVote(
-                  new UserVote(adjustEvent.getBarId(), adjustEvent.getNewValue()));
+                  new UserVote(adjustEvent.getBarId(), adjustEvent.getNewValueCents()));
           break;
         case EMOTIVE:
           EmotiveEvent emotiveEvent = (EmotiveEvent) event;
@@ -115,7 +116,7 @@ public class GiftHubWebserver {
           break;
       }
     }
-    user.verify(oldUser);
+    user.verify(oldUser, room);
     roomDAO.updateUserInRoom(roomCode, user);
     return null;
   }

@@ -9,7 +9,7 @@ import lombok.Value;
 @EqualsAndHashCode(callSuper = false)
 public class AdjustEvent implements Event {
   int barId;
-  double newValue;
+  long newValueCents;
 
   @Override
   public EventKind getKind() {
