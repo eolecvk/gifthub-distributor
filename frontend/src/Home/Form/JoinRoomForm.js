@@ -30,8 +30,6 @@ function JoinRoomForm(props) {
             needs_upper_bound_cents: needsUpperBoundCents * 100
         }
 
-        //console.log(payload)
-
         // send request with axios
         axios
             .post(`/api/${roomCode}/join`, payload)

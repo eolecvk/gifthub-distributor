@@ -35,15 +35,16 @@ const styles = theme =>
 function AdminViewSlider(props) {
 
   const {
-    totalAmountDollars,
+    // sliderId,
+    // totalAmountDollars,
     needsUpperBound,
     needsLowerBound,
     votes,
     avg,
+    max,
     name
   } = props
 
-  const max = Math.max(Math.max(...votes), needsUpperBound);
   const marks = [
     {
       value: 0,

@@ -43,7 +43,9 @@ class AdminView extends Component {
     const roomCode = this.state.room_code
     const roomName = this.state.room_name
 
-    console.log(JSON.stringify(people))
+    const maxVoteCents = Math.max(...people.map(p => p.votes_cents).flat())
+    const maxNeedUpperBoundCents = Math.max(...people.map(p => p.needs_upper_bound_cents).flat())
+    const max = Math.max(...[maxVoteCents, maxNeedUpperBoundCents]) / 100
 
     return (
       <div>
@@ -53,12 +55,14 @@ class AdminView extends Component {
         <h2>Total Amount: ${totalAmountDollars}</h2>
         {people.map(p =>
           <AdminViewSlider
+            sliderId={p.person_id.toString()}
             name={p.name}
-            needsUpperBound={p.needs_upper_bound_cents/100}
-            needsLowerBound={p.needs_lower_bound_cents/100}
+            needsUpperBound={p.needs_upper_bound_cents / 100}
+            needsLowerBound={p.needs_lower_bound_cents / 100}
             totalAmountDollars={totalAmountDollars}
-            votes={p.votes_cents.map(v=>v/100)}
-            avg={p.avg_cents/100}
+            max={max}
+            votes={p.votes_cents.map(v => v / 100)}
+            avg={p.avg_cents / 100}
           />)}
       </div>
     );

@@ -1,7 +1,6 @@
 import React from 'react'
 import InputSlider from './InputSlider'
 import axios from 'axios'
-import debounce from "lodash/debounce";
 
 function getSlidersInitializationData(roomInfo, defaultDistribution) {
 
@@ -140,8 +139,6 @@ function registerVote(sliderValues, roomInfo) {
             console.log(error)
             console.log(payload)
         })
-
-    console.log('events ' + JSON.stringify(events))
 }
 
 export { getSlidersInitializationData, makeSliderGrid, getStartingValues, registerVote }

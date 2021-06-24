@@ -1,5 +1,4 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
 import Slider from '@material-ui/core/Slider'
 import Input from '@material-ui/core/Input'
 import FaceIcon from '@material-ui/icons/Face'
@@ -30,7 +29,6 @@ function InputSliderDev(props) {
     }
 
     const {
-        peopleId,
         title,
         surviveValue,
         thriveValue,

@@ -25,8 +25,6 @@ function CreateRoomForm(props) {
             splitting_cents: splittingCents * 100
         }
 
-        //console.log(payload)
-
         //send request with axios
         axios
             .post('/api/rooms', payload)
