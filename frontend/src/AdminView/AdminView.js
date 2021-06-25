@@ -57,7 +57,7 @@ class AdminView extends Component {
         <h2>Room Code: {roomCode}</h2>
         <h2>Total Amount: ${totalAmountDollars}</h2>
         {people.map(p =>
-          <li key={p.person_id}>
+          <li key={p.person_id.toString()}>
             <AdminViewSlider
               //sliderId={p.person_id.toString()}
               name={p.name}
