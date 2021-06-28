@@ -53,6 +53,7 @@ function makeSliderGrid(slidersInitializationData, currentValues, handleUpdate, 
         .sort((sl1, sl2) => sl1.personId - sl2.personId)
         .map((slData) => (
             <InputSlider
+                key={slData.personId.toString()}
                 sliderId={slData.personId.toString()}
                 title={slData.title}
                 surviveValue={slData.surviveValue}
@@ -75,24 +76,20 @@ function getStartingValues(slidersInitializationData) {
     return startingValues;
 }
 
-function registerVote(sliderValues, roomInfo) {
-    if (roomInfo.people.length === 0) {
-        return;
-    }
+function registerVote(sliderValues, roomCode) {
 
-    const events = roomInfo.people.map((p) => {
+    const events = Object.keys(sliderValues).map((key) => {
         return {
             kind: 'ADJUST',
-            bar_id: Number(p.person_id),
-            new_value_cents:
-                p.person_id in sliderValues ? Number(sliderValues[p.person_id] * 100) : 0,
-        };
-    });
+            bar_id: key,
+            new_value_cents: sliderValues[key] * 100
+        }
+    })
 
     const payload = { events: events };
 
     axios
-        .put(`/api/${roomInfo.room_code}`, payload)
+        .put(`/api/${roomCode}`, payload)
         .then((response) => {
             console.log(JSON.stringify(response));
         })
