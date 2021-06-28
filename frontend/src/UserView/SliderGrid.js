@@ -14,9 +14,9 @@ class SliderGrid extends Component {
     //REGISTER_VOTE
     //Initial vote when slider grid first gets mounted
     componentDidMount() {
-        const voteData = this.state.currentValues
-        const roomCode = this.props.roomInfo.room_code
-        registerVote(voteData, roomCode)
+        const voteData = this.state.currentValues;
+        const roomCode = this.props.roomInfo.room_code;
+        registerVote(voteData, roomCode);
     }
 
     handleUpdate = (id, newValue, isVote) => {
@@ -51,9 +51,9 @@ class SliderGrid extends Component {
         }
 
         if (isVote) {
-            const voteData = { [`${id}`] : actualNewValue}
-            const roomCode = this.props.roomInfo.room_code
-            registerVote(voteData, roomCode)
+            const voteData = { [`${id}`]: actualNewValue };
+            const roomCode = this.props.roomInfo.room_code;
+            registerVote(voteData, roomCode);
         }
 
         this.setState(futureState);

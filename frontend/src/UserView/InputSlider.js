@@ -6,9 +6,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 function InputSliderDev(props) {
-
-    function handleSliderChangeCommitted(event, newValue){
-        handleSliderChange(event, newValue, true)
+    function handleSliderChangeCommitted(event, newValue) {
+        handleSliderChange(event, newValue, true);
     }
 
     function handleSliderChange(event, newValue, isVote) {

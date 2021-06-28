@@ -12,7 +12,7 @@ function JoinRoomForm(props) {
     const [needsLowerBoundCents, setNeedsLowerBoundCents] = useState(0);
     const [needsUpperBoundCents, setNeedsUpperBoundCents] = useState(0);
     const [needsDescription, setNeedsDescription] = useState('');
-    
+
     /* eslint-disable no-unused-vars */
     const [cookies, setCookie] = useCookies(['roomInfo']);
     /* eslint-enable no-unused-vars */

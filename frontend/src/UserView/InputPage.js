@@ -50,7 +50,6 @@ class InputPage extends Component {
 
         // ...checks if newDefaultDistribution yields an invalid state before transitioning
         if (futureTotalCost <= roomAmount) {
-
             this.setState({
                 defaultDistribution: defaultDistribution,
                 reset: true,

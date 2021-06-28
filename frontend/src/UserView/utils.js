@@ -77,14 +77,13 @@ function getStartingValues(slidersInitializationData) {
 }
 
 function registerVote(sliderValues, roomCode) {
-
     const events = Object.keys(sliderValues).map((key) => {
         return {
             kind: 'ADJUST',
             bar_id: key,
-            new_value_cents: sliderValues[key] * 100
-        }
-    })
+            new_value_cents: sliderValues[key] * 100,
+        };
+    });
 
     const payload = { events: events };
 
