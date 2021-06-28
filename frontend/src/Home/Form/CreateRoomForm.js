@@ -9,7 +9,10 @@ function CreateRoomForm(props) {
     const close = () => props.onSubmit();
     const [roomName, setRoomName] = useState('');
     const [splittingCents, setSplittingCents] = useState(0);
+
+    /* eslint-disable no-unused-vars */
     const [cookies, setCookie] = useCookies(['roomInfo']);
+    /* eslint-enable no-unused-vars */
 
     function saveRoomInfo(roomInfo) {
         setCookie('roomInfo', roomInfo, { path: '/' });
