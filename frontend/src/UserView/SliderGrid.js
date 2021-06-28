@@ -15,9 +15,8 @@ class SliderGrid extends Component {
     //Initial vote when slider grid first gets mounted
     componentDidMount() {
         const voteData = this.state.currentValues
-        const roomCode = this.props.roomInfo.roomCode
-        //registerVote(voteData, roomCode)
-        registerVote(voteData, this.props.roomInfo)
+        const roomCode = this.props.roomInfo.room_code
+        registerVote(voteData, roomCode)
     }
 
     handleUpdate = (id, newValue, isVote) => {
@@ -51,13 +50,10 @@ class SliderGrid extends Component {
             futureState = maxFutureState;
         }
 
-        // REGISTER_VOTE
-        // If is mouse up event in slider, handleUpdate called with flag: isVote===true
         if (isVote) {
             const voteData = { [`${id}`] : actualNewValue}
-            const roomCode = this.props.roomInfo.roomCode
-            //registerVote(voteData, roomCode)
-            registerVote(voteData, this.props.roomInfo)
+            const roomCode = this.props.roomInfo.room_code
+            registerVote(voteData, roomCode)
         }
 
         this.setState(futureState);
@@ -70,13 +66,6 @@ class SliderGrid extends Component {
             this.handleUpdate,
             this.state.reset
         );
-
-        //REGISTER_VOTE
-        // Remove this...
-        // registerVote(
-        //     this.state.currentValues,
-        //     this.props.roomInfo
-        // );
 
         return (
             <div>

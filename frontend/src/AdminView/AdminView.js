@@ -31,7 +31,6 @@ class AdminView extends Component {
         axios
             .get('/api/' + this.state.room_code)
             .then((response) => {
-                // GETTING RESPONSE UNDEFINED ; NEED TO LOOK INTO THIS
                 this.setState({ people: response.data.people });
                 // call getData() again in 5 seconds
                 this.intervalID = setTimeout(this.getData.bind(this), 5000);
