@@ -51,21 +51,21 @@ class AdminView extends Component {
       ...people.map(p => p.needs_upper_bound_cents) // flat list of upper bound needs in cents
     ) / 100
 
-    const AdminViewSliders = people.map(p =>
-      <li key={'li' + p.person_id.toString()}>
-        <AdminViewSlider
-          key={'adminviewslider' + p.person_id.toString()}
-          sliderId={p.person_id.toString()}
-          name={p.name}
-          needsUpperBound={p.needs_upper_bound_cents / 100}
-          needsLowerBound={p.needs_lower_bound_cents / 100}
-          totalAmountDollars={totalAmountDollars}
-          max={max}
-          votes={p.votes_cents.map(v => (v / 100))}
-          avg={p.avg_cents / 100}
-        />
-      </li>
-    ).sort((a, b) => a.key - b.key)
+    const AdminViewSliders = people
+      .sort((p1, p2) => (p1.person_id - p2.person_id))
+      .map(p =>
+          <AdminViewSlider
+            key={'adminviewslider' + p.person_id.toString()}
+            sliderId={p.person_id.toString()}
+            name={p.name}
+            needsUpperBound={p.needs_upper_bound_cents / 100}
+            needsLowerBound={p.needs_lower_bound_cents / 100}
+            totalAmountDollars={totalAmountDollars}
+            max={max}
+            votes={p.votes_cents.map(v => (v / 100))}
+            avg={p.avg_cents / 100}
+          />
+      )
 
 
     return (

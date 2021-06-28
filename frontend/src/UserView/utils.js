@@ -76,19 +76,19 @@ function getSlidersInitializationData(roomInfo, defaultDistribution) {
 function makeSliderGrid(slidersInitializationData, currentValues, handleUpdate, reset) {
 
     return (
-        slidersInitializationData.map(slData =>
-            <li key={slData.personId.toString()}>
-                <InputSlider
-                    sliderId={slData.personId.toString()}
-                    title={slData.title}
-                    surviveValue={slData.surviveValue}
-                    thriveValue={slData.thriveValue}
-                    startingValue={reset ? slData.startingValue : currentValues[slData.personId.toString()]}
-                    maxValue={slData.maxValue}
-                    handleUpdate={handleUpdate}
-                />
-            </li>
-        )
+        slidersInitializationData
+            .sort((sl1, sl2) => (sl1.personId - sl2.personId))
+            .map(slData =>
+                    <InputSlider
+                        sliderId={slData.personId.toString()}
+                        title={slData.title}
+                        surviveValue={slData.surviveValue}
+                        thriveValue={slData.thriveValue}
+                        startingValue={reset ? slData.startingValue : currentValues[slData.personId.toString()]}
+                        maxValue={slData.maxValue}
+                        handleUpdate={handleUpdate}
+                    />
+            )
     )
 }
 
