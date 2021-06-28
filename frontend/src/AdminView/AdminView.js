@@ -46,9 +46,27 @@ class AdminView extends Component {
     const roomCode = this.state.room_code
     const roomName = this.state.room_name
 
-    const maxVoteCents = Math.max(...people.map(p => p.votes_cents).flat())
-    const maxNeedUpperBoundCents = Math.max(...people.map(p => p.needs_upper_bound_cents).flat())
-    const max = Math.max(...[maxVoteCents, maxNeedUpperBoundCents]) / 100
+    const max = Math.max(
+      ...people.map(p => p.votes_cents).flat(), // flat list of vote values in cents
+      ...people.map(p => p.needs_upper_bound_cents) // flat list of upper bound needs in cents
+    ) / 100
+
+    const AdminViewSliders = people.map(p =>
+      <li key={'li' + p.person_id.toString()}>
+        <AdminViewSlider
+          key={'adminviewslider' + p.person_id.toString()}
+          sliderId={p.person_id.toString()}
+          name={p.name}
+          needsUpperBound={p.needs_upper_bound_cents / 100}
+          needsLowerBound={p.needs_lower_bound_cents / 100}
+          totalAmountDollars={totalAmountDollars}
+          max={max}
+          votes={p.votes_cents.map(v => (v / 100))}
+          avg={p.avg_cents / 100}
+        />
+      </li>
+    ).sort((a, b) => a.key - b.key)
+
 
     return (
       <div>
@@ -56,22 +74,9 @@ class AdminView extends Component {
         <h2>{roomName}</h2>
         <h2>Room Code: {roomCode}</h2>
         <h2>Total Amount: ${totalAmountDollars}</h2>
-        {people.map(p =>
-          <li key={p.person_id.toString()}>
-            <AdminViewSlider
-              //sliderId={p.person_id.toString()}
-              name={p.name}
-              needsUpperBound={p.needs_upper_bound_cents / 100}
-              needsLowerBound={p.needs_lower_bound_cents / 100}
-              totalAmountDollars={totalAmountDollars}
-              max={max}
-              votes={p.votes_cents.map(v => v / 100)}
-              avg={p.avg_cents / 100}
-            />
-          </li>
-        ).sort((a, b) => a.key - b.key)}
+        {AdminViewSliders}
       </div>
-    );
+    )
   }
 }
 

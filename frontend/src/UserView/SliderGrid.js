@@ -9,7 +9,7 @@ class SliderGrid extends Component {
         this.state = {
             currentValues: getStartingValues(this.props.slidersInitializationData),
             reset: this.props.reset,
-            roomInfo: this.props.cookies.get("roomInfo") || ""
+            //roomInfo: this.props.cookies.get("roomInfo") || ""
         }
     }
 
@@ -40,10 +40,6 @@ class SliderGrid extends Component {
             futureState = maxFutureState
         }
 
-        //NEED TO PASS THE roomCode as global Context!
-        // roomCode = this.roomInfo.roomCode
-        // const roomCode = 'CCCS'
-        //registerVote({ [`${id}`]: [`${actualNewValue}`] }, roomCode)
         this.setState(futureState)
     }
 
@@ -57,14 +53,17 @@ class SliderGrid extends Component {
             this.state.reset
         )
 
-        registerVote(this.state.currentValues, this.state.roomInfo )
+        registerVote(
+            this.state.currentValues,
+            this.props.roomInfo//this.state.roomInfo
+        )
 
         return (
             <div>
                 <p>Amount distributed: {
                     Object.values(this.state.currentValues).length > 0 ?
-                    Object.values(this.state.currentValues).map(v => v ? v : 0).reduce((a, b) => a + b) :
-                    0
+                        Object.values(this.state.currentValues).map(v => v ? v : 0).reduce((a, b) => a + b) :
+                        0
                 } / {this.props.roomAmount}</p>
                 {sliders}
             </div >

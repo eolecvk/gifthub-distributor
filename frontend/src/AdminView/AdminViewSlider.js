@@ -35,6 +35,7 @@ const styles = theme =>
 function AdminViewSlider(props) {
 
   const {
+    sliderId,
     needsUpperBound,
     needsLowerBound,
     votes,
@@ -62,19 +63,26 @@ function AdminViewSlider(props) {
     }
   ];
 
+  console.log(votes)
+
   return (
-    <div>
-      <Typography variant="h5" gutterBottom className={props.classes.typography}>
+    <div key={'div' + sliderId}>
+      <Typography
+        variant="h5"
+        gutterBottom
+        className={props.classes.typography}
+      >
         {name}
         <br />
-        Current Avg: {avg} $
+        average: ${avg}
       </Typography>
       <Slider
+        key={'slider' + sliderId}
+        className={props.classes.slider}
         value={votes}
         valueLabelDisplay="on"
         disabled={true}
         marks={marks}
-        className={props.classes.slider}
         max={max}
       />
     </div>

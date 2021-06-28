@@ -120,7 +120,9 @@ function registerVote(sliderValues, roomInfo) {
     const payload = { events: events }
 
     axios.put(`/api/${roomInfo.room_code}`, payload)
-        .then(response => { console.log(JSON.stringify(response)) })
+        .then(response => {
+            console.log(JSON.stringify(response))
+        })
         .catch(error => {
             console.log(error)
             console.log(payload)

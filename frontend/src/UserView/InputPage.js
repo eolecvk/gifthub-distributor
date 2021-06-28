@@ -32,7 +32,7 @@ class InputPage extends Component {
             .get('/api/' + this.state.roomInfo.room_code)
             .then(response => {
                 if (response.data.people.length !== this.state.roomInfo.people.length) {
-                    this.setState({ roomInfo: response.data });
+                    this.setState({ roomInfo: response.data, reset: true });
                 }
                 // call getData() again in 5 seconds
                 this.intervalID = setTimeout(this.getData.bind(this), 5000);
@@ -75,6 +75,7 @@ class InputPage extends Component {
                     key={this.state.defaultDistribution + Date.now()} // force class rendering on defaultDistribution update!
                     distribution={this.state.defaultDistribution}
                     slidersInitializationData={slidersInitializationData}
+                    roomInfo={this.state.roomInfo}
                     roomAmount={this.state.roomInfo.splitting_cents / 100}
                     reset={this.state.reset}
                 />
