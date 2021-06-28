@@ -6,20 +6,25 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 function InputSliderDev(props) {
-    function handleSliderChange(event, newValue) {
-        props.handleUpdate(props.sliderId, newValue);
+
+    function handleSliderChangeCommitted(event, newValue){
+        handleSliderChange(event, newValue, true)
+    }
+
+    function handleSliderChange(event, newValue, isVote) {
+        props.handleUpdate(props.sliderId, newValue, isVote);
     }
 
     function handleInputChange(event) {
         const newValue = event.target.value === '' ? '' : Number(event.target.value);
-        props.handleUpdate(props.sliderId, newValue);
+        props.handleUpdate(props.sliderId, newValue, true);
     }
 
     function handleBlur() {
         if (props.startingValue < 0) {
-            props.handleUpdate(props.sliderId, 0);
+            props.handleUpdate(props.sliderId, 0, false);
         } else if (props.startingValue > props.maxValue) {
-            props.handleUpdate(props.sliderId, props.maxValue);
+            props.handleUpdate(props.sliderId, props.maxValue, false);
         }
     }
 
@@ -46,6 +51,7 @@ function InputSliderDev(props) {
                         max={maxValue}
                         value={startingValue ? startingValue : 0}
                         onChange={handleSliderChange}
+                        onChangeCommitted={handleSliderChangeCommitted}
                         aria-labelledby="input-slider"
                         marks={marks}
                     />

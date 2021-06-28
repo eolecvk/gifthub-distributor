@@ -8,11 +8,19 @@ class SliderGrid extends Component {
         this.state = {
             currentValues: getStartingValues(this.props.slidersInitializationData),
             reset: this.props.reset,
-            //roomInfo: this.props.cookies.get("roomInfo") || ""
         };
     }
 
-    handleUpdate = (id, newValue) => {
+    //REGISTER_VOTE
+    //Initial vote when slider grid first gets mounted
+    componentDidMount() {
+        const voteData = this.state.currentValues
+        const roomCode = this.props.roomInfo.roomCode
+        //registerVote(voteData, roomCode)
+        registerVote(voteData, this.props.roomInfo)
+    }
+
+    handleUpdate = (id, newValue, isVote) => {
         let actualNewValue;
         actualNewValue = newValue;
 
@@ -43,6 +51,15 @@ class SliderGrid extends Component {
             futureState = maxFutureState;
         }
 
+        // REGISTER_VOTE
+        // If is mouse up event in slider, handleUpdate called with flag: isVote===true
+        if (isVote) {
+            const voteData = { [`${id}`] : actualNewValue}
+            const roomCode = this.props.roomInfo.roomCode
+            //registerVote(voteData, roomCode)
+            registerVote(voteData, this.props.roomInfo)
+        }
+
         this.setState(futureState);
     };
 
@@ -54,10 +71,12 @@ class SliderGrid extends Component {
             this.state.reset
         );
 
-        registerVote(
-            this.state.currentValues,
-            this.props.roomInfo //this.state.roomInfo
-        );
+        //REGISTER_VOTE
+        // Remove this...
+        // registerVote(
+        //     this.state.currentValues,
+        //     this.props.roomInfo
+        // );
 
         return (
             <div>

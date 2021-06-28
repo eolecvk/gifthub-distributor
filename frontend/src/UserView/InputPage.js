@@ -5,7 +5,7 @@ import axios from 'axios';
 import RoomInfo from './RoomInfo';
 import ButtonUpdateDefaultDistribution from './ButtonUpdateDefaultDistribution';
 import SlidersGrid from './SliderGrid';
-import { getSlidersInitializationData, getStartingValues } from './utils';
+import { getSlidersInitializationData, getStartingValues, registerVote } from './utils';
 
 class InputPage extends Component {
     constructor(props) {
@@ -50,6 +50,11 @@ class InputPage extends Component {
 
         // ...checks if newDefaultDistribution yields an invalid state before transitioning
         if (futureTotalCost <= roomAmount) {
+
+            // REGISTER_VOTE
+            // Maybe not needed: check if componentDidMount call is enough...
+            // registerVote(futureStartingValues, roomInfo.roomCode)
+
             this.setState({
                 defaultDistribution: defaultDistribution,
                 reset: true,
