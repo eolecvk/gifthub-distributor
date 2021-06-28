@@ -1,75 +1,79 @@
-import React, { Component } from 'react'
-import { withCookies } from "react-cookie";
-import { getStartingValues, makeSliderGrid, registerVote } from './utils'
+import React, { Component } from 'react';
+import { withCookies } from 'react-cookie';
+import { getStartingValues, makeSliderGrid, registerVote } from './utils';
 
 class SliderGrid extends Component {
-
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             currentValues: getStartingValues(this.props.slidersInitializationData),
             reset: this.props.reset,
             //roomInfo: this.props.cookies.get("roomInfo") || ""
-        }
+        };
     }
 
     handleUpdate = (id, newValue) => {
+        let actualNewValue;
+        actualNewValue = newValue;
 
-        let actualNewValue
-        actualNewValue = newValue
-
-        let futureState
+        let futureState;
         futureState = {
             currentValues: { ...this.state.currentValues, [`${id}`]: newValue },
-            reset: false
-        }
+            reset: false,
+        };
         //Check if future state is valid (sum of money distributed <= totalAmount)
         // If not, distribute as much as possible in the slider moved last
-        const futureTotalCost = Object.values(futureState.currentValues).reduce((a, b) => (a + b))
+        const futureTotalCost = Object.values(futureState.currentValues).reduce((a, b) => a + b);
 
         if (futureTotalCost > this.props.roomAmount) {
-            const currentTotalCost = Object.values(this.state.currentValues).reduce((a, b) => (a + b))
-            const currentValue = this.state.currentValues[id]
-            const maxNewValue = this.props.roomAmount - currentTotalCost + currentValue
-            actualNewValue = maxNewValue
+            const currentTotalCost = Object.values(this.state.currentValues).reduce(
+                (a, b) => a + b
+            );
+            const currentValue = this.state.currentValues[id];
+            const maxNewValue = this.props.roomAmount - currentTotalCost + currentValue;
+            actualNewValue = maxNewValue;
 
             const maxFutureState = {
-                currentValues: { ...this.state.currentValues, [`${id}`]: actualNewValue },
-                reset: false
-            }
-            futureState = maxFutureState
+                currentValues: {
+                    ...this.state.currentValues,
+                    [`${id}`]: actualNewValue,
+                },
+                reset: false,
+            };
+            futureState = maxFutureState;
         }
 
-        this.setState(futureState)
-    }
+        this.setState(futureState);
+    };
 
     render() {
-
-
         const sliders = makeSliderGrid(
             this.props.slidersInitializationData,
             this.state.currentValues,
             this.handleUpdate,
             this.state.reset
-        )
+        );
 
         registerVote(
             this.state.currentValues,
-            this.props.roomInfo//this.state.roomInfo
-        )
+            this.props.roomInfo //this.state.roomInfo
+        );
 
         return (
             <div>
-                <p>Amount distributed: {
-                    Object.values(this.state.currentValues).length > 0 ?
-                        Object.values(this.state.currentValues).map(v => v ? v : 0).reduce((a, b) => a + b) :
-                        0
-                } / {this.props.roomAmount}</p>
+                <p>
+                    Amount distributed:{' '}
+                    {Object.values(this.state.currentValues).length > 0
+                        ? Object.values(this.state.currentValues)
+                              .map((v) => (v ? v : 0))
+                              .reduce((a, b) => a + b)
+                        : 0}{' '}
+                    / {this.props.roomAmount}
+                </p>
                 {sliders}
-            </div >
-        )
-
+            </div>
+        );
     }
 }
 
-export default withCookies(SliderGrid)
+export default withCookies(SliderGrid);

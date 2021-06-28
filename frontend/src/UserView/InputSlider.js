@@ -1,48 +1,37 @@
-import React from 'react'
-import Slider from '@material-ui/core/Slider'
-import Input from '@material-ui/core/Input'
-import FaceIcon from '@material-ui/icons/Face'
-import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
-
-
+import React from 'react';
+import Slider from '@material-ui/core/Slider';
+import Input from '@material-ui/core/Input';
+import FaceIcon from '@material-ui/icons/Face';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 
 function InputSliderDev(props) {
-
     function handleSliderChange(event, newValue) {
-        props.handleUpdate(props.sliderId, newValue)
-    };
+        props.handleUpdate(props.sliderId, newValue);
+    }
 
     function handleInputChange(event) {
-        const newValue = event.target.value === '' ?
-            '' :
-            Number(event.target.value)
-        props.handleUpdate(props.sliderId, newValue)
-    };
+        const newValue = event.target.value === '' ? '' : Number(event.target.value);
+        props.handleUpdate(props.sliderId, newValue);
+    }
 
     function handleBlur() {
         if (props.startingValue < 0) {
-            props.handleUpdate(props.sliderId, 0)
+            props.handleUpdate(props.sliderId, 0);
         } else if (props.startingValue > props.maxValue) {
-            props.handleUpdate(props.sliderId, props.maxValue)
+            props.handleUpdate(props.sliderId, props.maxValue);
         }
     }
 
-    const {
-        title,
-        surviveValue,
-        thriveValue,
-        startingValue,
-        maxValue
-    } = props
+    const { title, surviveValue, thriveValue, startingValue, maxValue } = props;
 
     const marks = [
         { value: surviveValue, label: ':)' },
-        { value: thriveValue, label: ':D' }
-    ]
+        { value: thriveValue, label: ':D' },
+    ];
 
-
-    return (//<div className={classes.root}> <-- ADD FOR STYLING
+    return (
+        //<div className={classes.root}> <-- ADD FOR STYLING
         <div>
             <Typography id="input-slider" gutterBottom>
                 {title}
@@ -79,7 +68,7 @@ function InputSliderDev(props) {
                 </Grid>
             </Grid>
         </div>
-    )
+    );
 }
 
-export default InputSliderDev
+export default InputSliderDev;

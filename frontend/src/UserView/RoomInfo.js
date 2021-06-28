@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 function RoomInfo(props) {
     return (
@@ -8,6 +8,6 @@ function RoomInfo(props) {
             <p>Code: {props.roomInfo.room_code}</p>
             <p>Amount: ${(props.roomInfo.splitting_cents / 100).toFixed(2)}</p>
         </div>
-    )
+    );
 }
-export default RoomInfo
+export default RoomInfo;
