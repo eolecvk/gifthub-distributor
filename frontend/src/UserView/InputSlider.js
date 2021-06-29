@@ -5,18 +5,18 @@ import Input from '@material-ui/core/Input';
 import FaceIcon from '@material-ui/icons/Face';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-
+import colors from './colors'
 
 function InputSliderDev(props) {
 
     const useStyles = makeStyles({
         root: {
-          width: '80%',
+            width: '80%',
         },
         input: {
-          width: `${props.maxValue.toString().length +1}`+'em',
+            width: `${props.maxValue.toString().length}` + 'em',
         },
-      });
+    });
 
     const classes = useStyles();
 
@@ -55,7 +55,10 @@ function InputSliderDev(props) {
             </Typography>
             <Grid container spacing={2} alignItems="center">
                 <Grid item>
-                    <FaceIcon fontSize="large" />
+                    <FaceIcon
+                        fontSize="large"
+                        style={{ color: colors[props.sliderId] }}
+                    />
                 </Grid>
                 <Grid item xs>
                     <Slider

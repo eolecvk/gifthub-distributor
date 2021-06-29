@@ -55,7 +55,7 @@ function makeSliderGrid(slidersInitializationData, currentValues, handleUpdate, 
             <InputSlider
                 key={slData.personId.toString()}
                 sliderId={slData.personId.toString()}
-                title={slData.title}
+                title={slData.title.toUpperCase()}
                 surviveValue={slData.surviveValue}
                 thriveValue={slData.thriveValue}
                 startingValue={
