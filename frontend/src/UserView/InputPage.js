@@ -13,17 +13,17 @@ class InputPage extends Component {
         this.state = {
             defaultDistribution: 'zero',
             reset: false,
-            roomInfo: this.props.cookies.get('roomInfo') || '',
+            roomInfo: this.props.cookies.get('roomInfo') || ''
         };
     }
     intervalID;
 
     componentDidMount() {
-        this.getData();
+        this.getData()
     }
 
     componentWillUnmount() {
-        clearTimeout(this.intervalID);
+        clearTimeout(this.intervalID)
     }
 
     getData = () => {
@@ -33,8 +33,8 @@ class InputPage extends Component {
             }
             // call getData() again in 5 seconds
             this.intervalID = setTimeout(this.getData.bind(this), 5000);
-        });
-    };
+        })
+    }
 
     updateDefaultDistribution = (defaultDistribution) => {
         const roomInfo = this.state.roomInfo;
@@ -70,7 +70,9 @@ class InputPage extends Component {
         return (
             <div>
                 <h1>Input Page</h1>
-                <RoomInfo roomInfo={this.state.roomInfo} />
+                <RoomInfo
+                    roomInfo={this.state.roomInfo}
+                />
                 <ButtonUpdateDefaultDistribution
                     updateDefaultDistribution={this.updateDefaultDistribution}
                 />
