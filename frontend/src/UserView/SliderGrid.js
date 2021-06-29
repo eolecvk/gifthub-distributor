@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { withCookies } from 'react-cookie';
 import { getStartingValues, makeSliderGrid, registerVote } from './utils';
 import ButtonsUndoRedo from './ButtonsUndoRedo'
 
 
 class SliderGrid extends Component {
+
     constructor(props) {
-        super(props);
-        this.state = {
+        super(props)
+
+        const defaultState = {
             currentValues: getStartingValues(this.props.slidersInitializationData), // NEED TO DEPRECATED THIS
             reset: this.props.reset,
             history: {
@@ -16,8 +17,12 @@ class SliderGrid extends Component {
                     getStartingValues(this.props.slidersInitializationData)
                 ]
             }
-        };
+        }
+        const iniState = JSON.parse(localStorage.getItem("sliderGridState")) || defaultState
+        //const iniState = this.props.reset ? defaultState : storedState
+        this.state = iniState
     }
+
 
     //REGISTER_VOTE
     //Initial vote when slider grid first gets mounted
@@ -26,6 +31,24 @@ class SliderGrid extends Component {
         const roomCode = this.props.roomInfo.room_code;
         registerVote(voteData, roomCode);
     }
+
+    // Generate updated version of state `currentState`
+    // when udating the value of `currentValue` (upon sliding the cursor mouse-down)
+    // history does not get updated since it's a temporary change (no mouse-up event, no vote)
+    getStateObjectNoMove = (currentState, id, newValue) => {
+        return {
+            currentValues: { ...currentState.currentValues, [`${id}`]: newValue }, // NEED TO DEPRECATED THIS
+            reset: false,
+            history: {
+                index: currentState.history.index,
+                states: [
+                    ...currentState.history.states,
+                    { ...currentState.currentValues, [`${id}`]: newValue }
+                ]
+            }
+        }
+    }
+
 
     // Generate updated version of state `currentState`
     // when inserting a new move of `newValue` at sliderId `id`
@@ -67,10 +90,11 @@ class SliderGrid extends Component {
         }
     }
 
-
     handleUpdate = (id, newValue, isVote) => {
         let actualNewValue = newValue
-        let futureState = this.getStateObjectNewMove(this.state, id, newValue)
+        let futureState = isVote ?
+            this.getStateObjectNewMove(this.state, id, newValue) :
+            this.getStateObjectNoMove(this.state, id, newValue)
 
         //Check if future state is valid (sum of money distributed <= totalAmount)
         // If not, distribute as much as possible in the slider moved last
@@ -83,13 +107,17 @@ class SliderGrid extends Component {
             const currentValue = this.state.currentValues[id];
             const maxNewValue = this.props.roomAmount - currentTotalCost + currentValue;
             actualNewValue = maxNewValue
-            futureState = this.getStateObjectNewMove(this.state, id, maxNewValue)
+            futureState = isVote ?
+                this.getStateObjectNewMove(this.state, id, maxNewValue) :
+                this.getStateObjectNoMove(this.state, id, maxNewValue)
+
         }
 
         if (isVote) {
             const voteData = { [`${id}`]: actualNewValue };
             const roomCode = this.props.roomInfo.room_code;
             registerVote(voteData, roomCode);
+            localStorage.setItem("sliderGridState", JSON.stringify(futureState));
         }
         this.setState(futureState);
     }
@@ -107,8 +135,9 @@ class SliderGrid extends Component {
         const roomCode = this.props.roomInfo.room_code
         registerVote(voteData, roomCode)
 
-        // Update state
+        // Update Cookie & state
         const newState = this.getStateObjectOnUndo(this.state)
+        localStorage.setItem("sliderGridState", JSON.stringify(newState));
         this.setState(newState)
     }
 
@@ -124,8 +153,9 @@ class SliderGrid extends Component {
         const roomCode = this.props.roomInfo.room_code
         registerVote(voteData, roomCode)
 
-        // Update state
+        // Update Cookie & state
         const newState = this.getStateObjectOnRedo(this.state)
+        localStorage.setItem("sliderGridState", JSON.stringify(newState));
         this.setState(newState)
     }
 
@@ -159,4 +189,4 @@ class SliderGrid extends Component {
     }
 }
 
-export default withCookies(SliderGrid);
+export default SliderGrid

@@ -36,6 +36,23 @@ class InputPage extends Component {
         })
     }
 
+    // NEED TO MOVE THIS TO UTILS
+    // Generate updated version of state `currentState`
+    // when inserting a new move of `newValue` at sliderId `id`
+    getStateObjectNewMoves = (currentState, newSliderValues) => {
+        return {
+            currentValues: { ...newSliderValues }, // NEED TO DEPRECATED THIS
+            reset: false,
+            history: {
+                index: currentState.history.index + 1,
+                states: [
+                    ...currentState.history.states.slice(0, currentState.history.index + 1),
+                    { ...newSliderValues }
+                ]
+            }
+        }
+    }
+
     updateDefaultDistribution = (defaultDistribution) => {
         const roomInfo = this.state.roomInfo;
 
@@ -49,17 +66,30 @@ class InputPage extends Component {
         const roomAmount = roomInfo.splitting_cents / 100;
 
         // ...checks if newDefaultDistribution yields an invalid state before transitioning
-        if (futureTotalCost <= roomAmount) {
-            this.setState({
-                defaultDistribution: defaultDistribution,
-                reset: true,
-            });
-        } else {
-            alert(
-                'Not enough money to set this distribution: ' + futureTotalCost + '/ ' + roomAmount
-            );
+        if (futureTotalCost > roomAmount) {
+            alert('Not enough money to set this distribution: ' + futureTotalCost + '/ ' + roomAmount)
+            return
         }
-    };
+
+        // Update grid state stored in memory (will be used for slider grid initialization upon re-rendering)
+        const storedSliderGridState = JSON.parse(localStorage.getItem("sliderGridState"))
+        const defaultSliderGridState = {
+            currentValues: futureStartingValues, // NEED TO DEPRECATED THIS
+            reset: false,
+            history: {
+                index: 0,
+                states: [futureStartingValues]
+            }
+        }
+        const currentSliderGridState = storedSliderGridState || defaultSliderGridState
+        const futureSliderGridState = this.getStateObjectNewMoves(currentSliderGridState, futureStartingValues)
+        localStorage.setItem("sliderGridState", JSON.stringify(futureSliderGridState))
+
+        this.setState({
+            defaultDistribution: defaultDistribution,
+            reset: true,
+        });
+    }
 
     render() {
         const slidersInitializationData = getSlidersInitializationData(

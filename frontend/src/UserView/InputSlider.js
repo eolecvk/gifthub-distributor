@@ -14,7 +14,7 @@ function InputSliderDev(props) {
             width: '80%',
         },
         input: {
-            width: `${props.maxValue.toString().length}` + 'em',
+            width: `${props.maxValue.toString().length}`+'em',
         },
     });
 
