@@ -48,7 +48,7 @@ function getSlidersInitializationData(roomInfo, defaultDistribution) {
     }
 }
 
-function makeSliderGrid(slidersInitializationData, currentValues, handleUpdate, reset) {
+function makeSliderGrid(slidersInitializationData, currentValues, handleUpdate, reset, roomInfo) {
     return slidersInitializationData
         .sort((sl1, sl2) => sl1.personId - sl2.personId)
         .map((slData) => (
@@ -63,6 +63,7 @@ function makeSliderGrid(slidersInitializationData, currentValues, handleUpdate, 
                 }
                 maxValue={slData.maxValue}
                 handleUpdate={handleUpdate}
+                userInfo={roomInfo.people.find( p => { return p.person_id == slData.personId.toString()})}
             />
         ));
 }

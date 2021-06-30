@@ -166,7 +166,8 @@ class SliderGrid extends Component {
             this.props.slidersInitializationData,
             this.state.currentValues,
             this.handleUpdate,
-            this.state.reset
+            this.state.reset,
+            this.props.roomInfo
         );
 
         return (
