@@ -72,7 +72,7 @@ class InputPage extends Component {
         }
 
         // Update grid state stored in memory (will be used for slider grid initialization upon re-rendering)
-        const storedSliderGridState = JSON.parse(localStorage.getItem("sliderGridState"))
+        const storedSliderGridState = JSON.parse(sessionStorage.getItem("sliderGridState"))
         const defaultSliderGridState = {
             currentValues: futureStartingValues, // NEED TO DEPRECATED THIS
             reset: false,
@@ -83,7 +83,7 @@ class InputPage extends Component {
         }
         const currentSliderGridState = storedSliderGridState || defaultSliderGridState
         const futureSliderGridState = this.getStateObjectNewMoves(currentSliderGridState, futureStartingValues)
-        localStorage.setItem("sliderGridState", JSON.stringify(futureSliderGridState))
+        sessionStorage.setItem("sliderGridState", JSON.stringify(futureSliderGridState))
 
         this.setState({
             defaultDistribution: defaultDistribution,

@@ -18,15 +18,16 @@ class SliderGrid extends Component {
                 ]
             }
         }
-        const iniState = JSON.parse(localStorage.getItem("sliderGridState")) || defaultState
+
+        const storedState = JSON.parse(sessionStorage.getItem("sliderGridState"))
+        const iniState = storedState || defaultState
         //const iniState = this.props.reset ? defaultState : storedState
         this.state = iniState
     }
 
-
-    //REGISTER_VOTE
-    //Initial vote when slider grid first gets mounted
+    //Initial vote + initalization of the history in sessionStorage
     componentDidMount() {
+        sessionStorage.setItem("sliderGridState", JSON.stringify(this.state));
         const voteData = this.state.currentValues;
         const roomCode = this.props.roomInfo.room_code;
         registerVote(voteData, roomCode);
@@ -117,7 +118,7 @@ class SliderGrid extends Component {
             const voteData = { [`${id}`]: actualNewValue };
             const roomCode = this.props.roomInfo.room_code;
             registerVote(voteData, roomCode);
-            localStorage.setItem("sliderGridState", JSON.stringify(futureState));
+            sessionStorage.setItem("sliderGridState", JSON.stringify(futureState));
         }
         this.setState(futureState);
     }
@@ -137,7 +138,7 @@ class SliderGrid extends Component {
 
         // Update Cookie & state
         const newState = this.getStateObjectOnUndo(this.state)
-        localStorage.setItem("sliderGridState", JSON.stringify(newState));
+        sessionStorage.setItem("sliderGridState", JSON.stringify(newState));
         this.setState(newState)
     }
 
@@ -155,7 +156,7 @@ class SliderGrid extends Component {
 
         // Update Cookie & state
         const newState = this.getStateObjectOnRedo(this.state)
-        localStorage.setItem("sliderGridState", JSON.stringify(newState));
+        sessionStorage.setItem("sliderGridState", JSON.stringify(newState));
         this.setState(newState)
     }
 
