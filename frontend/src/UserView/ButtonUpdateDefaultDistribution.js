@@ -3,7 +3,6 @@ import React from 'react';
 function ButtonUpdateDefaultDistribution(props) {
     return (
         <div>
-            <h4>Quick distributions:</h4>
             <button onClick={(e) => props.updateDefaultDistribution('zero')}>Reset to 0</button>
             <button onClick={(e) => props.updateDefaultDistribution('equal')}>Equal amounts</button>
             <button onClick={(e) => props.updateDefaultDistribution('survive')}>

@@ -99,7 +99,6 @@ class InputPage extends Component {
 
         return (
             <div>
-                <h1>Input Page</h1>
                 <RoomInfo
                     roomInfo={this.state.roomInfo}
                 />

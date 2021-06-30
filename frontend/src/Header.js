@@ -1,9 +1,11 @@
 import React from 'react';
+import IconButton from '@material-ui/core/IconButton'
+import HomeIcon from '@material-ui/icons/Home';
 import { Link } from 'react-router-dom';
 
 function Header() {
     const style = {
-        height: '100px',
+        height: '50px',
         position: 'fixed',
         width: '100%',
         background: 'white',
@@ -15,19 +17,11 @@ function Header() {
 
     return (
         <header style={style}>
-            <nav>
-                <ul>
-                    <li>
-                        <Link to="/">Home</Link>
-                    </li>
-                    <li>
-                        <Link to="/input-page">Input Page</Link>
-                    </li>
-                    <li>
-                        <Link to="/admin-view">Admin View</Link>
-                    </li>
-                </ul>
-            </nav>
+            <Link to="/">
+                <IconButton size='medium'>
+                    <HomeIcon fontSize="large" />
+                </IconButton>
+            </Link>
         </header>
     );
 }
