@@ -1,5 +1,11 @@
+
+form { width: 400px; }
+form section div { float: left; }
+/* form section div.full { clear: both; } */
+form section div label { display: inline-block; text-align: right; }
+
 input {
-    display: block;
+    /* display: block; */
     font-size: 16px;
     padding: 4px 2px;
     border: solid 3px #aacfe4;
@@ -7,6 +13,14 @@ input {
     margin: 2px 0 20px 30px;
 }
 
+textarea {
+    display: block;
+    font-size: 16px;
+    padding: 4px 2px;
+    border: solid 3px #aacfe4;
+    margin: 2px 0 20px 30px;
+}
+
 h3 {
-    position: center;
+    position: sticky;
 }
