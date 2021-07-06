@@ -57,34 +57,35 @@ function JoinRoomForm(props) {
                 handleSubmit(e);
             }}
         >
-            <label>
-                {' '}
-                Room code:
+            <div>
+                <label for="room-code">Room code:</label>
                 <input
+                    id="room-code"
+                    name="room-code"
                     type="text"
                     required
                     value={roomCode}
-                    onChange={(e) => {
-                        setRoomCode(e.target.value);
-                    }}
+                    onChange={(e) => { setRoomCode(e.target.value); }}
                 />
-            </label>
-            <label>
-                {' '}
-                Username:
+            </div>
+
+            <div>
+                <label for='username'>Username:</label>
                 <input
+                    id='username'
+                    name='username'
                     type="text"
                     required
                     value={name}
-                    onChange={(e) => {
-                        setName(e.target.value);
-                    }}
+                    onChange={(e) => { setName(e.target.value); }}
                 />
-            </label>
-            <label>
-                {' '}
-                Need min ($):
+            </div>
+
+            <div>
+                <label for='need-min'>Need min ($):</label>
                 <input
+                    id='need-min'
+                    name='need-min'
                     type="number"
                     required
                     min="0"
@@ -93,11 +94,13 @@ function JoinRoomForm(props) {
                         setNeedsLowerBoundCents(e.target.value);
                     }}
                 />
-            </label>
-            <label>
-                {' '}
-                Need max ($):
+            </div>
+
+            <div>
+                <label for='need-max'>Need max ($):</label>
                 <input
+                    id='need-max'
+                    name='need-max'
                     type="number"
                     required
                     min={needsLowerBoundCents}
@@ -106,21 +109,29 @@ function JoinRoomForm(props) {
                         setNeedsUpperBoundCents(e.target.value);
                     }}
                 />
-            </label>
-            <label>
-                {' '}
-                Need description:
-                <input
-                    type="text"
+            </div>
+
+
+            <div>
+                <label for='need-description'>Need description:</label>
+                <textarea
+                    id='need-description'
+                    name='need-description'
+                    rows='4'
+                    cols='50'
                     value={needsDescription}
                     onChange={(e) => {
                         setNeedsDescription(e.target.value);
                     }}
                 />
-            </label>
-            <button type="submit" name="Submit">
+            </div>
+
+            <button
+                type="submit"
+                name="Submit">
                 Submit
             </button>
+
         </form>
     );
 }

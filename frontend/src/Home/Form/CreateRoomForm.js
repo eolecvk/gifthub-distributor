@@ -49,19 +49,18 @@ function CreateRoomForm(props) {
                 handleSubmit(e);
             }}
         >
-            <label>
-                {' '}
-                Room name:
+            <div>
+                <label>Room name:</label>
                 <input
                     type="text"
                     required
                     value={roomName}
                     onChange={(e) => setRoomName(e.target.value)}
                 />
-            </label>
-            <label>
-                {' '}
-                Amount ($):
+            </div>
+
+            <div>
+                <label>Amount ($):</label>
                 <input
                     type="number"
                     required
@@ -69,11 +68,12 @@ function CreateRoomForm(props) {
                     value={splittingCents}
                     onChange={(e) => setSplittingCents(e.target.value)}
                 />
-            </label>
+            </div>
+
             <button type="submit" name="Submit">
                 Submit
             </button>
-        </form>
+        </form >
     );
 }
 
