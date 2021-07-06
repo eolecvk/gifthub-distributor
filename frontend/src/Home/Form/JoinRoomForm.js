@@ -18,7 +18,8 @@ function JoinRoomForm(props) {
     /* eslint-enable no-unused-vars */
 
     function saveRoomInfo(roomInfo) {
-        setCookie('roomInfo', roomInfo, { path: '/' });
+        setCookie('roomInfo', roomInfo, { path: '/' }); //DEPRECATE THIS
+        sessionStorage.setItem("roomInfo", JSON.stringify(roomInfo))
     }
 
     const handleSubmit = (e) => {

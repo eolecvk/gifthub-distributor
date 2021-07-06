@@ -8,6 +8,7 @@ import Header from './Header';
 import Footer from './Footer';
 
 function App() {
+
     const styleContent = {
         marginTop: '150px',
     };

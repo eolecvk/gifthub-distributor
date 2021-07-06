@@ -13,17 +13,17 @@ class InputPage extends Component {
         this.state = {
             defaultDistribution: 'zero',
             reset: false,
-            roomInfo: this.props.cookies.get('roomInfo') || '',
+            roomInfo: this.props.cookies.get('roomInfo') || ''
         };
     }
     intervalID;
 
     componentDidMount() {
-        this.getData();
+        this.getData()
     }
 
     componentWillUnmount() {
-        clearTimeout(this.intervalID);
+        clearTimeout(this.intervalID)
     }
 
     getData = () => {
@@ -33,8 +33,25 @@ class InputPage extends Component {
             }
             // call getData() again in 5 seconds
             this.intervalID = setTimeout(this.getData.bind(this), 5000);
-        });
-    };
+        })
+    }
+
+    // NEED TO MOVE THIS TO UTILS
+    // Generate updated version of state `currentState`
+    // when inserting a new move of `newValue` at sliderId `id`
+    getStateObjectNewMoves = (currentState, newSliderValues) => {
+        return {
+            currentValues: { ...newSliderValues }, // NEED TO DEPRECATED THIS
+            reset: false,
+            history: {
+                index: currentState.history.index + 1,
+                states: [
+                    ...currentState.history.states.slice(0, currentState.history.index + 1),
+                    { ...newSliderValues }
+                ]
+            }
+        }
+    }
 
     updateDefaultDistribution = (defaultDistribution) => {
         const roomInfo = this.state.roomInfo;
@@ -49,17 +66,30 @@ class InputPage extends Component {
         const roomAmount = roomInfo.splitting_cents / 100;
 
         // ...checks if newDefaultDistribution yields an invalid state before transitioning
-        if (futureTotalCost <= roomAmount) {
-            this.setState({
-                defaultDistribution: defaultDistribution,
-                reset: true,
-            });
-        } else {
-            alert(
-                'Not enough money to set this distribution: ' + futureTotalCost + '/ ' + roomAmount
-            );
+        if (futureTotalCost > roomAmount) {
+            alert('Not enough money to set this distribution: ' + futureTotalCost + '/ ' + roomAmount)
+            return
         }
-    };
+
+        // Update grid state stored in memory (will be used for slider grid initialization upon re-rendering)
+        const storedSliderGridState = JSON.parse(sessionStorage.getItem("sliderGridState"))
+        const defaultSliderGridState = {
+            currentValues: futureStartingValues, // NEED TO DEPRECATED THIS
+            reset: false,
+            history: {
+                index: 0,
+                states: [futureStartingValues]
+            }
+        }
+        const currentSliderGridState = storedSliderGridState || defaultSliderGridState
+        const futureSliderGridState = this.getStateObjectNewMoves(currentSliderGridState, futureStartingValues)
+        sessionStorage.setItem("sliderGridState", JSON.stringify(futureSliderGridState))
+
+        this.setState({
+            defaultDistribution: defaultDistribution,
+            reset: true,
+        });
+    }
 
     render() {
         const slidersInitializationData = getSlidersInitializationData(
@@ -69,8 +99,9 @@ class InputPage extends Component {
 
         return (
             <div>
-                <h1>Input Page</h1>
-                <RoomInfo roomInfo={this.state.roomInfo} />
+                <RoomInfo
+                    roomInfo={this.state.roomInfo}
+                />
                 <ButtonUpdateDefaultDistribution
                     updateDefaultDistribution={this.updateDefaultDistribution}
                 />

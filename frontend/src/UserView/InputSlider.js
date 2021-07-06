@@ -1,11 +1,26 @@
 import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
 import Input from '@material-ui/core/Input';
 import FaceIcon from '@material-ui/icons/Face';
+import Tooltip from '@material-ui/core/Tooltip';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import colors from './colors'
 
-function InputSliderDev(props) {
+function InputSlider(props) {
+
+    const useStyles = makeStyles({
+        root: {
+            width: '80%',
+        },
+        input: {
+            width: `${props.maxValue.toString().length}` + 'em',
+        },
+    });
+
+    const classes = useStyles();
+
     function handleSliderChangeCommitted(event, newValue) {
         handleSliderChange(event, newValue, true);
     }
@@ -33,16 +48,24 @@ function InputSliderDev(props) {
         { value: surviveValue, label: ':)' },
         { value: thriveValue, label: ':D' },
     ];
+    
+    const needsDescription = props.userInfo.needs_description
 
     return (
-        //<div className={classes.root}> <-- ADD FOR STYLING
-        <div>
+        <div className={classes.root}>
             <Typography id="input-slider" gutterBottom>
                 {title}
             </Typography>
             <Grid container spacing={2} alignItems="center">
                 <Grid item>
-                    <FaceIcon />
+                    <Tooltip
+                        title={needsDescription}
+                        aria-label={needsDescription}>
+                        <FaceIcon
+                            fontSize="large"
+                            style={{ color: colors[props.sliderId] }}
+                        />
+                    </Tooltip>
                 </Grid>
                 <Grid item xs>
                     <Slider
@@ -53,11 +76,12 @@ function InputSliderDev(props) {
                         onChangeCommitted={handleSliderChangeCommitted}
                         aria-labelledby="input-slider"
                         marks={marks}
+                        valueLabelDisplay='auto'
                     />
                 </Grid>
                 <Grid item>
                     <Input
-                        // className={classes.input}
+                        className={classes.input}
                         value={startingValue ? startingValue : 0}
                         margin="dense"
                         onChange={handleInputChange}
@@ -76,4 +100,4 @@ function InputSliderDev(props) {
     );
 }
 
-export default InputSliderDev;
+export default InputSlider;

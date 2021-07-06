@@ -33,7 +33,7 @@ class AdminView extends Component {
             .then((response) => {
                 this.setState({ people: response.data.people });
                 // call getData() again in 5 seconds
-                this.intervalID = setTimeout(this.getData.bind(this), 5000);
+                this.intervalID = setTimeout(this.getData.bind(this), 1000);
             })
             .catch((error) => {
                 console.error(error);
