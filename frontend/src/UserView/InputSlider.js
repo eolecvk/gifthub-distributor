@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
 import Input from '@material-ui/core/Input';
@@ -18,8 +18,19 @@ function InputSlider(props) {
             width: `${props.maxValue.toString().length}` + 'em',
         },
     });
-
     const classes = useStyles();
+
+    const { title, surviveValue, thriveValue, startingValue, maxValue, userInfo } = props;
+    const needsDescription = userInfo.needs_description
+    const groupVoteAvg = userInfo.avg_cents / 100
+    
+    const marks = [
+        { value: surviveValue, label: ':)' },
+        { value: thriveValue, label: ':D' },
+        { value : groupVoteAvg, label: 'avg'}
+    ];
+    
+
 
     function handleSliderChangeCommitted(event, newValue) {
         handleSliderChange(event, newValue, true);
@@ -41,15 +52,6 @@ function InputSlider(props) {
             props.handleUpdate(props.sliderId, props.maxValue, false);
         }
     }
-
-    const { title, surviveValue, thriveValue, startingValue, maxValue } = props;
-
-    const marks = [
-        { value: surviveValue, label: ':)' },
-        { value: thriveValue, label: ':D' },
-    ];
-    
-    const needsDescription = props.userInfo.needs_description
 
     return (
         <div className={classes.root}>

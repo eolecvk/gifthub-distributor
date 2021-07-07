@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { getStartingValues, makeSliderGrid, registerVote } from './utils';
+import { getStartingValues, registerVote } from './utils';
+import InputSlider from './InputSlider'
 import ButtonsUndoRedo from './ButtonsUndoRedo'
 
 
@@ -162,13 +163,21 @@ class SliderGrid extends Component {
 
 
     render() {
-        const sliders = makeSliderGrid(
-            this.props.slidersInitializationData,
-            this.state.currentValues,
-            this.handleUpdate,
-            this.state.reset,
-            this.props.roomInfo
-        );
+        const sliders = this.props.slidersInitializationData
+            .sort((sl1, sl2) => sl1.personId - sl2.personId)
+            .map((slData) => (
+                <InputSlider
+                    key={slData.personId.toString()}
+                    sliderId={slData.personId.toString()}
+                    title={slData.title.toUpperCase()}
+                    surviveValue={slData.surviveValue}
+                    thriveValue={slData.thriveValue}
+                    startingValue={this.state.reset ? slData.startingValue : this.state.currentValues[slData.personId.toString()]}
+                    maxValue={slData.maxValue}
+                    handleUpdate={this.handleUpdate}
+                    userInfo={this.props.roomInfo.people.find(p => { return p.person_id == slData.personId.toString() })}
+                />
+            ));
 
         return (
             <div>

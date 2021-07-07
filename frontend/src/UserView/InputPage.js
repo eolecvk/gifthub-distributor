@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { withCookies } from 'react-cookie';
-//import roomInfo from './roomInfoCookie';
 import axios from 'axios';
 import RoomInfo from './RoomInfo';
 import ButtonUpdateDefaultDistribution from './ButtonUpdateDefaultDistribution';
@@ -31,8 +30,11 @@ class InputPage extends Component {
             if (response.data.people.length !== this.state.roomInfo.people.length) {
                 this.setState({ roomInfo: response.data, reset: true });
             }
+            if (this.state.roomInfo !== response.data){
+                this.setState({ roomInfo: response.data, reset: false });
+            }
             // call getData() again in 5 seconds
-            this.intervalID = setTimeout(this.getData.bind(this), 5000);
+            this.intervalID = setTimeout(this.getData.bind(this), 500);
         })
     }
 
