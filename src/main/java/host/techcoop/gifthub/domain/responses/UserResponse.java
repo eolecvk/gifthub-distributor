@@ -1,6 +1,7 @@
 package host.techcoop.gifthub.domain.responses;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import lombok.Builder;
 import lombok.Value;
 
@@ -15,4 +16,5 @@ public class UserResponse {
   int needsUpperBoundCents;
   int needsLowerBoundCents;
   long avgCents;
+  ImmutableMap<EmotiveKind, List<Integer>> emotive;
 }

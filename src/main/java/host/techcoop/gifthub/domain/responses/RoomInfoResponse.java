@@ -44,6 +44,7 @@ public class RoomInfoResponse {
                       .needsUpperBoundCents(user.getNeedsUpperBoundCents())
                       .personId(user.getUserId())
                       .avgCents(averageVote)
+                      .emotive(ImmutableMap.of(DISSENT_DOWN.ImmutableList.of(1)))
                       .build();
                 })
             .collect(toImmutableList());

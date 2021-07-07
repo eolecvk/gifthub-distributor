@@ -9,7 +9,8 @@ import lombok.Value;
 @EqualsAndHashCode(callSuper = false)
 public class EmotiveEvent implements Event {
   int barId;
-  String emotion;
+  EmotiveKind emotion;
+  Toggle toggle;
 
   @Override
   public EventKind getKind() {
