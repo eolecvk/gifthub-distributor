@@ -27,7 +27,7 @@ public class User {
         .collect(ImmutableList.toImmutableList());
   }
 
-  public ImmutableList<EmotiveState> getEmotiveState() {
+  public ImmutableList<EmotiveState> getEmotiveStates() {
     return emotiveStateByUserId.entries().stream()
         .map(e -> new EmotiveState(e.getKey(), e.getValue()))
         .collect(ImmutableList.toImmutableList());
