@@ -1,6 +1,8 @@
 package host.techcoop.gifthub.domain.requests.events;
 
+import host.techcoop.gifthub.domain.enums.EmotiveKind;
 import host.techcoop.gifthub.domain.enums.EventKind;
+import host.techcoop.gifthub.domain.enums.Toggle;
 import host.techcoop.gifthub.domain.interfaces.Event;
 import lombok.EqualsAndHashCode;
 import lombok.Value;

@@ -2,8 +2,10 @@ package host.techcoop.gifthub.domain.responses;
 
 import static com.google.common.collect.ImmutableList.toImmutableList;
 import static com.google.common.collect.ImmutableListMultimap.toImmutableListMultimap;
+import static host.techcoop.gifthub.domain.enums.EmotiveKind.DISSENT_DOWN;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ListMultimap;
 import host.techcoop.gifthub.domain.GiftHubRoom;
 import host.techcoop.gifthub.domain.UserVote;
@@ -44,7 +46,7 @@ public class RoomInfoResponse {
                       .needsUpperBoundCents(user.getNeedsUpperBoundCents())
                       .personId(user.getUserId())
                       .avgCents(averageVote)
-                      .emotive(ImmutableMap.of(DISSENT_DOWN.ImmutableList.of(1)))
+                      .emotive(ImmutableMap.of(DISSENT_DOWN, ImmutableList.of(1)))
                       .build();
                 })
             .collect(toImmutableList());
