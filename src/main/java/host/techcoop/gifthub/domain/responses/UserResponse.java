@@ -3,7 +3,6 @@ package host.techcoop.gifthub.domain.responses;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import host.techcoop.gifthub.domain.enums.EmotiveKind;
-import java.util.List;
 import lombok.Builder;
 import lombok.Value;
 

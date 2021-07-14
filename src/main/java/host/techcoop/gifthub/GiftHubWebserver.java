@@ -5,6 +5,7 @@ import static spark.Spark.*;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import host.techcoop.gifthub.domain.EmotiveState;
 import host.techcoop.gifthub.domain.GiftHubRoom;
 import host.techcoop.gifthub.domain.User;
 import host.techcoop.gifthub.domain.UserVote;
@@ -99,6 +100,16 @@ public class GiftHubWebserver {
           break;
         case EMOTIVE:
           EmotiveEvent emotiveEvent = (EmotiveEvent) event;
+          EmotiveState emotiveState =
+              new EmotiveState(emotiveEvent.getBarId(), emotiveEvent.getEmotion());
+          switch (emotiveEvent.getToggle()) {
+            case OFF:
+              user = user.withRemovedEmotiveState(emotiveState);
+              break;
+            case ON:
+              user = user.withUpdatedEmotiveState(emotiveState);
+              break;
+          }
           break;
         case NEEDS_UPDATE:
           NeedsUpdateEvent needsUpdateEvent = (NeedsUpdateEvent) event;
