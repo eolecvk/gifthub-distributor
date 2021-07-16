@@ -7,6 +7,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import colors from './colors'
+import ToggleButtonsUpDown from './ToggleButtonsUpDown';
 
 function InputSlider(props) {
 
@@ -96,6 +97,9 @@ function InputSlider(props) {
                             'aria-labelledby': 'input-slider',
                         }}
                     />
+                </Grid>
+                <Grid item>
+                    <ToggleButtonsUpDown updateOpinion={(e)=>console.log(e)}/>
                 </Grid>
             </Grid>
         </div>

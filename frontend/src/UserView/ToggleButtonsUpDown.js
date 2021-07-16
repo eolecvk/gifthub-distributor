@@ -10,7 +10,7 @@ import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 // Add ToggleButtons to sliderGrid
 // Test 
 
-export default function ToggleButtons(props) {
+function ToggleButtonsUpDown(props) {
   const [opinion, setOpinion] = React.useState('');
 
   const {sliderId, updateOpinion} = props
@@ -36,3 +36,5 @@ export default function ToggleButtons(props) {
     </ToggleButtonGroup>
   );
 }
+
+export default ToggleButtonsUpDown
