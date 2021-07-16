@@ -58,7 +58,10 @@ public class User {
 
   public User withUpdatedUserVote(UserVote voteIn) {
     ImmutableMap.Builder<Integer, Long> mapBuilder = ImmutableMap.builder();
-    mapBuilder.putAll(centsByUserId).put(voteIn.getUserId(), voteIn.getCents());
+    centsByUserId.entrySet().stream()
+        .filter(entry -> !entry.getKey().equals(voteIn.getUserId()))
+        .forEach(entry -> mapBuilder.put(entry.getKey(), entry.getValue()));
+    mapBuilder.put(voteIn.getUserId(), voteIn.getCents());
     return this.toBuilder().centsByUserId(mapBuilder.build()).build();
   }
 
