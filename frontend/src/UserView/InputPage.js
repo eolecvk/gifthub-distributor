@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { withCookies } from 'react-cookie';
 import axios from 'axios';
 import isEqual from 'lodash.isequal';
 import RoomInfo from './RoomInfo';
@@ -13,7 +12,7 @@ class InputPage extends Component {
         this.state = {
             defaultDistribution: 'zero',
             reset: false,
-            roomInfo: this.props.cookies.get('roomInfo') || ''
+            roomInfo: JSON.parse(sessionStorage.getItem("roomInfo")) || ''
         };
     }
     intervalID;
@@ -124,4 +123,4 @@ class InputPage extends Component {
     }
 }
 
-export default withCookies(InputPage);
+export default InputPage

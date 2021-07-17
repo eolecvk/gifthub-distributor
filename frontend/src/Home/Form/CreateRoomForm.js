@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useCookies } from 'react-cookie';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import './Form.css';
@@ -9,14 +8,6 @@ function CreateRoomForm(props) {
     const close = () => props.onSubmit();
     const [roomName, setRoomName] = useState('');
     const [splittingCents, setSplittingCents] = useState(0);
-
-    /* eslint-disable no-unused-vars */
-    const [cookies, setCookie] = useCookies(['roomInfo']);
-    /* eslint-enable no-unused-vars */
-
-    function saveRoomInfo(roomInfo) {
-        setCookie('roomInfo', roomInfo, { path: '/' });
-    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -32,8 +23,7 @@ function CreateRoomForm(props) {
             .post('/api/rooms', payload)
             .then((response) => {
                 if (response.status === 200) {
-                    //save response as app context or cookie or something
-                    saveRoomInfo(response.data);
+                    sessionStorage.setItem("roomInfo", JSON.stringify(response.data))
                     history.push('/admin-view');
                 }
             })

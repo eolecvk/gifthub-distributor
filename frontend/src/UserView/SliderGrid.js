@@ -137,7 +137,7 @@ class SliderGrid extends Component {
         const roomCode = this.props.roomInfo.room_code
         registerVote(voteData, roomCode)
 
-        // Update Cookie & state
+        // Update slider state stored in sessionStorage
         const newState = this.getStateObjectOnUndo(this.state)
         sessionStorage.setItem("sliderGridState", JSON.stringify(newState));
         this.setState(newState)
@@ -155,7 +155,7 @@ class SliderGrid extends Component {
         const roomCode = this.props.roomInfo.room_code
         registerVote(voteData, roomCode)
 
-        // Update Cookie & state
+        // Update slider state stored in sessionStorage
         const newState = this.getStateObjectOnRedo(this.state)
         sessionStorage.setItem("sliderGridState", JSON.stringify(newState));
         this.setState(newState)

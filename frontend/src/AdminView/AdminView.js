@@ -1,20 +1,13 @@
 import React, { Component } from 'react';
 import AdminViewSlider from './AdminViewSlider';
-import { instanceOf } from 'prop-types';
-import { withCookies, Cookies } from 'react-cookie';
 import axios from 'axios';
 
 // Example: https://blog.stvmlbrn.com/2019/02/20/automatically-refreshing-data-in-react.html
 class AdminView extends Component {
-    static propTypes = {
-        cookies: instanceOf(Cookies).isRequired,
-    };
 
-    constructor(props) {
-        super(props);
-
-        const { cookies } = props;
-        this.state = cookies.get('roomInfo') || '';
+    constructor() {
+        super()
+        this.state = JSON.parse(sessionStorage.getItem("roomInfo")) || '';
     }
 
     intervalID;
@@ -82,4 +75,4 @@ class AdminView extends Component {
     }
 }
 
-export default withCookies(AdminView);
+export default AdminView
