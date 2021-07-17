@@ -3,7 +3,7 @@ import RemoveIcon from '@material-ui/icons/Remove';
 import AddIcon from '@material-ui/icons/Add';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-
+import { registerEmotive } from './utils';
 
 //TODO:
 // Define callback function `updateOpinion` with backend call to Emotive API
@@ -13,10 +13,13 @@ import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 function ToggleButtonsUpDown(props) {
   const [opinion, setOpinion] = React.useState('');
 
-  const {sliderId, updateOpinion} = props
+  const {sliderId} = props
 
   const handleOpinion = (event, newOpinion) => {
-    updateOpinion(sliderId, newOpinion)
+    let emotiveChanges = {}
+    emotiveChanges[props.sliderId] = newOpinion
+    const roomInfo = JSON.parse(sessionStorage.getItem("roomInfo"))
+    registerEmotive(emotiveChanges, roomInfo.room_code)
     setOpinion(newOpinion);
   };
 
@@ -27,10 +30,10 @@ function ToggleButtonsUpDown(props) {
       onChange={handleOpinion}
       aria-label="Opinion on distribution"
     >
-      <ToggleButton value="less" aria-label="Ask for less">
+      <ToggleButton value="DISSENT_DOWN" aria-label="Ask for less">
         <RemoveIcon />
       </ToggleButton>
-      <ToggleButton value="more" aria-label="Ask for more">
+      <ToggleButton value="DISSENT_UP" aria-label="Ask for more">
         <AddIcon />
       </ToggleButton>
     </ToggleButtonGroup>

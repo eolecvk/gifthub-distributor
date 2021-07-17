@@ -79,4 +79,30 @@ function registerVote(sliderValues, roomCode) {
         });
 }
 
-export { getSlidersInitializationData, getStartingValues, registerVote };
+function registerEmotive(emotiveValues, roomCode){
+
+    // FIGURE THIS OUT
+    const events = Object.keys(emotiveValues).map((key) => {
+        return {
+            kind: 'EMOTIVE',
+            bar_id: key,
+            emotion: emotiveValues[key],
+            toggle: 'ON'
+        };
+    }); 
+
+    const payload = { events: events };
+
+    axios
+    .put(`/api/${roomCode}`, payload)
+    .then((response) => {
+        console.log(JSON.stringify(response));
+    })
+    .catch((error) => {
+        console.log(error);
+        console.log(payload);
+    });
+
+}
+
+export { getSlidersInitializationData, getStartingValues, registerVote, registerEmotive };

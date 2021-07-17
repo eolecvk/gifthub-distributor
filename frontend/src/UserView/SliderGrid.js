@@ -92,7 +92,7 @@ class SliderGrid extends Component {
         }
     }
 
-    handleUpdate = (id, newValue, isVote) => {
+    handleUpdateSlider = (id, newValue, isVote) => {
         let actualNewValue = newValue
         let futureState = isVote ?
             this.getStateObjectNewMove(this.state, id, newValue) :
@@ -174,7 +174,7 @@ class SliderGrid extends Component {
                     thriveValue={slData.thriveValue}
                     startingValue={this.state.reset ? slData.startingValue : this.state.currentValues[slData.personId.toString()]}
                     maxValue={slData.maxValue}
-                    handleUpdate={this.handleUpdate}
+                    handleUpdateSlider={this.handleUpdateSlider}
                     userInfo={this.props.roomInfo.people.find(p => { return p.person_id == slData.personId.toString() })}
                 />
             ));

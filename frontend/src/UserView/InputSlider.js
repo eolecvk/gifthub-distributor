@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
 import Input from '@material-ui/core/Input';
@@ -24,33 +24,31 @@ function InputSlider(props) {
     const { title, surviveValue, thriveValue, startingValue, maxValue, userInfo } = props;
     const needsDescription = userInfo.needs_description
     const groupVoteAvg = userInfo.avg_cents / 100
-    
+
     const marks = [
         { value: surviveValue, label: ':)' },
         { value: thriveValue, label: ':D' },
-        { value : groupVoteAvg, label: 'avg'}
+        { value: groupVoteAvg, label: 'avg' }
     ];
-    
-
 
     function handleSliderChangeCommitted(event, newValue) {
         handleSliderChange(event, newValue, true);
     }
 
     function handleSliderChange(event, newValue, isVote) {
-        props.handleUpdate(props.sliderId, newValue, isVote);
+        props.handleUpdateSlider(props.sliderId, newValue, isVote);
     }
 
     function handleInputChange(event) {
         const newValue = event.target.value === '' ? '' : Number(event.target.value);
-        props.handleUpdate(props.sliderId, newValue, true);
+        props.handleUpdateSlider(props.sliderId, newValue, true);
     }
 
     function handleBlur() {
         if (props.startingValue < 0) {
-            props.handleUpdate(props.sliderId, 0, false);
+            props.handleUpdateSlider(props.sliderId, 0, false);
         } else if (props.startingValue > props.maxValue) {
-            props.handleUpdate(props.sliderId, props.maxValue, false);
+            props.handleUpdateSlider(props.sliderId, props.maxValue, false);
         }
     }
 
@@ -99,7 +97,7 @@ function InputSlider(props) {
                     />
                 </Grid>
                 <Grid item>
-                    <ToggleButtonsUpDown updateOpinion={(e)=>console.log(e)}/>
+                    <ToggleButtonsUpDown sliderId={props.sliderId} />
                 </Grid>
             </Grid>
         </div>
