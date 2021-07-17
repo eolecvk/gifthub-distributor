@@ -19,6 +19,7 @@ import host.techcoop.gifthub.domain.requests.events.AdjustEvent;
 import host.techcoop.gifthub.domain.requests.events.EmotiveEvent;
 import host.techcoop.gifthub.domain.requests.events.NeedsUpdateEvent;
 import host.techcoop.gifthub.domain.responses.ErrorResponse;
+import host.techcoop.gifthub.domain.responses.JoinRoomResponse;
 import host.techcoop.gifthub.domain.responses.RoomInfoResponse;
 import host.techcoop.gifthub.interfaces.GiftHubRoomDAO;
 import java.io.PrintWriter;
@@ -133,14 +134,14 @@ public class GiftHubWebserver {
     return RoomInfoResponse.from(roomDAO.updateUserInRoom(roomCode, user));
   }
 
-  private RoomInfoResponse joinRoom(Request request, Response response) {
+  private JoinRoomResponse joinRoom(Request request, Response response) {
     String roomCode = request.params(":roomCode");
     JoinRoomRequest joinRequest = gson.fromJson(request.body(), JoinRoomRequest.class);
     int userId = roomDAO.addUserToRoom(roomCode, joinRequest);
     GiftHubRoom room = roomDAO.getRoomByCode(roomCode);
     request.session().attribute(SESSION_ROOM_KEY, room.getCode());
     request.session().attribute(SESSION_USER_ID_KEY, userId);
-    return RoomInfoResponse.from(room);
+    return new JoinRoomResponse(userId, RoomInfoResponse.from(room));
   }
 
   private RoomInfoResponse createRoom(Request request, Response response) {
