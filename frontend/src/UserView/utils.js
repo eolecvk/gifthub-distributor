@@ -1,5 +1,3 @@
-import React from 'react';
-import InputSlider from './InputSlider';
 import axios from 'axios';
 
 function getSlidersInitializationData(roomInfo, defaultDistribution) {

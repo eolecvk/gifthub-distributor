@@ -11,13 +11,12 @@ import { registerEmotive } from './utils';
 // Test 
 
 function ToggleButtonsUpDown(props) {
+  const { sliderId } = props
   const [opinion, setOpinion] = React.useState('');
-
-  const {sliderId} = props
 
   const handleOpinion = (event, newOpinion) => {
     let emotiveChanges = {}
-    emotiveChanges[props.sliderId] = newOpinion
+    emotiveChanges[sliderId] = newOpinion
     const roomInfo = JSON.parse(sessionStorage.getItem("roomInfo"))
     registerEmotive(emotiveChanges, roomInfo.room_code)
     setOpinion(newOpinion);
@@ -30,10 +29,16 @@ function ToggleButtonsUpDown(props) {
       onChange={handleOpinion}
       aria-label="Opinion on distribution"
     >
-      <ToggleButton value="DISSENT_DOWN" aria-label="Ask for less">
+      <ToggleButton
+        value="DISSENT_DOWN"
+        aria-label="Ask for less"
+      >
         <RemoveIcon />
       </ToggleButton>
-      <ToggleButton value="DISSENT_UP" aria-label="Ask for more">
+      <ToggleButton
+        value="DISSENT_UP"
+        aria-label="Ask for more"
+      >
         <AddIcon />
       </ToggleButton>
     </ToggleButtonGroup>

@@ -49,7 +49,7 @@ function JoinRoomForm(props) {
             }}
         >
             <div>
-                <label for="room-code">Room code:</label>
+                <label htmlFor="room-code">Room code:</label>
                 <input
                     id="room-code"
                     name="room-code"
@@ -61,7 +61,7 @@ function JoinRoomForm(props) {
             </div>
 
             <div>
-                <label for='username'>Username:</label>
+                <label htmlFor='username'>Username:</label>
                 <input
                     id='username'
                     name='username'
@@ -73,7 +73,7 @@ function JoinRoomForm(props) {
             </div>
 
             <div>
-                <label for='need-min'>Need min ($):</label>
+                <label htmlFor='need-min'>Need min ($):</label>
                 <input
                     id='need-min'
                     name='need-min'
@@ -88,7 +88,7 @@ function JoinRoomForm(props) {
             </div>
 
             <div>
-                <label for='need-max'>Need max ($):</label>
+                <label htmlFor='need-max'>Need max ($):</label>
                 <input
                     id='need-max'
                     name='need-max'
@@ -104,7 +104,7 @@ function JoinRoomForm(props) {
 
 
             <div>
-                <label for='need-description'>Need description:</label>
+                <label htmlFor='need-description'>Need description:</label>
                 <textarea
                     id='need-description'
                     name='need-description'

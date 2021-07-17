@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
 import Input from '@material-ui/core/Input';
@@ -16,7 +16,7 @@ function InputSlider(props) {
             width: '80%',
         },
         input: {
-            width: `${props.maxValue.toString().length}` + 'em',
+            width: `${props.maxValue.toString().length} em`,
         },
     });
     const classes = useStyles();
