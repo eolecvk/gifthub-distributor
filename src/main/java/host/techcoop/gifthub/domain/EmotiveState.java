@@ -7,4 +7,8 @@ import lombok.Value;
 public class EmotiveState {
   int userId;
   EmotiveKind kind;
+
+  public EmotiveState getOpposite() {
+    return new EmotiveState(userId, kind.getOpposite());
+  }
 }

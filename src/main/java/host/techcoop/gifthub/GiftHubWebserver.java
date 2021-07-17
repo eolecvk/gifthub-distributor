@@ -107,7 +107,9 @@ public class GiftHubWebserver {
               user = user.withRemovedEmotiveState(emotiveState);
               break;
             case ON:
-              user = user.withUpdatedEmotiveState(emotiveState);
+              user =
+                  user.withUpdatedEmotiveState(emotiveState)
+                      .withRemovedEmotiveState(emotiveState.getOpposite());
               break;
           }
           break;
@@ -128,8 +130,7 @@ public class GiftHubWebserver {
       }
     }
     user.verify(oldUser, room);
-    roomDAO.updateUserInRoom(roomCode, user);
-    return null;
+    return RoomInfoResponse.from(roomDAO.updateUserInRoom(roomCode, user));
   }
 
   private RoomInfoResponse joinRoom(Request request, Response response) {
