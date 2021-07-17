@@ -12,13 +12,22 @@ import { registerEmotive } from './utils';
 
 function ToggleButtonsUpDown(props) {
   const { sliderId } = props
-  const [opinion, setOpinion] = React.useState('');
+  const storedOpinion = sessionStorage.getItem("opinion") || ''
+
+  const [opinion, setOpinion] = React.useState(storedOpinion);
+  const roomInfo = JSON.parse(sessionStorage.getItem("roomInfo"))
+  const roomCode = roomInfo.room_code
 
   const handleOpinion = (event, newOpinion) => {
-    let emotiveChanges = {}
-    emotiveChanges[sliderId] = newOpinion
-    const roomInfo = JSON.parse(sessionStorage.getItem("roomInfo"))
-    registerEmotive(emotiveChanges, roomInfo.room_code)
+    let emotiveChange = {}
+    emotiveChange['kind'] = 'EMOTIVE'
+    emotiveChange['bar_id'] = sliderId
+    emotiveChange['emotion'] = newOpinion || opinion
+    emotiveChange['toggle'] = newOpinion ? 'ON' : 'OFF'
+    const events = [emotiveChange]
+
+    sessionStorage.setItem("opinion", newOpinion)
+    registerEmotive(events, roomCode)
     setOpinion(newOpinion);
   };
 

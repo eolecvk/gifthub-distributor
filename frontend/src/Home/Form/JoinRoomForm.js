@@ -28,8 +28,8 @@ function JoinRoomForm(props) {
             .post(`/api/${roomCode}/join`, payload)
             .then((response) => {
                 if (response.status === 200) {
+                    sessionStorage.clear();
                     sessionStorage.setItem("roomInfo", JSON.stringify(response.data))
-                    sessionStorage.getItem("sliderGridState") && sessionStorage.removeItem("sliderGridState"); 
                     history.push('/input-page');
                 }
             })

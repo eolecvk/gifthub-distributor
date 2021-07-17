@@ -77,17 +77,7 @@ function registerVote(sliderValues, roomCode) {
         });
 }
 
-function registerEmotive(emotiveValues, roomCode){
-
-    // FIGURE THIS OUT
-    const events = Object.keys(emotiveValues).map((key) => {
-        return {
-            kind: 'EMOTIVE',
-            bar_id: key,
-            emotion: emotiveValues[key],
-            toggle: 'ON'
-        };
-    }); 
+function registerEmotive(events, roomCode){
 
     const payload = { events: events };
 
