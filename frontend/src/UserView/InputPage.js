@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withCookies } from 'react-cookie';
 import axios from 'axios';
+import isEqual from 'lodash.isequal';
 import RoomInfo from './RoomInfo';
 import ButtonUpdateDefaultDistribution from './ButtonUpdateDefaultDistribution';
 import SlidersGrid from './SliderGrid';
@@ -27,10 +28,13 @@ class InputPage extends Component {
 
     getData = () => {
         axios.get('/api/' + this.state.roomInfo.room_code).then((response) => {
+            // Case : new people are detected in the backend roomInfo data compared to roomInfo in client state
             if (response.data.people.length !== this.state.roomInfo.people.length) {
                 this.setState({ roomInfo: response.data, reset: true });
             }
-            if (this.state.roomInfo !== response.data){
+
+            // Case: no new people detected but average has moved?
+            if (!isEqual(this.state.roomInfo, response.data)){
                 this.setState({ roomInfo: response.data, reset: false });
             }
             // call getData() again in 5 seconds
