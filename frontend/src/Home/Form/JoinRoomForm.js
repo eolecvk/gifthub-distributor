@@ -29,7 +29,8 @@ function JoinRoomForm(props) {
             .then((response) => {
                 if (response.status === 200) {
                     sessionStorage.clear();
-                    sessionStorage.setItem("roomInfo", JSON.stringify(response.data))
+                    sessionStorage.setItem("roomInfo", JSON.stringify(response.data.room_info))
+                    sessionStorage.setItem("userId", JSON.stringify(response.data.user_id))
                     history.push('/input-page');
                 }
             })

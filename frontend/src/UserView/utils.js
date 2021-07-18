@@ -77,20 +77,4 @@ function registerVote(sliderValues, roomCode) {
         });
 }
 
-function registerEmotive(events, roomCode){
-
-    const payload = { events: events };
-
-    axios
-    .put(`/api/${roomCode}`, payload)
-    .then((response) => {
-        console.log(JSON.stringify(response));
-    })
-    .catch((error) => {
-        console.log(error);
-        console.log(payload);
-    });
-
-}
-
-export { getSlidersInitializationData, getStartingValues, registerVote, registerEmotive };
+export { getSlidersInitializationData, getStartingValues, registerVote };

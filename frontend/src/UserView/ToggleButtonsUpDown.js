@@ -1,48 +1,66 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import axios from 'axios';
 import RemoveIcon from '@material-ui/icons/Remove';
 import AddIcon from '@material-ui/icons/Add';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import { registerEmotive } from './utils';
-
-//TODO:
-// Define callback function `updateOpinion` with backend call to Emotive API
-// Add ToggleButtons to sliderGrid
-// Test 
 
 function ToggleButtonsUpDown(props) {
 
+  const [opinion, setOpinion] = React.useState('unset')
+
   const { sliderId } = props
+  const userId = sessionStorage.getItem("userId")
   const roomInfo = JSON.parse(sessionStorage.getItem("roomInfo"))
   const roomCode = roomInfo.room_code
 
-  //Access stored opinions in localStorage
-  //and set state to existing value if applicable
-  const storedOpinions = JSON.parse(sessionStorage.getItem("opinions")) || {}
-  const barsWithOpinions = Object.keys(storedOpinions)
-  const storedOpinion = barsWithOpinions.includes(sliderId) ? storedOpinions[sliderId] : ''
-  const [opinion, setOpinion] = React.useState(storedOpinion);
+  //Upon mounting the component, make a request to the backend
+  //to set the initial state of the toggle
+  useEffect(() => {
+    const getOpinion = async () => {
+      const response = await axios.get(`/api/${roomCode}`)
+      const responseData = await response.data
+      const emotive = parseEmotive(responseData, userId, sliderId)
+      setOpinion(emotive)
+    }
 
-  const handleOpinion = (event, newOpinion) => {
+    if (opinion === 'unset') {
+      getOpinion();
+    }
+  }, []);
 
+  const parseEmotive = (roomInfo, userId, sliderId) => {
+    //Parse the emotive state value for a given userId and sliderId
+    //based on a roomInfo object
+    const userData = roomInfo.people.filter((el) => {return (el.person_id==userId)})[0]
+    if (
+      typeof userData.emotive.DISSENT_UP !== 'undefined' &&
+      userData.emotive.DISSENT_UP.includes(parseInt(sliderId))) {
+      return 'DISSENT_UP'
+    }
+    if (
+      typeof userData.emotive.DISSENT_DOWN !== 'undefined' &&
+      userData.emotive.DISSENT_DOWN.includes(parseInt(sliderId))) {
+      return 'DISSENT_DOWN'
+    }
+    return ''
+  }
+
+  const handleOpinion = async (event, newOpinion) => {
+    // Send newOpinion to backend
+    // And set the state of the opinion toggle on the frontend
+    // based on the confirmation from the backend
     let emotiveChange = {}
     emotiveChange['kind'] = 'EMOTIVE'
     emotiveChange['bar_id'] = sliderId
     emotiveChange['emotion'] = newOpinion || opinion
     emotiveChange['toggle'] = newOpinion ? 'ON' : 'OFF'
-    const events = [emotiveChange]
-
-    //Update stored emotion by bar_id in sessionStorage
-    let opinionsUpdated = storedOpinions
-    opinionsUpdated[sliderId] = newOpinion
-    sessionStorage.setItem("opinions", JSON.stringify(opinionsUpdated))
-
-    //Send request to backend to update emotive data
-    registerEmotive(events, roomCode)
-
-    // Update component state
-    setOpinion(newOpinion);
-  };
+    const payload = { events: [emotiveChange] }
+    const response = await axios.put(`/api/${roomCode}`, payload)
+    const responseData = await response.data
+    const emotive = parseEmotive(responseData, userId, sliderId)
+    setOpinion(emotive)
+  }
 
   return (
     <ToggleButtonGroup
