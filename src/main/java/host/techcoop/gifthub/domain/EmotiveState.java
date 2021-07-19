@@ -6,9 +6,10 @@ import lombok.Value;
 @Value
 public class EmotiveState {
   int userId;
+  int emoterId;
   EmotiveKind kind;
 
   public EmotiveState getOpposite() {
-    return new EmotiveState(userId, kind.getOpposite());
+    return new EmotiveState(userId, emoterId, kind.getOpposite());
   }
 }

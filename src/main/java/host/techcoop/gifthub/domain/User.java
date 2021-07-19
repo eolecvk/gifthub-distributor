@@ -29,7 +29,7 @@ public class User {
 
   public ImmutableList<EmotiveState> getEmotiveStates() {
     return emotiveStateByUserId.entries().stream()
-        .map(e -> new EmotiveState(e.getKey(), e.getValue()))
+        .map(e -> new EmotiveState(e.getKey(), this.userId, e.getValue()))
         .collect(ImmutableList.toImmutableList());
   }
 

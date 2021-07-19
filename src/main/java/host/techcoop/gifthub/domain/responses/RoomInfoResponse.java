@@ -47,7 +47,7 @@ public class RoomInfoResponse {
                       emotiveStates.stream()
                           .collect(
                               ImmutableListMultimap.toImmutableListMultimap(
-                                  EmotiveState::getKind, (e) -> user.getUserId()));
+                                  EmotiveState::getKind, EmotiveState::getEmoterId));
 
                   ImmutableList<Long> anonVotes =
                       votes.stream().map(UserVote::getCents).collect(toImmutableList());

@@ -102,7 +102,8 @@ public class GiftHubWebserver {
         case EMOTIVE:
           EmotiveEvent emotiveEvent = (EmotiveEvent) event;
           EmotiveState emotiveState =
-              new EmotiveState(emotiveEvent.getBarId(), emotiveEvent.getEmotion());
+              new EmotiveState(
+                  emotiveEvent.getBarId(), user.getUserId(), emotiveEvent.getEmotion());
           switch (emotiveEvent.getToggle()) {
             case OFF:
               user = user.withRemovedEmotiveState(emotiveState);
