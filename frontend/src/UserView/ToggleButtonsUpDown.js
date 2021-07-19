@@ -7,12 +7,19 @@ import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 
 function ToggleButtonsUpDown(props) {
 
-  const [opinion, setOpinion] = React.useState('unset')
+
 
   const { sliderId } = props
+  const sliderIdRef = React.useRef(sliderId)
   const userId = sessionStorage.getItem("userId")
   const roomInfo = JSON.parse(sessionStorage.getItem("roomInfo"))
   const roomCode = roomInfo.room_code
+
+  // NEED FIX FOR TOGGLE RERENDERING
+  // (React.memo not working)
+  // suggestion: take ToggleButtonsUpDown outside of InputSlider and put it in SliderGrid instead?
+
+  const [opinion, setOpinion] = React.useState('unset')
 
   //Upon mounting the component, make a request to the backend
   //to set the initial state of the toggle
@@ -21,18 +28,17 @@ function ToggleButtonsUpDown(props) {
       const response = await axios.get(`/api/${roomCode}`)
       const responseData = await response.data
       const emotive = parseEmotive(responseData, userId, sliderId)
-      setOpinion(emotive)
+      if (opinion === 'unset') {
+        setOpinion(emotive)
+      }
     }
-
-    if (opinion === 'unset') {
-      getOpinion();
-    }
+    getOpinion();
   }, []);
 
   const parseEmotive = (roomInfo, userId, sliderId) => {
     //Parse the emotive state value for a given userId and sliderId
     //based on a roomInfo object
-    const userData = roomInfo.people.filter((el) => {return (el.person_id==userId)})[0]
+    const userData = roomInfo.people.filter((el) => { return (el.person_id === parseInt(userId)) })[0]
     if (
       typeof userData.emotive.DISSENT_UP !== 'undefined' &&
       userData.emotive.DISSENT_UP.includes(parseInt(sliderId))) {
@@ -85,4 +91,5 @@ function ToggleButtonsUpDown(props) {
   );
 }
 
-export default ToggleButtonsUpDown
+const MemoizedToggleButtonsUpDown = React.memo(ToggleButtonsUpDown)
+export default MemoizedToggleButtonsUpDown

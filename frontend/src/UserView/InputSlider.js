@@ -7,7 +7,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import colors from './colors'
-import ToggleButtonsUpDown from './ToggleButtonsUpDown';
+import MemoizedToggleButtonsUpDown from './ToggleButtonsUpDown';
 
 function InputSlider(props) {
 
@@ -97,7 +97,7 @@ function InputSlider(props) {
                     />
                 </Grid>
                 <Grid item>
-                    <ToggleButtonsUpDown sliderId={props.sliderId} />
+                    <MemoizedToggleButtonsUpDown sliderId={props.sliderId} />
                 </Grid>
             </Grid>
         </div>
