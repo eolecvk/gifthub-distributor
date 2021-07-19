@@ -10,7 +10,6 @@ function ToggleButtonsUpDown(props) {
 
 
   const { sliderId } = props
-  const sliderIdRef = React.useRef(sliderId)
   const userId = sessionStorage.getItem("userId")
   const roomInfo = JSON.parse(sessionStorage.getItem("roomInfo"))
   const roomCode = roomInfo.room_code
@@ -38,15 +37,15 @@ function ToggleButtonsUpDown(props) {
   const parseEmotive = (roomInfo, userId, sliderId) => {
     //Parse the emotive state value for a given userId and sliderId
     //based on a roomInfo object
-    const userData = roomInfo.people.filter((el) => { return (el.person_id === parseInt(userId)) })[0]
+    const userData = roomInfo.people.filter((el) => { return (el.person_id === parseInt(sliderId)) })[0]
     if (
       typeof userData.emotive.DISSENT_UP !== 'undefined' &&
-      userData.emotive.DISSENT_UP.includes(parseInt(sliderId))) {
+      userData.emotive.DISSENT_UP.includes(parseInt(userId))) {
       return 'DISSENT_UP'
     }
     if (
       typeof userData.emotive.DISSENT_DOWN !== 'undefined' &&
-      userData.emotive.DISSENT_DOWN.includes(parseInt(sliderId))) {
+      userData.emotive.DISSENT_DOWN.includes(parseInt(userId))) {
       return 'DISSENT_DOWN'
     }
     return ''
