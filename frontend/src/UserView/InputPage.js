@@ -37,7 +37,7 @@ class InputPage extends Component {
                 this.setState({ roomInfo: response.data, reset: false });
             }
             // call getData() again in 5 seconds
-            this.intervalID = setTimeout(this.getData.bind(this), 500);
+            this.intervalID = setTimeout(this.getData.bind(this), 2000);
         })
     }
 

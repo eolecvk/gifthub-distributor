@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import Grid from '@material-ui/core/Grid';
 import { getStartingValues, registerVote } from './utils';
 import InputSlider from './InputSlider'
 import ButtonsUndoRedo from './ButtonsUndoRedo'
+// import MemoizedToggleButtonsUpDown from './ToggleButtonsUpDown';
+import ToggleButtonsUpDownDev from './ToggleButtonsUpDownDev';
 
 
 class SliderGrid extends Component {
@@ -30,7 +33,7 @@ class SliderGrid extends Component {
     componentDidMount() {
         sessionStorage.setItem("sliderGridState", JSON.stringify(this.state));
         const voteData = this.state.currentValues;
-        const roomCode = this.props.roomInfo.room_code;
+        const roomCode = JSON.parse(sessionStorage.getItem("roomInfo")).room_code
         registerVote(voteData, roomCode);
     }
 
@@ -117,7 +120,7 @@ class SliderGrid extends Component {
 
         if (isVote) {
             const voteData = { [`${id}`]: actualNewValue };
-            const roomCode = this.props.roomInfo.room_code;
+            const roomCode = JSON.parse(sessionStorage.getItem("roomInfo")).room_code
             registerVote(voteData, roomCode);
             sessionStorage.setItem("sliderGridState", JSON.stringify(futureState));
         }
@@ -134,7 +137,7 @@ class SliderGrid extends Component {
 
         // Register vote for undo move
         const voteData = this.state.history.states[this.state.history.index - 1]
-        const roomCode = this.props.roomInfo.room_code
+        const roomCode = JSON.parse(sessionStorage.getItem("roomInfo")).room_code
         registerVote(voteData, roomCode)
 
         // Update slider state stored in sessionStorage
@@ -152,7 +155,7 @@ class SliderGrid extends Component {
 
         // Register vote for redo move
         const voteData = this.state.history.states[this.state.history.index + 1]
-        const roomCode = this.props.roomInfo.room_code
+        const roomCode = JSON.parse(sessionStorage.getItem("roomInfo")).room_code
         registerVote(voteData, roomCode)
 
         // Update slider state stored in sessionStorage
@@ -166,17 +169,28 @@ class SliderGrid extends Component {
         const sliders = this.props.slidersInitializationData
             .sort((sl1, sl2) => sl1.personId - sl2.personId)
             .map((slData) => (
-                <InputSlider
-                    key={slData.personId.toString()}
-                    sliderId={slData.personId.toString()}
-                    title={slData.title.toUpperCase()}
-                    surviveValue={slData.surviveValue}
-                    thriveValue={slData.thriveValue}
-                    startingValue={this.state.reset ? slData.startingValue : this.state.currentValues[slData.personId.toString()]}
-                    maxValue={slData.maxValue}
-                    handleUpdateSlider={this.handleUpdateSlider}
-                    userInfo={this.props.roomInfo.people.find(p => { return p.person_id.toString() === slData.personId.toString() })}
-                />
+                <Grid container spacing={2} alignItems="center">
+                    <Grid container item>
+                        <InputSlider
+                            key={slData.personId.toString()}
+                            sliderId={slData.personId.toString()}
+                            title={slData.title.toUpperCase()}
+                            surviveValue={slData.surviveValue}
+                            thriveValue={slData.thriveValue}
+                            startingValue={this.state.reset ? slData.startingValue : this.state.currentValues[slData.personId.toString()]}
+                            maxValue={slData.maxValue}
+                            handleUpdateSlider={this.handleUpdateSlider}
+                            userInfo={this.props.roomInfo.people.find(p => { return p.person_id.toString() === slData.personId.toString() })}
+                        />
+                    </Grid>
+                    <Grid item>
+                        {/* <MemoizedToggleButtonsUpDown sliderId={slData.personId.toString()} /> */}
+                        <ToggleButtonsUpDownDev
+                            key={slData.personId.toString()}
+                            sliderId={slData.personId.toString()}
+                        />
+                    </Grid>
+                </Grid>
             ));
 
         return (

@@ -5,24 +5,24 @@ import AddIcon from '@material-ui/icons/Add';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 
+// NEED FIX FOR TOGGLE RERENDERING
+// * Minimize info passed through props to prevent unnecessary component update/rerendering
+//    * roomInfo -- break up...
+// * Reorganize components and avoid unnecessary nesting
+//    * sliderGrid, inputSlider, Toggle...
+
 function ToggleButtonsUpDown(props) {
 
-
-
   const { sliderId } = props
-  const userId = sessionStorage.getItem("userId")
-  const roomInfo = JSON.parse(sessionStorage.getItem("roomInfo"))
-  const roomCode = roomInfo.room_code
 
-  // NEED FIX FOR TOGGLE RERENDERING
-  // (React.memo not working)
-  // suggestion: take ToggleButtonsUpDown outside of InputSlider and put it in SliderGrid instead?
+  const userId = sessionStorage.getItem("userId")
+  const roomCode = JSON.parse(sessionStorage.getItem("roomInfo")).room_code
 
   const [opinion, setOpinion] = React.useState('unset')
 
-  //Upon mounting the component, make a request to the backend
-  //to set the initial state of the toggle
   useEffect(() => {
+    //Upon mounting the component, make a request to the backend
+    //to set the initial state of the toggle
     const getOpinion = async () => {
       const response = await axios.get(`/api/${roomCode}`)
       const responseData = await response.data

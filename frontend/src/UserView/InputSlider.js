@@ -22,6 +22,8 @@ function InputSlider(props) {
     const classes = useStyles();
 
     const { title, surviveValue, thriveValue, startingValue, maxValue, userInfo } = props;
+
+
     const needsDescription = userInfo.needs_description
     const groupVoteAvg = userInfo.avg_cents / 100
 
@@ -96,9 +98,9 @@ function InputSlider(props) {
                         }}
                     />
                 </Grid>
-                <Grid item>
+                {/* <Grid item>
                     <MemoizedToggleButtonsUpDown sliderId={props.sliderId} />
-                </Grid>
+                </Grid> */}
             </Grid>
         </div>
     );
