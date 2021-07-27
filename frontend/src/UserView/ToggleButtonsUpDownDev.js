@@ -78,12 +78,14 @@ class ToggleButtonsUpDownDev extends React.Component {
                 <ToggleButton
                     value="DISSENT_DOWN"
                     aria-label="Ask for less"
+                    size="large"
                 >
                     <span aria-label="index pointing down" role="img">👇</span>
                 </ToggleButton>
                 <ToggleButton
                     value="DISSENT_UP"
                     aria-label="Ask for more"
+                    size="large"
                 >
                     <span aria-label="index pointing up" role="img">👆</span>
                 </ToggleButton>
