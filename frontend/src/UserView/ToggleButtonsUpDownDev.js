@@ -1,7 +1,5 @@
 import React from 'react'
 import axios from 'axios';
-import RemoveIcon from '@material-ui/icons/Remove';
-import AddIcon from '@material-ui/icons/Add';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 
@@ -81,13 +79,13 @@ class ToggleButtonsUpDownDev extends React.Component {
                     value="DISSENT_DOWN"
                     aria-label="Ask for less"
                 >
-                    <RemoveIcon />
+                    <span aria-label="index pointing down" role="img">👇</span>
                 </ToggleButton>
                 <ToggleButton
                     value="DISSENT_UP"
                     aria-label="Ask for more"
                 >
-                    <AddIcon />
+                    <span aria-label="index pointing up" role="img">☝</span>
                 </ToggleButton>
             </ToggleButtonGroup >
         )
