@@ -13,11 +13,11 @@ function mean(arr){
 }
 
 // sample standard deviation
-function std(arr) {
-    const mu = mean(arr);
-    const diffArr = arr.map(a => (a - mu) ** 2);
-    return Math.sqrt(sum(diffArr) / (arr.length - 1));
-}
+// function std(arr) {
+//     const mu = mean(arr);
+//     const diffArr = arr.map(a => (a - mu) ** 2);
+//     return Math.sqrt(sum(diffArr) / (arr.length - 1));
+// }
 
 function quantile(arr, q) {
     const sorted = asc(arr);
