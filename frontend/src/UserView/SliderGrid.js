@@ -190,37 +190,38 @@ class SliderGrid extends Component {
         //         </Grid>
         //     ));
 
-        const sliders =
-            <Grid container spacing={2} alignItems="center">
-                {this.props.slidersInitializationData
-                    .sort((sl1, sl2) => sl1.personId - sl2.personId)
-                    .map((slData) => {
-                        return (
-                            <div
-                            key={slData.personId.toString()}>
-                                <Grid container item>
-                                    <InputSlider
-                                        key={slData.personId.toString()}
-                                        sliderId={slData.personId.toString()}
-                                        title={slData.title.toUpperCase()}
-                                        surviveValue={slData.surviveValue}
-                                        thriveValue={slData.thriveValue}
-                                        startingValue={this.state.reset ? slData.startingValue : this.state.currentValues[slData.personId.toString()]}
-                                        maxValue={slData.maxValue}
-                                        handleUpdateSlider={this.handleUpdateSlider}
-                                        userInfo={this.props.roomInfo.people.find(p => { return p.person_id.toString() === slData.personId.toString() })}
-                                    />
-                                </Grid>
-                                <Grid item>
-                                    <ToggleButtonsUpDownDev
-                                        key={slData.personId.toString()}
-                                        sliderId={slData.personId.toString()}
-                                    />
-                                </Grid>
-                            </div>
-                        )
-                    })}
-            </Grid>
+        const sliders = this.props.slidersInitializationData
+            .sort((sl1, sl2) => sl1.personId - sl2.personId)
+            .map((slData) => {
+                return (
+                    <Grid
+                        container
+                        spacing={2}
+                        alignItems="center"
+                        key={slData.personId.toString()}
+                    >
+                        <Grid container >
+                            <InputSlider
+                                key={slData.personId.toString()}
+                                sliderId={slData.personId.toString()}
+                                title={slData.title.toUpperCase()}
+                                surviveValue={slData.surviveValue}
+                                thriveValue={slData.thriveValue}
+                                startingValue={this.state.reset ? slData.startingValue : this.state.currentValues[slData.personId.toString()]}
+                                maxValue={slData.maxValue}
+                                handleUpdateSlider={this.handleUpdateSlider}
+                                userInfo={this.props.roomInfo.people.find(p => { return p.person_id.toString() === slData.personId.toString() })}
+                            />
+
+                            <ToggleButtonsUpDownDev
+                                key={slData.personId.toString()}
+                                sliderId={slData.personId.toString()}
+                            />
+                        </Grid>
+                    </Grid>
+                )
+            })
+
 
         return (
             <div>
