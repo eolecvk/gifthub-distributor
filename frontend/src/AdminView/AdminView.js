@@ -51,22 +51,24 @@ class AdminView extends Component {
                     ...people.map((p) => p.needs_upper_bound_cents) // flat list of upper bound needs in cents
                 )) / 100;
 
-        const data = people.map((p) => {
-            const name = p.name;
-            const cents = p.avg_cents / 100;
-            const needs_upper = p.needs_upper_bound_cents / 100;
-            const needs_lower = p.needs_lower_bound_cents / 100;
-            const upper_25 = quantile(p.votes_cents, 0.75) / 100;
-            const lower_25 = quantile(p.votes_cents, 0.25) / 100;
-            return {
-                name: name,
-                cents: cents,
-                needs_upper: needs_upper,
-                needs_lower: needs_lower,
-                upper_25: upper_25,
-                lower_25: lower_25
-            };
-        });
+        const data = people
+            .sort((p1, p2) => p1.person_id - p2.person_id)
+            .map((p) => {
+                const name = p.name;
+                const cents = p.avg_cents / 100;
+                const needs_upper = p.needs_upper_bound_cents / 100;
+                const needs_lower = p.needs_lower_bound_cents / 100;
+                const upper_25 = quantile(p.votes_cents, 0.75) / 100;
+                const lower_25 = quantile(p.votes_cents, 0.25) / 100;
+                return {
+                    name: name,
+                    cents: cents,
+                    needs_upper: needs_upper,
+                    needs_lower: needs_lower,
+                    upper_25: upper_25,
+                    lower_25: lower_25
+                };
+            });
         const barchart = (
             <ResponsiveContainer width="95%" height="80%" minHeight={100 * people.length}>
                 <ComposedChart width={720} height={480} data={data} layout="vertical">
@@ -93,7 +95,11 @@ class AdminView extends Component {
                 <h2>{roomName}</h2>
                 <h2>Room Code: {roomCode}</h2>
                 <h2>Total Amount: ${totalAmountDollars}</h2>
-                <div style={{ display: 'flex', 'flex-flow': 'column', height: '100%' }}>
+                <div style={{
+                    display: 'flex',
+                    flexFlow: 'column',
+                    height: '100%'
+                }}>
                     {barchart}
                 </div>
             </div>
