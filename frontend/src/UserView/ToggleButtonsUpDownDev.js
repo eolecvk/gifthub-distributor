@@ -13,6 +13,7 @@ class ToggleButtonsUpDownDev extends React.Component {
         this.sliderId = this.props.sliderId
         this.userId = sessionStorage.getItem("userId")
         this.roomCode = JSON.parse(sessionStorage.getItem("roomInfo")).room_code
+        this._isMounted = false; //using isMounted react pattern to avoid memory leak https://stackoverflow.com/questions/52061476/cancel-all-subscriptions-and-asyncs-in-the-componentwillunmount-method-how
     }
 
     componentDidMount = () => {
@@ -20,11 +21,17 @@ class ToggleButtonsUpDownDev extends React.Component {
             const response = await axios.get(`/api/${this.roomCode}`)
             const responseData = await response.data
             const emotive = this.parseEmotive(responseData, this.userId, this.sliderId)
-            this.setState({ opinion: emotive })
+            this._isMounted && this.setState({ opinion: emotive })
         }
+
+        this._isMounted = true;
         if (this.state.opinion === 'unset') {
-            getOpinionFromBackend()
+            this._isMounted && getOpinionFromBackend()
         }
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     shouldComponentUpdate = (nextProps, nextState) => {
