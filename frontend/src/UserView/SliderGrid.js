@@ -3,9 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import { getStartingValues, registerVote } from './utils';
 import InputSlider from './InputSlider'
 import ButtonsUndoRedo from './ButtonsUndoRedo'
-// import MemoizedToggleButtonsUpDown from './ToggleButtonsUpDown';
 import ToggleButtonsUpDownDev from './ToggleButtonsUpDownDev';
-
 
 class SliderGrid extends Component {
 
@@ -184,7 +182,6 @@ class SliderGrid extends Component {
                         />
                     </Grid>
                     <Grid item>
-                        {/* <MemoizedToggleButtonsUpDown sliderId={slData.personId.toString()} /> */}
                         <ToggleButtonsUpDownDev
                             key={slData.personId.toString()}
                             sliderId={slData.personId.toString()}

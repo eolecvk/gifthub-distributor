@@ -29,6 +29,7 @@ class ToggleButtonsUpDownDev extends React.Component {
 
     shouldComponentUpdate = (nextProps, nextState) => {
         if (nextState.opinion === 'unset') {
+            console.log('prevented a rerender')
             return false
         }
         return true
