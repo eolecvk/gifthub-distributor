@@ -53,29 +53,36 @@ class AdminView extends Component {
 
         const data = people.map((p) => {
             const name = p.name;
-            const cents = p.avg_cents/100;
-            const needs_upper = p.needs_upper_bound_cents/100;
-            const needs_lower = p.needs_lower_bound_cents/100;
-            const upper_25 = quantile(p.votes_cents,0.75)/100;
-            const lower_25 = quantile(p.votes_cents,0.25)/100;
-            return {name:name, cents:cents, needs_upper:needs_upper, needs_lower:needs_lower, upper_25:upper_25, lower_25:lower_25};
+            const cents = p.avg_cents / 100;
+            const needs_upper = p.needs_upper_bound_cents / 100;
+            const needs_lower = p.needs_lower_bound_cents / 100;
+            const upper_25 = quantile(p.votes_cents, 0.75) / 100;
+            const lower_25 = quantile(p.votes_cents, 0.25) / 100;
+            return {
+                name: name,
+                cents: cents,
+                needs_upper: needs_upper,
+                needs_lower: needs_lower,
+                upper_25: upper_25,
+                lower_25: lower_25
+            };
         });
         const barchart = (
-            <ResponsiveContainer width="95%" height="80%" minHeight={100* people.length}>
+            <ResponsiveContainer width="95%" height="80%" minHeight={100 * people.length}>
                 <ComposedChart width={720} height={480} data={data} layout="vertical">
-                    <YAxis type="category" dataKey="name"/>
-                    <XAxis type="number"/>
+                    <YAxis type="category" dataKey="name" />
+                    <XAxis type="number" />
                     <Bar dataKey="cents">
                         {
                             people.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={colors[index+1]} />
+                                <Cell key={`cell-${index}`} fill={colors[index + 1]} />
                             ))
                         }
                     </Bar>
-                    <Scatter shape="circle" dataKey="needs_upper" fill="#00FF00"/>
-                    <Scatter shape="circle" dataKey="needs_lower" fill="#FF0000"/>
-                    <Scatter shape="cross" dataKey="upper_25" fill="#000000"/>
-                    <Scatter shape="cross" dataKey="lower_25" fill="#000000"/>
+                    <Scatter shape="circle" dataKey="needs_upper" fill="#00FF00" />
+                    <Scatter shape="circle" dataKey="needs_lower" fill="#FF0000" />
+                    <Scatter shape="cross" dataKey="upper_25" fill="#000000" />
+                    <Scatter shape="cross" dataKey="lower_25" fill="#000000" />
                 </ComposedChart>
             </ResponsiveContainer>
         );
@@ -86,7 +93,7 @@ class AdminView extends Component {
                 <h2>{roomName}</h2>
                 <h2>Room Code: {roomCode}</h2>
                 <h2>Total Amount: ${totalAmountDollars}</h2>
-                <div style={{display:'flex', 'flex-flow':'column', height:'100%'}}>
+                <div style={{ display: 'flex', 'flex-flow': 'column', height: '100%' }}>
                     {barchart}
                 </div>
             </div>
