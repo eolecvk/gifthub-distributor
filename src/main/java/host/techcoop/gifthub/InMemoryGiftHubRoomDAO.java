@@ -5,6 +5,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import host.techcoop.gifthub.domain.CachingRoomWrapper;
 import host.techcoop.gifthub.domain.GiftHubRoom;
 import host.techcoop.gifthub.domain.User;
 import host.techcoop.gifthub.domain.exceptions.RoomJoinException;
@@ -17,17 +18,19 @@ import java.util.stream.Stream;
 @Singleton
 public class InMemoryGiftHubRoomDAO implements GiftHubRoomDAO {
 
-  private final Cache<String, GiftHubRoom> roomsByCode;
+  private final Cache<String, CachingRoomWrapper> roomsByCode;
+  private final RoomWrapperFactory roomWrapperFactory;
   private final Random random = new Random();
 
   @Inject
-  InMemoryGiftHubRoomDAO() {
+  InMemoryGiftHubRoomDAO(RoomWrapperFactory roomWrapperFactory) {
+    this.roomWrapperFactory = roomWrapperFactory;
     roomsByCode = CacheBuilder.newBuilder().expireAfterAccess(6, TimeUnit.HOURS).build();
   }
 
   @Override
   public GiftHubRoom getRoomByCode(String code) {
-    return roomsByCode.getIfPresent(code.toUpperCase());
+    return roomsByCode.getIfPresent(code.toUpperCase()).getRoom();
   }
 
   @Override
@@ -41,7 +44,7 @@ public class InMemoryGiftHubRoomDAO implements GiftHubRoomDAO {
               .splittingCents(distributionCents)
               .people(ImmutableList.of())
               .build();
-      roomsByCode.put(code, room);
+      roomsByCode.put(code, roomWrapperFactory.getWrapper(room));
       return room;
     }
   }
@@ -53,18 +56,18 @@ public class InMemoryGiftHubRoomDAO implements GiftHubRoomDAO {
       throw new RoomJoinException();
     }
     synchronized (roomCode) {
-      GiftHubRoom room = roomsByCode.getIfPresent(roomCode);
+      GiftHubRoom room = roomsByCode.getIfPresent(roomCode).getRoom();
       int newUserId = room.getPeople().stream().mapToInt(User::getUserId).max().orElse(0) + 1;
       User user = User.fromJoinRoomRequest(request, newUserId);
       GiftHubRoom newRoom = room.withUpdatedUser(user);
-      roomsByCode.put(roomCode, newRoom);
+      roomsByCode.put(roomCode, roomWrapperFactory.getWrapper(newRoom));
       return newUserId;
     }
   }
 
   @Override
   public User getUserFromRoom(String roomCode, int userId) {
-    return roomsByCode.getIfPresent(roomCode).getPeople().stream()
+    return roomsByCode.getIfPresent(roomCode).getRoom().getPeople().stream()
         .filter(person -> person.getUserId() == userId)
         .findFirst()
         .get();
@@ -74,11 +77,16 @@ public class InMemoryGiftHubRoomDAO implements GiftHubRoomDAO {
   public GiftHubRoom updateUserInRoom(String roomCode, User user) {
     roomCode = roomCode.toUpperCase().intern();
     synchronized (roomCode) {
-      GiftHubRoom room = roomsByCode.getIfPresent(roomCode);
+      GiftHubRoom room = roomsByCode.getIfPresent(roomCode).getRoom();
       GiftHubRoom newRoom = room.withUpdatedUser(user);
-      roomsByCode.put(roomCode, newRoom);
+      roomsByCode.put(roomCode, roomWrapperFactory.getWrapper(newRoom));
       return newRoom;
     }
+  }
+
+  @Override
+  public String getRoomInfo(String roomCode) {
+    return roomsByCode.getIfPresent(roomCode).getJsonBlob();
   }
 
   private String getUniqueCode() {

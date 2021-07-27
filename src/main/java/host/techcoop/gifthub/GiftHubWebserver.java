@@ -19,8 +19,6 @@ import host.techcoop.gifthub.domain.requests.events.AdjustEvent;
 import host.techcoop.gifthub.domain.requests.events.EmotiveEvent;
 import host.techcoop.gifthub.domain.requests.events.NeedsUpdateEvent;
 import host.techcoop.gifthub.domain.responses.ErrorResponse;
-import host.techcoop.gifthub.domain.responses.JoinRoomResponse;
-import host.techcoop.gifthub.domain.responses.RoomInfoResponse;
 import host.techcoop.gifthub.interfaces.GiftHubRoomDAO;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -52,10 +50,10 @@ public class GiftHubWebserver {
   }
 
   public void route() {
-    put("/api/:roomCode", this::processEvents, gson::toJson);
-    post("/api/:roomCode/join", this::joinRoom, gson::toJson);
-    post("/api/rooms", this::createRoom, gson::toJson);
-    get("/api/:roomCode", this::getRoomInfo, gson::toJson);
+    put("/api/:roomCode", this::processEvents);
+    post("/api/:roomCode/join", this::joinRoom);
+    post("/api/rooms", this::createRoom);
+    get("/api/:roomCode", this::getRoomInfo);
 
     exception(
         RoomJoinException.class,
@@ -132,30 +130,40 @@ public class GiftHubWebserver {
       }
     }
     user.verify(oldUser, room);
-    return RoomInfoResponse.from(roomDAO.updateUserInRoom(roomCode, user));
+    roomDAO.updateUserInRoom(roomCode, user);
+    return roomDAO.getRoomInfo(roomCode);
   }
 
-  private JoinRoomResponse joinRoom(Request request, Response response) {
+  private String joinRoom(Request request, Response response) {
     String roomCode = request.params(":roomCode");
     JoinRoomRequest joinRequest = gson.fromJson(request.body(), JoinRoomRequest.class);
     int userId = roomDAO.addUserToRoom(roomCode, joinRequest);
     GiftHubRoom room = roomDAO.getRoomByCode(roomCode);
     request.session().attribute(SESSION_ROOM_KEY, room.getCode());
     request.session().attribute(SESSION_USER_ID_KEY, userId);
-    return new JoinRoomResponse(userId, RoomInfoResponse.from(room));
+    return buildJoinRoomResponse(userId, roomDAO.getRoomInfo(roomCode));
   }
 
-  private RoomInfoResponse createRoom(Request request, Response response) {
+  private String createRoom(Request request, Response response) {
     CreateRoomRequest createRequest = gson.fromJson(request.body(), CreateRoomRequest.class);
     GiftHubRoom room =
         roomDAO.createRoom(createRequest.getSplittingCents(), createRequest.getRoomName());
     request.session().attribute(SESSION_ROOM_KEY, room.getCode());
-    return RoomInfoResponse.from(room);
+    return roomDAO.getRoomInfo(room.getCode());
   }
 
-  private RoomInfoResponse getRoomInfo(Request request, Response response) {
+  private String getRoomInfo(Request request, Response response) {
     String roomCode = request.params(":roomCode");
-    GiftHubRoom room = roomDAO.getRoomByCode(roomCode);
-    return RoomInfoResponse.from(room);
+    return roomDAO.getRoomInfo(roomCode);
+  }
+
+  private static String buildJoinRoomResponse(int userId, String roomInfo) {
+    return new StringBuilder()
+        .append("{\"user_id\":")
+        .append(userId)
+        .append(",\"room_info\":")
+        .append(roomInfo)
+        .append("}")
+        .toString();
   }
 }
