@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useCookies } from 'react-cookie';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import './Form.css';
@@ -12,15 +11,6 @@ function JoinRoomForm(props) {
     const [needsLowerBoundCents, setNeedsLowerBoundCents] = useState(0);
     const [needsUpperBoundCents, setNeedsUpperBoundCents] = useState(0);
     const [needsDescription, setNeedsDescription] = useState('');
-
-    /* eslint-disable no-unused-vars */
-    const [cookies, setCookie] = useCookies(['roomInfo']);
-    /* eslint-enable no-unused-vars */
-
-    function saveRoomInfo(roomInfo) {
-        setCookie('roomInfo', roomInfo, { path: '/' }); //DEPRECATE THIS
-        sessionStorage.setItem("roomInfo", JSON.stringify(roomInfo))
-    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -38,7 +28,9 @@ function JoinRoomForm(props) {
             .post(`/api/${roomCode}/join`, payload)
             .then((response) => {
                 if (response.status === 200) {
-                    saveRoomInfo(response.data);
+                    sessionStorage.clear();
+                    sessionStorage.setItem("roomInfo", JSON.stringify(response.data.room_info))
+                    sessionStorage.setItem("userId", JSON.stringify(response.data.user_id))
                     history.push('/input-page');
                 }
             })
@@ -58,7 +50,7 @@ function JoinRoomForm(props) {
             }}
         >
             <div>
-                <label for="room-code">Room code:</label>
+                <label htmlFor="room-code">Room code:</label>
                 <input
                     id="room-code"
                     name="room-code"
@@ -70,7 +62,7 @@ function JoinRoomForm(props) {
             </div>
 
             <div>
-                <label for='username'>Username:</label>
+                <label htmlFor='username'>Username:</label>
                 <input
                     id='username'
                     name='username'
@@ -82,7 +74,7 @@ function JoinRoomForm(props) {
             </div>
 
             <div>
-                <label for='need-min'>Need min ($):</label>
+                <label htmlFor='need-min'>Need min ($):</label>
                 <input
                     id='need-min'
                     name='need-min'
@@ -97,7 +89,7 @@ function JoinRoomForm(props) {
             </div>
 
             <div>
-                <label for='need-max'>Need max ($):</label>
+                <label htmlFor='need-max'>Need max ($):</label>
                 <input
                     id='need-max'
                     name='need-max'
@@ -113,7 +105,7 @@ function JoinRoomForm(props) {
 
 
             <div>
-                <label for='need-description'>Need description:</label>
+                <label htmlFor='need-description'>Need description:</label>
                 <textarea
                     id='need-description'
                     name='need-description'

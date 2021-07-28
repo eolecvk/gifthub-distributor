@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { withCookies } from 'react-cookie';
-//import roomInfo from './roomInfoCookie';
 import axios from 'axios';
+import isEqual from 'lodash.isequal';
 import RoomInfo from './RoomInfo';
 import ButtonUpdateDefaultDistribution from './ButtonUpdateDefaultDistribution';
 import SlidersGrid from './SliderGrid';
@@ -13,7 +12,7 @@ class InputPage extends Component {
         this.state = {
             defaultDistribution: 'zero',
             reset: false,
-            roomInfo: this.props.cookies.get('roomInfo') || ''
+            roomInfo: JSON.parse(sessionStorage.getItem("roomInfo")) || ''
         };
     }
     intervalID;
@@ -28,11 +27,17 @@ class InputPage extends Component {
 
     getData = () => {
         axios.get('/api/' + this.state.roomInfo.room_code).then((response) => {
+            // Case : new people are detected in the backend roomInfo data compared to roomInfo in client state
             if (response.data.people.length !== this.state.roomInfo.people.length) {
                 this.setState({ roomInfo: response.data, reset: true });
             }
+
+            // Case: no new people detected but average has moved?
+            if (!isEqual(this.state.roomInfo, response.data)) {
+                this.setState({ roomInfo: response.data, reset: false });
+            }
             // call getData() again in 5 seconds
-            this.intervalID = setTimeout(this.getData.bind(this), 5000);
+            this.intervalID = setTimeout(this.getData.bind(this), 2000);
         })
     }
 
@@ -98,7 +103,7 @@ class InputPage extends Component {
         );
 
         return (
-            <div>
+            <div style={{padding:25+'px'}}>
                 <RoomInfo
                     roomInfo={this.state.roomInfo}
                 />
@@ -118,4 +123,4 @@ class InputPage extends Component {
     }
 }
 
-export default withCookies(InputPage);
+export default InputPage

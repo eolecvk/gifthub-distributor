@@ -15,57 +15,64 @@ function InputSlider(props) {
             width: '80%',
         },
         input: {
-            width: `${props.maxValue.toString().length}` + 'em',
+            width: `${props.maxValue.toString().length} em`,
         },
     });
-
     const classes = useStyles();
+
+    const { title, surviveValue, thriveValue, startingValue, maxValue, userInfo } = props;
+
+
+    const needsDescription = userInfo.needs_description
+    const groupVoteAvg = userInfo.avg_cents / 100
+
+    const marks = [
+        { value: surviveValue, label: ':)' },
+        { value: thriveValue, label: ':D' },
+        { value: groupVoteAvg, label: 'avg' }
+    ];
 
     function handleSliderChangeCommitted(event, newValue) {
         handleSliderChange(event, newValue, true);
     }
 
     function handleSliderChange(event, newValue, isVote) {
-        props.handleUpdate(props.sliderId, newValue, isVote);
+        props.handleUpdateSlider(props.sliderId, newValue, isVote);
     }
 
     function handleInputChange(event) {
         const newValue = event.target.value === '' ? '' : Number(event.target.value);
-        props.handleUpdate(props.sliderId, newValue, true);
+        props.handleUpdateSlider(props.sliderId, newValue, true);
     }
 
     function handleBlur() {
         if (props.startingValue < 0) {
-            props.handleUpdate(props.sliderId, 0, false);
+            props.handleUpdateSlider(props.sliderId, 0, false);
         } else if (props.startingValue > props.maxValue) {
-            props.handleUpdate(props.sliderId, props.maxValue, false);
+            props.handleUpdateSlider(props.sliderId, props.maxValue, false);
         }
     }
 
-    const { title, surviveValue, thriveValue, startingValue, maxValue } = props;
-
-    const marks = [
-        { value: surviveValue, label: ':)' },
-        { value: thriveValue, label: ':D' },
-    ];
-    
-    const needsDescription = props.userInfo.needs_description
-
     return (
         <div className={classes.root}>
-            <Typography id="input-slider" gutterBottom>
-                {title}
-            </Typography>
-            <Grid container spacing={2} alignItems="center">
-                <Grid item>
-                    <Tooltip
-                        title={needsDescription}
-                        aria-label={needsDescription}>
-                        <FaceIcon
-                            fontSize="large"
-                            style={{ color: colors[props.sliderId] }}
-                        />
-                    </Tooltip>
+            <Grid container spacing={1} alignItems="flex-end">
+                <Grid item xs={1}>
+                    <Grid item>
+                        <Typography id="input-slider">
+                            {title}
+                        </Typography>
+                    </Grid>
+                    <Grid item>
+                        <Tooltip
+                            title={needsDescription}
+                            aria-label={needsDescription}>
+                            <FaceIcon
+                                fontSize="large"
+                                style={{ color: colors[props.sliderId] }}
+                            />
+                        </Tooltip>
+                    </Grid>
+
                 </Grid>
                 <Grid item xs>
                     <Slider

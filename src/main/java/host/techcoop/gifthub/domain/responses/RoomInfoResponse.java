@@ -4,9 +4,12 @@ import static com.google.common.collect.ImmutableList.toImmutableList;
 import static com.google.common.collect.ImmutableListMultimap.toImmutableListMultimap;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ListMultimap;
+import host.techcoop.gifthub.domain.EmotiveState;
 import host.techcoop.gifthub.domain.GiftHubRoom;
 import host.techcoop.gifthub.domain.UserVote;
+import host.techcoop.gifthub.domain.enums.EmotiveKind;
 import java.util.Collection;
 import java.util.List;
 import lombok.Builder;
@@ -27,11 +30,25 @@ public class RoomInfoResponse {
             .flatMap(person -> person.getVotes().stream())
             .collect(toImmutableListMultimap(UserVote::getUserId, x -> x));
 
+    ListMultimap<Integer, EmotiveState> emotiveStatesByUserId =
+        room.getPeople().stream()
+            .flatMap(person -> person.getEmotiveStates().stream())
+            .collect(toImmutableListMultimap(EmotiveState::getUserId, x -> x));
+
     List<UserResponse> userResponses =
         room.getPeople().stream()
             .map(
                 user -> {
                   Collection<UserVote> votes = votesByUserId.get(user.getUserId());
+                  Collection<EmotiveState> emotiveStates =
+                      emotiveStatesByUserId.get(user.getUserId());
+
+                  ListMultimap<EmotiveKind, Integer> usersByEmotiveKind =
+                      emotiveStates.stream()
+                          .collect(
+                              ImmutableListMultimap.toImmutableListMultimap(
+                                  EmotiveState::getKind, EmotiveState::getEmoterId));
+
                   ImmutableList<Long> anonVotes =
                       votes.stream().map(UserVote::getCents).collect(toImmutableList());
                   long averageVote =
@@ -44,6 +61,7 @@ public class RoomInfoResponse {
                       .needsUpperBoundCents(user.getNeedsUpperBoundCents())
                       .personId(user.getUserId())
                       .avgCents(averageVote)
+                      .emotive(usersByEmotiveKind.asMap())
                       .build();
                 })
             .collect(toImmutableList());

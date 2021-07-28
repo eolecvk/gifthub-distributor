@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { getStartingValues, makeSliderGrid, registerVote } from './utils';
+import Grid from '@material-ui/core/Grid';
+import { getStartingValues, registerVote } from './utils';
+import InputSlider from './InputSlider'
 import ButtonsUndoRedo from './ButtonsUndoRedo'
-
+import ToggleButtonsUpDownDev from './ToggleButtonsUpDownDev';
 
 class SliderGrid extends Component {
 
@@ -29,7 +31,7 @@ class SliderGrid extends Component {
     componentDidMount() {
         sessionStorage.setItem("sliderGridState", JSON.stringify(this.state));
         const voteData = this.state.currentValues;
-        const roomCode = this.props.roomInfo.room_code;
+        const roomCode = JSON.parse(sessionStorage.getItem("roomInfo")).room_code
         registerVote(voteData, roomCode);
     }
 
@@ -91,7 +93,7 @@ class SliderGrid extends Component {
         }
     }
 
-    handleUpdate = (id, newValue, isVote) => {
+    handleUpdateSlider = (id, newValue, isVote) => {
         let actualNewValue = newValue
         let futureState = isVote ?
             this.getStateObjectNewMove(this.state, id, newValue) :
@@ -116,7 +118,7 @@ class SliderGrid extends Component {
 
         if (isVote) {
             const voteData = { [`${id}`]: actualNewValue };
-            const roomCode = this.props.roomInfo.room_code;
+            const roomCode = JSON.parse(sessionStorage.getItem("roomInfo")).room_code
             registerVote(voteData, roomCode);
             sessionStorage.setItem("sliderGridState", JSON.stringify(futureState));
         }
@@ -133,10 +135,10 @@ class SliderGrid extends Component {
 
         // Register vote for undo move
         const voteData = this.state.history.states[this.state.history.index - 1]
-        const roomCode = this.props.roomInfo.room_code
+        const roomCode = JSON.parse(sessionStorage.getItem("roomInfo")).room_code
         registerVote(voteData, roomCode)
 
-        // Update Cookie & state
+        // Update slider state stored in sessionStorage
         const newState = this.getStateObjectOnUndo(this.state)
         sessionStorage.setItem("sliderGridState", JSON.stringify(newState));
         this.setState(newState)
@@ -151,10 +153,10 @@ class SliderGrid extends Component {
 
         // Register vote for redo move
         const voteData = this.state.history.states[this.state.history.index + 1]
-        const roomCode = this.props.roomInfo.room_code
+        const roomCode = JSON.parse(sessionStorage.getItem("roomInfo")).room_code
         registerVote(voteData, roomCode)
 
-        // Update Cookie & state
+        // Update slider state stored in sessionStorage
         const newState = this.getStateObjectOnRedo(this.state)
         sessionStorage.setItem("sliderGridState", JSON.stringify(newState));
         this.setState(newState)
@@ -162,16 +164,42 @@ class SliderGrid extends Component {
 
 
     render() {
-        const sliders = makeSliderGrid(
-            this.props.slidersInitializationData,
-            this.state.currentValues,
-            this.handleUpdate,
-            this.state.reset,
-            this.props.roomInfo
-        );
+
+        const sliders = this.props.slidersInitializationData
+            .sort((sl1, sl2) => sl1.personId - sl2.personId)
+            .map((slData) => {
+                return (
+                    <Grid
+                        key={slData.personId.toString()}
+                        container
+                        direction="row"
+                        alignItems="center"
+                        spacing={12}
+
+                    >
+                        <InputSlider
+                            key={slData.personId.toString()}
+                            sliderId={slData.personId.toString()}
+                            title={slData.title.toUpperCase()}
+                            surviveValue={slData.surviveValue}
+                            thriveValue={slData.thriveValue}
+                            startingValue={this.state.reset ? slData.startingValue : this.state.currentValues[slData.personId.toString()]}
+                            maxValue={slData.maxValue}
+                            handleUpdateSlider={this.handleUpdateSlider}
+                            userInfo={this.props.roomInfo.people.find(p => { return p.person_id.toString() === slData.personId.toString() })}
+                        />
+                        <ToggleButtonsUpDownDev
+                            key={slData.personId.toString()}
+                            sliderId={slData.personId.toString()}
+                        />
+                    </Grid>
+
+                )
+            })
+
 
         return (
-            <div>
+            <div style={{ margin: 25 + 'px' }}>
                 <ButtonsUndoRedo
                     undoMove={this.undoMove}
                     redoMove={this.redoMove}
@@ -185,8 +213,10 @@ class SliderGrid extends Component {
                         : 0}{' '}
                     / {this.props.roomAmount}
                 </p>
-                {sliders}
-            </div>
+                <Grid container alignContent="space-between">
+                    {sliders}
+                </Grid>
+            </div >
         );
     }
 }

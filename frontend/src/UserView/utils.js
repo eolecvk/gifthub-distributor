@@ -1,5 +1,3 @@
-import React from 'react';
-import InputSlider from './InputSlider';
 import axios from 'axios';
 
 function getSlidersInitializationData(roomInfo, defaultDistribution) {
@@ -48,26 +46,6 @@ function getSlidersInitializationData(roomInfo, defaultDistribution) {
     }
 }
 
-function makeSliderGrid(slidersInitializationData, currentValues, handleUpdate, reset, roomInfo) {
-    return slidersInitializationData
-        .sort((sl1, sl2) => sl1.personId - sl2.personId)
-        .map((slData) => (
-            <InputSlider
-                key={slData.personId.toString()}
-                sliderId={slData.personId.toString()}
-                title={slData.title.toUpperCase()}
-                surviveValue={slData.surviveValue}
-                thriveValue={slData.thriveValue}
-                startingValue={
-                    reset ? slData.startingValue : currentValues[slData.personId.toString()]
-                }
-                maxValue={slData.maxValue}
-                handleUpdate={handleUpdate}
-                userInfo={roomInfo.people.find( p => { return p.person_id == slData.personId.toString()})}
-            />
-        ));
-}
-
 function getStartingValues(slidersInitializationData) {
     let startingValues = {};
     for (const sliderData of slidersInitializationData) {
@@ -91,7 +69,7 @@ function registerVote(sliderValues, roomCode) {
     axios
         .put(`/api/${roomCode}`, payload)
         .then((response) => {
-            console.log(JSON.stringify(response));
+            console.log(`[${response.status}] PUT /api/${roomCode}`);
         })
         .catch((error) => {
             console.log(error);
@@ -99,4 +77,4 @@ function registerVote(sliderValues, roomCode) {
         });
 }
 
-export { getSlidersInitializationData, makeSliderGrid, getStartingValues, registerVote };
+export { getSlidersInitializationData, getStartingValues, registerVote };

@@ -5,6 +5,7 @@ import static spark.Spark.*;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import host.techcoop.gifthub.domain.EmotiveState;
 import host.techcoop.gifthub.domain.GiftHubRoom;
 import host.techcoop.gifthub.domain.User;
 import host.techcoop.gifthub.domain.UserVote;
@@ -18,6 +19,7 @@ import host.techcoop.gifthub.domain.requests.events.AdjustEvent;
 import host.techcoop.gifthub.domain.requests.events.EmotiveEvent;
 import host.techcoop.gifthub.domain.requests.events.NeedsUpdateEvent;
 import host.techcoop.gifthub.domain.responses.ErrorResponse;
+import host.techcoop.gifthub.domain.responses.JoinRoomResponse;
 import host.techcoop.gifthub.domain.responses.RoomInfoResponse;
 import host.techcoop.gifthub.interfaces.GiftHubRoomDAO;
 import java.io.PrintWriter;
@@ -99,6 +101,19 @@ public class GiftHubWebserver {
           break;
         case EMOTIVE:
           EmotiveEvent emotiveEvent = (EmotiveEvent) event;
+          EmotiveState emotiveState =
+              new EmotiveState(
+                  emotiveEvent.getBarId(), user.getUserId(), emotiveEvent.getEmotion());
+          switch (emotiveEvent.getToggle()) {
+            case OFF:
+              user = user.withRemovedEmotiveState(emotiveState);
+              break;
+            case ON:
+              user =
+                  user.withUpdatedEmotiveState(emotiveState)
+                      .withRemovedEmotiveState(emotiveState.getOpposite());
+              break;
+          }
           break;
         case NEEDS_UPDATE:
           NeedsUpdateEvent needsUpdateEvent = (NeedsUpdateEvent) event;
@@ -117,18 +132,17 @@ public class GiftHubWebserver {
       }
     }
     user.verify(oldUser, room);
-    roomDAO.updateUserInRoom(roomCode, user);
-    return null;
+    return RoomInfoResponse.from(roomDAO.updateUserInRoom(roomCode, user));
   }
 
-  private RoomInfoResponse joinRoom(Request request, Response response) {
+  private JoinRoomResponse joinRoom(Request request, Response response) {
     String roomCode = request.params(":roomCode");
     JoinRoomRequest joinRequest = gson.fromJson(request.body(), JoinRoomRequest.class);
     int userId = roomDAO.addUserToRoom(roomCode, joinRequest);
     GiftHubRoom room = roomDAO.getRoomByCode(roomCode);
     request.session().attribute(SESSION_ROOM_KEY, room.getCode());
     request.session().attribute(SESSION_USER_ID_KEY, userId);
-    return RoomInfoResponse.from(room);
+    return new JoinRoomResponse(userId, RoomInfoResponse.from(room));
   }
 
   private RoomInfoResponse createRoom(Request request, Response response) {
