@@ -164,67 +164,42 @@ class SliderGrid extends Component {
 
 
     render() {
-        // const sliders = this.props.slidersInitializationData
-        //     .sort((sl1, sl2) => sl1.personId - sl2.personId)
-        //     .map((slData) => (
-        //         <Grid container spacing={2} alignItems="center">
-        //             <Grid container item>
-        //                 <InputSlider
-        //                     key={slData.personId.toString()}
-        //                     sliderId={slData.personId.toString()}
-        //                     title={slData.title.toUpperCase()}
-        //                     surviveValue={slData.surviveValue}
-        //                     thriveValue={slData.thriveValue}
-        //                     startingValue={this.state.reset ? slData.startingValue : this.state.currentValues[slData.personId.toString()]}
-        //                     maxValue={slData.maxValue}
-        //                     handleUpdateSlider={this.handleUpdateSlider}
-        //                     userInfo={this.props.roomInfo.people.find(p => { return p.person_id.toString() === slData.personId.toString() })}
-        //                 />
-        //             </Grid>
-        //             <Grid item>
-        //                 <ToggleButtonsUpDownDev
-        //                     key={slData.personId.toString()}
-        //                     sliderId={slData.personId.toString()}
-        //                 />
-        //             </Grid>
-        //         </Grid>
-        //     ));
 
         const sliders = this.props.slidersInitializationData
             .sort((sl1, sl2) => sl1.personId - sl2.personId)
             .map((slData) => {
                 return (
                     <Grid
-                        container
-                        spacing={2}
-                        alignItems="center"
                         key={slData.personId.toString()}
-                    >
-                        <Grid container >
-                            <InputSlider
-                                key={slData.personId.toString()}
-                                sliderId={slData.personId.toString()}
-                                title={slData.title.toUpperCase()}
-                                surviveValue={slData.surviveValue}
-                                thriveValue={slData.thriveValue}
-                                startingValue={this.state.reset ? slData.startingValue : this.state.currentValues[slData.personId.toString()]}
-                                maxValue={slData.maxValue}
-                                handleUpdateSlider={this.handleUpdateSlider}
-                                userInfo={this.props.roomInfo.people.find(p => { return p.person_id.toString() === slData.personId.toString() })}
-                            />
+                        container
+                        direction="row"
+                        alignItems="center"
+                        spacing={12}
 
-                            <ToggleButtonsUpDownDev
-                                key={slData.personId.toString()}
-                                sliderId={slData.personId.toString()}
-                            />
-                        </Grid>
+                    >
+                        <InputSlider
+                            key={slData.personId.toString()}
+                            sliderId={slData.personId.toString()}
+                            title={slData.title.toUpperCase()}
+                            surviveValue={slData.surviveValue}
+                            thriveValue={slData.thriveValue}
+                            startingValue={this.state.reset ? slData.startingValue : this.state.currentValues[slData.personId.toString()]}
+                            maxValue={slData.maxValue}
+                            handleUpdateSlider={this.handleUpdateSlider}
+                            userInfo={this.props.roomInfo.people.find(p => { return p.person_id.toString() === slData.personId.toString() })}
+                        />
+                        <ToggleButtonsUpDownDev
+                            key={slData.personId.toString()}
+                            sliderId={slData.personId.toString()}
+                        />
                     </Grid>
+
                 )
             })
 
 
         return (
-            <div>
+            <div style={{ margin: 25 + 'px' }}>
                 <ButtonsUndoRedo
                     undoMove={this.undoMove}
                     redoMove={this.redoMove}
@@ -238,7 +213,9 @@ class SliderGrid extends Component {
                         : 0}{' '}
                     / {this.props.roomAmount}
                 </p>
-                {sliders}
+                <Grid container alignContent="space-between">
+                    {sliders}
+                </Grid>
             </div >
         );
     }

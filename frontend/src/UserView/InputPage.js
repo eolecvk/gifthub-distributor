@@ -33,7 +33,7 @@ class InputPage extends Component {
             }
 
             // Case: no new people detected but average has moved?
-            if (!isEqual(this.state.roomInfo, response.data)){
+            if (!isEqual(this.state.roomInfo, response.data)) {
                 this.setState({ roomInfo: response.data, reset: false });
             }
             // call getData() again in 5 seconds
@@ -103,7 +103,7 @@ class InputPage extends Component {
         );
 
         return (
-            <div>
+            <div style={{padding:25+'px'}}>
                 <RoomInfo
                     roomInfo={this.state.roomInfo}
                 />

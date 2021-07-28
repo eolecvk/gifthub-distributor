@@ -2,6 +2,7 @@ import React from 'react'
 import axios from 'axios';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import Grid from '@material-ui/core/Grid';
 
 class ToggleButtonsUpDownDev extends React.Component {
 
@@ -36,7 +37,6 @@ class ToggleButtonsUpDownDev extends React.Component {
 
     shouldComponentUpdate = (nextProps, nextState) => {
         if (nextState.opinion === 'unset') {
-            console.log('prevented a rerender')
             return false
         }
         return true
@@ -77,27 +77,30 @@ class ToggleButtonsUpDownDev extends React.Component {
 
     render() {
         return (
-            <ToggleButtonGroup
-                value={this.state.opinion}
-                exclusive
-                onChange={this.handleOpinion}
-                aria-label="Opinion on distribution"
-            >
-                <ToggleButton
-                    value="DISSENT_DOWN"
-                    aria-label="Ask for less"
-                    size="large"
+            <Grid item>
+                <ToggleButtonGroup
+                    value={this.state.opinion}
+                    exclusive
+                    onChange={this.handleOpinion}
+                    aria-label="Opinion on distribution"
                 >
-                    <span aria-label="index pointing down" role="img">👇</span>
-                </ToggleButton>
-                <ToggleButton
-                    value="DISSENT_UP"
-                    aria-label="Ask for more"
-                    size="large"
-                >
-                    <span aria-label="index pointing up" role="img">👆</span>
-                </ToggleButton>
-            </ToggleButtonGroup >
+                    <ToggleButton
+                        value="DISSENT_DOWN"
+                        aria-label="Ask for less"
+                        style={{ fontSize: '20px' }}
+                    >
+                            <span aria-label="index pointing down" role="img">👇</span>
+
+                    </ToggleButton>
+                    <ToggleButton
+                        value="DISSENT_UP"
+                        aria-label="Ask for more"
+                        style={{ fontSize: '20px' }}
+                    >
+                        <span aria-label="index pointing up" role="img">👆</span>
+                    </ToggleButton>
+                </ToggleButtonGroup >
+            </Grid>
         )
     }
 }

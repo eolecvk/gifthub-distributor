@@ -55,19 +55,24 @@ function InputSlider(props) {
 
     return (
         <div className={classes.root}>
-            <Typography id="input-slider" gutterBottom>
-                {title}
-            </Typography>
-            <Grid container spacing={2} alignItems="center">
-                <Grid item>
-                    <Tooltip
-                        title={needsDescription}
-                        aria-label={needsDescription}>
-                        <FaceIcon
-                            fontSize="large"
-                            style={{ color: colors[props.sliderId] }}
-                        />
-                    </Tooltip>
+            <Grid container spacing={1} alignItems="flex-end">
+                <Grid item xs={1}>
+                    <Grid item>
+                        <Typography id="input-slider">
+                            {title}
+                        </Typography>
+                    </Grid>
+                    <Grid item>
+                        <Tooltip
+                            title={needsDescription}
+                            aria-label={needsDescription}>
+                            <FaceIcon
+                                fontSize="large"
+                                style={{ color: colors[props.sliderId] }}
+                            />
+                        </Tooltip>
+                    </Grid>
+
                 </Grid>
                 <Grid item xs>
                     <Slider
