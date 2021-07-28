@@ -1,21 +1,3 @@
-
-// (UNUSED) SUM
-// function sum(arr){
-//     return arr.reduce((a, b) => a + b, 0);
-// }
-
-// (UNUSED) AVERAGE
-// function mean(arr){
-//     return sum(arr) / arr.length;
-// }
-
-// (UNUSED) STD
-// function std(arr) {
-//     const mu = mean(arr);
-//     const diffArr = arr.map(a => (a - mu) ** 2);
-//     return Math.sqrt(sum(diffArr) / (arr.length - 1));
-// }
-
 function asc(arr){
     return arr.sort((a, b) => a - b);
 }
