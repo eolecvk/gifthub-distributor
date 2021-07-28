@@ -42,14 +42,6 @@ class AdminView extends Component {
         const roomCode = this.state.room_code;
         const roomName = this.state.room_name;
 
-        // const max =
-        //     Math.min(
-        //         this.state.splitting_cents,
-        //         Math.max(
-        //             ...people.map((p) => p.votes_cents).flat(), // flat list of vote values in cents
-        //             ...people.map((p) => p.needs_upper_bound_cents) // flat list of upper bound needs in cents
-        //         )) / 100;
-
         const data = people
             .sort((p1, p2) => p1.person_id - p2.person_id)
             .map((p) => {
