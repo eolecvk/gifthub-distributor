@@ -15,4 +15,6 @@ public interface GiftHubRoomDAO {
   User getUserFromRoom(String roomCode, int userId);
 
   GiftHubRoom updateUserInRoom(String roomCode, User user);
+
+  String getRoomInfo(String roomCode);
 }
