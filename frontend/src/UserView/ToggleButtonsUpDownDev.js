@@ -77,7 +77,7 @@ class ToggleButtonsUpDownDev extends React.Component {
 
     render() {
         return (
-            <Grid item>
+            <Grid item xs={1}>
                 <ToggleButtonGroup
                     value={this.state.opinion}
                     exclusive
