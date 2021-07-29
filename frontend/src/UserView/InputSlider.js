@@ -59,7 +59,7 @@ function InputSlider(props) {
         <div className={classes.root}>
             <Grid container spacing={2} alignItems="flex-end" align="center">
                 <Grid item xs={1}>
-                    <Grid item alignContent="center">
+                    <Grid item>
                         <Typography id="input-slider">
                             {title}
                         </Typography>

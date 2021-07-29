@@ -177,7 +177,7 @@ class SliderGrid extends Component {
                         spacing={10}
                     >
                         <InputSlider
-                            key={slData.personId.toString()}
+                            key={slData.personId.toString() + "inputSlider"}
                             sliderId={slData.personId.toString()}
                             title={slData.title.toUpperCase()}
                             surviveValue={slData.surviveValue}
