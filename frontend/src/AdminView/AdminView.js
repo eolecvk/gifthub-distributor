@@ -51,8 +51,13 @@ class AdminView extends Component {
                 const needs_lower = p.needs_lower_bound_cents / 100;
                 const upper_25 = quantile(p.votes_cents, 0.75) / 100;
                 const lower_25 = quantile(p.votes_cents, 0.25) / 100;
+
+                const countDissentUp = p.emotive.DISSENT_UP ? p.emotive.DISSENT_UP.length : 0
+                const countDissentDown = p.emotive.DISSENT_DOWN ? p.emotive.DISSENT_DOWN.length : 0
+                const nameEmotive = `[👆${countDissentUp}/👇${countDissentDown}] ${name}`
+
                 return {
-                    name: name,
+                    name: nameEmotive,
                     cents: cents,
                     needs_upper: needs_upper,
                     needs_lower: needs_lower,
@@ -61,9 +66,9 @@ class AdminView extends Component {
                 };
             });
         const barchart = (
-            <ResponsiveContainer width="95%" height="80%" minHeight={100 * people.length}>
+            <ResponsiveContainer width="90%" height="80%" minHeight={100 * people.length}>
                 <ComposedChart width={720} height={480} data={data} layout="vertical">
-                    <YAxis type="category" dataKey="name" />
+                    <YAxis width={360} type="category" dataKey="name" dx={-15} tick={{fontSize: 32}} orientation="left"   />
                     <XAxis type="number" />
                     <Bar dataKey="cents">
                         {
@@ -81,7 +86,7 @@ class AdminView extends Component {
         );
 
         return (
-            <div>
+            <div style={{margin:15+'px'}}>
                 <h1>Admin View Page</h1>
                 <h2>{roomName}</h2>
                 <h2>Room Code: {roomCode}</h2>
