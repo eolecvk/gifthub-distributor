@@ -103,7 +103,7 @@ class InputPage extends Component {
         );
 
         return (
-            <div style={{padding:25+'px'}}>
+            <div>
                 <RoomInfo
                     roomInfo={this.state.roomInfo}
                 />

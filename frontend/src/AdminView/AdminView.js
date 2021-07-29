@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { ComposedChart, XAxis, YAxis, Bar, Cell, ResponsiveContainer, Scatter } from 'recharts';
-import axios from 'axios';
-import colors from './../UserView/colors';
-import { quantile } from "./utils";
+import axios from 'axios'
+import { quantile } from "./utils"
+import colors from './../UserView/colors'
 
 
 // Example: https://blog.stvmlbrn.com/2019/02/20/automatically-refreshing-data-in-react.html
@@ -54,7 +54,7 @@ class AdminView extends Component {
 
                 const countDissentUp = p.emotive.DISSENT_UP ? p.emotive.DISSENT_UP.length : 0
                 const countDissentDown = p.emotive.DISSENT_DOWN ? p.emotive.DISSENT_DOWN.length : 0
-                const dissent = `👇 ${countDissentDown} / 👆 ${countDissentUp}`
+                const dissent = `👇${countDissentDown}  👆${countDissentUp}`
 
                 return {
                     name: name,
@@ -67,10 +67,10 @@ class AdminView extends Component {
                 };
             });
         const barchart = (
-            <ResponsiveContainer width="90%" height="80%" minHeight={100 * people.length}>
-                <ComposedChart width={360} height={480} data={data} layout="vertical">
-                    <YAxis yAxisId={0} width={120} type="category" dataKey="name" tick={{fontSize: 32}} orientation="left"   />
-                    <YAxis yAxisId={1} width={160} type="category" dataKey="dissent" tick={{fontSize: 32}} orientation="right" tickLine={false} axisLine={false} />
+            <ResponsiveContainer width="95%" height="80%" minHeight={100 * people.length}>
+                <ComposedChart width={720} height={480} data={data} layout="vertical">
+                    <YAxis yAxisId={0} width={100} type="category" dataKey="name" tick={{fontSize: 20}} orientation="left"   />
+                    <YAxis yAxisId={1} width={100} type="category" dataKey="dissent" tick={{fontSize: 20}} orientation="right" tickLine={false} axisLine={false} />
                     <XAxis type="number" />
                     <Bar dataKey="cents">
                         {
@@ -88,10 +88,8 @@ class AdminView extends Component {
         );
 
         return (
-            <div style={{margin:15+'px'}}>
-                <h1>Admin View Page</h1>
-                <h2>{roomName}</h2>
-                <h2>Room Code: {roomCode}</h2>
+            <div>
+                <h1 style={{textAlign:"center"}} textAlign>{roomName} [{roomCode}]</h1>
                 <h2>Total Amount: ${totalAmountDollars}</h2>
                 <div style={{
                     display: 'flex',

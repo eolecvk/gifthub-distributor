@@ -1,10 +1,14 @@
 import React from 'react';
 
 function RoomInfo(props) {
+
+    const style = {
+        textAlign: "center"
+    }
+
     return (
         <div>
-            <h2>Room: {props.roomInfo.room_name}</h2>
-            <h4>Amount: ${(props.roomInfo.splitting_cents / 100).toFixed(2)}</h4>
+            <h1 style={style}>{props.roomInfo.room_name}</h1>
         </div>
     );
 }

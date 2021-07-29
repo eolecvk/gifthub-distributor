@@ -199,21 +199,21 @@ class SliderGrid extends Component {
 
 
         return (
-            <div style={{ margin: 25 + 'px' }}>
+            <div >
                 <ButtonsUndoRedo
                     undoMove={this.undoMove}
                     redoMove={this.redoMove}
                 />
-                <p>
-                    Amount distributed:{' '}
-                    {Object.values(this.state.currentValues).length > 0
+                <h2>
+                    Distributed:{' '}
+                    ${Object.values(this.state.currentValues).length > 0
                         ? Object.values(this.state.currentValues)
                             .map((v) => (v ? v : 0))
                             .reduce((a, b) => a + b)
                         : 0}{' '}
-                    / {this.props.roomAmount}
-                </p>
-                <Grid container>
+                    / ${this.props.roomAmount}
+                </h2>
+                <Grid container style={{ margin: 25 + 'px' }}>
                     {sliders}
                 </Grid>
             </div >

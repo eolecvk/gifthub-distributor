@@ -10,7 +10,8 @@ import Footer from './Footer';
 function App() {
 
     const styleContent = {
-        marginTop: '150px',
+        marginTop: '50px',
+        padding:'25px'
     };
 
     return (
