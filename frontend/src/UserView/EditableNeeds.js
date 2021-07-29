@@ -13,19 +13,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function onChangeSurviveAmount(roomCode, newSurviveAmount) {
+function onChangeSurviveAmount(newSurviveAmount, roomCode) {
     const needsLowerBoundCents = newSurviveAmount * 100
     const args = { needsLowerBoundCents: needsLowerBoundCents }
     registerNeedsUpdate(args, roomCode)
 }
 
-function onChangeThriveAmount(roomCode, newThriveAmount) {
+function onChangeThriveAmount(newThriveAmount, roomCode) {
     const needsUpperBoundCents = newThriveAmount * 100
     const args = { needsUpperBoundCents: needsUpperBoundCents }
     registerNeedsUpdate(args, roomCode)
 }
 
-function onChangeNeedsDescription(roomCode, newNeedsDescription) {
+function onChangeNeedsDescription(newNeedsDescription, roomCode) {
     const args = { needsDescription: newNeedsDescription }
     registerNeedsUpdate(args, roomCode)
 }
@@ -50,7 +50,7 @@ function EditableNeeds(props) {
                     label=':)'
                     id="survive-amount-input"
                     defaultValue={surviveAmount}
-                    onChange={(e) => { onChangeSurviveAmount(roomCode, e.target.value) }}
+                    onChange={(e) => { onChangeSurviveAmount(e.target.value, roomCode) }}
                     size="small"
                     variant="outlined"
                 />
@@ -58,7 +58,7 @@ function EditableNeeds(props) {
                     label=':D'
                     id="thrive-amount-input"
                     defaultValue={thriveAmount}
-                    onChange={(e) => { onChangeThriveAmount(roomCode, e.target.value) }}
+                    onChange={(e) => { onChangeThriveAmount(e.target.value, roomCode) }}
                     size="small"
                     variant="outlined"
                 />
@@ -66,7 +66,7 @@ function EditableNeeds(props) {
                     label='Needs description'
                     id="need-description-input"
                     defaultValue={needsDescription}
-                    onChange={(e) => { onChangeNeedsDescription(roomCode, e.target.value) }}
+                    onChange={(e) => { onChangeNeedsDescription(e.target.value, roomCode) }}
                     size="small"
                     variant="outlined"
                 />

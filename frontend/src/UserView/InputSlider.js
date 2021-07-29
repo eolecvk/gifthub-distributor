@@ -56,11 +56,11 @@ function InputSlider(props) {
     }
 
     return (
-        <div className={classes.root}>
+        <div className={classes.root} key={props.sliderId.toString() + "div"}>
             <Grid container spacing={2} alignItems="flex-end" align="center">
                 <Grid item xs={1}>
                     <Grid item>
-                        <Typography id="input-slider">
+                        <Typography id={props.sliderId.toString() + "input-slider"}>
                             {title}
                         </Typography>
                     </Grid>
