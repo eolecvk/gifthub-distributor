@@ -65,15 +65,8 @@ function getStartingValues(slidersInitializationData) {
     return startingValues;
 }
 
-function registerVote(sliderValues, roomCode) {
-    const events = Object.keys(sliderValues).map((key) => {
-        return {
-            kind: 'ADJUST',
-            bar_id: key,
-            new_value_cents: sliderValues[key] * 100,
-        };
-    });
 
+function registerEvents(events, roomCode){
     const payload = { events: events };
 
     axios
@@ -87,4 +80,36 @@ function registerVote(sliderValues, roomCode) {
         });
 }
 
-export { getSlidersInitializationData, getStartingValues, registerVote };
+function registerVote(sliderValues, roomCode) {
+    const events = Object.keys(sliderValues).map((key) => {
+        return {
+            kind: 'ADJUST',
+            bar_id: key,
+            new_value_cents: sliderValues[key] * 100,
+        };
+    });
+
+    registerEvents(events, roomCode)
+}
+
+function registerNeedsUpdate(args, roomCode){
+
+    const {needsDescription, needsLowerBoundCents, needsUpperBoundCents} = args
+    const event = {kind: 'NEEDS_UPDATE'}
+
+    if (typeof needsDescription !== 'undefined') {
+        event["needs_description"] = needsDescription
+    }
+    if (typeof needsLowerBoundCents !== 'undefined') {
+        event["needs_lower_bound_cents"] = needsLowerBoundCents
+    }
+    if (typeof needsUpperBoundCents !== 'undefined') {
+        event["needs_upper_bound_cents"] = needsUpperBoundCents
+    }    
+
+    const events = [event]
+    registerEvents(events, roomCode)
+}
+
+
+export { getSlidersInitializationData, getStartingValues, registerVote, registerNeedsUpdate};
