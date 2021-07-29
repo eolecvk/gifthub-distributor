@@ -4,7 +4,7 @@ import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import Grid from '@material-ui/core/Grid';
 
-class ToggleButtonsUpDownDev extends React.Component {
+class ToggleButtonsUpDown extends React.Component {
 
     constructor(props) {
         super(props)
@@ -77,7 +77,7 @@ class ToggleButtonsUpDownDev extends React.Component {
 
     render() {
         return (
-            <Grid item xs={1}>
+            <Grid item xs={2}>
                 <ToggleButtonGroup
                     value={this.state.opinion}
                     exclusive
@@ -85,19 +85,19 @@ class ToggleButtonsUpDownDev extends React.Component {
                     aria-label="Opinion on distribution"
                 >
                     <ToggleButton
+                        id="dissentdown-button"
                         value="DISSENT_DOWN"
                         aria-label="Ask for less"
-                        style={{ fontSize: '20px' }}
                     >
-                            <span aria-label="index pointing down" role="img">👇</span>
+                        <span aria-label="index pointing down">👇</span>
 
                     </ToggleButton>
                     <ToggleButton
+                        id="dissentup-button"
                         value="DISSENT_UP"
                         aria-label="Ask for more"
-                        style={{ fontSize: '20px' }}
                     >
-                        <span aria-label="index pointing up" role="img">👆</span>
+                        <span aria-label="index pointing up">👆</span>
                     </ToggleButton>
                 </ToggleButtonGroup >
             </Grid>
@@ -105,4 +105,4 @@ class ToggleButtonsUpDownDev extends React.Component {
     }
 }
 
-export default ToggleButtonsUpDownDev
+export default ToggleButtonsUpDown

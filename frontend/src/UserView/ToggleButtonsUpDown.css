@@ -1,0 +1,10 @@
+#dissentup-button, #dissentdown-button {
+    width: 120px;
+    height: 50px;
+}
+
+#dissentup-button span, #dissentdown-button span {
+    width: 30px;
+    height: 30px;
+    font-size: 30px
+}

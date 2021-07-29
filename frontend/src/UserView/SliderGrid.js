@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import { getStartingValues, registerVote } from './utils';
 import InputSlider from './InputSlider'
 import ButtonsUndoRedo from './ButtonsUndoRedo'
-import ToggleButtonsUpDownDev from './ToggleButtonsUpDownDev';
+import ToggleButtonsUpDown from './ToggleButtonsUpDown';
 
 class SliderGrid extends Component {
 
@@ -175,7 +175,6 @@ class SliderGrid extends Component {
                         direction="row"
                         alignItems="center"
                         spacing={10}
-
                     >
                         <InputSlider
                             key={slData.personId.toString()}
@@ -188,7 +187,7 @@ class SliderGrid extends Component {
                             handleUpdateSlider={this.handleUpdateSlider}
                             userInfo={this.props.roomInfo.people.find(p => { return p.person_id.toString() === slData.personId.toString() })}
                         />
-                        <ToggleButtonsUpDownDev
+                        <ToggleButtonsUpDown
                             key={slData.personId.toString()}
                             sliderId={slData.personId.toString()}
                         />

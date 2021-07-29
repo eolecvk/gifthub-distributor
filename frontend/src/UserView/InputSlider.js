@@ -12,7 +12,9 @@ function InputSlider(props) {
 
     const useStyles = makeStyles({
         root: {
-            width: '80%',
+            width: '70%',
+            height: '100%',
+            paddingTop: 90
         },
         input: {
             width: `${props.maxValue.toString().length} em`,
