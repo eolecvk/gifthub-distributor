@@ -1,0 +1,10 @@
+#undo-button, #redo-button {
+    width: 100px;
+    height: 50px;
+}
+
+#undo-button svg,
+#redo-button svg {
+    width: 25px;
+    height: 25px;
+}
