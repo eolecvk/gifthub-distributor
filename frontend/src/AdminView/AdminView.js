@@ -54,10 +54,11 @@ class AdminView extends Component {
 
                 const countDissentUp = p.emotive.DISSENT_UP ? p.emotive.DISSENT_UP.length : 0
                 const countDissentDown = p.emotive.DISSENT_DOWN ? p.emotive.DISSENT_DOWN.length : 0
-                const nameEmotive = `[👆${countDissentUp}/👇${countDissentDown}] ${name}`
+                const dissent = `👇 ${countDissentDown} / 👆 ${countDissentUp}`
 
                 return {
-                    name: nameEmotive,
+                    name: name,
+                    dissent: dissent,
                     cents: cents,
                     needs_upper: needs_upper,
                     needs_lower: needs_lower,
@@ -67,8 +68,9 @@ class AdminView extends Component {
             });
         const barchart = (
             <ResponsiveContainer width="90%" height="80%" minHeight={100 * people.length}>
-                <ComposedChart width={720} height={480} data={data} layout="vertical">
-                    <YAxis width={360} type="category" dataKey="name" dx={-15} tick={{fontSize: 32}} orientation="left"   />
+                <ComposedChart width={360} height={480} data={data} layout="vertical">
+                    <YAxis yAxisId={0} width={120} type="category" dataKey="name" tick={{fontSize: 32}} orientation="left"   />
+                    <YAxis yAxisId={1} width={160} type="category" dataKey="dissent" tick={{fontSize: 32}} orientation="right" tickLine={false} axisLine={false} />
                     <XAxis type="number" />
                     <Bar dataKey="cents">
                         {
