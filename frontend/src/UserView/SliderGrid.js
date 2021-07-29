@@ -174,7 +174,7 @@ class SliderGrid extends Component {
                         container
                         direction="row"
                         alignItems="center"
-                        spacing={12}
+                        spacing={10}
 
                     >
                         <InputSlider
@@ -213,7 +213,7 @@ class SliderGrid extends Component {
                         : 0}{' '}
                     / {this.props.roomAmount}
                 </p>
-                <Grid container alignContent="space-between">
+                <Grid container>
                     {sliders}
                 </Grid>
             </div >
