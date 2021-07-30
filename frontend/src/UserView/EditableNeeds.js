@@ -74,7 +74,7 @@ class EditableNeeds extends Component {
 
     onChangeSurviveAmount = (newSurviveAmount, roomCode) => {
 
-        if ((this.state.thriveAmount) && (newSurviveAmount > this.state.thriveAmount)) {
+        if (this.state.thriveAmount && newSurviveAmount > this.state.thriveAmount) {
             this.setState({
                 errors: { ...this.state.errors, surviveAmount: "please enter a survive amount that is inferior to the thrive amount" }
             });
@@ -88,13 +88,13 @@ class EditableNeeds extends Component {
             return
         }
 
-        const errors = this.state.errors
-        delete errors.surviveAmount
-        this.setState({ errors: errors })
-
         const needsLowerBoundCents = newSurviveAmount * 100
         const args = { needsLowerBoundCents: needsLowerBoundCents }
         registerNeedsUpdate(args, roomCode)
+
+        const errors = this.state.errors
+        delete errors.surviveAmount
+        this.setState({ errors: errors })
     }
 
     onChangeThriveAmount = (newThriveAmount, roomCode) => {
@@ -113,13 +113,13 @@ class EditableNeeds extends Component {
             return
         }
 
-        const errors = this.state.errors
-        delete errors.thriveAmount
-        this.setState({ errors: errors })
-
         const needsUpperBoundCents = newThriveAmount * 100
         const args = { needsUpperBoundCents: needsUpperBoundCents }
         registerNeedsUpdate(args, roomCode)
+
+        const errors = this.state.errors
+        delete errors.thriveAmount
+        this.setState({ errors: errors })
     }
 
     onChangeNeedsDescription = (newNeedsDescription, roomCode) => {
@@ -137,7 +137,7 @@ class EditableNeeds extends Component {
                         label=':)'
                         id="survive-amount-input"
                         defaultValue={this.state.surviveAmount}
-                        onChange={(e) => { this.onChangeSurviveAmount(e.target.value, this.roomCode) }}
+                        onChange={(e) => { this.onChangeSurviveAmount(parseInt(e.target.value), this.roomCode) }}
                         size="small"
                         variant="outlined"
                         type="Number"
@@ -149,7 +149,7 @@ class EditableNeeds extends Component {
                         label=':D'
                         id="thrive-amount-input"
                         defaultValue={this.state.thriveAmount}
-                        onChange={(e) => { this.onChangeThriveAmount(e.target.value, this.roomCode) }}
+                        onChange={(e) => { this.onChangeThriveAmount(parseInt(e.target.value), this.roomCode) }}
                         size="small"
                         variant="outlined"
                         type="Number"
