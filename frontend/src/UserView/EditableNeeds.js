@@ -76,6 +76,7 @@ class EditableNeeds extends Component {
 
         if (this.state.thriveAmount && newSurviveAmount > this.state.thriveAmount) {
             this.setState({
+                surviveAmount: newSurviveAmount,
                 errors: { ...this.state.errors, surviveAmount: "please enter a survive amount that is inferior to the thrive amount" }
             });
             return
@@ -83,6 +84,7 @@ class EditableNeeds extends Component {
 
         if (newSurviveAmount < 0) {
             this.setState({
+                surviveAmount: newSurviveAmount,
                 errors: { ...this.state.errors, surviveAmount: "please enter a positive survive amount" }
             });
             return
@@ -94,13 +96,17 @@ class EditableNeeds extends Component {
 
         const errors = this.state.errors
         delete errors.surviveAmount
-        this.setState({ errors: errors })
+        this.setState({
+            surviveAmount: newSurviveAmount,
+            errors: errors
+        })
     }
 
     onChangeThriveAmount = (newThriveAmount, roomCode) => {
 
         if (this.state.surviveAmount && newThriveAmount < this.state.surviveAmount) {
             this.setState({
+                thriveAmount: newThriveAmount,
                 errors: { ...this.state.errors, thriveAmount: "please enter a thrive amount that is superior to the survive amount" }
             });
             return
@@ -108,6 +114,7 @@ class EditableNeeds extends Component {
 
         if (newThriveAmount < 0) {
             this.setState({
+                thriveAmount: newThriveAmount,
                 errors: { ...this.state.errors, thriveAmount: "please enter a positive thrive amount" }
             });
             return
@@ -117,9 +124,13 @@ class EditableNeeds extends Component {
         const args = { needsUpperBoundCents: needsUpperBoundCents }
         registerNeedsUpdate(args, roomCode)
 
+
         const errors = this.state.errors
         delete errors.thriveAmount
-        this.setState({ errors: errors })
+        this.setState({
+            thriveAmount: newThriveAmount,
+            errors: errors
+        })
     }
 
     onChangeNeedsDescription = (newNeedsDescription, roomCode) => {
@@ -133,10 +144,10 @@ class EditableNeeds extends Component {
             <form className={classes.root} noValidate autoComplete="off">
                 <div>
                     <TextField
-                        key={this.state.surviveAmount}
+                        key={this.state._isMounted + "survive"}
                         label=':)'
                         id="survive-amount-input"
-                        defaultValue={this.state.surviveAmount}
+                        value={this.state.surviveAmount}
                         onChange={(e) => { this.onChangeSurviveAmount(parseInt(e.target.value), this.roomCode) }}
                         size="small"
                         variant="outlined"
@@ -145,10 +156,10 @@ class EditableNeeds extends Component {
                         helperText={this.state.errors.surviveAmount && this.state.errors.surviveAmount}
                     />
                     <TextField
-                        key={this.state.thriveAmount}
+                        key={this.state._isMounted + "thrive"}
                         label=':D'
                         id="thrive-amount-input"
-                        defaultValue={this.state.thriveAmount}
+                        value={this.state.thriveAmount}
                         onChange={(e) => { this.onChangeThriveAmount(parseInt(e.target.value), this.roomCode) }}
                         size="small"
                         variant="outlined"
@@ -160,8 +171,8 @@ class EditableNeeds extends Component {
                         key={this.state.needsDescription}
                         label='Needs description'
                         id="need-description-input"
-                        defaultValue={this.state.needsDescription}
-                        onChange={(e) => { registerNeedsUpdate({ needsDescription: e.target.value }, this.roomCode) }}
+                        value={this.state.needsDescription}
+                        onChange={(e) => { this.onChangeNeedsDescription(e.target.value, this.roomCode) }}
                         size="small"
                         variant="outlined"
                         multiline={true}
