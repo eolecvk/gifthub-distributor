@@ -12,8 +12,9 @@ function InputSlider(props) {
 
     const useStyles = makeStyles({
         root: {
-            width: '100%',
+            width: '85%',
             height: '100%',
+            marginTop:'50px'
         },
         input: {
             width: `${props.maxValue.toString().length} em`,
@@ -58,7 +59,7 @@ function InputSlider(props) {
 
     return (
         <div className={classes.root} key={props.sliderId.toString() + "div"}>
-            <Grid container spacing={2} alignItems="flex-end" align="center">
+            <Grid container spacing={2}>
                 <Grid item xs={1}>
                     <Grid item>
                         <Typography id={props.sliderId.toString() + "input-slider"}>
@@ -77,7 +78,7 @@ function InputSlider(props) {
                     </Grid>
 
                 </Grid>
-                <Grid item xs>
+                <Grid item xs={9}>
                     <Slider
                         min={0}
                         max={maxValue}

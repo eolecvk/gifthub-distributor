@@ -172,9 +172,7 @@ class SliderGrid extends Component {
                     <Grid
                         key={slData.personId.toString()}
                         container
-                        direction="row"
                         alignItems="center"
-                        spacing={10}
                     >
                         <InputSlider
                             key={slData.personId.toString() + "inputSlider"}
@@ -212,7 +210,7 @@ class SliderGrid extends Component {
                         : 0}{' '}
                     / ${this.props.roomAmount}
                 </h2>
-                <Grid container style={{ margin: 25 + 'px' }}>
+                <Grid container>
                     {sliders}
                 </Grid>
             </div >

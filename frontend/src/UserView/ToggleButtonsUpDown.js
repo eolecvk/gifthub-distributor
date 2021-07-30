@@ -77,12 +77,13 @@ class ToggleButtonsUpDown extends React.Component {
 
     render() {
         return (
-            <Grid item xs={2}>
+            <Grid item xs>
                 <ToggleButtonGroup
                     value={this.state.opinion}
                     exclusive
                     onChange={this.handleOpinion}
                     aria-label="Opinion on distribution"
+                    size="large"
                 >
                     <ToggleButton
                         id="dissentdown-button"
