@@ -99,13 +99,13 @@ class EditableNeeds extends Component {
 
     onChangeThriveAmount = (newThriveAmount, roomCode) => {
 
-        if (this.state.surviveAmount && newThriveAmount < this.state.thriveAmount) {
+        if (this.state.surviveAmount && newThriveAmount < this.state.surviveAmount) {
             this.setState({
                 errors: { ...this.state.errors, thriveAmount: "please enter a thrive amount that is superior to the survive amount" }
             });
             return
         }
-        
+
         if (newThriveAmount < 0) {
             this.setState({
                 errors: { ...this.state.errors, thriveAmount: "please enter a positive thrive amount" }
