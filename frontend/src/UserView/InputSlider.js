@@ -12,9 +12,8 @@ function InputSlider(props) {
 
     const useStyles = makeStyles({
         root: {
-            width: '70%',
+            width: '100%',
             height: '100%',
-            paddingTop: 90
         },
         input: {
             width: `${props.maxValue.toString().length} em`,
@@ -28,11 +27,13 @@ function InputSlider(props) {
     const needsDescription = userInfo.needs_description
     const groupVoteAvg = userInfo.avg_cents / 100
 
-    const marks = [
-        { value: surviveValue, label: ':)' },
-        { value: thriveValue, label: ':D' },
-        { value: groupVoteAvg, label: 'avg' }
-    ];
+    const marks = [{ value: groupVoteAvg, label: 'avg' }]
+    if (surviveValue <= maxValue){
+        marks.push({ value: surviveValue, label: ':)' })
+    }
+    if (thriveValue <= maxValue){
+        marks.push({ value: thriveValue, label: ':D' })
+    }
 
     function handleSliderChangeCommitted(event, newValue) {
         handleSliderChange(event, newValue, true);
