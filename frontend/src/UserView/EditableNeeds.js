@@ -78,11 +78,19 @@ class EditableNeeds extends Component {
             this.setState({
                 errors: { ...this.state.errors, surviveAmount: "please enter a survive amount that is inferior to the thrive amount" }
             });
-        } else {
-            const errors = this.state.errors
-            delete errors.surviveAmount
-            this.setState({ errors: errors })
+            return
         }
+
+        if (newSurviveAmount < 0) {
+            this.setState({
+                errors: { ...this.state.errors, surviveAmount: "please enter a positive survive amount" }
+            });
+            return
+        }
+
+        const errors = this.state.errors
+        delete errors.surviveAmount
+        this.setState({ errors: errors })
 
         const needsLowerBoundCents = newSurviveAmount * 100
         const args = { needsLowerBoundCents: needsLowerBoundCents }
@@ -95,11 +103,19 @@ class EditableNeeds extends Component {
             this.setState({
                 errors: { ...this.state.errors, thriveAmount: "please enter a thrive amount that is superior to the survive amount" }
             });
-        } else {
-            const errors = this.state.errors
-            delete errors.thriveAmount
-            this.setState({ errors: errors })
+            return
         }
+        
+        if (newThriveAmount < 0) {
+            this.setState({
+                errors: { ...this.state.errors, thriveAmount: "please enter a positive thrive amount" }
+            });
+            return
+        }
+
+        const errors = this.state.errors
+        delete errors.thriveAmount
+        this.setState({ errors: errors })
 
         const needsUpperBoundCents = newThriveAmount * 100
         const args = { needsUpperBoundCents: needsUpperBoundCents }
