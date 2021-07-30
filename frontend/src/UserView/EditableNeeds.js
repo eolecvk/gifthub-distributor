@@ -136,6 +136,10 @@ class EditableNeeds extends Component {
     onChangeNeedsDescription = (newNeedsDescription, roomCode) => {
         const args = { needsDescription: newNeedsDescription }
         registerNeedsUpdate(args, roomCode)
+
+        this.setState({
+            needsDescription: newNeedsDescription
+        })
     }
 
     render() {
@@ -154,7 +158,7 @@ class EditableNeeds extends Component {
                         type="Number"
                         error={!!this.state.errors.surviveAmount}
                         helperText={this.state.errors.surviveAmount && this.state.errors.surviveAmount}
-                        InputLabelProps={{shrink:true}}
+                        InputLabelProps={{ shrink: true }}
                     />
                     <TextField
                         key={this.state._isMounted + "thrive"}
@@ -167,10 +171,10 @@ class EditableNeeds extends Component {
                         type="Number"
                         error={!!this.state.errors.thriveAmount}
                         helperText={this.state.errors.thriveAmount && this.state.errors.thriveAmount}
-                        InputLabelProps={{shrink:true}}
+                        InputLabelProps={{ shrink: true }}
                     />
                     <TextField
-                        key={this.state.needsDescription}
+                        key={this.state._isMounted + "needsDescription"}
                         label='Needs description'
                         id="need-description-input"
                         value={this.state.needsDescription}
@@ -180,6 +184,7 @@ class EditableNeeds extends Component {
                         multiline={true}
                         maxRows={6}
                         type="String"
+                        InputLabelProps={{ shrink: true }}
                     />
                 </div>
             </form>
