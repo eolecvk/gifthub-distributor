@@ -154,6 +154,7 @@ class EditableNeeds extends Component {
                         type="Number"
                         error={!!this.state.errors.surviveAmount}
                         helperText={this.state.errors.surviveAmount && this.state.errors.surviveAmount}
+                        InputLabelProps={{shrink:true}}
                     />
                     <TextField
                         key={this.state._isMounted + "thrive"}
@@ -166,6 +167,7 @@ class EditableNeeds extends Component {
                         type="Number"
                         error={!!this.state.errors.thriveAmount}
                         helperText={this.state.errors.thriveAmount && this.state.errors.thriveAmount}
+                        InputLabelProps={{shrink:true}}
                     />
                     <TextField
                         key={this.state.needsDescription}
