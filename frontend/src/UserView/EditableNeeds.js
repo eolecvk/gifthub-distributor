@@ -3,6 +3,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import {registerNeedsUpdate} from './utils'
 
+
+// TODO
+// * Do some form validation (survive < thrive!)
+//     Convert to class component or use form...
+//     https://codesandbox.io/s/material-demo-error-helper-text-w8b73?file=/demo.js:0-41
+// * onComponentDidMount, GET userData from backend (instead of sessionStorage)
+
 const useStyles = makeStyles((theme) => ({
     root: {
         '& .MuiTextField-root': {
@@ -53,6 +60,7 @@ function EditableNeeds(props) {
                     onChange={(e) => { onChangeSurviveAmount(e.target.value, roomCode) }}
                     size="small"
                     variant="outlined"
+                    type="Number"
                 />
                 <TextField
                     label=':D'
@@ -61,6 +69,7 @@ function EditableNeeds(props) {
                     onChange={(e) => { onChangeThriveAmount(e.target.value, roomCode) }}
                     size="small"
                     variant="outlined"
+                    type="Number"
                 />
                 <TextField
                     label='Needs description'
@@ -69,6 +78,9 @@ function EditableNeeds(props) {
                     onChange={(e) => { onChangeNeedsDescription(e.target.value, roomCode) }}
                     size="small"
                     variant="outlined"
+                    multiline={true}
+                    maxRows={6}
+                    type="String"
                 />
             </div>
         </form>
