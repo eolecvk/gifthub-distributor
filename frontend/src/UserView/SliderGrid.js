@@ -212,7 +212,6 @@ class SliderGrid extends Component {
                     amountDistributed={amountDistributed}
                     amountTotal={amountTotal}
                 />
-                <hr/>
                 <Grid container>
                     {sliders}
                 </Grid>
