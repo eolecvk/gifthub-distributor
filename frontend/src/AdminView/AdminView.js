@@ -75,9 +75,9 @@ class AdminView extends Component {
         const barchart = (
             <ResponsiveContainer width="95%" height="80%" minHeight={100 * people.length}>
                 <ComposedChart width={720} height={480} data={data} layout="vertical">
-                    <YAxis yAxisId={0} width={100} type="category" dataKey="name" tick={{ fontSize: 20 }} orientation="left" />
+                    <YAxis yAxisId={0} width={100} type="category" dataKey="name" tick={{ fontSize: 20 }} orientation="left" tickLine={false} />
                     <YAxis yAxisId={1} width={100} type="category" dataKey="dissent" tick={{ fontSize: 20 }} orientation="right" tickLine={false} axisLine={false} />
-                    <XAxis type="number" />
+                    <XAxis type="number" axisLine={false}/>
                     <Bar dataKey="cents">
                         {
                             people.map((entry, index) => (
