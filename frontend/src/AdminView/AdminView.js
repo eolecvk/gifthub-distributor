@@ -3,6 +3,7 @@ import { ComposedChart, XAxis, YAxis, Bar, Cell, ResponsiveContainer, Scatter } 
 import axios from 'axios'
 import { quantile } from "./utils"
 import colors from './../UserView/colors'
+import AmountDistributedProgressBar from '../UserView/AmountDistributedProgressBar';
 
 
 // Example: https://blog.stvmlbrn.com/2019/02/20/automatically-refreshing-data-in-react.html
@@ -55,7 +56,6 @@ class AdminView extends Component {
                 const countDissentUp = p.emotive.DISSENT_UP ? p.emotive.DISSENT_UP.length : 0
                 const countDissentDown = p.emotive.DISSENT_DOWN ? p.emotive.DISSENT_DOWN.length : 0
                 const dissent = `👇${countDissentDown}  👆${countDissentUp}`
-
                 return {
                     name: name,
                     dissent: dissent,
@@ -66,11 +66,17 @@ class AdminView extends Component {
                     lower_25: lower_25
                 };
             });
+
+        const totalDistributed = (data.length > 0) ?
+            data.reduce((p1, p2) => (p1.cents + p2.cents)) :
+            0
+
+
         const barchart = (
             <ResponsiveContainer width="95%" height="80%" minHeight={100 * people.length}>
                 <ComposedChart width={720} height={480} data={data} layout="vertical">
-                    <YAxis yAxisId={0} width={100} type="category" dataKey="name" tick={{fontSize: 20}} orientation="left"   />
-                    <YAxis yAxisId={1} width={100} type="category" dataKey="dissent" tick={{fontSize: 20}} orientation="right" tickLine={false} axisLine={false} />
+                    <YAxis yAxisId={0} width={100} type="category" dataKey="name" tick={{ fontSize: 20 }} orientation="left" />
+                    <YAxis yAxisId={1} width={100} type="category" dataKey="dissent" tick={{ fontSize: 20 }} orientation="right" tickLine={false} axisLine={false} />
                     <XAxis type="number" />
                     <Bar dataKey="cents">
                         {
@@ -88,10 +94,14 @@ class AdminView extends Component {
         );
 
         return (
-            <div>
-                <h1 style={{textAlign:"center"}} textAlign>{roomName} [{roomCode}]</h1>
-                <h2>Total Amount: ${totalAmountDollars}</h2>
+            <div style={{ marginLeft: 50 + 'px' }} >
+                <h1 style={{ textAlign: "center" }} textAlign>{roomName} [{roomCode}]</h1>
+                <AmountDistributedProgressBar
+                    amountDistributed={totalDistributed}
+                    amountTotal={totalAmountDollars}
+                />
                 <div style={{
+                    marginTop: 50 + 'px',
                     display: 'flex',
                     flexFlow: 'column',
                     height: '100%'
