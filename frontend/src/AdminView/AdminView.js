@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ComposedChart, XAxis, YAxis, Bar, Cell, ResponsiveContainer, Scatter } from 'recharts';
+import { ComposedChart, XAxis, YAxis, Bar, Cell, LabelList, ResponsiveContainer, Scatter } from 'recharts';
 import axios from 'axios'
 import { quantile } from "./utils"
 import colors from './../UserView/colors'
@@ -77,13 +77,15 @@ class AdminView extends Component {
                 <ComposedChart width={720} height={480} data={data} layout="vertical">
                     <YAxis yAxisId={0} width={100} type="category" dataKey="name" tick={{ fontSize: 20 }} orientation="left" tickLine={false} />
                     <YAxis yAxisId={1} width={100} type="category" dataKey="dissent" tick={{ fontSize: 20 }} orientation="right" tickLine={false} axisLine={false} />
-                    <XAxis type="number" axisLine={false}/>
-                    <Bar dataKey="cents">
+                    <XAxis type="number" axisLine={false} />
+                    <Bar dataKey="cents" label={true}>
+                        <LabelList dataKey="cents" position="insideLeft" style={{ fontSize:20, fill: "white" }} />
                         {
                             people.map((entry, index) => (
                                 <Cell key={`cell-${index}`} fill={colors[index + 1]} />
                             ))
                         }
+
                     </Bar>
                     <Scatter shape="circle" dataKey="needs_upper" fill="#00FF00" />
                     <Scatter shape="circle" dataKey="needs_lower" fill="#FF0000" />
