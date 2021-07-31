@@ -68,7 +68,7 @@ function InputSlider(props) {
                     </Grid>
                     <Grid item>
                         <Tooltip
-                            title={needsDescription}
+                            title={'needsDescription' + props.sliderId}
                             aria-label={needsDescription}>
                             <FaceIcon
                                 fontSize="large"

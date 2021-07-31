@@ -4,6 +4,7 @@ import { getStartingValues, registerVote } from './utils';
 import InputSlider from './InputSlider'
 import ButtonsUndoRedo from './ButtonsUndoRedo'
 import ToggleButtonsUpDown from './ToggleButtonsUpDown';
+import AmountDistributedProgressBar from './AmountDistributedProgressBar'
 
 class SliderGrid extends Component {
 
@@ -194,6 +195,12 @@ class SliderGrid extends Component {
                 )
             })
 
+        const amountTotal = this.props.roomAmount
+        const amountDistributed = Object.values(this.state.currentValues).length > 0 ?
+            Object.values(this.state.currentValues)
+                .map((v) => (v ? v : 0))
+                .reduce((a, b) => a + b)
+            : 0
 
         return (
             <div >
@@ -201,15 +208,11 @@ class SliderGrid extends Component {
                     undoMove={this.undoMove}
                     redoMove={this.redoMove}
                 />
-                <h2>
-                    Distributed:{' '}
-                    ${Object.values(this.state.currentValues).length > 0
-                        ? Object.values(this.state.currentValues)
-                            .map((v) => (v ? v : 0))
-                            .reduce((a, b) => a + b)
-                        : 0}{' '}
-                    / ${this.props.roomAmount}
-                </h2>
+                <AmountDistributedProgressBar
+                    amountDistributed={amountDistributed}
+                    amountTotal={amountTotal}
+                />
+                <hr/>
                 <Grid container>
                     {sliders}
                 </Grid>
