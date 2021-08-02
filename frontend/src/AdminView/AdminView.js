@@ -68,7 +68,7 @@ class AdminView extends Component {
             });
 
         const totalDistributed = (data.length > 0) ?
-            data.reduce((p1, p2) => (p1.cents + p2.cents)) :
+            data.map((p) => p.cents).reduce((p1, p2) => p1 + p2) :
             0
 
 

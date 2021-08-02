@@ -2,15 +2,15 @@
 #equal-button,
 #survive-button,
 #thrive-button {
-    width: 100px;
-    height: 50px;
+    width: 70px;
+    height: 30px;
 }
 
 #reset-button span,
 #equal-button span,
 #survive-button span,
 #thrive-button span {
-    width: 25px;
-    height: 25px;
-    font-size: 25px
+    width: 13px;
+    height: 13px;
+    font-size: 13px
 }

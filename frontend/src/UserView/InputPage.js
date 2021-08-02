@@ -4,7 +4,8 @@ import isEqual from 'lodash.isequal';
 import RoomInfo from './RoomInfo';
 import ButtonUpdateDefaultDistribution from './ButtonUpdateDefaultDistribution';
 import SlidersGrid from './SliderGrid';
-import EditableNeeds from './EditableNeeds';
+// import EditableNeeds from './EditableNeeds'
+import EditableNeedsModal from './EditableNeedsModal'
 import { getSlidersInitializationData, getStartingValues } from './utils';
 
 class InputPage extends Component {
@@ -106,10 +107,10 @@ class InputPage extends Component {
         return (
             <div>
                 <RoomInfo roomInfo={this.state.roomInfo} />
-                <EditableNeeds
+                <EditableNeedsModal
                     roomInfo={this.state.roomInfo}
-                    onChangeSurviveAmount={this.onChangeSurviveAmount}
-                    onChangeThriveAmount={this.onChangeThriveAmount}
+                    // onChangeSurviveAmount={this.onChangeSurviveAmount}
+                    // onChangeThriveAmount={this.onChangeThriveAmount}
                     />
                 <ButtonUpdateDefaultDistribution
                     updateDefaultDistribution={this.updateDefaultDistribution}
