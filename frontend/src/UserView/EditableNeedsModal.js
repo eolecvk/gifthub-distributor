@@ -9,9 +9,18 @@ import './editableNeedsModal.css'
 const useStyles = makeStyles((theme) => ({
 
   paper: {
+    // position: 'absolute',
+    // top: 50,
+    // left: 50,
     position: 'absolute',
-    top: 50,
-    left: 50,
+    top: 25+'%',
+    left:12+'%',
+    transform: 'translateY('+-50+'%), translateX('+-50+'%)',
+    transform: '',
+    margin: 'auto',
+    display:'flex',
+    justifyContent:'center',
+    verticalAlign: 'middle',
     width: 220,
     height: 220,
     backgroundColor: theme.palette.background.paper,
@@ -54,16 +63,17 @@ function EditableNeedsModal(props) {
   );
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} >
       <button id="edit-button" type="button" onClick={handleOpen}>
         Edit
       </button>
-      <Container>
+      <Container >
         <Modal
           open={open}
           onClose={handleClose}
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
+
         >
           {body}
         </Modal>
