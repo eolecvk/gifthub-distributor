@@ -6,16 +6,14 @@ import EditableNeedsForm from './EditableNeedsForm'
 import { registerNeedsUpdate } from './utils'
 import './editableNeedsModal.css'
 
-function getModalStyle() {
-  const top = 50
-  const left = 50
-}
-
 const useStyles = makeStyles((theme) => ({
+
   paper: {
     position: 'absolute',
+    top: 50,
+    left: 50,
     width: 220,
-    height: 250,
+    height: 220,
     backgroundColor: theme.palette.background.paper,
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
@@ -24,9 +22,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function EditableNeedsModal(props) {
-  const classes = useStyles();
-  // getModalStyle is not a pure function, we roll the style only on the first render
-  const [modalStyle] = React.useState(getModalStyle);
+
   const [open, setOpen] = React.useState(false);
 
   const handleSubmit = (newSurviveAmount, newThriveAmount, newNeedsDescription) => {
@@ -47,18 +43,18 @@ function EditableNeedsModal(props) {
     setOpen(false);
   };
 
+  const classes = useStyles();
   const body = (
-    <div style={modalStyle} className={classes.paper}>
-      <h2 id="simple-modal-title">Edit needs</h2>
+    <div className={classes.paper}>
+      <h3 id="simple-modal-title">Edit needs</h3>
       <EditableNeedsForm
         roomInfo={props.roomInfo}
         handleSubmit={handleSubmit} />
-      <Modal />
     </div>
   );
 
   return (
-    <div>
+    <div className={classes.root}>
       <button id="edit-button" type="button" onClick={handleOpen}>
         Edit
       </button>

@@ -14,6 +14,11 @@ import { TextField, Box } from '@material-ui/core';
 
 const styles = (theme) => ({
     root: {
+        position: 'absolute',
+        top: 50,
+        left: 50,
+        width: 220,
+        height: 220,
         '& p': {
             '& .MuiTextField-root': {
                 margin: theme.spacing(1),
