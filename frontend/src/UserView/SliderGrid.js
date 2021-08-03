@@ -172,9 +172,7 @@ class SliderGrid extends Component {
                 return (
                     <Grid
                         key={slData.personId.toString()}
-                        container
-                        alignItems="center"
-                    >
+                        container>
                         <InputSlider
                             key={slData.personId.toString() + "inputSlider"}
                             sliderId={slData.personId.toString()}
@@ -191,7 +189,6 @@ class SliderGrid extends Component {
                             sliderId={slData.personId.toString()}
                         />
                     </Grid>
-
                 )
             })
 

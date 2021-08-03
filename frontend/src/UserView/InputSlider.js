@@ -8,19 +8,26 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import colors from './colors'
 
+import DissentModal from './DissentModal'
+
 function InputSlider(props) {
 
-    const useStyles = makeStyles({
-        root: {
-            width: '85%',
-            height: '100%',
-            marginTop:'50px'
-        },
-        input: {
-            width: `${props.maxValue.toString().length} em`,
-        },
-    });
+    const [openDissentModal, setOpenDissentModal] = React.useState(false);
+    console.log(openDissentModal)
+
+
+    const useStyles = makeStyles({})
     const classes = useStyles();
+    // const useStyles = makeStyles({
+    //     root: {
+    //         width: '85%',
+    //         height: '100%',
+    //         marginTop:'50px'
+    //     },
+    //     input: {
+    //         width: `${props.maxValue.toString().length} em`,
+    //     },
+    // });
 
     const { title, surviveValue, thriveValue, startingValue, maxValue, userInfo } = props;
 
@@ -29,10 +36,10 @@ function InputSlider(props) {
     const groupVoteAvg = userInfo.avg_cents / 100
 
     const marks = [{ value: groupVoteAvg, label: 'avg' }]
-    if (surviveValue <= maxValue){
+    if (surviveValue <= maxValue) {
         marks.push({ value: surviveValue, label: ':)' })
     }
-    if (thriveValue <= maxValue){
+    if (thriveValue <= maxValue) {
         marks.push({ value: thriveValue, label: ':D' })
     }
 
@@ -57,10 +64,17 @@ function InputSlider(props) {
         }
     }
 
+    function handleOpenDissentModal() {
+        setOpenDissentModal(true)
+        console.log(openDissentModal)
+    }
+
+
+
     return (
         <div className={classes.root} key={props.sliderId.toString() + "div"}>
             <Grid container spacing={2}>
-                <Grid item xs={1}>
+                <Grid container item>
                     <Grid item>
                         <Typography id={props.sliderId.toString() + "input-slider"}>
                             {title}
@@ -71,14 +85,14 @@ function InputSlider(props) {
                             title={needsDescription}
                             aria-label={needsDescription}>
                             <FaceIcon
+                                onClick={() => { handleOpenDissentModal(); console.log('clicked face') }}
                                 fontSize="large"
                                 style={{ color: colors[props.sliderId] }}
                             />
                         </Tooltip>
                     </Grid>
-
                 </Grid>
-                <Grid item xs={9}>
+                <Grid item>
                     <Slider
                         min={0}
                         max={maxValue}
