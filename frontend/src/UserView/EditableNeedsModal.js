@@ -4,7 +4,7 @@ import Container from '@material-ui/core/Container'
 import Modal from '@material-ui/core/Modal';
 import EditableNeedsForm from './EditableNeedsForm'
 import { registerNeedsUpdate } from './utils'
-import './editableNeedsModal.css'
+import './EditableNeedsModal.css'
 
 const useStyles = makeStyles((theme) => ({
 

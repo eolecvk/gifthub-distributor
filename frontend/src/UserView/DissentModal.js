@@ -7,11 +7,6 @@ function DissentModal(props) {
 
     const useStyles = makeStyles((theme) => ({
         paper: {
-            position: 'absolute',
-            top: 50,
-            left: 50,
-            width: 220,
-            height: 220,
             backgroundColor: theme.palette.background.paper,
             border: '2px solid #000',
             boxShadow: theme.shadows[5],
