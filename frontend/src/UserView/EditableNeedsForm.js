@@ -74,7 +74,7 @@ class EditableNeedsForm extends Component {
 
         this._isMounted = true;
         // Is verifying at least one is unset enough ?
-        if (typeof this.state.surviveAmount === '') {
+        if (this.state.surviveAmount === '') {
             this._isMounted && getNeedsFromBackend()
         }
     }
