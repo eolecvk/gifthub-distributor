@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios';
 import { withStyles } from '@material-ui/core/styles';
-import { TextField, Box } from '@material-ui/core';
+import { TextField, Box, Grid } from '@material-ui/core';
 
 
 
@@ -13,18 +13,43 @@ import { TextField, Box } from '@material-ui/core';
 
 
 const styles = (theme) => ({
-    root: {
-        '& p': {
-            '& .MuiTextField-root': {
-                margin: theme.spacing(1),
-                width: 60,
-            },
+
+    paper: {
+        // position: 'absolute',
+        // top: 50,
+        // left: 50,
+        // position: 'absolute',
+        // top: 25 + '%',
+        // left: 12 + '%',
+        // transform: 'translateY(' + -50 + '%), translateX(' + -50 + '%)',
+         margin: 'auto',
+        //display: 'flex',
+        // justifyContent: 'center',
+        // verticalAlign: 'middle',
+        // width: 220,
+        // height: 220,
+        // backgroundColor: theme.palette.background.paper,
+        // border: '2px solid #000',
+        // boxShadow: theme.shadows[5],
+        // padding: theme.spacing(3, 4, 3),
+    },
+
+    needsAmount: {
+        '& .MuiTextField-root': {
+            margin: theme.spacing(1),
+            width: 80,
+            marginTop: 10
         },
+    },
+
+    needsDescription: {
         '& .MuiTextField-root': {
             margin: theme.spacing(1),
             width: 180,
+            marginTop: 10
         },
     },
+
 })
 
 
@@ -152,9 +177,9 @@ class EditableNeedsForm extends Component {
     render() {
         const { classes } = this.props;
         return (
-            <form className={classes.root} noValidate autoComplete="off">
-                <div>
-                    <div style={{display:'inline-block'}}>
+            <Box overflow='hidden'>
+            <form className={classes.paper} noValidate autoComplete="off">
+                <Box className={classes.needsAmount} >
                     <TextField
                         key={this.state._isMounted + "survive"}
                         label=':)'
@@ -181,29 +206,29 @@ class EditableNeedsForm extends Component {
                         helperText={this.state.errors.thriveAmount && this.state.errors.thriveAmount}
                         InputLabelProps={{ shrink: true }}
                     />
-                    </div>
-                    <div>
-                        <TextField
-                            key={this.state._isMounted + "needsDescription"}
-                            label='Needs description'
-                            id="need-description-input"
-                            value={this.state.needsDescription}
-                            onChange={(e) => { this.onChangeNeedsDescription(e.target.value, this.roomCode) }}
-                            size="small"
-                            variant="outlined"
-                            multiline={true}
-                            maxRows={6}
-                            type="String"
-                            InputLabelProps={{ shrink: true }}
-                        />
-                    </div>
-                    <br />
-                    <div>
-                        <button
-                            onClick={() => this.onSubmit()}>Submit</button>
-                    </div>
+                </Box>
+                <Box className={classes.needsDescription}>
+                    <TextField
+                        key={this.state._isMounted + "needsDescription"}
+                        label='Needs description'
+                        id="need-description-input"
+                        value={this.state.needsDescription}
+                        onChange={(e) => { this.onChangeNeedsDescription(e.target.value, this.roomCode) }}
+                        size="small"
+                        variant="outlined"
+                        multiline={true}
+                        maxRows={6}
+                        type="String"
+                        InputLabelProps={{ shrink: true }}
+                    />
+                </Box>
+                <br />
+                <div>
+                    <button
+                        onClick={() => this.onSubmit()}>Submit</button>
                 </div>
             </form>
+            </Box>
         )
     }
 }
