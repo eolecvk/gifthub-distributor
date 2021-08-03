@@ -39,9 +39,9 @@ class EditableNeedsForm extends Component {
         super(props)
         this.state = {
             errors: {},
-            surviveAmount: undefined,
-            thriveAmount: undefined,
-            needsDescription: undefined
+            surviveAmount: '',
+            thriveAmount: '',
+            needsDescription: ''
         }
 
         this.userId = sessionStorage.getItem('userId')
@@ -74,7 +74,7 @@ class EditableNeedsForm extends Component {
 
         this._isMounted = true;
         // Is verifying at least one is unset enough ?
-        if (typeof this.state.surviveAmount === 'undefined') {
+        if (typeof this.state.surviveAmount === '') {
             this._isMounted && getNeedsFromBackend()
         }
     }
@@ -159,34 +159,34 @@ class EditableNeedsForm extends Component {
         return (
             <form className={classes.root} noValidate autoComplete="off">
                 <div>
-                    <p style={{ display: "inline-block" }}>
-                        <TextField
-                            key={this.state._isMounted + "survive"}
-                            label=':)'
-                            id="survive-amount-input"
-                            value={this.state.surviveAmount}
-                            onChange={(e) => { this.onChangeSurviveAmount(parseInt(e.target.value), this.roomCode) }}
-                            size="small"
-                            variant="outlined"
-                            type="Number"
-                            error={!!this.state.errors.surviveAmount}
-                            helperText={this.state.errors.surviveAmount && this.state.errors.surviveAmount}
-                            InputLabelProps={{ shrink: true }}
-                        />
-                        <TextField
-                            key={this.state._isMounted + "thrive"}
-                            label=':D'
-                            id="thrive-amount-input"
-                            value={this.state.thriveAmount}
-                            onChange={(e) => { this.onChangeThriveAmount(parseInt(e.target.value), this.roomCode) }}
-                            size="small"
-                            variant="outlined"
-                            type="Number"
-                            error={!!this.state.errors.thriveAmount}
-                            helperText={this.state.errors.thriveAmount && this.state.errors.thriveAmount}
-                            InputLabelProps={{ shrink: true }}
-                        />
-                    </p>
+                    <div style={{display:'inline-block'}}>
+                    <TextField
+                        key={this.state._isMounted + "survive"}
+                        label=':)'
+                        id="survive-amount-input"
+                        value={this.state.surviveAmount}
+                        onChange={(e) => { this.onChangeSurviveAmount(parseInt(e.target.value), this.roomCode) }}
+                        size="small"
+                        variant="outlined"
+                        type="Number"
+                        error={!!this.state.errors.surviveAmount}
+                        helperText={this.state.errors.surviveAmount && this.state.errors.surviveAmount}
+                        InputLabelProps={{ shrink: true }}
+                    />
+                    <TextField
+                        key={this.state._isMounted + "thrive"}
+                        label=':D'
+                        id="thrive-amount-input"
+                        value={this.state.thriveAmount}
+                        onChange={(e) => { this.onChangeThriveAmount(parseInt(e.target.value), this.roomCode) }}
+                        size="small"
+                        variant="outlined"
+                        type="Number"
+                        error={!!this.state.errors.thriveAmount}
+                        helperText={this.state.errors.thriveAmount && this.state.errors.thriveAmount}
+                        InputLabelProps={{ shrink: true }}
+                    />
+                    </div>
                     <div>
                         <TextField
                             key={this.state._isMounted + "needsDescription"}
