@@ -202,9 +202,9 @@ class SliderGrid extends Component {
                     amountDistributed={amountDistributed}
                     amountTotal={amountTotal}
                 />
-                <Grid container>
+                <div style={{ marginTop: 50 }}>
                     {sliders}
-                </Grid>
+                </div>
             </div >
         );
     }

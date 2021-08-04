@@ -1,13 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Slider from '@material-ui/core/Slider';
-import Input from '@material-ui/core/Input';
-import FaceIcon from '@material-ui/icons/Face';
-import Tooltip from '@material-ui/core/Tooltip';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import { Slider, Input, Tooltip, Box, Grid, Typography } from '@material-ui/core';
+import FaceIcon from '@material-ui/icons/Face'
 import colors from './colors'
-import DissentModal from './DissentModal'
 
 function InputSlider(props) {
 
@@ -50,60 +45,63 @@ function InputSlider(props) {
     }
 
     return (
-        <Grid
-            className={classes.root}
-            key={props.sliderId.toString() + 'grid'}
-            container
-            direction={"row"}
-            spacing={2}>
-            <Grid item>
-                <Grid item>
-                    <Typography id={props.sliderId.toString() + "input-slider"}>
-                        {title}
-                    </Typography>
+        <div style={{marginTop:16}}>
+            <Grid
+                className={classes.root}
+                key={props.sliderId.toString() + 'grid'}
+                container
+                direction={"row"}
+                spacing={2}
+            >
+                <Grid item xs={1}>
+                    <Grid item>
+                        <Tooltip
+                            title={needsDescription}
+                            aria-label={needsDescription}>
+                            <FaceIcon
+                                onClick={() => { handleOpenDissentModal(props.sliderId) }}
+                                fontSize="large"
+                                style={{ color: colors[props.sliderId] }}
+                            />
+                        </Tooltip>
+                    </Grid>
+                    <Grid item>
+                        <Typography id={props.sliderId.toString() + "input-slider"}>
+                            {title}
+                        </Typography>
+                    </Grid>
                 </Grid>
-                <Grid item>
-                    <Tooltip
-                        title={needsDescription}
-                        aria-label={needsDescription}>
-                        <FaceIcon
-                            onClick={() => {handleOpenDissentModal(props.sliderId) }}
-                            fontSize="large"
-                            style={{ color: colors[props.sliderId] }}
-                        />
-                    </Tooltip>
+                <Grid item xs={9}>
+                    <Slider
+                        key={props.sliderId.toString() + 'slider'}
+                        min={0}
+                        max={maxValue}
+                        value={startingValue ? startingValue : 0}
+                        onChange={handleSliderChange}
+                        onChangeCommitted={handleSliderChangeCommitted}
+                        aria-labelledby="input-slider"
+                        marks={marks}
+                        valueLabelDisplay='auto'
+                    />
+                </Grid>
+                <Grid item xs={1}>
+                    <Input
+                        className={classes.input}
+                        value={startingValue ? startingValue : 0}
+                        margin="dense"
+                        onChange={handleInputChange}
+                        onBlur={handleBlur}
+                        inputProps={{
+                            step: 1,
+                            min: 0,
+                            max: maxValue,
+                            type: 'number',
+                            'aria-labelledby': 'input-slider',
+                        }}
+                    />
                 </Grid>
             </Grid>
-            <Grid item xs>
-                <Slider
-                    key={props.sliderId.toString() + 'slider'}
-                    min={0}
-                    max={maxValue}
-                    value={startingValue ? startingValue : 0}
-                    onChange={handleSliderChange}
-                    onChangeCommitted={handleSliderChangeCommitted}
-                    aria-labelledby="input-slider"
-                    marks={marks}
-                    valueLabelDisplay='auto'
-                />
-            </Grid>
-            <Grid item xs>
-                <Input
-                    className={classes.input}
-                    value={startingValue ? startingValue : 0}
-                    margin="dense"
-                    onChange={handleInputChange}
-                    onBlur={handleBlur}
-                    inputProps={{
-                        step: 1,
-                        min: 0,
-                        max: maxValue,
-                        type: 'number',
-                        'aria-labelledby': 'input-slider',
-                    }}
-                />
-            </Grid>
-        </Grid>
+        </div>
     );
 }
 
