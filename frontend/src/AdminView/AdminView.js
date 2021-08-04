@@ -16,6 +16,7 @@ class AdminView extends Component {
     intervalID;
 
     componentDidMount() {
+        document.title = 'Admin View';
         this.getData();
     }
 

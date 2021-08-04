@@ -18,6 +18,7 @@ class InputPage extends Component {
     intervalID;
 
     componentDidMount() {
+        document.title = 'Input Page';
         this.getData()
     }
 
