@@ -5,6 +5,7 @@ import InputSlider from './InputSlider'
 import ButtonsUndoRedo from './ButtonsUndoRedo'
 import ToggleButtonsUpDown from './ToggleButtonsUpDown';
 import AmountDistributedProgressBar from './AmountDistributedProgressBar'
+import DissentModal from './DissentModal';
 
 class SliderGrid extends Component {
 
@@ -25,7 +26,8 @@ class SliderGrid extends Component {
         const storedState = JSON.parse(sessionStorage.getItem("sliderGridState"))
         const iniState = storedState || defaultState
         //const iniState = this.props.reset ? defaultState : storedState
-        this.state = iniState
+        //this.state = iniState
+        this.state = { ...iniState, dissentModalOpenAtSlider: '' }
     }
 
     //Initial vote + initalization of the history in sessionStorage
@@ -164,31 +166,41 @@ class SliderGrid extends Component {
     }
 
 
+    dissentModalOpenAtSlider = (sliderId) => {
+        this.setState({
+            ...this.state,
+            dissentModalOpenAtSlider: sliderId === '' ? '' : parseInt(sliderId)
+        })
+    }
+
+    dissentModalClose = () => {
+        return this.dissentModalOpenAtSlider('')
+    }
+
+
     render() {
 
         const sliders = this.props.slidersInitializationData
             .sort((sl1, sl2) => sl1.personId - sl2.personId)
             .map((slData) => {
                 return (
-                    <Grid
+                    <InputSlider
+                        key={slData.personId.toString() + "inputSlider"}
+                        sliderId={slData.personId.toString()}
+                        title={slData.title.toUpperCase()}
+                        surviveValue={slData.surviveValue}
+                        thriveValue={slData.thriveValue}
+                        startingValue={this.state.reset ? slData.startingValue : this.state.currentValues[slData.personId.toString()]}
+                        maxValue={slData.maxValue}
+                        handleUpdateSlider={this.handleUpdateSlider}
+                        handleOpenDissentModal={this.dissentModalOpenAtSlider}
+                        userInfo={this.props.roomInfo.people.find(p => { return p.person_id.toString() === slData.personId.toString() })}
+                    />
+                    /* <ToggleButtonsUpDown
                         key={slData.personId.toString()}
-                        container>
-                        <InputSlider
-                            key={slData.personId.toString() + "inputSlider"}
-                            sliderId={slData.personId.toString()}
-                            title={slData.title.toUpperCase()}
-                            surviveValue={slData.surviveValue}
-                            thriveValue={slData.thriveValue}
-                            startingValue={this.state.reset ? slData.startingValue : this.state.currentValues[slData.personId.toString()]}
-                            maxValue={slData.maxValue}
-                            handleUpdateSlider={this.handleUpdateSlider}
-                            userInfo={this.props.roomInfo.people.find(p => { return p.person_id.toString() === slData.personId.toString() })}
-                        />
-                        <ToggleButtonsUpDown
-                            key={slData.personId.toString()}
-                            sliderId={slData.personId.toString()}
-                        />
-                    </Grid>
+                        sliderId={slData.personId.toString()}
+                    /> */
+                    // </Grid>
                 )
             })
 
@@ -212,6 +224,10 @@ class SliderGrid extends Component {
                 <Grid container>
                     {sliders}
                 </Grid>
+                <DissentModal
+                    dissentModalOpenAtSlider={this.state.dissentModalOpenAtSlider}
+                    handleClose={this.dissentModalClose}
+                />
             </div >
         );
     }

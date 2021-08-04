@@ -11,7 +11,7 @@ class ToggleButtonsUpDown extends React.Component {
         this.state = {
             opinion: 'unset'
         }
-        this.sliderId = this.props.sliderId
+        this.sliderId = this.props.sliderId === '' ? '' : parseInt(this.props.sliderId)
         this.userId = sessionStorage.getItem("userId")
         this.roomCode = JSON.parse(sessionStorage.getItem("roomInfo")).room_code
         this._isMounted = false; //using isMounted react pattern to avoid memory leak https://stackoverflow.com/questions/52061476/cancel-all-subscriptions-and-asyncs-in-the-componentwillunmount-method-how
@@ -43,6 +43,11 @@ class ToggleButtonsUpDown extends React.Component {
     }
 
     parseEmotive = (roomInfo, userId, sliderId) => {
+        // Case: slider has been set to '' as we unmount the modal
+        if (this.sliderId === ''){
+            return ''
+        }
+        
         //Parse the emotive state value for a given userId and sliderId
         //based on a roomInfo object
         const userData = roomInfo.people.filter((el) => { return (el.person_id === parseInt(sliderId)) })[0]

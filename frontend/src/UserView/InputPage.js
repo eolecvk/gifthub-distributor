@@ -112,6 +112,7 @@ class InputPage extends Component {
                     // onChangeSurviveAmount={this.onChangeSurviveAmount}
                     // onChangeThriveAmount={this.onChangeThriveAmount}
                     />
+                
                 <ButtonUpdateDefaultDistribution
                     updateDefaultDistribution={this.updateDefaultDistribution}
                 />
