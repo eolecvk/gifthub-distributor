@@ -59,7 +59,7 @@ function InputSlider(props) {
             <Grid item>
                 <Grid item>
                     <Typography id={props.sliderId.toString() + "input-slider"}>
-                        {title} + {}
+                        {title}
                     </Typography>
                 </Grid>
                 <Grid item>

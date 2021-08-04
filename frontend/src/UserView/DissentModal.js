@@ -38,7 +38,6 @@ function DissentModal(props) {
 
 
     const classes = useStyles();
-
     const roomInfo = JSON.parse(sessionStorage.getItem('roomInfo'))
     const userName = openAtSlider === '' ?
         '' : roomInfo.people.filter((el) => {

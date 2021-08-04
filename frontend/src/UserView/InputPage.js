@@ -7,6 +7,7 @@ import SlidersGrid from './SliderGrid';
 // import EditableNeeds from './EditableNeeds'
 import EditableNeedsModal from './EditableNeedsModal'
 import { getSlidersInitializationData, getStartingValues } from './utils';
+import DissentModal from './DissentModal';
 
 class InputPage extends Component {
     constructor(props) {
@@ -14,7 +15,8 @@ class InputPage extends Component {
         this.state = {
             defaultDistribution: 'zero',
             reset: false,
-            roomInfo: JSON.parse(sessionStorage.getItem("roomInfo")) || ''
+            roomInfo: JSON.parse(sessionStorage.getItem("roomInfo")) || '',
+            dissentModalOpenAtSlider: ''
         };
     }
     intervalID;
@@ -38,6 +40,11 @@ class InputPage extends Component {
             if (!isEqual(this.state.roomInfo, response.data)) {
                 this.setState({ roomInfo: response.data, reset: false });
             }
+
+            //Always update the local representation of room info
+            sessionStorage.setItem('roomInfo', JSON.stringify(response.data))
+
+
             // call getData() again in 5 seconds
             this.intervalID = setTimeout(this.getData.bind(this), 2000);
         })
@@ -98,6 +105,17 @@ class InputPage extends Component {
         });
     }
 
+    dissentModalOpenAtSlider = (sliderId) => {
+        this.setState({
+            ...this.state,
+            dissentModalOpenAtSlider: sliderId === '' ? '' : parseInt(sliderId)
+        })
+    }
+
+    dissentModalClose = () => {
+        return this.dissentModalOpenAtSlider('')
+    }
+
     render() {
         const slidersInitializationData = getSlidersInitializationData(
             this.state.roomInfo,
@@ -109,10 +127,10 @@ class InputPage extends Component {
                 <RoomInfo roomInfo={this.state.roomInfo} />
                 <EditableNeedsModal
                     roomInfo={this.state.roomInfo}
-                    // onChangeSurviveAmount={this.onChangeSurviveAmount}
-                    // onChangeThriveAmount={this.onChangeThriveAmount}
-                    />
-                
+                // onChangeSurviveAmount={this.onChangeSurviveAmount}
+                // onChangeThriveAmount={this.onChangeThriveAmount}
+                />
+
                 <ButtonUpdateDefaultDistribution
                     updateDefaultDistribution={this.updateDefaultDistribution}
                 />
@@ -123,6 +141,11 @@ class InputPage extends Component {
                     roomInfo={this.state.roomInfo}
                     roomAmount={this.state.roomInfo.splitting_cents / 100}
                     reset={this.state.reset}
+                    dissentModalOpenAtSlider={this.dissentModalOpenAtSlider}
+                />
+                <DissentModal
+                    dissentModalOpenAtSlider={this.state.dissentModalOpenAtSlider}
+                    handleClose={this.dissentModalClose}
                 />
             </div>
         );

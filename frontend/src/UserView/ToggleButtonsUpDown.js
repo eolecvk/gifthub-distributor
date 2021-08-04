@@ -42,15 +42,20 @@ class ToggleButtonsUpDown extends React.Component {
         return true
     }
 
+    getUserData = (roomInfo, sliderId) => {
+        return roomInfo.people.filter((el) => { return (el.person_id === parseInt(sliderId)) })[0]
+    }
+
     parseEmotive = (roomInfo, userId, sliderId) => {
         // Case: slider has been set to '' as we unmount the modal
-        if (this.sliderId === ''){
+        if (this.sliderId === '') {
             return ''
         }
-        
+
         //Parse the emotive state value for a given userId and sliderId
         //based on a roomInfo object
-        const userData = roomInfo.people.filter((el) => { return (el.person_id === parseInt(sliderId)) })[0]
+        const userData = this.getUserData(roomInfo, sliderId)
+
         if (
             typeof userData.emotive.DISSENT_UP !== 'undefined' &&
             userData.emotive.DISSENT_UP.includes(parseInt(userId))) {
