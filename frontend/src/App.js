@@ -5,7 +5,6 @@ import InputPage from './UserView/InputPage';
 import AdminView from './AdminView/AdminView';
 import Home from './Home/Home';
 import Header from './Header';
-import Footer from './Footer';
 
 function App() {
 
@@ -28,7 +27,6 @@ function App() {
                             <Route path="/admin-view" exact component={() => <AdminView />} />
                         </Switch>
                     </div>
-                    <Footer />
                 </div>
             </Router>
         </div>
