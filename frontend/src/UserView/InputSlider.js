@@ -33,14 +33,17 @@ function InputSlider(props) {
 
     function handleInputChange(event) {
         const newValue = event.target.value === '' ? '' : Number(event.target.value);
-        props.handleUpdateSlider(props.sliderId, newValue, true);
+        props.handleUpdateSlider(props.sliderId, newValue, false);
     }
 
-    function handleBlur() {
+    function handleBlur(event) {
         if (props.startingValue < 0) {
             props.handleUpdateSlider(props.sliderId, 0, false);
         } else if (props.startingValue > props.maxValue) {
             props.handleUpdateSlider(props.sliderId, props.maxValue, false);
+        } else {
+            const newValue = event.target.value === '' ? '' : Number(event.target.value);
+            props.handleUpdateSlider(props.sliderId, newValue, true);
         }
     }
 
