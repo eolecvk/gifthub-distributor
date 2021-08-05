@@ -84,7 +84,7 @@ function InputSlider(props) {
                         onChangeCommitted={handleSliderChangeCommitted}
                         aria-labelledby="input-slider"
                         marks={marks}
-                        valueLabelDisplay='auto'
+                        valueLabelDisplay='on'
                     />
                 </Grid>
                 <Grid item xs={1}>
