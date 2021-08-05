@@ -9,19 +9,14 @@ import './EditableNeedsModal.css'
 const useStyles = makeStyles((theme) => ({
 
   paper: {
-    // position: 'absolute',
-    // top: 50,
-    // left: 50,
     position: 'absolute',
     top: 25 + '%',
     left: 12 + '%',
     transform: 'translateY(' + -50 + '%), translateX(' + -50 + '%)',
     margin: 'auto',
-    //display: 'flex',
     justifyContent: 'center',
     verticalAlign: 'middle',
     width: 220,
-    height: 220,
     backgroundColor: theme.palette.background.paper,
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
