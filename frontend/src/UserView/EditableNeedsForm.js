@@ -4,34 +4,10 @@ import { withStyles } from '@material-ui/core/styles';
 import { TextField, Box, Grid } from '@material-ui/core';
 
 
-
-// TODO
-// * Do some form validation (survive < thrive!)
-//     Convert to class component or use form...
-//     https://codesandbox.io/s/material-demo-error-helper-text-w8b73?file=/demo.js:0-41
-// * onComponentDidMount, GET userData from backend (instead of sessionStorage)
-
-
 const styles = (theme) => ({
 
     paper: {
-        // position: 'absolute',
-        // top: 50,
-        // left: 50,
-        // position: 'absolute',
-        // top: 25 + '%',
-        // left: 12 + '%',
-        // transform: 'translateY(' + -50 + '%), translateX(' + -50 + '%)',
-         margin: 'auto',
-        //display: 'flex',
-        // justifyContent: 'center',
-        // verticalAlign: 'middle',
-        // width: 220,
-        // height: 220,
-        // backgroundColor: theme.palette.background.paper,
-        // border: '2px solid #000',
-        // boxShadow: theme.shadows[5],
-        // padding: theme.spacing(3, 4, 3),
+         margin: 'auto'
     },
 
     needsAmount: {
@@ -109,7 +85,7 @@ class EditableNeedsForm extends Component {
         if (this.state.thriveAmount && newSurviveAmount > this.state.thriveAmount) {
             this.setState({
                 surviveAmount: newSurviveAmount,
-                errors: { ...this.state.errors, surviveAmount: "please enter a survive amount that is inferior to the thrive amount" }
+                errors: { ...this.state.errors, surviveAmount: ":) > :D" }
             });
             return
         }
@@ -117,7 +93,7 @@ class EditableNeedsForm extends Component {
         if (newSurviveAmount < 0) {
             this.setState({
                 surviveAmount: newSurviveAmount,
-                errors: { ...this.state.errors, surviveAmount: "please enter a positive survive amount" }
+                errors: { ...this.state.errors, surviveAmount: ":) < 0" }
             });
             return
         }
@@ -135,7 +111,7 @@ class EditableNeedsForm extends Component {
         if (this.state.surviveAmount && newThriveAmount < this.state.surviveAmount) {
             this.setState({
                 thriveAmount: newThriveAmount,
-                errors: { ...this.state.errors, thriveAmount: "need positive amount" }
+                errors: { ...this.state.errors, thriveAmount: ":D < :)" }
             });
             return
         }
@@ -143,7 +119,7 @@ class EditableNeedsForm extends Component {
         if (newThriveAmount < 0) {
             this.setState({
                 thriveAmount: newThriveAmount,
-                errors: { ...this.state.errors, thriveAmount: "need positive amount" }
+                errors: { ...this.state.errors, thriveAmount: ":D < 0" }
             });
             return
         }
