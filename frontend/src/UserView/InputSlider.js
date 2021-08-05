@@ -90,7 +90,7 @@ function InputSlider(props) {
                 <Grid item xs={1}>
                     <Input
                         className={classes.input}
-                        value={startingValue ? startingValue : 0}
+                        value={startingValue !== '' ? startingValue : ''}
                         margin="dense"
                         onChange={handleInputChange}
                         onBlur={handleBlur}
