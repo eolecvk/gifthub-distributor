@@ -11,19 +11,20 @@ const theme = createTheme({
                 fontSize: "1em",
                 color: "yellow",
                 backgroundColor: "grey",
-                //display: "block",
-                flexWrap: "wrap",
+                border: '1px solid #dadde9',
+                left:-20,
+                top:3,
                 maxWidth: 200
             }
         },
         MuiSlider: {
             thumb: {
-                height: 25,
-                width: 25,
+                height: 20,
+                width: 20,
                 backgroundColor: "#fff",
                 border: "2px solid currentColor",
-                marginTop: -12,
-                marginLeft: -13,
+                marginTop: -10,
+                marginLeft: -10,
                 boxShadow: "#ebebeb 0 2px 2px",
                 "&:focus, &:hover, &$active": {
                     boxShadow: "#ddd 0 2px 3px 1px",
@@ -124,11 +125,6 @@ function InputSlider(props) {
         tipText += `\n\n"${needsDescription}"`
     }
 
-    const tipTitle = (
-        <div style={{ whiteSpace: 'pre-line' }}>
-            {tipText}
-        </div>)
-
     return (
         <div style={{ marginTop: 16 }}>
             <MuiThemeProvider theme={theme}>
@@ -137,14 +133,13 @@ function InputSlider(props) {
                     key={props.sliderId.toString() + 'grid'}
                     container
                     direction={"row"}
-                    spacing={2}
+                    spacing={1}
                 >
-                    <Grid item xs={1}>
+                    <Grid item xs={2}>
                         <Grid item>
-                            <MuiThemeProvider theme={theme}>
                                 <Tooltip
-                                    title={tipTitle}
-                                    aria-label={tipTitle}
+                                    title={<div style={{ whiteSpace: 'pre-line' }}>{tipText}</div>}
+                                    aria-label={<div style={{ whiteSpace: 'pre-line' }}>{tipText}</div>}
                                     arrow={true}
                                     placement={'right'}>
                                     <FaceIcon
@@ -153,7 +148,6 @@ function InputSlider(props) {
                                         style={{ color: colors[props.sliderId] }}
                                     />
                                 </Tooltip>
-                            </MuiThemeProvider>
                         </Grid>
                         <Grid item>
                             <Typography id={props.sliderId.toString() + "input-slider"}>
@@ -161,7 +155,7 @@ function InputSlider(props) {
                             </Typography>
                         </Grid>
                     </Grid>
-                    <Grid item xs={9}>
+                    <Grid item xs={7}>
                         <Slider
                             key={props.sliderId.toString() + 'slider'}
                             min={0}
@@ -174,7 +168,7 @@ function InputSlider(props) {
                             valueLabelDisplay='on'
                         />
                     </Grid>
-                    <Grid item xs={1}>
+                    <Grid item>
                         <Input
                             className={classes.input}
                             value={startingValue !== '' ? startingValue : ''}
