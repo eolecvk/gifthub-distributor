@@ -6,7 +6,7 @@ import ButtonUpdateDefaultDistribution from './ButtonUpdateDefaultDistribution';
 import SlidersGrid from './SliderGrid';
 // import EditableNeeds from './EditableNeeds'
 import EditableNeedsModal from './EditableNeedsModal'
-import { getSlidersInitializationData, getStartingValues } from './utils';
+import { getSlidersInitializationData, getStartingValues, registerVote } from './utils';
 import DissentModal from './DissentModal';
 
 class InputPage extends Component {
@@ -33,6 +33,16 @@ class InputPage extends Component {
         axios.get('/api/' + this.state.roomInfo.room_code).then((response) => {
             // Case : new people are detected in the backend roomInfo data compared to roomInfo in client state
             if (response.data.people.length !== this.state.roomInfo.people.length) {
+                const roomCode = this.state.roomInfo.room_code
+                let newSliderValues = {}
+                for (
+                    let sliderValue = this.state.roomInfo.people.length + 1;
+                    sliderValue <= response.data.people.length;
+                    sliderValue++
+                ) {
+                    newSliderValues[sliderValue] = 0
+                }
+                registerVote(newSliderValues, roomCode)
                 this.setState({ roomInfo: response.data, reset: true });
             }
 
