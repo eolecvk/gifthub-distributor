@@ -12,8 +12,8 @@ const theme = createTheme({
                 color: "yellow",
                 backgroundColor: "grey",
                 border: '1px solid #dadde9',
-                left:-20,
-                top:3,
+                left: -20,
+                top: 3,
                 maxWidth: 200
             }
         },
@@ -23,30 +23,45 @@ const theme = createTheme({
                 width: 20,
                 backgroundColor: "#fff",
                 border: "2px solid currentColor",
-                marginTop: -10,
+                marginTop: -8,
                 marginLeft: -10,
                 boxShadow: "#ebebeb 0 2px 2px",
                 "&:focus, &:hover, &$active": {
                     boxShadow: "#ddd 0 2px 3px 1px",
                 },
             },
+            valueLabelDisplay: {
+                height: 10,
+                width: 10,
+            },
             valueLabel: {
                 color: "grey",
-                marginLeft: 8
+                marginLeft: 4,
+                fontSize: 12
+
             },
             track: {
                 height: 3,
                 borderRadius: 2,
-                color: 'light-blue'
+                color: 'transparent',
+
+
             },
             rail: {
-                color: 'black'
+                height: 6,
+                color: 'black',
+                backgroundImage: "linear-gradient(.25turn, red, green)"
             },
             mark: {
-                backgroundColor: 'grey',
-                height: 10,
-                width: 2,
-                marginTop: -3
+                color: 'black',
+                height: 6,
+                width: 3,
+                marginTop: 0,
+                '&[data-index="0"]': {
+                    height: 25,
+                    width: 1,
+                    marginTop: 0
+                }
             },
             markActive: {
                 opacity: 1,
@@ -55,22 +70,27 @@ const theme = createTheme({
             markLabel: {
                 fontSize: 12,
                 color: "grey",
-                '&[data-index=":)"]': {
-                    left: '50%',
-                },
-                '&[data-index=":D"]': {
-                    left: '50%',
-                },
-                //Style of avg mark should not be affected
-                //by active / inactive
-                '&[data-index="avg"]': {
-                    fontSize: 14,
-                    color: "black"
+                transform: 'translate(-40%, -20%)',
+                //Style of avg mark
+                '&[data-index="0"]': {
+                    fontSize: 12,
+                    color: "black",
+                    //marginTop: 1,
+                    transform: 'translate(-40%, 40%)',
                 },
             },
             markLabelActive: {
-                fontSize: 14,
-                color: "black"
+                fontSize: 12,
+                color: "black",
+                fontWeight: "bold",
+                transform: 'translate(-40%, -20%)',
+                //Style of avg mark
+                '&[data-index="0"]': {
+                    fontSize: 12,
+                    color: "black",
+                    fontWeight: "normal",
+                    transform: 'translate(-40%, 40%)',
+                },
             }
         }
     }
@@ -79,21 +99,33 @@ const theme = createTheme({
 
 function InputSlider(props) {
 
-    const useStyles = makeStyles({})
-    const classes = useStyles();
-
     const { title, surviveValue, thriveValue, startingValue, maxValue, handleOpenDissentModal, userInfo } = props;
-
-
     const needsDescription = userInfo.needs_description
     const groupVoteAvg = userInfo.avg_cents / 100
 
-    const marks = [{ value: groupVoteAvg, label: 'avg' }]
-    if (surviveValue <= maxValue) {
-        marks.push({ value: surviveValue, label: ':)' })
-    }
-    if (thriveValue <= maxValue) {
-        marks.push({ value: thriveValue, label: ':D' })
+    function getMarks(groupVoteAvg, surviveValue, thriveValue) {
+        const marks = []
+        const markAvg = {
+            value: groupVoteAvg,
+            label: `avg:${groupVoteAvg}`,
+            'data-index': 'avg'
+        }
+        const markSurvive = {
+            value: surviveValue,
+            label: surviveValue
+        }
+        const markThrive = {
+            value: thriveValue,
+            label: thriveValue
+        }
+        marks.push(markAvg)
+        if (surviveValue <= maxValue) {
+            marks.push(markSurvive)
+        }
+        if (thriveValue <= maxValue) {
+            marks.push(markThrive)
+        }
+        return marks
     }
 
     function handleSliderChangeCommitted(event, newValue) {
@@ -120,13 +152,30 @@ function InputSlider(props) {
         }
     }
 
-    let tipText = `Survive: ${surviveValue}$\nThrive:   ${thriveValue}$`
-    if (needsDescription !== '') {
-        tipText += `\n\n"${needsDescription}"`
+    function getTipTitle(surviveValue, thriveValue, needsDescription) {
+        let tipText = `Survive: ${surviveValue}$\nThrive:   ${thriveValue}$`
+        if (needsDescription !== '') {
+            tipText += `\n\n"${needsDescription}"`
+        }
+        return (<div style={{ whiteSpace: 'pre-line' }}>{tipText}</div>)
     }
 
+
+    const useStyles = makeStyles({
+        root: {},
+        '& MuiSlider': {
+            '& rail': {
+                height: 6,
+                color: 'black',
+                //backgroundImage: "linear-gradient(.25turn, red, green)"
+            }
+        }
+    })
+    const classes = useStyles();
+
+
     return (
-        <div style={{ marginTop: 16 }}>
+        <div style={{ marginTop: 30 }}>
             <MuiThemeProvider theme={theme}>
                 <Grid
                     className={classes.root}
@@ -137,17 +186,17 @@ function InputSlider(props) {
                 >
                     <Grid item xs={2}>
                         <Grid item>
-                                <Tooltip
-                                    title={<div style={{ whiteSpace: 'pre-line' }}>{tipText}</div>}
-                                    aria-label={<div style={{ whiteSpace: 'pre-line' }}>{tipText}</div>}
-                                    arrow={true}
-                                    placement={'right'}>
-                                    <FaceIcon
-                                        onClick={() => { handleOpenDissentModal(props.sliderId) }}
-                                        fontSize="large"
-                                        style={{ color: colors[props.sliderId] }}
-                                    />
-                                </Tooltip>
+                            <Tooltip
+                                title={getTipTitle(surviveValue, thriveValue, needsDescription)}
+                                aria-label={getTipTitle(surviveValue, thriveValue, needsDescription)}
+                                arrow={true}
+                                placement={'right'}>
+                                <FaceIcon
+                                    onClick={() => { handleOpenDissentModal(props.sliderId) }}
+                                    fontSize="large"
+                                    style={{ color: colors[props.sliderId] }}
+                                />
+                            </Tooltip>
                         </Grid>
                         <Grid item>
                             <Typography id={props.sliderId.toString() + "input-slider"}>
@@ -164,7 +213,7 @@ function InputSlider(props) {
                             onChange={handleSliderChange}
                             onChangeCommitted={handleSliderChangeCommitted}
                             aria-labelledby="input-slider"
-                            marks={marks}
+                            marks={getMarks(groupVoteAvg, surviveValue, thriveValue)}
                             valueLabelDisplay='on'
                         />
                     </Grid>
