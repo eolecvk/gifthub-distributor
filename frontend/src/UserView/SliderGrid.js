@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import Grid from '@material-ui/core/Grid';
 import { getStartingValues, registerVote } from './utils';
 import InputSlider from './InputSlider'
 import ButtonsUndoRedo from './ButtonsUndoRedo'
-import ToggleButtonsUpDown from './ToggleButtonsUpDown';
 import AmountDistributedProgressBar from './AmountDistributedProgressBar'
 
 class SliderGrid extends Component {

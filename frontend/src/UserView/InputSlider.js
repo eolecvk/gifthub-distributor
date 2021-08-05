@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles, MuiThemeProvider, createTheme } from '@material-ui/core/styles';
+import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
 import { Slider, Input, Tooltip, Grid, Typography } from '@material-ui/core';
 import FaceIcon from '@material-ui/icons/Face'
 import colors from './colors'
@@ -29,10 +29,6 @@ const theme = createTheme({
                 "&:focus, &:hover, &$active": {
                     boxShadow: "#ddd 0 2px 3px 1px",
                 },
-            },
-            valueLabelDisplay: {
-                height: 10,
-                width: 10,
             },
             valueLabel: {
                 color: "grey",
@@ -107,8 +103,7 @@ function InputSlider(props) {
         const marks = []
         const markAvg = {
             value: groupVoteAvg,
-            label: `avg:${groupVoteAvg}`,
-            'data-index': 'avg'
+            label: `avg:${groupVoteAvg}`
         }
         const markSurvive = {
             value: surviveValue,
@@ -125,6 +120,7 @@ function InputSlider(props) {
         if (thriveValue <= maxValue) {
             marks.push(markThrive)
         }
+
         return marks
     }
 
@@ -160,25 +156,14 @@ function InputSlider(props) {
         return (<div style={{ whiteSpace: 'pre-line' }}>{tipText}</div>)
     }
 
-
-    const useStyles = makeStyles({
-        root: {},
-        '& MuiSlider': {
-            '& rail': {
-                height: 6,
-                color: 'black',
-                //backgroundImage: "linear-gradient(.25turn, red, green)"
-            }
-        }
-    })
-    const classes = useStyles();
-
+    // const useStyles = makeStyles({})
+    // const classes = useStyles();
 
     return (
         <div style={{ marginTop: 30 }}>
             <MuiThemeProvider theme={theme}>
                 <Grid
-                    className={classes.root}
+                    //className={classes.root}
                     key={props.sliderId.toString() + 'grid'}
                     container
                     direction={"row"}
@@ -212,14 +197,15 @@ function InputSlider(props) {
                             value={startingValue ? startingValue : 0}
                             onChange={handleSliderChange}
                             onChangeCommitted={handleSliderChangeCommitted}
-                            aria-labelledby="input-slider"
+                            aria-labelledby={props.sliderId.toString() + 'slider'}
                             marks={getMarks(groupVoteAvg, surviveValue, thriveValue)}
                             valueLabelDisplay='on'
                         />
                     </Grid>
                     <Grid item>
                         <Input
-                            className={classes.input}
+                            //className={classes.input}
+                            key={props.sliderId.toString() + 'input'}
                             value={startingValue !== '' ? startingValue : ''}
                             margin="dense"
                             onChange={handleInputChange}
