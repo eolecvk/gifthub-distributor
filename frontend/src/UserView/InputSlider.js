@@ -1,12 +1,32 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Slider, Input, Tooltip, Box, Grid, Typography } from '@material-ui/core';
+import { makeStyles, MuiThemeProvider, createTheme } from '@material-ui/core/styles';
+import { Slider, Input, Tooltip, Grid, Typography } from '@material-ui/core';
 import FaceIcon from '@material-ui/icons/Face'
 import colors from './colors'
 
+const theme = createTheme({
+    overrides: {
+        MuiTooltip: {
+            tooltip: {
+                fontSize: "1em",
+                color: "yellow",
+                backgroundColor: "grey",
+                display: "block"
+            }
+        }
+    }
+});
+
+
 function InputSlider(props) {
 
-    const useStyles = makeStyles({})
+    const useStyles = makeStyles({
+        root: {
+            '& .MuiTooltip-tooltip': {
+                fontSize: 24
+            }
+        }
+    })
     const classes = useStyles();
 
     const { title, surviveValue, thriveValue, startingValue, maxValue, handleOpenDissentModal, userInfo } = props;
@@ -47,8 +67,18 @@ function InputSlider(props) {
         }
     }
 
+    let tipText = `Survive: ${surviveValue}$\nThrive:   ${thriveValue}$`
+    if (needsDescription !== ''){
+        tipText += `\n\n"${needsDescription}"`
+    }
+
+    const tipTitle = (
+        <span style={{ whiteSpace: 'pre' }}>
+            {tipText}
+        </span>)
+
     return (
-        <div style={{marginTop:16}}>
+        <div style={{ marginTop: 16 }}>
             <Grid
                 className={classes.root}
                 key={props.sliderId.toString() + 'grid'}
@@ -58,15 +88,19 @@ function InputSlider(props) {
             >
                 <Grid item xs={1}>
                     <Grid item>
-                        <Tooltip
-                            title={needsDescription}
-                            aria-label={needsDescription}>
-                            <FaceIcon
-                                onClick={() => { handleOpenDissentModal(props.sliderId) }}
-                                fontSize="large"
-                                style={{ color: colors[props.sliderId] }}
-                            />
-                        </Tooltip>
+                        <MuiThemeProvider theme={theme}>
+                            <Tooltip
+                                title={tipTitle}
+                                aria-label={tipTitle}
+                                arrow={true}
+                                placement={'right-end'}>
+                                <FaceIcon
+                                    onClick={() => { handleOpenDissentModal(props.sliderId) }}
+                                    fontSize="large"
+                                    style={{ color: colors[props.sliderId] }}
+                                />
+                            </Tooltip>
+                        </MuiThemeProvider>
                     </Grid>
                     <Grid item>
                         <Typography id={props.sliderId.toString() + "input-slider"}>
