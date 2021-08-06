@@ -36,6 +36,9 @@ function JoinRoomForm(props) {
             })
             .catch((error) => {
                 console.log(error);
+                if (error.response.data.error === 'That room does not exist') {
+                    alert('That room does not exist');
+                }
             })
         close();
     }
