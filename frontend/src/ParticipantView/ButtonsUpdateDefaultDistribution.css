@@ -1,0 +1,16 @@
+#reset-button,
+#equal-button,
+#survive-button,
+#thrive-button {
+    width: 70px;
+    height: 30px;
+}
+
+#reset-button span,
+#equal-button span,
+#survive-button span,
+#thrive-button span {
+    width: 13px;
+    height: 13px;
+    font-size: 13px
+}

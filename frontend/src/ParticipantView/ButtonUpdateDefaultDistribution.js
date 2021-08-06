@@ -1,17 +1,27 @@
-import React from 'react';
+import React from 'react'
+import './ButtonsUpdateDefaultDistribution.css'
 
 function ButtonUpdateDefaultDistribution(props) {
     return (
         <div>
-            <button onClick={(e) => props.updateDefaultDistribution('zero')}>Reset to 0</button>
-            <button onClick={(e) => props.updateDefaultDistribution('equal')}>Equal amounts</button>
-            <button onClick={(e) => props.updateDefaultDistribution('survive')}>
-                Survive amounts
+            <button id="reset-button" onClick={(e) => props.updateDefaultDistribution('zero')}>
+                <span>0</span>
             </button>
-            <button onClick={(e) => props.updateDefaultDistribution('thrive')}>
-                Thrive amounts
+
+            <button id="equal-button" onClick={(e) => props.updateDefaultDistribution('equal')}>
+                <span>=</span>
             </button>
-        </div>
+
+            <button id="survive-button" onClick={(e) => props.updateDefaultDistribution('survive')}>
+                {/* Survive amounts */}
+                <span>:)</span>
+            </button>
+
+            <button id="thrive-button" onClick={(e) => props.updateDefaultDistribution('thrive')}>
+                {/* Thrive amounts */}
+                <span>:D</span>
+            </button>
+        </div >
     );
 }
 

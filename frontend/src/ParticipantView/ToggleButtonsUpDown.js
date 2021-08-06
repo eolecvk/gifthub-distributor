@@ -4,14 +4,14 @@ import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import Grid from '@material-ui/core/Grid';
 
-class ToggleButtonsUpDownDev extends React.Component {
+class ToggleButtonsUpDown extends React.Component {
 
     constructor(props) {
         super(props)
         this.state = {
             opinion: 'unset'
         }
-        this.sliderId = this.props.sliderId
+        this.sliderId = this.props.sliderId === '' ? '' : parseInt(this.props.sliderId)
         this.userId = sessionStorage.getItem("userId")
         this.roomCode = JSON.parse(sessionStorage.getItem("roomInfo")).room_code
         this._isMounted = false; //using isMounted react pattern to avoid memory leak https://stackoverflow.com/questions/52061476/cancel-all-subscriptions-and-asyncs-in-the-componentwillunmount-method-how
@@ -42,10 +42,20 @@ class ToggleButtonsUpDownDev extends React.Component {
         return true
     }
 
+    getUserData = (roomInfo, sliderId) => {
+        return roomInfo.people.filter((el) => { return (el.person_id === parseInt(sliderId)) })[0]
+    }
+
     parseEmotive = (roomInfo, userId, sliderId) => {
+        // Case: slider has been set to '' as we unmount the modal
+        if (this.sliderId === '') {
+            return ''
+        }
+
         //Parse the emotive state value for a given userId and sliderId
         //based on a roomInfo object
-        const userData = roomInfo.people.filter((el) => { return (el.person_id === parseInt(sliderId)) })[0]
+        const userData = this.getUserData(roomInfo, sliderId)
+
         if (
             typeof userData.emotive.DISSENT_UP !== 'undefined' &&
             userData.emotive.DISSENT_UP.includes(parseInt(userId))) {
@@ -77,27 +87,28 @@ class ToggleButtonsUpDownDev extends React.Component {
 
     render() {
         return (
-            <Grid item xs={1}>
+            <Grid item xs>
                 <ToggleButtonGroup
                     value={this.state.opinion}
                     exclusive
                     onChange={this.handleOpinion}
                     aria-label="Opinion on distribution"
+                    size="large"
                 >
                     <ToggleButton
+                        id="dissentdown-button"
                         value="DISSENT_DOWN"
                         aria-label="Ask for less"
-                        style={{ fontSize: '20px' }}
                     >
-                            <span aria-label="index pointing down" role="img">👇</span>
+                        <span aria-label="index pointing down">👇</span>
 
                     </ToggleButton>
                     <ToggleButton
+                        id="dissentup-button"
                         value="DISSENT_UP"
                         aria-label="Ask for more"
-                        style={{ fontSize: '20px' }}
                     >
-                        <span aria-label="index pointing up" role="img">👆</span>
+                        <span aria-label="index pointing up">👆</span>
                     </ToggleButton>
                 </ToggleButtonGroup >
             </Grid>
@@ -105,4 +116,4 @@ class ToggleButtonsUpDownDev extends React.Component {
     }
 }
 
-export default ToggleButtonsUpDownDev
+export default ToggleButtonsUpDown

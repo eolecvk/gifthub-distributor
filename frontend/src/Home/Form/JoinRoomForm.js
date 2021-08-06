@@ -16,41 +16,28 @@ function JoinRoomForm(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        let payload
-        if (isObserver) {
-            payload = {
-                participant: false
-            }
-        } else {
-            payload = {
-                name: name,
-                needs_description: needsDescription,
-                needs_lower_bound_cents: needsLowerBoundCents * 100,
-                needs_upper_bound_cents: needsUpperBoundCents * 100,
-                participant: true
-            }
+        const payload = {
+            participant: !isObserver,
+            name: name,
+            needs_description: needsDescription,
+            needs_lower_bound_cents: needsLowerBoundCents * 100,
+            needs_upper_bound_cents: needsUpperBoundCents * 100,
         }
 
         axios
-            .get(`/api/${roomCode}`)
+            .post(`/api/${roomCode}/join`, payload)
             .then((response) => {
                 if (response.status === 200) {
                     sessionStorage.clear();
-                    sessionStorage.setItem("roomInfo", JSON.stringify(response.data))
-
-                    if (isObserver) {
-                        history.push('/observer-view');
-                    } else {
-                        sessionStorage.setItem("userId", JSON.stringify(response.data.user_id))
-                        history.push('/participant-view');
-                    }
+                    sessionStorage.setItem("roomInfo", JSON.stringify(response.data.room_info))
+                    sessionStorage.setItem("userId", JSON.stringify(response.data.user_id))
+                    history.push(isObserver ? '/observer-view' : '/participant-view');
                 }
             })
             .catch((error) => {
                 console.log(error);
             })
         close();
-
     }
 
     return (
