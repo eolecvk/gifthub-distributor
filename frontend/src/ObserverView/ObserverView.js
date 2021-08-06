@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { ComposedChart, XAxis, YAxis, Bar, Cell, ResponsiveContainer, Scatter } from 'recharts';
 import axios from 'axios';
-import colors from './../UserView/colors';
+import colors from './../ParticipantView/colors';
 import { quantile } from "./utils";
 
 
 // Example: https://blog.stvmlbrn.com/2019/02/20/automatically-refreshing-data-in-react.html
-class AdminView extends Component {
+class ObserverView extends Component {
 
     constructor() {
         super()
@@ -89,7 +89,7 @@ class AdminView extends Component {
 
         return (
             <div style={{margin:15+'px'}}>
-                <h1>Admin View Page</h1>
+                <h1>Observer view</h1>
                 <h2>{roomName}</h2>
                 <h2>Room Code: {roomCode}</h2>
                 <h2>Total Amount: ${totalAmountDollars}</h2>
@@ -105,4 +105,4 @@ class AdminView extends Component {
     }
 }
 
-export default AdminView
+export default ObserverView

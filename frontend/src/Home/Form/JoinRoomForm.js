@@ -25,7 +25,7 @@ function JoinRoomForm(props) {
                     if (response.status === 200) {
                         sessionStorage.clear();
                         sessionStorage.setItem("roomInfo", JSON.stringify(response.data))
-                        history.push('/admin-view');
+                        history.push('/observer-view');
                     }
                 })
                 .catch((error) => {
@@ -50,7 +50,7 @@ function JoinRoomForm(props) {
                         sessionStorage.clear();
                         sessionStorage.setItem("roomInfo", JSON.stringify(response.data.room_info))
                         sessionStorage.setItem("userId", JSON.stringify(response.data.user_id))
-                        history.push('/input-page');
+                        history.push('/participant-view');
                     }
                 })
                 .catch((error) => {
@@ -80,24 +80,15 @@ function JoinRoomForm(props) {
                     onChange={(e) => { setRoomCode(e.target.value); }}
                 />
             </div>
-            <span>
-                <input
-                    type="radio"
-                    id="observer"
-                    name="isObserver"
-                    value="observe"
-                    onClick={() => { setIsObserver(true) }}
-                />
-                <label htmlFor="observer">Observe</label>
-                <input
-                    type="radio"
-                    id="participate"
-                    name="isObserver"
-                    value="participate"
-                    onClick={() => { setIsObserver(false) }}
-                />
-                <label htmlFor="participate">Participate</label>
-            </span>
+
+            <input
+                type="checkbox"
+                id="observe-only"
+                name="observe-only"
+                value="observe"
+                onClick={(e) => { setIsObserver(e.target.checked) }}
+            />
+            <label htmlFor="observe-only">Observe only</label>
 
             <div style={{ display: isObserver ? 'none' : 'inline' }}>
                 <div>
@@ -161,12 +152,6 @@ function JoinRoomForm(props) {
             <button
                 type="submit"
                 name="Submit">
-                Submit
-            </button>
-
-            <button
-                type="close"
-                name="Close ">
                 Submit
             </button>
         </form>
