@@ -23,7 +23,7 @@ function CreateRoomForm(props) {
             .post('/api/rooms', payload)
             .then((response) => {
                 if (response.status === 200) {
-                    sessionStorage.setItem("roomInfo", JSON.stringify(response.data))
+                    sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
                     history.push('/observer');
                 }
             })
@@ -63,7 +63,7 @@ function CreateRoomForm(props) {
             <button type="submit" name="Submit">
                 Submit
             </button>
-        </form >
+        </form>
     );
 }
 

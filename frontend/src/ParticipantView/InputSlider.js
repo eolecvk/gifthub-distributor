@@ -1,52 +1,49 @@
 import React from 'react';
 import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
 import { Slider, Input, Tooltip, Grid, Typography } from '@material-ui/core';
-import FaceIcon from '@material-ui/icons/Face'
-import colors from './colors'
+import FaceIcon from '@material-ui/icons/Face';
+import colors from './colors';
 
 const theme = createTheme({
     overrides: {
         MuiTooltip: {
             tooltip: {
-                fontSize: "1em",
-                color: "yellow",
-                backgroundColor: "grey",
+                fontSize: '1em',
+                color: 'yellow',
+                backgroundColor: 'grey',
                 border: '1px solid #dadde9',
                 left: -20,
                 top: 3,
-                maxWidth: 200
-            }
+                maxWidth: 200,
+            },
         },
         MuiSlider: {
             thumb: {
                 height: 20,
                 width: 20,
-                backgroundColor: "#fff",
-                border: "2px solid currentColor",
+                backgroundColor: '#fff',
+                border: '2px solid currentColor',
                 marginTop: -8,
                 marginLeft: -10,
-                boxShadow: "#ebebeb 0 2px 2px",
-                "&:focus, &:hover, &$active": {
-                    boxShadow: "#ddd 0 2px 3px 1px",
+                boxShadow: '#ebebeb 0 2px 2px',
+                '&:focus, &:hover, &$active': {
+                    boxShadow: '#ddd 0 2px 3px 1px',
                 },
             },
             valueLabel: {
-                color: "grey",
+                color: 'grey',
                 marginLeft: 4,
-                fontSize: 12
-
+                fontSize: 12,
             },
             track: {
                 height: 3,
                 borderRadius: 2,
                 color: 'transparent',
-
-
             },
             rail: {
                 height: 6,
                 color: 'black',
-                backgroundImage: "linear-gradient(.25turn, red, green)"
+                backgroundImage: 'linear-gradient(.25turn, red, green)',
             },
             mark: {
                 color: 'black',
@@ -56,8 +53,8 @@ const theme = createTheme({
                 '&[data-index="0"]': {
                     height: 25,
                     width: 1,
-                    marginTop: 0
-                }
+                    marginTop: 0,
+                },
             },
             markActive: {
                 opacity: 1,
@@ -65,63 +62,69 @@ const theme = createTheme({
             },
             markLabel: {
                 fontSize: 12,
-                color: "grey",
+                color: 'grey',
                 transform: 'translate(-40%, -20%)',
                 //Style of avg mark
                 '&[data-index="0"]': {
                     fontSize: 12,
-                    color: "black",
+                    color: 'black',
                     //marginTop: 1,
                     transform: 'translate(-40%, 40%)',
                 },
             },
             markLabelActive: {
                 fontSize: 12,
-                color: "black",
-                fontWeight: "bold",
+                color: 'black',
+                fontWeight: 'bold',
                 transform: 'translate(-40%, -20%)',
                 //Style of avg mark
                 '&[data-index="0"]': {
                     fontSize: 12,
-                    color: "black",
-                    fontWeight: "normal",
+                    color: 'black',
+                    fontWeight: 'normal',
                     transform: 'translate(-40%, 40%)',
                 },
-            }
-        }
-    }
+            },
+        },
+    },
 });
 
-
 function InputSlider(props) {
-
-    const { title, surviveValue, thriveValue, startingValue, maxValue, handleOpenDissentModal, userInfo } = props;
-    const needsDescription = userInfo.needs_description
-    const groupVoteAvg = userInfo.avg_cents / 100
+    const {
+        title,
+        surviveValue,
+        thriveValue,
+        startingValue,
+        maxValue,
+        handleOpenDissentModal,
+        userInfo,
+    } = props;
+    const needsDescription = userInfo.needs_description;
+    const groupVoteAvg = userInfo.avg_cents / 100;
 
     function getMarks(groupVoteAvg, surviveValue, thriveValue) {
-        const marks = []
+        const marks = [];
         const markAvg = {
             value: groupVoteAvg,
-            label: `avg:${groupVoteAvg}`
-        }
+            label: `avg:${groupVoteAvg}`,
+        };
         const markSurvive = {
             value: surviveValue,
-            label: surviveValue
-        }
+            label: surviveValue,
+        };
         const markThrive = {
             value: thriveValue,
-            label: thriveValue
-        }
-        marks.push(markAvg)
+            label: thriveValue,
+        };
+        marks.push(markAvg);
         if (surviveValue <= maxValue) {
-            marks.push(markSurvive)
+            marks.push(markSurvive);
         }
         if (thriveValue <= maxValue) {
-            marks.push(markThrive)
+            marks.push(markThrive);
         }
 
-        return marks
+        return marks;
     }
 
     function handleSliderChangeCommitted(event, newValue) {
@@ -149,11 +152,11 @@ function InputSlider(props) {
     }
 
     function getTipTitle(surviveValue, thriveValue, needsDescription) {
-        let tipText = `Survive: ${surviveValue}$\nThrive:   ${thriveValue}$`
+        let tipText = `Survive: ${surviveValue}$\nThrive:   ${thriveValue}$`;
         if (needsDescription !== '') {
-            tipText += `\n\n"${needsDescription}"`
+            tipText += `\n\n"${needsDescription}"`;
         }
-        return (<div style={{ whiteSpace: 'pre-line' }}>{tipText}</div>)
+        return <div style={{ whiteSpace: 'pre-line' }}>{tipText}</div>;
     }
 
     // const useStyles = makeStyles({})
@@ -166,25 +169,32 @@ function InputSlider(props) {
                     //className={classes.root}
                     key={props.sliderId.toString() + 'grid'}
                     container
-                    direction={"row"}
+                    direction={'row'}
                     spacing={1}
                 >
                     <Grid item xs={2}>
                         <Grid item>
                             <Tooltip
                                 title={getTipTitle(surviveValue, thriveValue, needsDescription)}
-                                aria-label={getTipTitle(surviveValue, thriveValue, needsDescription)}
+                                aria-label={getTipTitle(
+                                    surviveValue,
+                                    thriveValue,
+                                    needsDescription
+                                )}
                                 arrow={true}
-                                placement={'right'}>
+                                placement={'right'}
+                            >
                                 <FaceIcon
-                                    onClick={() => { handleOpenDissentModal(props.sliderId) }}
+                                    onClick={() => {
+                                        handleOpenDissentModal(props.sliderId);
+                                    }}
                                     fontSize="large"
                                     style={{ color: colors[props.sliderId] }}
                                 />
                             </Tooltip>
                         </Grid>
                         <Grid item>
-                            <Typography id={props.sliderId.toString() + "input-slider"}>
+                            <Typography id={props.sliderId.toString() + 'input-slider'}>
                                 {title}
                             </Typography>
                         </Grid>
@@ -199,7 +209,7 @@ function InputSlider(props) {
                             onChangeCommitted={handleSliderChangeCommitted}
                             aria-labelledby={props.sliderId.toString() + 'slider'}
                             marks={getMarks(groupVoteAvg, surviveValue, thriveValue)}
-                            valueLabelDisplay='on'
+                            valueLabelDisplay="on"
                         />
                     </Grid>
                     <Grid item>

@@ -7,11 +7,10 @@ import Home from './Home/Home';
 import Header from './Header';
 
 function App() {
-
     const styleContent = {
         marginTop: '50px',
         marginBottom: '25px',
-        padding:'25px'
+        padding: '25px',
     };
 
     return (
@@ -23,7 +22,11 @@ function App() {
                     <div style={styleContent}>
                         <Switch>
                             <Route path="/" exact component={() => <Home />} />
-                            <Route path="/participant" exact component={() => <ParticipantView />} />
+                            <Route
+                                path="/participant"
+                                exact
+                                component={() => <ParticipantView />}
+                            />
                             <Route path="/observer" exact component={() => <ObserverView />} />
                         </Switch>
                     </div>

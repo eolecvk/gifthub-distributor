@@ -4,7 +4,6 @@ import PopupGroup from './PopupGroup/PopupGroup';
 import './Home.css';
 
 class Home extends Component {
-
     componentDidMount() {
         document.title = 'GiftHub Distributor';
     }

@@ -13,14 +13,13 @@ function getSlidersInitializationData(roomInfo, defaultDistribution) {
     }
 
     if (defaultDistribution === 'equal') {
+        const equalSplit = roomInfo.splitting_cents / 100 / roomInfo.people.length;
+        const equalSplitFloor = Math.floor(equalSplit);
+        let remainder = roomInfo.splitting_cents / 100 - equalSplitFloor * roomInfo.people.length;
+        let startingValues = Array(roomInfo.people.length).fill(equalSplitFloor);
 
-        const equalSplit = roomInfo.splitting_cents / 100 / roomInfo.people.length
-        const equalSplitFloor = Math.floor(equalSplit)
-        let remainder = roomInfo.splitting_cents / 100 - equalSplitFloor * roomInfo.people.length
-        let startingValues = Array(roomInfo.people.length).fill(equalSplitFloor)
-        
-        for (let i=remainder; i > 0; i--){
-            startingValues[i] += 1 
+        for (let i = remainder; i > 0; i--) {
+            startingValues[i] += 1;
         }
 
         return roomInfo.people.map((userData, index) => ({
@@ -28,7 +27,7 @@ function getSlidersInitializationData(roomInfo, defaultDistribution) {
             title: userData.name,
             surviveValue: userData.needs_lower_bound_cents / 100,
             thriveValue: userData.needs_upper_bound_cents / 100,
-            startingValue: startingValues[index], 
+            startingValue: startingValues[index],
             maxValue: roomInfo.splitting_cents / 100,
         }));
     }
@@ -65,8 +64,7 @@ function getStartingValues(slidersInitializationData) {
     return startingValues;
 }
 
-
-function registerEvents(events, roomCode){
+function registerEvents(events, roomCode) {
     const payload = { events: events };
 
     axios
@@ -89,27 +87,25 @@ function registerVote(sliderValues, roomCode) {
         };
     });
 
-    registerEvents(events, roomCode)
+    registerEvents(events, roomCode);
 }
 
-function registerNeedsUpdate(args, roomCode){
-
-    const {needsDescription, needsLowerBoundCents, needsUpperBoundCents} = args
-    const event = {kind: 'NEEDS_UPDATE'}
+function registerNeedsUpdate(args, roomCode) {
+    const { needsDescription, needsLowerBoundCents, needsUpperBoundCents } = args;
+    const event = { kind: 'NEEDS_UPDATE' };
 
     if (typeof needsDescription !== 'undefined') {
-        event["needs_description"] = needsDescription
+        event['needs_description'] = needsDescription;
     }
     if (typeof needsLowerBoundCents !== 'undefined') {
-        event["needs_lower_bound_cents"] = needsLowerBoundCents
+        event['needs_lower_bound_cents'] = needsLowerBoundCents;
     }
     if (typeof needsUpperBoundCents !== 'undefined') {
-        event["needs_upper_bound_cents"] = needsUpperBoundCents
-    }    
+        event['needs_upper_bound_cents'] = needsUpperBoundCents;
+    }
 
-    const events = [event]
-    registerEvents(events, roomCode)
+    const events = [event];
+    registerEvents(events, roomCode);
 }
 
-
-export { getSlidersInitializationData, getStartingValues, registerVote, registerNeedsUpdate};
+export { getSlidersInitializationData, getStartingValues, registerVote, registerNeedsUpdate };
