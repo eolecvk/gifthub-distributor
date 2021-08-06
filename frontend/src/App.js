@@ -5,12 +5,13 @@ import InputPage from './UserView/InputPage';
 import AdminView from './AdminView/AdminView';
 import Home from './Home/Home';
 import Header from './Header';
-import Footer from './Footer';
 
 function App() {
 
     const styleContent = {
-        marginTop: '150px',
+        marginTop: '50px',
+        marginBottom: '25px',
+        padding:'25px'
     };
 
     return (
@@ -26,7 +27,6 @@ function App() {
                             <Route path="/admin-view" exact component={() => <AdminView />} />
                         </Switch>
                     </div>
-                    <Footer />
                 </div>
             </Router>
         </div>

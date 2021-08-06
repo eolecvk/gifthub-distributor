@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import Grid from '@material-ui/core/Grid';
 import { getStartingValues, registerVote } from './utils';
 import InputSlider from './InputSlider'
 import ButtonsUndoRedo from './ButtonsUndoRedo'
-import ToggleButtonsUpDownDev from './ToggleButtonsUpDownDev';
+import AmountDistributedProgressBar from './AmountDistributedProgressBar'
 
 class SliderGrid extends Component {
 
@@ -169,53 +168,41 @@ class SliderGrid extends Component {
             .sort((sl1, sl2) => sl1.personId - sl2.personId)
             .map((slData) => {
                 return (
-                    <Grid
-                        key={slData.personId.toString()}
-                        container
-                        direction="row"
-                        alignItems="center"
-                        spacing={10}
-
-                    >
-                        <InputSlider
-                            key={slData.personId.toString()}
-                            sliderId={slData.personId.toString()}
-                            title={slData.title.toUpperCase()}
-                            surviveValue={slData.surviveValue}
-                            thriveValue={slData.thriveValue}
-                            startingValue={this.state.reset ? slData.startingValue : this.state.currentValues[slData.personId.toString()]}
-                            maxValue={slData.maxValue}
-                            handleUpdateSlider={this.handleUpdateSlider}
-                            userInfo={this.props.roomInfo.people.find(p => { return p.person_id.toString() === slData.personId.toString() })}
-                        />
-                        <ToggleButtonsUpDownDev
-                            key={slData.personId.toString()}
-                            sliderId={slData.personId.toString()}
-                        />
-                    </Grid>
-
+                    <InputSlider
+                        key={slData.personId.toString() + "inputSlider"}
+                        sliderId={slData.personId.toString()}
+                        title={slData.title.toUpperCase()}
+                        surviveValue={slData.surviveValue}
+                        thriveValue={slData.thriveValue}
+                        startingValue={this.state.reset ? slData.startingValue : this.state.currentValues[slData.personId.toString()]}
+                        maxValue={slData.maxValue}
+                        handleUpdateSlider={this.handleUpdateSlider}
+                        handleOpenDissentModal={this.props.dissentModalOpenAtSlider}
+                        userInfo={this.props.roomInfo.people.find(p => { return p.person_id.toString() === slData.personId.toString() })}
+                    />
                 )
             })
 
+        const amountTotal = this.props.roomAmount
+        const amountDistributed = Object.values(this.state.currentValues).length > 0 ?
+            Object.values(this.state.currentValues)
+                .map((v) => (v ? v : 0))
+                .reduce((a, b) => a + b)
+            : 0
 
         return (
-            <div style={{ margin: 25 + 'px' }}>
+            <div >
                 <ButtonsUndoRedo
                     undoMove={this.undoMove}
                     redoMove={this.redoMove}
                 />
-                <p>
-                    Amount distributed:{' '}
-                    {Object.values(this.state.currentValues).length > 0
-                        ? Object.values(this.state.currentValues)
-                            .map((v) => (v ? v : 0))
-                            .reduce((a, b) => a + b)
-                        : 0}{' '}
-                    / {this.props.roomAmount}
-                </p>
-                <Grid container>
+                <AmountDistributedProgressBar
+                    amountDistributed={amountDistributed}
+                    amountTotal={amountTotal}
+                />
+                <div style={{ marginTop: 50 }}>
                     {sliders}
-                </Grid>
+                </div>
             </div >
         );
     }
