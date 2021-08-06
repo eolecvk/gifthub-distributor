@@ -16,6 +16,7 @@ class ObserverView extends Component {
     intervalID;
 
     componentDidMount() {
+        document.title = 'Observer';
         this.getData();
     }
 

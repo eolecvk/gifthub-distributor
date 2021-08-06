@@ -22,6 +22,7 @@ class ParticipantView extends Component {
     intervalID;
 
     componentDidMount() {
+        document.title = 'Participant';
         this.getData()
     }
 
