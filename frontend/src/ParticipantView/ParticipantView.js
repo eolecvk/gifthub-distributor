@@ -6,7 +6,7 @@ import ButtonUpdateDefaultDistribution from './ButtonUpdateDefaultDistribution';
 import SlidersGrid from './SliderGrid';
 import { getSlidersInitializationData, getStartingValues } from './utils';
 
-class InputPage extends Component {
+class ParticipantView extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -123,4 +123,4 @@ class InputPage extends Component {
     }
 }
 
-export default InputPage
+export default ParticipantView
