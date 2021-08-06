@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import { ComposedChart, XAxis, YAxis, Bar, Cell, LabelList, ResponsiveContainer, Scatter } from 'recharts';
 import axios from 'axios'
 import { quantile } from "./utils"
-import colors from './../UserView/colors'
-import AmountDistributedProgressBar from '../UserView/AmountDistributedProgressBar';
-
+import colors from './../ParticipantView/colors'
+import AmountDistributedProgressBar from '../ParticipantView/AmountDistributedProgressBar';
 
 // Example: https://blog.stvmlbrn.com/2019/02/20/automatically-refreshing-data-in-react.html
-class AdminView extends Component {
+class ObserverView extends Component {
 
     constructor() {
         super()
@@ -17,6 +16,7 @@ class AdminView extends Component {
     intervalID;
 
     componentDidMount() {
+        document.title = 'Observer';
         this.getData();
     }
 
@@ -115,4 +115,4 @@ class AdminView extends Component {
     }
 }
 
-export default AdminView
+export default ObserverView

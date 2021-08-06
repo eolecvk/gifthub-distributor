@@ -9,7 +9,7 @@ import EditableNeedsModal from './EditableNeedsModal'
 import { getSlidersInitializationData, getStartingValues, registerVote } from './utils';
 import DissentModal from './DissentModal';
 
-class InputPage extends Component {
+class ParticipantView extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -22,6 +22,7 @@ class InputPage extends Component {
     intervalID;
 
     componentDidMount() {
+        document.title = 'Participant';
         this.getData()
     }
 
@@ -162,4 +163,4 @@ class InputPage extends Component {
     }
 }
 
-export default InputPage
+export default ParticipantView

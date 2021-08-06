@@ -24,7 +24,7 @@ function CreateRoomForm(props) {
             .then((response) => {
                 if (response.status === 200) {
                     sessionStorage.setItem("roomInfo", JSON.stringify(response.data))
-                    history.push('/admin-view');
+                    history.push('/observer');
                 }
             })
             .catch((error) => {
