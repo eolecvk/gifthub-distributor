@@ -23,8 +23,8 @@ function App() {
                     <div style={styleContent}>
                         <Switch>
                             <Route path="/" exact component={() => <Home />} />
-                            <Route path="/participant-view" exact component={() => <ParticipantView />} />
-                            <Route path="/observer-view" exact component={() => <ObserverView />} />
+                            <Route path="/participant" exact component={() => <ParticipantView />} />
+                            <Route path="/observer" exact component={() => <ObserverView />} />
                         </Switch>
                     </div>
                 </div>

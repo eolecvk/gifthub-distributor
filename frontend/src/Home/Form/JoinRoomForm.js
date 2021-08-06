@@ -31,7 +31,7 @@ function JoinRoomForm(props) {
                     sessionStorage.clear();
                     sessionStorage.setItem("roomInfo", JSON.stringify(response.data.room_info))
                     sessionStorage.setItem("userId", JSON.stringify(response.data.user_id))
-                    history.push(isObserver ? '/observer-view' : '/participant-view');
+                    history.push(isObserver ? '/observer' : '/participant');
                 }
             })
             .catch((error) => {

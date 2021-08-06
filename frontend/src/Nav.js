@@ -10,10 +10,10 @@ function Nav() {
                         <Link to="/">Home</Link>
                     </li>
                     <li>
-                        <Link to="/participant-view">Participant View</Link>
+                        <Link to="/participant">Participant View</Link>
                     </li>
                     <li>
-                        <Link to="/observer-view">Observer View</Link>
+                        <Link to="/observer">Observer View</Link>
                     </li>
                 </ul>
             </nav>
