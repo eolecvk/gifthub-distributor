@@ -1,37 +1,55 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
-import './Form.css';
+import { TextField, Grid, Button, FormControlLabel, Switch } from "@material-ui/core";
 
 function JoinRoomForm(props) {
     const history = useHistory();
-    const close = () => props.onSubmit();
-    const [roomCode, setRoomCode] = useState('');
-    const [isObserver, setIsObserver] = useState(false);
-    const [name, setName] = useState('');
-    const [needsLowerBoundCents, setNeedsLowerBoundCents] = useState(0);
-    const [needsUpperBoundCents, setNeedsUpperBoundCents] = useState(0);
-    const [needsDescription, setNeedsDescription] = useState('');
+    const defaultValues = {
+        name: "",
+        roomCode: "",
+        isObserver: false,
+        needsDescription: "",
+        needsLowerBoundDollars: 0,
+        needsUpperBoundDollars: 0
+    };
+    const [formValues, setFormValues] = useState(defaultValues)
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormValues({
+            ...formValues,
+            [name]: value,
+        });
+    };
+
+    const handleSwitchChange = (e) => {
+        const { name, checked } = e.target;
+        setFormValues({
+            ...formValues,
+            [name]: checked,
+        });
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         const payload = {
-            participant: !isObserver,
-            name: name,
-            needs_description: needsDescription,
-            needs_lower_bound_cents: needsLowerBoundCents * 100,
-            needs_upper_bound_cents: needsUpperBoundCents * 100,
+            participant: !formValues.isObserver,
+            name: formValues.name,
+            needs_description: formValues.needsDescription,
+            needs_lower_bound_cents: formValues.needsLowerBoundDollars * 100,
+            needs_upper_bound_cents: formValues.needsUpperBoundDollars * 100,
         };
 
         axios
-            .post(`/api/${roomCode}/join`, payload)
+            .post(`/api/${formValues.roomCode}/join`, payload)
             .then((response) => {
                 if (response.status === 200) {
                     sessionStorage.clear();
                     sessionStorage.setItem('roomInfo', JSON.stringify(response.data.room_info));
                     sessionStorage.setItem('userId', JSON.stringify(response.data.user_id));
-                    history.push(isObserver ? '/observer' : '/participant');
+                    history.push(formValues.isObserver ? '/observer' : '/participant');
                 }
             })
             .catch((error) => {
@@ -40,105 +58,151 @@ function JoinRoomForm(props) {
                     alert('That room does not exist');
                 }
             });
-        close();
+        props.handleClose();
     };
 
     return (
-        <form
-            onSubmit={(e) => {
-                handleSubmit(e);
-            }}
-        >
-            <div>
-                <label htmlFor="room-code">Room code:</label>
-                <input
-                    id="room-code"
-                    name="room-code"
-                    type="text"
-                    required
-                    value={roomCode}
-                    onChange={(e) => {
-                        setRoomCode(e.target.value);
-                    }}
-                />
-            </div>
+        <form onSubmit={handleSubmit}>
+            <Grid
+                container
+                alignItems="center"
+                justifyContent="center"
+                direction="column"
+                style={{ margin: 15 }}
+            >
+                <Grid
+                    container
+                    direction="row"
+                    spacing={6}
+                >
+                    <Grid item>
+                        <TextField
+                            id="room-code-input"
+                            name="roomCode"
+                            label="Room code:"
+                            type="text"
+                            value={formValues.roomCode}
+                            onChange={handleInputChange}
+                            required
+                        />
+                    </Grid>
+                    <Grid
+                        item
+                        xs
+                        style={{ marginTop: 10 }}>
+                        <FormControlLabel
+                            label="Observer mode"
+                            control={
+                                <Switch
+                                    name="isObserver"
+                                    inputProps={{ 'aria-label': 'primary checkbox' }}
+                                    checked={formValues.isObserver}
+                                    onChange={handleSwitchChange}
+                                />
+                            }
+                        />
+                    </Grid>
+                </Grid>
 
-            <input
-                type="checkbox"
-                id="observe-only"
-                name="observe-only"
-                value="observe"
-                onClick={(e) => {
-                    setIsObserver(e.target.checked);
-                }}
-            />
-            <label htmlFor="observe-only">Observe only</label>
+                <Grid
+                    container
 
-            <div style={{ display: isObserver ? 'none' : 'inline' }}>
-                <div>
-                    <label htmlFor="username">Username:</label>
-                    <input
-                        id="username"
-                        name="username"
-                        type="text"
-                        required={isObserver ? false : true}
-                        value={name}
-                        onChange={(e) => {
-                            setName(e.target.value);
-                        }}
-                    />
-                </div>
+                    style={
+                        {
+                            marginTop: 15,
+                            display: formValues.isObserver ?
+                                'none' : 'block'
+                        }}>
+                    <Grid style={{ marginTop: 10, margin: 5 }}>
+                        <TextField
+                            id="name"
+                            name="name"
+                            label="Name:"
+                            type="text"
+                            value={formValues.name}
+                            onChange={handleInputChange}
+                            required
+                        />
+                    </Grid>
+                    <Grid
+                        container
+                        direction="row"
+                        style={{ marginTop: 10 }}
+                    >
+                        <Grid
+                            item
+                            xs={4}
+                            style={{ margin: 5 }}
+                        >
+                            <TextField
+                                id="need-min-input"
+                                name="needsLowerBoundDollars"
+                                label="Survive amount ($):"
+                                type="number"
+                                value={formValues.needsLowerBoundDollars}
+                                onChange={handleInputChange}
+                                required
+                            />
+                        </Grid>
+                        <Grid
+                            item
+                            xs={4}
+                            style={{ margin: 5 }}
+                        >
+                            <TextField
+                                id="need-max-input"
+                                name="needsUpperBoundDollars"
+                                label="Thrive amount ($):"
+                                type="number"
+                                value={formValues.needsUpperBoundDollars}
+                                onChange={handleInputChange}
+                                required
+                            />
+                        </Grid>
+                    </Grid>
+                    <Grid
+                        item
+                        style={{
+                            marginTop: 10,
+                            margin: 5
+                        }}>
+                        <TextField
+                            id="need-description-input"
+                            name="needsDescription"
+                            label="Need description:"
+                            type="text"
+                            value={formValues.needsDescription}
+                            onChange={handleInputChange}
+                            multiline
+                            rows={4}
+                            variant="filled"
+                            fullWidth={true}
+                        />
+                    </Grid>
+                </Grid>
 
-                <div>
-                    <label htmlFor="need-min">Need min ($):</label>
-                    <input
-                        id="need-min"
-                        name="need-min"
-                        type="number"
-                        required={isObserver ? false : true}
-                        min="0"
-                        value={needsLowerBoundCents}
-                        onChange={(e) => {
-                            setNeedsLowerBoundCents(e.target.value);
-                        }}
-                    />
-                </div>
-
-                <div>
-                    <label htmlFor="need-max">Need max ($):</label>
-                    <input
-                        id="need-max"
-                        name="need-max"
-                        type="number"
-                        required={isObserver ? false : true}
-                        min={needsLowerBoundCents}
-                        value={needsUpperBoundCents}
-                        onChange={(e) => {
-                            setNeedsUpperBoundCents(e.target.value);
-                        }}
-                    />
-                </div>
-
-                <div>
-                    <label htmlFor="need-description">Need description:</label>
-                    <textarea
-                        id="need-description"
-                        name="need-description"
-                        rows="4"
-                        cols="50"
-                        value={needsDescription}
-                        onChange={(e) => {
-                            setNeedsDescription(e.target.value);
-                        }}
-                    />
-                </div>
-            </div>
-
-            <button type="submit" name="Submit">
-                Submit
-            </button>
+                <Grid
+                    container
+                    alignItems="center"
+                    justifyContent="center"
+                    style={{ marginTop: 25 }}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        type="submit">
+                        Submit
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        type="button"
+                        onClick={(e) => { props.handleClose() }}>
+                        Close
+                    </Button>
+                </Grid>
+            </Grid>
         </form>
-    );
+    )
 }
 
 export default JoinRoomForm;

@@ -1,21 +1,34 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
-import './Form.css';
+import { TextField, Grid, Button } from "@material-ui/core";
+
 
 function CreateRoomForm(props) {
+
     const history = useHistory();
-    const close = () => props.onSubmit();
-    const [roomName, setRoomName] = useState('');
-    const [splittingCents, setSplittingCents] = useState(0);
+    const defaultValues = {
+        roomName: "",
+        splittingDollars: 0
+    };
+
+    const [formValues, setFormValues] = useState(defaultValues)
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormValues({
+            ...formValues,
+            [name]: value,
+        });
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         //form payload
         const payload = {
-            room_name: roomName,
-            splitting_cents: splittingCents * 100,
+            room_name: formValues.roomName,
+            splitting_cents: formValues.splittingDollars * 100,
         };
 
         //send request with axios
@@ -30,41 +43,57 @@ function CreateRoomForm(props) {
             .catch((error) => {
                 console.log(error);
             });
-        close();
+        props.handleClose()
     };
 
     return (
-        <form
-            onSubmit={(e) => {
-                handleSubmit(e);
-            }}
-        >
-            <div>
-                <label>Room name:</label>
-                <input
-                    type="text"
-                    required
-                    value={roomName}
-                    onChange={(e) => setRoomName(e.target.value)}
-                />
-            </div>
 
-            <div>
-                <label>Amount ($):</label>
-                <input
-                    type="number"
-                    required
-                    min="1"
-                    value={splittingCents}
-                    onChange={(e) => setSplittingCents(e.target.value)}
-                />
-            </div>
-
-            <button type="submit" name="Submit">
-                Submit
-            </button>
-        </form>
-    );
+        <form onSubmit={handleSubmit}>
+            <Grid
+                container
+                alignItems="center"
+                justifyContent="center"
+                direction="row"
+            >
+                <Grid item xs={7} style={{marginTop:10}}>
+                    <TextField
+                        id="room-name-input"
+                        name="roomName"
+                        label="Room name:"
+                        type="text"
+                        value={formValues.roomName}
+                        onChange={handleInputChange}
+                    />
+                </Grid>
+                <Grid item xs={3} style={{marginTop:10}}>
+                    <TextField
+                        id="amount-input"
+                        name="splittingDollars"
+                        label="Amount ($):"
+                        type="number"
+                        value={formValues.splittingDollars}
+                        onChange={handleInputChange}
+                    />
+                </Grid>
+                <Grid style={{marginTop:25}}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        type="submit">
+                        Submit
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        type="button"
+                        onClick={(e) => { props.handleClose() }}
+                    >
+                        Close
+                    </Button>
+                </Grid>
+            </Grid>
+        </form >
+    )
 }
 
 export default CreateRoomForm;
