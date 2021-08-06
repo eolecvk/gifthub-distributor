@@ -16,52 +16,42 @@ function JoinRoomForm(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-
+        let payload
         if (isObserver) {
-
-            axios
-                .get(`/api/${roomCode}`)
-                .then((response) => {
-                    if (response.status === 200) {
-                        sessionStorage.clear();
-                        sessionStorage.setItem("roomInfo", JSON.stringify(response.data))
-                        history.push('/observer-view');
-                    }
-                })
-                .catch((error) => {
-                    console.log(error);
-                })
-            close();
+            payload = {
+                participant: false
+            }
         } else {
-
-            //form payload
-            const payload = {
+            payload = {
                 name: name,
                 needs_description: needsDescription,
                 needs_lower_bound_cents: needsLowerBoundCents * 100,
                 needs_upper_bound_cents: needsUpperBoundCents * 100,
-            };
+                participant: true
+            }
+        }
 
-            // send request with axios
-            axios
-                .post(`/api/${roomCode}/join`, payload)
-                .then((response) => {
-                    if (response.status === 200) {
-                        sessionStorage.clear();
-                        sessionStorage.setItem("roomInfo", JSON.stringify(response.data.room_info))
+        axios
+            .get(`/api/${roomCode}`)
+            .then((response) => {
+                if (response.status === 200) {
+                    sessionStorage.clear();
+                    sessionStorage.setItem("roomInfo", JSON.stringify(response.data))
+
+                    if (isObserver) {
+                        history.push('/observer-view');
+                    } else {
                         sessionStorage.setItem("userId", JSON.stringify(response.data.user_id))
                         history.push('/participant-view');
                     }
-                })
-                .catch((error) => {
-                    console.log(error.response);
-                    if (error.response.data.error === 'That room does not exist') {
-                        alert('That room does not exist');
-                    }
-                });
-            close();
-        }
-    };
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+        close();
+
+    }
 
     return (
         <form
