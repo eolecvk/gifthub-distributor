@@ -1,4 +1,4 @@
-function asc(arr){
+function asc(arr) {
     return arr.sort((a, b) => a - b);
 }
 
@@ -14,4 +14,4 @@ function quantile(arr, q) {
     }
 }
 
-export {quantile};
+export { quantile };

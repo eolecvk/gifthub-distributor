@@ -1,5 +1,5 @@
 import React from 'react';
-import IconButton from '@material-ui/core/IconButton'
+import IconButton from '@material-ui/core/IconButton';
 import HomeIcon from '@material-ui/icons/Home';
 import { Link } from 'react-router-dom';
 
@@ -18,7 +18,7 @@ function Header() {
     return (
         <header style={style}>
             <Link to="/">
-                <IconButton size='medium'>
+                <IconButton size="medium">
                     <HomeIcon fontSize="large" />
                 </IconButton>
             </Link>

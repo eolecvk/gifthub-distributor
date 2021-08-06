@@ -1,18 +1,15 @@
-import React, { useEffect } from 'react'
-import { Container, Modal } from '@material-ui/core'
+import React, { useEffect } from 'react';
+import { Container, Modal } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import ToggleButtonsUpDown from './ToggleButtonsUpDown'
+import ToggleButtonsUpDown from './ToggleButtonsUpDown';
 
 function DissentModal(props) {
-
-    const { dissentModalOpenAtSlider, handleClose } = props
-    const [openAtSlider, setOpenAtSlider] = React.useState(dissentModalOpenAtSlider)
+    const { dissentModalOpenAtSlider, handleClose } = props;
+    const [openAtSlider, setOpenAtSlider] = React.useState(dissentModalOpenAtSlider);
 
     useEffect(() => {
-        setOpenAtSlider(dissentModalOpenAtSlider)
-    },
-        [dissentModalOpenAtSlider]
-    )
+        setOpenAtSlider(dissentModalOpenAtSlider);
+    }, [dissentModalOpenAtSlider]);
 
     const useStyles = makeStyles((theme) => ({
         paper: {
@@ -36,24 +33,24 @@ function DissentModal(props) {
         },
     }));
 
-
     const classes = useStyles();
-    const roomInfo = JSON.parse(sessionStorage.getItem('roomInfo'))
-    const userName = openAtSlider === '' ?
-        '' : roomInfo.people.filter((el) => {
-            return (el.person_id === parseInt(openAtSlider))
-        })[0].name
+    const roomInfo = JSON.parse(sessionStorage.getItem('roomInfo'));
+    const userName =
+        openAtSlider === ''
+            ? ''
+            : roomInfo.people.filter((el) => {
+                  return el.person_id === parseInt(openAtSlider);
+              })[0].name;
 
-    const body = openAtSlider === '' ?
-        <div /> :
-        (
+    const body =
+        openAtSlider === '' ? (
+            <div />
+        ) : (
             <div className={classes.paper}>
                 <h3>{userName}</h3>
-                <ToggleButtonsUpDown
-                    key={openAtSlider}
-                    sliderId={openAtSlider} />
+                <ToggleButtonsUpDown key={openAtSlider} sliderId={openAtSlider} />
             </div>
-        )
+        );
 
     return (
         <div>
@@ -62,12 +59,13 @@ function DissentModal(props) {
                     open={openAtSlider !== '' ? true : false}
                     onClose={handleClose}
                     aria-labelledby="simple-modal-title"
-                    aria-describedby="simple-modal-description">
+                    aria-describedby="simple-modal-description"
+                >
                     {body}
-                </Modal >
+                </Modal>
             </Container>
         </div>
-    )
+    );
 }
 
-export default DissentModal
+export default DissentModal;

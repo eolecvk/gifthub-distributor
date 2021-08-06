@@ -1,36 +1,33 @@
 import React, { Component } from 'react';
 import { getStartingValues, registerVote } from './utils';
-import InputSlider from './InputSlider'
-import ButtonsUndoRedo from './ButtonsUndoRedo'
-import AmountDistributedProgressBar from './AmountDistributedProgressBar'
+import InputSlider from './InputSlider';
+import ButtonsUndoRedo from './ButtonsUndoRedo';
+import AmountDistributedProgressBar from './AmountDistributedProgressBar';
 
 class SliderGrid extends Component {
-
     constructor(props) {
-        super(props)
+        super(props);
 
         const defaultState = {
             currentValues: getStartingValues(this.props.slidersInitializationData), // NEED TO DEPRECATED THIS
             reset: this.props.reset,
             history: {
                 index: 0,
-                states: [
-                    getStartingValues(this.props.slidersInitializationData)
-                ]
-            }
-        }
+                states: [getStartingValues(this.props.slidersInitializationData)],
+            },
+        };
 
-        const storedState = JSON.parse(sessionStorage.getItem("sliderGridState"))
-        const iniState = storedState || defaultState
+        const storedState = JSON.parse(sessionStorage.getItem('sliderGridState'));
+        const iniState = storedState || defaultState;
         //const iniState = this.props.reset ? defaultState : storedState
-        this.state = iniState
+        this.state = iniState;
     }
 
     //Initial vote + initalization of the history in sessionStorage
     componentDidMount() {
-        sessionStorage.setItem("sliderGridState", JSON.stringify(this.state));
+        sessionStorage.setItem('sliderGridState', JSON.stringify(this.state));
         const voteData = this.state.currentValues;
-        const roomCode = JSON.parse(sessionStorage.getItem("roomInfo")).room_code
+        const roomCode = JSON.parse(sessionStorage.getItem('roomInfo')).room_code;
         registerVote(voteData, roomCode);
     }
 
@@ -45,12 +42,11 @@ class SliderGrid extends Component {
                 index: currentState.history.index,
                 states: [
                     ...currentState.history.states,
-                    { ...currentState.currentValues, [`${id}`]: newValue }
-                ]
-            }
-        }
-    }
-
+                    { ...currentState.currentValues, [`${id}`]: newValue },
+                ],
+            },
+        };
+    };
 
     // Generate updated version of state `currentState`
     // when inserting a new move of `newValue` at sliderId `id`
@@ -62,11 +58,11 @@ class SliderGrid extends Component {
                 index: currentState.history.index + 1,
                 states: [
                     ...currentState.history.states.slice(0, currentState.history.index + 1),
-                    { ...currentState.currentValues, [`${id}`]: newValue }
-                ]
-            }
-        }
-    }
+                    { ...currentState.currentValues, [`${id}`]: newValue },
+                ],
+            },
+        };
+    };
 
     // Generate updated version of state `currentState`
     // when undoing one move
@@ -76,10 +72,10 @@ class SliderGrid extends Component {
             reset: currentState.reset,
             history: {
                 index: currentState.history.index - 1,
-                states: currentState.history.states
-            }
-        }
-    }
+                states: currentState.history.states,
+            },
+        };
+    };
 
     getStateObjectOnRedo = (currentState) => {
         return {
@@ -87,16 +83,16 @@ class SliderGrid extends Component {
             reset: currentState.reset,
             history: {
                 index: currentState.history.index + 1,
-                states: currentState.history.states
-            }
-        }
-    }
+                states: currentState.history.states,
+            },
+        };
+    };
 
     handleUpdateSlider = (id, newValue, isVote) => {
-        let actualNewValue = newValue
-        let futureState = isVote ?
-            this.getStateObjectNewMove(this.state, id, newValue) :
-            this.getStateObjectNoMove(this.state, id, newValue)
+        let actualNewValue = newValue;
+        let futureState = isVote
+            ? this.getStateObjectNewMove(this.state, id, newValue)
+            : this.getStateObjectNoMove(this.state, id, newValue);
 
         //Check if future state is valid (sum of money distributed <= totalAmount)
         // If not, distribute as much as possible in the slider moved last
@@ -108,104 +104,100 @@ class SliderGrid extends Component {
             );
             const currentValue = this.state.currentValues[id];
             const maxNewValue = this.props.roomAmount - currentTotalCost + currentValue;
-            actualNewValue = maxNewValue
-            futureState = isVote ?
-                this.getStateObjectNewMove(this.state, id, maxNewValue) :
-                this.getStateObjectNoMove(this.state, id, maxNewValue)
-
+            actualNewValue = maxNewValue;
+            futureState = isVote
+                ? this.getStateObjectNewMove(this.state, id, maxNewValue)
+                : this.getStateObjectNoMove(this.state, id, maxNewValue);
         }
 
         if (isVote) {
             const voteData = { [`${id}`]: actualNewValue };
-            const roomCode = JSON.parse(sessionStorage.getItem("roomInfo")).room_code
+            const roomCode = JSON.parse(sessionStorage.getItem('roomInfo')).room_code;
             registerVote(voteData, roomCode);
-            sessionStorage.setItem("sliderGridState", JSON.stringify(futureState));
+            sessionStorage.setItem('sliderGridState', JSON.stringify(futureState));
         }
         this.setState(futureState);
-    }
-
+    };
 
     undoMove = () => {
-
         // Assert undo is valid
         if (this.state.history.index === 0) {
-            return
+            return;
         }
 
         // Register vote for undo move
-        const voteData = this.state.history.states[this.state.history.index - 1]
-        const roomCode = JSON.parse(sessionStorage.getItem("roomInfo")).room_code
-        registerVote(voteData, roomCode)
+        const voteData = this.state.history.states[this.state.history.index - 1];
+        const roomCode = JSON.parse(sessionStorage.getItem('roomInfo')).room_code;
+        registerVote(voteData, roomCode);
 
         // Update slider state stored in sessionStorage
-        const newState = this.getStateObjectOnUndo(this.state)
-        sessionStorage.setItem("sliderGridState", JSON.stringify(newState));
-        this.setState(newState)
-    }
+        const newState = this.getStateObjectOnUndo(this.state);
+        sessionStorage.setItem('sliderGridState', JSON.stringify(newState));
+        this.setState(newState);
+    };
 
     redoMove = () => {
-
         // Assert redo is valid
         if (this.state.history.index === this.state.history.states.length - 1) {
-            return
+            return;
         }
 
         // Register vote for redo move
-        const voteData = this.state.history.states[this.state.history.index + 1]
-        const roomCode = JSON.parse(sessionStorage.getItem("roomInfo")).room_code
-        registerVote(voteData, roomCode)
+        const voteData = this.state.history.states[this.state.history.index + 1];
+        const roomCode = JSON.parse(sessionStorage.getItem('roomInfo')).room_code;
+        registerVote(voteData, roomCode);
 
         // Update slider state stored in sessionStorage
-        const newState = this.getStateObjectOnRedo(this.state)
-        sessionStorage.setItem("sliderGridState", JSON.stringify(newState));
-        this.setState(newState)
-    }
-
+        const newState = this.getStateObjectOnRedo(this.state);
+        sessionStorage.setItem('sliderGridState', JSON.stringify(newState));
+        this.setState(newState);
+    };
 
     render() {
-
         const sliders = this.props.slidersInitializationData
             .sort((sl1, sl2) => sl1.personId - sl2.personId)
             .map((slData) => {
                 return (
                     <InputSlider
-                        key={slData.personId.toString() + "inputSlider"}
+                        key={slData.personId.toString() + 'inputSlider'}
                         sliderId={slData.personId.toString()}
                         title={slData.title.toUpperCase()}
                         surviveValue={slData.surviveValue}
                         thriveValue={slData.thriveValue}
-                        startingValue={this.state.reset ? slData.startingValue : this.state.currentValues[slData.personId.toString()]}
+                        startingValue={
+                            this.state.reset
+                                ? slData.startingValue
+                                : this.state.currentValues[slData.personId.toString()]
+                        }
                         maxValue={slData.maxValue}
                         handleUpdateSlider={this.handleUpdateSlider}
                         handleOpenDissentModal={this.props.dissentModalOpenAtSlider}
-                        userInfo={this.props.roomInfo.people.find(p => { return p.person_id.toString() === slData.personId.toString() })}
+                        userInfo={this.props.roomInfo.people.find((p) => {
+                            return p.person_id.toString() === slData.personId.toString();
+                        })}
                     />
-                )
-            })
+                );
+            });
 
-        const amountTotal = this.props.roomAmount
-        const amountDistributed = Object.values(this.state.currentValues).length > 0 ?
-            Object.values(this.state.currentValues)
-                .map((v) => (v ? v : 0))
-                .reduce((a, b) => a + b)
-            : 0
+        const amountTotal = this.props.roomAmount;
+        const amountDistributed =
+            Object.values(this.state.currentValues).length > 0
+                ? Object.values(this.state.currentValues)
+                      .map((v) => (v ? v : 0))
+                      .reduce((a, b) => a + b)
+                : 0;
 
         return (
-            <div >
-                <ButtonsUndoRedo
-                    undoMove={this.undoMove}
-                    redoMove={this.redoMove}
-                />
+            <div>
+                <ButtonsUndoRedo undoMove={this.undoMove} redoMove={this.redoMove} />
                 <AmountDistributedProgressBar
                     amountDistributed={amountDistributed}
                     amountTotal={amountTotal}
                 />
-                <div style={{ marginTop: 50 }}>
-                    {sliders}
-                </div>
-            </div >
+                <div style={{ marginTop: 50 }}>{sliders}</div>
+            </div>
         );
     }
 }
 
-export default SliderGrid
+export default SliderGrid;

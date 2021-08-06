@@ -1,5 +1,5 @@
-import React from 'react'
-import './ButtonsUpdateDefaultDistribution.css'
+import React from 'react';
+import './ButtonsUpdateDefaultDistribution.css';
 
 function ButtonUpdateDefaultDistribution(props) {
     return (
@@ -21,7 +21,7 @@ function ButtonUpdateDefaultDistribution(props) {
                 {/* Thrive amounts */}
                 <span>:D</span>
             </button>
-        </div >
+        </div>
     );
 }
 

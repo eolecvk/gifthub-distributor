@@ -5,7 +5,7 @@ import RoomInfo from './RoomInfo';
 import ButtonUpdateDefaultDistribution from './ButtonUpdateDefaultDistribution';
 import SlidersGrid from './SliderGrid';
 // import EditableNeeds from './EditableNeeds'
-import EditableNeedsModal from './EditableNeedsModal'
+import EditableNeedsModal from './EditableNeedsModal';
 import { getSlidersInitializationData, getStartingValues, registerVote } from './utils';
 import DissentModal from './DissentModal';
 
@@ -15,35 +15,35 @@ class ParticipantView extends Component {
         this.state = {
             defaultDistribution: 'zero',
             reset: false,
-            roomInfo: JSON.parse(sessionStorage.getItem("roomInfo")) || '',
-            dissentModalOpenAtSlider: ''
+            roomInfo: JSON.parse(sessionStorage.getItem('roomInfo')) || '',
+            dissentModalOpenAtSlider: '',
         };
     }
     intervalID;
 
     componentDidMount() {
         document.title = 'Participant';
-        this.getData()
+        this.getData();
     }
 
     componentWillUnmount() {
-        clearTimeout(this.intervalID)
+        clearTimeout(this.intervalID);
     }
 
     getData = () => {
         axios.get('/api/' + this.state.roomInfo.room_code).then((response) => {
             // Case : new people are detected in the backend roomInfo data compared to roomInfo in client state
             if (response.data.people.length !== this.state.roomInfo.people.length) {
-                const roomCode = this.state.roomInfo.room_code
-                let newSliderValues = {}
+                const roomCode = this.state.roomInfo.room_code;
+                let newSliderValues = {};
                 for (
                     let sliderValue = this.state.roomInfo.people.length + 1;
                     sliderValue <= response.data.people.length;
                     sliderValue++
                 ) {
-                    newSliderValues[sliderValue] = 0
+                    newSliderValues[sliderValue] = 0;
                 }
-                registerVote(newSliderValues, roomCode)
+                registerVote(newSliderValues, roomCode);
                 this.setState({ roomInfo: response.data, reset: true });
             }
 
@@ -53,13 +53,12 @@ class ParticipantView extends Component {
             }
 
             //Always update the local representation of room info
-            sessionStorage.setItem('roomInfo', JSON.stringify(response.data))
-
+            sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
 
             // call getData() again in 5 seconds
             this.intervalID = setTimeout(this.getData.bind(this), 2000);
-        })
-    }
+        });
+    };
 
     // NEED TO MOVE THIS TO UTILS
     // Generate updated version of state `currentState`
@@ -72,11 +71,11 @@ class ParticipantView extends Component {
                 index: currentState.history.index + 1,
                 states: [
                     ...currentState.history.states.slice(0, currentState.history.index + 1),
-                    { ...newSliderValues }
-                ]
-            }
-        }
-    }
+                    { ...newSliderValues },
+                ],
+            },
+        };
+    };
 
     updateDefaultDistribution = (defaultDistribution) => {
         const roomInfo = this.state.roomInfo;
@@ -92,40 +91,45 @@ class ParticipantView extends Component {
 
         // ...checks if newDefaultDistribution yields an invalid state before transitioning
         if (futureTotalCost > roomAmount) {
-            alert('Not enough money to set this distribution: ' + futureTotalCost + '/ ' + roomAmount)
-            return
+            alert(
+                'Not enough money to set this distribution: ' + futureTotalCost + '/ ' + roomAmount
+            );
+            return;
         }
 
         // Update grid state stored in memory (will be used for slider grid initialization upon re-rendering)
-        const storedSliderGridState = JSON.parse(sessionStorage.getItem("sliderGridState"))
+        const storedSliderGridState = JSON.parse(sessionStorage.getItem('sliderGridState'));
         const defaultSliderGridState = {
             currentValues: futureStartingValues, // NEED TO DEPRECATED THIS
             reset: false,
             history: {
                 index: 0,
-                states: [futureStartingValues]
-            }
-        }
-        const currentSliderGridState = storedSliderGridState || defaultSliderGridState
-        const futureSliderGridState = this.getStateObjectNewMoves(currentSliderGridState, futureStartingValues)
-        sessionStorage.setItem("sliderGridState", JSON.stringify(futureSliderGridState))
+                states: [futureStartingValues],
+            },
+        };
+        const currentSliderGridState = storedSliderGridState || defaultSliderGridState;
+        const futureSliderGridState = this.getStateObjectNewMoves(
+            currentSliderGridState,
+            futureStartingValues
+        );
+        sessionStorage.setItem('sliderGridState', JSON.stringify(futureSliderGridState));
 
         this.setState({
             defaultDistribution: defaultDistribution,
             reset: true,
         });
-    }
+    };
 
     dissentModalOpenAtSlider = (sliderId) => {
         this.setState({
             ...this.state,
-            dissentModalOpenAtSlider: sliderId === '' ? '' : parseInt(sliderId)
-        })
-    }
+            dissentModalOpenAtSlider: sliderId === '' ? '' : parseInt(sliderId),
+        });
+    };
 
     dissentModalClose = () => {
-        return this.dissentModalOpenAtSlider('')
-    }
+        return this.dissentModalOpenAtSlider('');
+    };
 
     render() {
         const slidersInitializationData = getSlidersInitializationData(
@@ -138,8 +142,8 @@ class ParticipantView extends Component {
                 <RoomInfo roomInfo={this.state.roomInfo} />
                 <EditableNeedsModal
                     roomInfo={this.state.roomInfo}
-                // onChangeSurviveAmount={this.onChangeSurviveAmount}
-                // onChangeThriveAmount={this.onChangeThriveAmount}
+                    // onChangeSurviveAmount={this.onChangeSurviveAmount}
+                    // onChangeThriveAmount={this.onChangeThriveAmount}
                 />
 
                 <ButtonUpdateDefaultDistribution
@@ -163,4 +167,4 @@ class ParticipantView extends Component {
     }
 }
 
-export default ParticipantView
+export default ParticipantView;

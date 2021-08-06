@@ -1,10 +1,9 @@
 import React from 'react';
 
 function RoomInfo(props) {
-
     const style = {
-        textAlign: "center"
-    }
+        textAlign: 'center',
+    };
 
     return (
         <div>
