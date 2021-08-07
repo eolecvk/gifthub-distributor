@@ -1,14 +1,6 @@
 import React, { Component } from 'react';
 import { Container, ButtonGroup, Button } from '@material-ui/core'
-import { withStyles } from '@material-ui/styles'
 import {HomeModal as Modal} from './Modal/Modal'
-
-
-const styles = theme => ({
-    root: {
-        display: "flex",
-    }
-});
 
 
 class Home extends Component {
@@ -43,10 +35,8 @@ class Home extends Component {
 
     render() {
 
-        const { classes } = this.props;
-
         return (
-            <Container className={classes.root}>
+            <Container>
                 <ButtonGroup
                     color="primary"
                     aria-label="outlined primary button group"
@@ -81,4 +71,4 @@ class Home extends Component {
     }
 }
 
-export default withStyles(styles)(Home)
+export default Home

@@ -14,6 +14,7 @@ function JoinRoomForm(props) {
         needsUpperBoundDollars: 0
     };
     const [formValues, setFormValues] = useState(defaultValues)
+    //const [errors, setErrors] = useState({})
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -32,7 +33,7 @@ function JoinRoomForm(props) {
     }
 
     const handleSubmit = (e) => {
-        e.preventDefault();
+        //e.preventDefault();
 
         const payload = {
             participant: !formValues.isObserver,
@@ -68,12 +69,10 @@ function JoinRoomForm(props) {
                 alignItems="center"
                 justifyContent="center"
                 direction="column"
-                style={{ margin: 15 }}
             >
                 <Grid
                     container
                     direction="row"
-                    spacing={6}
                 >
                     <Grid item>
                         <TextField
@@ -86,10 +85,7 @@ function JoinRoomForm(props) {
                             required
                         />
                     </Grid>
-                    <Grid
-                        item
-                        xs
-                        style={{ marginTop: 10 }}>
+                    <Grid item xs style={{ marginTop: 10 }}>
                         <FormControlLabel
                             label="Observer mode"
                             control={
@@ -106,14 +102,13 @@ function JoinRoomForm(props) {
 
                 <Grid
                     container
-
                     style={
                         {
-                            marginTop: 15,
+                            padding: 10,
                             display: formValues.isObserver ?
                                 'none' : 'block'
                         }}>
-                    <Grid style={{ marginTop: 10, margin: 5 }}>
+                    <Grid >
                         <TextField
                             id="name"
                             name="name"
@@ -124,48 +119,37 @@ function JoinRoomForm(props) {
                             required
                         />
                     </Grid>
-                    <Grid
-                        container
-                        direction="row"
-                        style={{ marginTop: 10 }}
-                    >
-                        <Grid
-                            item
-                            xs={4}
-                            style={{ margin: 5 }}
-                        >
+                    <Grid container justifyContent="space-around" direction="row" style={{marginTop:10}}>
+                        <Grid item xs={4}>
                             <TextField
                                 id="need-min-input"
                                 name="needsLowerBoundDollars"
-                                label="Survive amount ($):"
+                                label="Survive ($):"
                                 type="number"
                                 value={formValues.needsLowerBoundDollars}
                                 onChange={handleInputChange}
                                 required
+                                inputProps={{
+                                    min:0
+                                }}
                             />
                         </Grid>
-                        <Grid
-                            item
-                            xs={4}
-                            style={{ margin: 5 }}
-                        >
+                        <Grid item xs={4}>
                             <TextField
                                 id="need-max-input"
                                 name="needsUpperBoundDollars"
-                                label="Thrive amount ($):"
+                                label="Thrive ($):"
                                 type="number"
                                 value={formValues.needsUpperBoundDollars}
                                 onChange={handleInputChange}
                                 required
+                                inputProps={{
+                                    min:formValues.needsLowerBoundDollars
+                                }}
                             />
                         </Grid>
                     </Grid>
-                    <Grid
-                        item
-                        style={{
-                            marginTop: 10,
-                            margin: 5
-                        }}>
+                    <Grid item style={{marginTop: 10}}>
                         <TextField
                             id="need-description-input"
                             name="needsDescription"
@@ -184,8 +168,8 @@ function JoinRoomForm(props) {
                 <Grid
                     container
                     alignItems="center"
-                    justifyContent="center"
-                    style={{ marginTop: 25 }}>
+                    justifyContent="flex-end"
+                    style={{ marginTop: 20 }}>
                     <Button
                         variant="contained"
                         color="primary"

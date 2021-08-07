@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
-import { TextField, Grid, Button } from "@material-ui/core";
+import { TextField, Grid, Button, ButtonGroup } from "@material-ui/core";
 
 
 function CreateRoomForm(props) {
@@ -55,7 +55,7 @@ function CreateRoomForm(props) {
                 justifyContent="center"
                 direction="row"
             >
-                <Grid item xs={7} style={{marginTop:10}}>
+                <Grid item xs={7} style={{ marginTop: 10 }}>
                     <TextField
                         id="room-name-input"
                         name="roomName"
@@ -65,7 +65,7 @@ function CreateRoomForm(props) {
                         onChange={handleInputChange}
                     />
                 </Grid>
-                <Grid item xs={3} style={{marginTop:10}}>
+                <Grid item xs={3} style={{ marginTop: 10 }}>
                     <TextField
                         id="amount-input"
                         name="splittingDollars"
@@ -75,21 +75,26 @@ function CreateRoomForm(props) {
                         onChange={handleInputChange}
                     />
                 </Grid>
-                <Grid style={{marginTop:25}}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        type="submit">
-                        Submit
-                    </Button>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        type="button"
-                        onClick={(e) => { props.handleClose() }}
-                    >
-                        Close
-                    </Button>
+                <Grid
+                container
+                justifyContent="flex-end"
+                style={{ marginTop: 25 }}>
+                    <ButtonGroup>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            type="submit">
+                            Submit
+                        </Button>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            type="button"
+                            onClick={(e) => { props.handleClose() }}
+                        >
+                            Close
+                        </Button>
+                    </ButtonGroup>
                 </Grid>
             </Grid>
         </form >
