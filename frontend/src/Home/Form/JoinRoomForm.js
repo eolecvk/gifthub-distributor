@@ -10,8 +10,8 @@ function JoinRoomForm(props) {
         roomCode: '',
         isObserver: false,
         needsDescription: '',
-        needsLowerBoundDollars: 0,
-        needsUpperBoundDollars: 0,
+        needsLowerBoundDollars: '',
+        needsUpperBoundDollars: '',
     };
     const [formValues, setFormValues] = useState(defaultValues);
     //const [errors, setErrors] = useState({})
