@@ -147,7 +147,7 @@ class EditableNeedsForm extends Component {
     };
 
     onSubmit = (e) => {
-        e.preventDefault()
+        e.preventDefault();
         if (Object.keys(this.state.errors).length > 0) {
             return;
         }
@@ -219,10 +219,7 @@ class EditableNeedsForm extends Component {
                     </Box>
                     <br />
                     <div>
-                        <button
-                            onClick={(e) => this.onSubmit(e)}>
-                            Submit
-                        </button>
+                        <button onClick={(e) => this.onSubmit(e)}>Submit</button>
                     </div>
                 </form>
             </Box>
