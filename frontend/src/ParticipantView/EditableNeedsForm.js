@@ -175,7 +175,7 @@ class EditableNeedsForm extends Component {
                             }}
                             size="small"
                             variant="outlined"
-                            type="Number"
+                            type="number"
                             error={!!this.state.errors.surviveAmount}
                             helperText={
                                 this.state.errors.surviveAmount && this.state.errors.surviveAmount
@@ -192,7 +192,7 @@ class EditableNeedsForm extends Component {
                             }}
                             size="small"
                             variant="outlined"
-                            type="Number"
+                            type="number"
                             error={!!this.state.errors.thriveAmount}
                             helperText={
                                 this.state.errors.thriveAmount && this.state.errors.thriveAmount
@@ -213,7 +213,7 @@ class EditableNeedsForm extends Component {
                             variant="outlined"
                             multiline={true}
                             maxRows={6}
-                            type="String"
+                            type="string"
                             InputLabelProps={{ shrink: true }}
                         />
                     </Box>
