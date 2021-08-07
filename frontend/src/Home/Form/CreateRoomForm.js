@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
-import { TextField, Grid, Button, ButtonGroup } from "@material-ui/core";
-
+import { TextField, Grid, Button, ButtonGroup } from '@material-ui/core';
 
 function CreateRoomForm(props) {
-
     const history = useHistory();
     const defaultValues = {
-        roomName: "",
-        splittingDollars: ""
+        roomName: '',
+        splittingDollars: '',
     };
 
-    const [formValues, setFormValues] = useState(defaultValues)
+    const [formValues, setFormValues] = useState(defaultValues);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -43,11 +41,10 @@ function CreateRoomForm(props) {
             .catch((error) => {
                 console.log(error);
             });
-        props.handleClose()
+        props.handleClose();
     };
 
     return (
-
         <form onSubmit={handleSubmit}>
             <Grid
                 container
@@ -56,7 +53,7 @@ function CreateRoomForm(props) {
                 direction="row"
                 style={{ marginTop: 10 }}
             >
-                <Grid item xs={7} >
+                <Grid item xs={7}>
                     <TextField
                         id="room-name-input"
                         name="roomName"
@@ -74,33 +71,29 @@ function CreateRoomForm(props) {
                         type="number"
                         value={formValues.splittingDollars}
                         onChange={handleInputChange}
-                        inputProps={{min:0}}
+                        inputProps={{ min: 0 }}
                     />
                 </Grid>
-                <Grid
-                container
-                justifyContent="flex-end"
-                style={{ marginTop: 25 }}>
+                <Grid container justifyContent="flex-end" style={{ marginTop: 25 }}>
                     <ButtonGroup>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            type="submit">
+                        <Button variant="contained" color="primary" type="submit">
                             Submit
                         </Button>
                         <Button
                             variant="contained"
                             color="primary"
                             type="button"
-                            onClick={(e) => { props.handleClose() }}
+                            onClick={(e) => {
+                                props.handleClose();
+                            }}
                         >
                             Close
                         </Button>
                     </ButtonGroup>
                 </Grid>
             </Grid>
-        </form >
-    )
+        </form>
+    );
 }
 
 export default CreateRoomForm;

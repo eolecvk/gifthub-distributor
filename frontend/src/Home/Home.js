@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
-import { Container, ButtonGroup, Button } from '@material-ui/core'
-import {HomeModal as Modal} from './Modal/Modal'
-
+import { Container, ButtonGroup, Button } from '@material-ui/core';
+import { HomeModal as Modal } from './Modal/Modal';
 
 class Home extends Component {
-
     constructor() {
-        super()
+        super();
         this.state = {
             showCreateRoomModal: false,
-            showJoinRoomModal: false
-        }
+            showJoinRoomModal: false,
+        };
     }
 
     componentDidMount() {
@@ -18,34 +16,31 @@ class Home extends Component {
     }
 
     showCreateRoomModal = () => {
-        this.setState({ showCreateRoomModal: true })
-    }
+        this.setState({ showCreateRoomModal: true });
+    };
 
     hideCreateRoomModal = () => {
-        this.setState({ showCreateRoomModal: false })
-    }
+        this.setState({ showCreateRoomModal: false });
+    };
 
     showJoinRoomModal = () => {
-        this.setState({ showJoinRoomModal: true })
-    }
+        this.setState({ showJoinRoomModal: true });
+    };
 
     hideJoinRoomModal = () => {
-        this.setState({ showJoinRoomModal: false })
-    }
+        this.setState({ showJoinRoomModal: false });
+    };
 
     render() {
-
         return (
             <Container>
-                <ButtonGroup
-                    color="primary"
-                    aria-label="outlined primary button group"
-                >
+                <ButtonGroup color="primary" aria-label="outlined primary button group">
                     <Button
                         variant="contained"
                         color="primary"
                         type="button"
-                        onClick={() => this.showCreateRoomModal()}>
+                        onClick={() => this.showCreateRoomModal()}
+                    >
                         Create Room
                     </Button>
                     <Modal
@@ -57,7 +52,8 @@ class Home extends Component {
                         variant="contained"
                         color="primary"
                         type="button"
-                        onClick={() => this.showJoinRoomModal()}>
+                        onClick={() => this.showJoinRoomModal()}
+                    >
                         Join Room
                     </Button>
                     <Modal
@@ -66,9 +62,9 @@ class Home extends Component {
                         handleClose={this.hideJoinRoomModal}
                     />
                 </ButtonGroup>
-            </Container >
+            </Container>
         );
     }
 }
 
-export default Home
+export default Home;

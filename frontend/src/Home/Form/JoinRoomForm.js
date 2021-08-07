@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
-import { TextField, Grid, Button, FormControlLabel, Switch } from "@material-ui/core";
+import { TextField, Grid, Button, FormControlLabel, Switch } from '@material-ui/core';
 
 function JoinRoomForm(props) {
     const history = useHistory();
     const defaultValues = {
-        name: "",
-        roomCode: "",
+        name: '',
+        roomCode: '',
         isObserver: false,
-        needsDescription: "",
+        needsDescription: '',
         needsLowerBoundDollars: 0,
-        needsUpperBoundDollars: 0
+        needsUpperBoundDollars: 0,
     };
-    const [formValues, setFormValues] = useState(defaultValues)
+    const [formValues, setFormValues] = useState(defaultValues);
     //const [errors, setErrors] = useState({})
 
     const handleInputChange = (e) => {
@@ -30,7 +30,7 @@ function JoinRoomForm(props) {
             ...formValues,
             [name]: checked,
         });
-    }
+    };
 
     const handleSubmit = (e) => {
         //e.preventDefault();
@@ -64,16 +64,8 @@ function JoinRoomForm(props) {
 
     return (
         <form onSubmit={handleSubmit}>
-            <Grid
-                container
-                alignItems="center"
-                justifyContent="center"
-                direction="column"
-            >
-                <Grid
-                    container
-                    direction="row"
-                >
+            <Grid container alignItems="center" justifyContent="center" direction="column">
+                <Grid container direction="row">
                     <Grid item>
                         <TextField
                             id="room-code-input"
@@ -102,13 +94,12 @@ function JoinRoomForm(props) {
 
                 <Grid
                     container
-                    style={
-                        {
-                            padding: 10,
-                            display: formValues.isObserver ?
-                                'none' : 'block'
-                        }}>
-                    <Grid >
+                    style={{
+                        padding: 10,
+                        display: formValues.isObserver ? 'none' : 'block',
+                    }}
+                >
+                    <Grid>
                         <TextField
                             id="name"
                             name="name"
@@ -119,7 +110,12 @@ function JoinRoomForm(props) {
                             required
                         />
                     </Grid>
-                    <Grid container justifyContent="space-around" direction="row" style={{marginTop:10}}>
+                    <Grid
+                        container
+                        justifyContent="space-around"
+                        direction="row"
+                        style={{ marginTop: 10 }}
+                    >
                         <Grid item xs={4}>
                             <TextField
                                 id="need-min-input"
@@ -130,7 +126,7 @@ function JoinRoomForm(props) {
                                 onChange={handleInputChange}
                                 required
                                 inputProps={{
-                                    min:0
+                                    min: 0,
                                 }}
                             />
                         </Grid>
@@ -144,12 +140,12 @@ function JoinRoomForm(props) {
                                 onChange={handleInputChange}
                                 required
                                 inputProps={{
-                                    min:formValues.needsLowerBoundDollars
+                                    min: formValues.needsLowerBoundDollars,
                                 }}
                             />
                         </Grid>
                     </Grid>
-                    <Grid item style={{marginTop: 10}}>
+                    <Grid item style={{ marginTop: 10 }}>
                         <TextField
                             id="need-description-input"
                             name="needsDescription"
@@ -169,24 +165,25 @@ function JoinRoomForm(props) {
                     container
                     alignItems="center"
                     justifyContent="flex-end"
-                    style={{ marginTop: 20 }}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        type="submit">
+                    style={{ marginTop: 20 }}
+                >
+                    <Button variant="contained" color="primary" type="submit">
                         Submit
                     </Button>
                     <Button
                         variant="contained"
                         color="primary"
                         type="button"
-                        onClick={(e) => { props.handleClose() }}>
+                        onClick={(e) => {
+                            props.handleClose();
+                        }}
+                    >
                         Close
                     </Button>
                 </Grid>
             </Grid>
         </form>
-    )
+    );
 }
 
 export default JoinRoomForm;
