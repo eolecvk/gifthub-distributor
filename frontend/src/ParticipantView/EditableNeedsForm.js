@@ -98,6 +98,11 @@ class EditableNeedsForm extends Component {
 
         const errors = this.state.errors;
         delete errors.surviveAmount;
+
+        // Delete error on thriveAmount field if change corrects issue
+        if (errors.thriveAmount === ':D < :)') {
+            delete errors.thriveAmount;
+        }
         this.setState({
             surviveAmount: newSurviveAmount,
             errors: errors,
@@ -123,6 +128,12 @@ class EditableNeedsForm extends Component {
 
         const errors = this.state.errors;
         delete errors.thriveAmount;
+
+        // Delete error on surviveAmount field if change corrects issue
+        if (errors.surviveAmount === ':) > :D') {
+            delete errors.surviveAmount;
+        }
+
         this.setState({
             thriveAmount: newThriveAmount,
             errors: errors,
@@ -135,7 +146,8 @@ class EditableNeedsForm extends Component {
         });
     };
 
-    onSubmit = () => {
+    onSubmit = (e) => {
+        e.preventDefault()
         if (Object.keys(this.state.errors).length > 0) {
             return;
         }
@@ -207,7 +219,10 @@ class EditableNeedsForm extends Component {
                     </Box>
                     <br />
                     <div>
-                        <button onClick={() => this.onSubmit()}>Submit</button>
+                        <button
+                            onClick={(e) => this.onSubmit(e)}>
+                            Submit
+                        </button>
                     </div>
                 </form>
             </Box>
