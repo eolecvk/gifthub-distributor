@@ -9,7 +9,7 @@ function CreateRoomForm(props) {
     const history = useHistory();
     const defaultValues = {
         roomName: "",
-        splittingDollars: 0
+        splittingDollars: ""
     };
 
     const [formValues, setFormValues] = useState(defaultValues)
@@ -66,11 +66,11 @@ function CreateRoomForm(props) {
                         onChange={handleInputChange}
                     />
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item xs>
                     <TextField
                         id="amount-input"
                         name="splittingDollars"
-                        label="Amount ($):"
+                        label="Amount ($)"
                         type="number"
                         value={formValues.splittingDollars}
                         onChange={handleInputChange}
