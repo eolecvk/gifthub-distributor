@@ -52,10 +52,11 @@ function CreateRoomForm(props) {
             <Grid
                 container
                 alignItems="center"
-                justifyContent="center"
+                justifyContent="space-around"
                 direction="row"
+                style={{ marginTop: 10 }}
             >
-                <Grid item xs={7} style={{ marginTop: 10 }}>
+                <Grid item xs={7} >
                     <TextField
                         id="room-name-input"
                         name="roomName"
@@ -65,7 +66,7 @@ function CreateRoomForm(props) {
                         onChange={handleInputChange}
                     />
                 </Grid>
-                <Grid item xs={3} style={{ marginTop: 10 }}>
+                <Grid item xs={3}>
                     <TextField
                         id="amount-input"
                         name="splittingDollars"
@@ -73,6 +74,7 @@ function CreateRoomForm(props) {
                         type="number"
                         value={formValues.splittingDollars}
                         onChange={handleInputChange}
+                        inputProps={{min:0}}
                     />
                 </Grid>
                 <Grid
