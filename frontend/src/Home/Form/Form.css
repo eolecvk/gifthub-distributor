@@ -1,8 +1,17 @@
+form {
+    width: 400px;
+}
 
-form { width: 400px; }
-form section div { float: left; }
+form section div {
+    float: left;
+}
+
 /* form section div.full { clear: both; } */
-form section div label { display: inline-block; text-align: right; }
+
+form section div label {
+    display: inline-block;
+    text-align: right;
+}
 
 input {
     /* display: block; */

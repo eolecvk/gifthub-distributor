@@ -121,7 +121,7 @@ class ObserverView extends Component {
 
         return (
             <div style={{ marginLeft: 50 + 'px' }}>
-                <h1 style={{ textAlign: 'center' }} textAlign>
+                <h1 style={{ textalign: 'center' }}>
                     {roomName} [{roomCode}]
                 </h1>
                 <AmountDistributedProgressBar

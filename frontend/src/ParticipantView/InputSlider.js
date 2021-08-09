@@ -212,7 +212,7 @@ function InputSlider(props) {
                             valueLabelDisplay="on"
                         />
                     </Grid>
-                    <Grid item>
+                    <Grid item xs>
                         <Input
                             //className={classes.input}
                             key={props.sliderId.toString() + 'input'}

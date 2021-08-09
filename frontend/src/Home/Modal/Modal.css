@@ -4,14 +4,14 @@
     top: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(145, 130, 130, 0.5);
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .modal-content {
-    width: 500px;
+    width: 350px;
     background-color: #fff;
 }
 
@@ -21,13 +21,13 @@
 
 .modal-title {
     text-align: center;
-    font-size: x-large;
-    margin: 0;
+    font-size: medium;
+    margin: 20;
 }
 
 .modal-body {
-    padding: 10px;
-    border-top: 1px solid #eee;
+    padding: 20px;
+    border-top: 1px solid rgb(211, 205, 205);
     border-bottom: 1px solid #eee;
-    font-size: large;
+    font-size: medium;
 }

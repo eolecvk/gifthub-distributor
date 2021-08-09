@@ -1,29 +1,39 @@
 import React from 'react';
-import Form from '../Form/Form';
+import { Container, Modal } from '@material-ui/core';
+import CreateRoomForm from '../Form/CreateRoomForm';
+import JoinRoomForm from '../Form/JoinRoomForm';
 import './Modal.css';
 
-function Modal(props) {
-    if (!props.show) {
-        return null;
-    }
+function HomeModal(props) {
+    const form =
+        props.modalTitle === 'Create Room' ? (
+            <CreateRoomForm handleClose={props.handleClose} />
+        ) : (
+            <JoinRoomForm handleClose={props.handleClose} />
+        );
+
+    const body = (
+        <div className="modal-content">
+            <h3 className="modal-title">{props.modalTitle}</h3>
+            <div className="modal-body">{form}</div>
+        </div>
+    );
 
     return (
-        <div className="modal">
-            <div className="modal-content">
-                <div className="modal-header">
-                    <h4 className="modal-title">{props.modalTitle}</h4>
-                </div>
-                <div className="modal-body">
-                    <Form formName={props.modalTitle} onSubmit={props.onClose} />
-                </div>
-                <div className="modal-footer">
-                    <button className="button" onClick={props.onClose}>
-                        Close
-                    </button>
-                </div>
-            </div>
+        <div>
+            <Container>
+                <Modal
+                    className="modal"
+                    open={props.show}
+                    onClose={props.handleClose}
+                    aria-labelledby="simple-modal-title"
+                    aria-describedby="simple-modal-description"
+                >
+                    {body}
+                </Modal>
+            </Container>
         </div>
     );
 }
 
-export default Modal;
+export { HomeModal };
