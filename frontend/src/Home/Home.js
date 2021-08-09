@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, ButtonGroup, Button } from '@material-ui/core';
+import { Grid, ButtonGroup, Button } from '@material-ui/core';
 import { HomeModal as Modal } from './Modal/Modal';
 
 class Home extends Component {
@@ -33,8 +33,18 @@ class Home extends Component {
 
     render() {
         return (
-            <Container>
-                <ButtonGroup color="primary" aria-label="outlined primary button group">
+            <Grid
+                container
+                margin="auto"
+                display="flex"
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+            >
+                <ButtonGroup
+                    orientation="vertical"
+                    color="primary"
+                    aria-label="outlined primary button group">
                     <Button
                         variant="contained"
                         color="primary"
@@ -43,11 +53,6 @@ class Home extends Component {
                     >
                         Create Room
                     </Button>
-                    <Modal
-                        modalTitle="Create Room"
-                        show={this.state.showCreateRoomModal}
-                        handleClose={this.hideCreateRoomModal}
-                    />
                     <Button
                         variant="contained"
                         color="primary"
@@ -57,12 +62,17 @@ class Home extends Component {
                         Join Room
                     </Button>
                     <Modal
+                        modalTitle="Create Room"
+                        show={this.state.showCreateRoomModal}
+                        handleClose={this.hideCreateRoomModal}
+                    />
+                    <Modal
                         modalTitle="Join Room"
                         show={this.state.showJoinRoomModal}
                         handleClose={this.hideJoinRoomModal}
                     />
                 </ButtonGroup>
-            </Container>
+            </Grid>
         );
     }
 }
