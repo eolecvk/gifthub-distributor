@@ -234,7 +234,7 @@ class JoinRoomForm extends Component {
                                         name="isObserver"
                                         inputProps={{ 'aria-label': 'primary checkbox' }}
                                         checked={this.state.formValues.isObserver}
-                                        onChange={this.state.handleSwitchChange}
+                                        onChange={this.handleSwitchChange}
                                     />
                                 }
                             />
