@@ -2,9 +2,9 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Modal from '@material-ui/core/Modal';
-import EditableNeedsForm from './EditableNeedsForm';
-import { registerNeedsUpdate } from './utils';
-import './EditableNeedsModal.css';
+import EditableInfoForm from './EditableInfoForm';
+import { registerUserUpdate } from './utils';
+import './EditableInfoModal.css';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -23,16 +23,17 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function EditableNeedsModal(props) {
+function EditableInfoModal(props) {
     const [open, setOpen] = React.useState(false);
 
-    const handleSubmit = (newSurviveAmount, newThriveAmount, newNeedsDescription) => {
+    const handleSubmit = (newUsername, newSurviveAmount, newThriveAmount, newNeedsDescription) => {
         const args = {
+            username: newUsername,
             needsLowerBoundCents: newSurviveAmount * 100,
             needsUpperBoundCents: newThriveAmount * 100,
             needsDescription: newNeedsDescription,
         };
-        registerNeedsUpdate(args, props.roomInfo.room_code);
+        registerUserUpdate(args, props.roomInfo.room_code);
         setOpen(false);
     };
 
@@ -47,8 +48,8 @@ function EditableNeedsModal(props) {
     const classes = useStyles();
     const body = (
         <div className={classes.paper}>
-            <h3 id="simple-modal-title">Edit needs</h3>
-            <EditableNeedsForm roomInfo={props.roomInfo} handleSubmit={handleSubmit} />
+            <h3 id="simple-modal-title">Edit info</h3>
+            <EditableInfoForm roomInfo={props.roomInfo} handleSubmit={handleSubmit} />
         </div>
     );
 
@@ -71,4 +72,4 @@ function EditableNeedsModal(props) {
     );
 }
 
-export default EditableNeedsModal;
+export default EditableInfoModal;

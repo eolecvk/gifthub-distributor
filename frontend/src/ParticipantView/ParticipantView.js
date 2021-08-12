@@ -4,7 +4,6 @@ import isEqual from 'lodash.isequal';
 import RoomInfo from './RoomInfo';
 import ButtonUpdateDefaultDistribution from './ButtonUpdateDefaultDistribution';
 import SlidersGrid from './SliderGrid';
-// import EditableNeeds from './EditableNeeds'
 import EditableNeedsModal from './EditableNeedsModal';
 import {
     getNeedsScaleDownRatio,
@@ -65,7 +64,6 @@ class ParticipantView extends Component {
         });
     };
 
-    // NEED TO MOVE THIS TO UTILS
     // Generate updated version of state `currentState`
     // when inserting a new move of `newValue` at sliderId `id`
     getStateObjectNewMoves = (currentState, newSliderValues) => {
@@ -145,8 +143,7 @@ class ParticipantView extends Component {
         return (
             <div>
                 <RoomInfo roomInfo={this.state.roomInfo} />
-                <EditableNeedsModal roomInfo={this.state.roomInfo} />
-
+                <EditableInfoModal roomInfo={this.state.roomInfo} />
                 <ButtonUpdateDefaultDistribution
                     updateDefaultDistribution={this.updateDefaultDistribution}
                 />

@@ -115,10 +115,13 @@ function registerVote(sliderValues, roomCode) {
     registerEvents(events, roomCode);
 }
 
-function registerNeedsUpdate(args, roomCode) {
-    const { needsDescription, needsLowerBoundCents, needsUpperBoundCents } = args;
-    const event = { kind: 'NEEDS_UPDATE' };
+function registerUserUpdate(args, roomCode) {
+    const { username, needsDescription, needsLowerBoundCents, needsUpperBoundCents } = args;
+    const event = { kind: 'USER_UPDATE' };
 
+    if (typeof username !== 'undefined') {
+        event['name'] = username;
+    }
     if (typeof needsDescription !== 'undefined') {
         event['needs_description'] = needsDescription;
     }
