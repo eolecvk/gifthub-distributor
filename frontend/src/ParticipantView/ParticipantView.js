@@ -4,8 +4,7 @@ import isEqual from 'lodash.isequal';
 import RoomInfo from './RoomInfo';
 import ButtonUpdateDefaultDistribution from './ButtonUpdateDefaultDistribution';
 import SlidersGrid from './SliderGrid';
-// import EditableNeeds from './EditableNeeds'
-import EditableNeedsModal from './EditableNeedsModal';
+import EditableInfoModal from './EditableInfoModal';
 import { getSlidersInitializationData, getStartingValues, registerVote } from './utils';
 import DissentModal from './DissentModal';
 
@@ -140,10 +139,8 @@ class ParticipantView extends Component {
         return (
             <div>
                 <RoomInfo roomInfo={this.state.roomInfo} />
-                <EditableNeedsModal
+                <EditableInfoModal
                     roomInfo={this.state.roomInfo}
-                    // onChangeSurviveAmount={this.onChangeSurviveAmount}
-                    // onChangeThriveAmount={this.onChangeThriveAmount}
                 />
 
                 <ButtonUpdateDefaultDistribution
