@@ -6,7 +6,12 @@ import ButtonUpdateDefaultDistribution from './ButtonUpdateDefaultDistribution';
 import SlidersGrid from './SliderGrid';
 // import EditableNeeds from './EditableNeeds'
 import EditableNeedsModal from './EditableNeedsModal';
-import { getSlidersInitializationData, getStartingValues, registerVote } from './utils';
+import {
+    getNeedsScaleDownRatio,
+    getSlidersInitializationData,
+    getStartingValues,
+    registerVote,
+} from './utils';
 import DissentModal from './DissentModal';
 
 class ParticipantView extends Component {
@@ -79,23 +84,23 @@ class ParticipantView extends Component {
 
     updateDefaultDistribution = (defaultDistribution) => {
         const roomInfo = this.state.roomInfo;
+        const needsScaleDownRatio = getNeedsScaleDownRatio(roomInfo, defaultDistribution);
 
-        // Upon clicking a default distribution button...
+        if (needsScaleDownRatio < 1) {
+            const confirmMsg =
+                "Not enough money to match everyone's needs\n" +
+                "Give them amounts proportional to their needs instead?";
+
+            if (!window.confirm(confirmMsg)) {
+                return;
+            } // press Cancel
+        }
+
         const futureSlidersInitializationData = getSlidersInitializationData(
             roomInfo,
             defaultDistribution
         );
         const futureStartingValues = getStartingValues(futureSlidersInitializationData);
-        const futureTotalCost = Object.values(futureStartingValues).reduce((a, b) => a + b);
-        const roomAmount = roomInfo.splitting_cents / 100;
-
-        // ...checks if newDefaultDistribution yields an invalid state before transitioning
-        if (futureTotalCost > roomAmount) {
-            alert(
-                'Not enough money to set this distribution: ' + futureTotalCost + '/ ' + roomAmount
-            );
-            return;
-        }
 
         // Update grid state stored in memory (will be used for slider grid initialization upon re-rendering)
         const storedSliderGridState = JSON.parse(sessionStorage.getItem('sliderGridState'));
@@ -140,11 +145,7 @@ class ParticipantView extends Component {
         return (
             <div>
                 <RoomInfo roomInfo={this.state.roomInfo} />
-                <EditableNeedsModal
-                    roomInfo={this.state.roomInfo}
-                    // onChangeSurviveAmount={this.onChangeSurviveAmount}
-                    // onChangeThriveAmount={this.onChangeThriveAmount}
-                />
+                <EditableNeedsModal roomInfo={this.state.roomInfo} />
 
                 <ButtonUpdateDefaultDistribution
                     updateDefaultDistribution={this.updateDefaultDistribution}

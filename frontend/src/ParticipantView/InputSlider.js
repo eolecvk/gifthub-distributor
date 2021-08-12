@@ -109,17 +109,23 @@ function InputSlider(props) {
 
         const surviveButton = (
             <button
-                onClick={() => { handleSliderChangeCommitted("", surviveValue) }}>
+                onClick={() => {
+                    handleSliderChangeCommitted('', surviveValue);
+                }}
+            >
                 :)
             </button>
-        )
+        );
 
         const thriveButton = (
             <button
-                onClick={() => { handleSliderChangeCommitted("", thriveValue) }}>
+                onClick={() => {
+                    handleSliderChangeCommitted('', thriveValue);
+                }}
+            >
                 :D
             </button>
-        )
+        );
 
         const markAvg = {
             value: groupVoteAvg,

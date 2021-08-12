@@ -1,5 +1,27 @@
 import axios from 'axios';
 
+function getNeedsScaleDownRatio(roomInfo, defaultDistribution) {
+    let scaleDownRatio = 1;
+
+    if (['survive', 'thrive'].includes(defaultDistribution)) {
+        const roomAmount = roomInfo.splitting_cents / 100;
+        const totalNeeds = roomInfo.people
+            .map((userData) => {
+                return (
+                    defaultDistribution === 'survive'
+                        ? userData.needs_lower_bound_cents / 100
+                        : userData.needs_upper_bound_cents / 100)
+            })
+            .reduce((a, b) => a + b);
+
+        if (totalNeeds > roomAmount) {
+            scaleDownRatio = roomAmount / totalNeeds;
+        }
+    }
+
+    return scaleDownRatio;
+}
+
 function getSlidersInitializationData(roomInfo, defaultDistribution) {
     if (defaultDistribution === 'zero') {
         return roomInfo.people.map((userData) => ({
@@ -32,13 +54,17 @@ function getSlidersInitializationData(roomInfo, defaultDistribution) {
         }));
     }
 
+    //for needs based distributions compute optional scaleDownRatio
+    //applicable when the max amounts set can only be a fraction of the actual needs amount
+    const scaleDownRatio = getNeedsScaleDownRatio(roomInfo, defaultDistribution);
+
     if (defaultDistribution === 'survive') {
         return roomInfo.people.map((userData) => ({
             personId: userData.person_id,
             title: userData.name,
             surviveValue: userData.needs_lower_bound_cents / 100,
             thriveValue: userData.needs_upper_bound_cents / 100,
-            startingValue: userData.needs_lower_bound_cents / 100,
+            startingValue: Math.floor((userData.needs_lower_bound_cents / 100) * scaleDownRatio),
             maxValue: roomInfo.splitting_cents / 100,
         }));
     }
@@ -49,7 +75,7 @@ function getSlidersInitializationData(roomInfo, defaultDistribution) {
             title: userData.name,
             surviveValue: userData.needs_lower_bound_cents / 100,
             thriveValue: userData.needs_upper_bound_cents / 100,
-            startingValue: userData.needs_upper_bound_cents / 100,
+            startingValue: Math.floor((userData.needs_upper_bound_cents / 100) * scaleDownRatio),
             maxValue: roomInfo.splitting_cents / 100,
         }));
     }
@@ -60,7 +86,6 @@ function getStartingValues(slidersInitializationData) {
     for (const sliderData of slidersInitializationData) {
         startingValues[sliderData['personId']] = sliderData['startingValue'];
     }
-
     return startingValues;
 }
 
@@ -108,4 +133,10 @@ function registerNeedsUpdate(args, roomCode) {
     registerEvents(events, roomCode);
 }
 
-export { getSlidersInitializationData, getStartingValues, registerVote, registerNeedsUpdate };
+export {
+    getNeedsScaleDownRatio,
+    getSlidersInitializationData,
+    getStartingValues,
+    registerVote,
+    registerNeedsUpdate,
+};
