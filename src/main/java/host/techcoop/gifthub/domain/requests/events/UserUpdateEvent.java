@@ -7,13 +7,14 @@ import lombok.Value;
 
 @Value
 @EqualsAndHashCode(callSuper = false)
-public class NeedsUpdateEvent implements Event {
+public class UserUpdateEvent implements Event {
+  String name;
   String needsDescription;
   Integer needsUpperBoundCents;
   Integer needsLowerBoundCents;
 
   @Override
   public EventKind getKind() {
-    return EventKind.NEEDS_UPDATE;
+    return EventKind.USER_UPDATE;
   }
 }

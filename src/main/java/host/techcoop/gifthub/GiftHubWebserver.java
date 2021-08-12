@@ -17,7 +17,7 @@ import host.techcoop.gifthub.domain.requests.JoinRoomRequest;
 import host.techcoop.gifthub.domain.requests.UpdateRequest;
 import host.techcoop.gifthub.domain.requests.events.AdjustEvent;
 import host.techcoop.gifthub.domain.requests.events.EmotiveEvent;
-import host.techcoop.gifthub.domain.requests.events.NeedsUpdateEvent;
+import host.techcoop.gifthub.domain.requests.events.UserUpdateEvent;
 import host.techcoop.gifthub.domain.responses.ErrorResponse;
 import host.techcoop.gifthub.interfaces.GiftHubRoomDAO;
 import java.io.PrintWriter;
@@ -113,17 +113,20 @@ public class GiftHubWebserver {
               break;
           }
           break;
-        case NEEDS_UPDATE:
-          NeedsUpdateEvent needsUpdateEvent = (NeedsUpdateEvent) event;
+        case USER_UPDATE:
+          UserUpdateEvent userUpdateEvent = (UserUpdateEvent) event;
           User.UserBuilder userBuilder = user.toBuilder();
-          if (!"".equals(needsUpdateEvent.getNeedsDescription())) {
-            userBuilder.needsDescription(needsUpdateEvent.getNeedsDescription());
+          if (!"".equals(userUpdateEvent.getName())) {
+            userBuilder.name(userUpdateEvent.getName());
+          }          
+          if (!"".equals(userUpdateEvent.getNeedsDescription())) {
+            userBuilder.needsDescription(userUpdateEvent.getNeedsDescription());
           }
-          if (needsUpdateEvent.getNeedsUpperBoundCents() != null) {
-            userBuilder.needsUpperBoundCents(needsUpdateEvent.getNeedsUpperBoundCents());
+          if (userUpdateEvent.getNeedsUpperBoundCents() != null) {
+            userBuilder.needsUpperBoundCents(userUpdateEvent.getNeedsUpperBoundCents());
           }
-          if (needsUpdateEvent.getNeedsLowerBoundCents() != null) {
-            userBuilder.needsLowerBoundCents(needsUpdateEvent.getNeedsLowerBoundCents());
+          if (userUpdateEvent.getNeedsLowerBoundCents() != null) {
+            userBuilder.needsLowerBoundCents(userUpdateEvent.getNeedsLowerBoundCents());
           }
           user = userBuilder.build();
           break;
