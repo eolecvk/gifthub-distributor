@@ -105,8 +105,7 @@ class EditableInfoForm extends Component {
             username: newUsername,
             errors: errors,
         });
-
-    }
+    };
 
     onChangeSurviveAmount = (newSurviveAmount, roomCode) => {
         if (this.state.thriveAmount && newSurviveAmount > this.state.thriveAmount) {
@@ -182,6 +181,7 @@ class EditableInfoForm extends Component {
         }
 
         this.props.handleSubmit(
+            this.state.username,
             this.state.surviveAmount,
             this.state.thriveAmount,
             this.state.needsDescription
@@ -206,9 +206,7 @@ class EditableInfoForm extends Component {
                             variant="outlined"
                             type="text"
                             error={!!this.state.errors.username}
-                            helperText={
-                                this.state.errors.username && this.state.errors.username
-                            }
+                            helperText={this.state.errors.username && this.state.errors.username}
                             InputLabelProps={{ shrink: true }}
                         />
                     </Box>

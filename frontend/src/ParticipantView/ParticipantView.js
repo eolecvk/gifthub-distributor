@@ -139,9 +139,7 @@ class ParticipantView extends Component {
         return (
             <div>
                 <RoomInfo roomInfo={this.state.roomInfo} />
-                <EditableInfoModal
-                    roomInfo={this.state.roomInfo}
-                />
+                <EditableInfoModal roomInfo={this.state.roomInfo} />
 
                 <ButtonUpdateDefaultDistribution
                     updateDefaultDistribution={this.updateDefaultDistribution}

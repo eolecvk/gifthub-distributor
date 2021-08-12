@@ -91,9 +91,12 @@ function registerVote(sliderValues, roomCode) {
 }
 
 function registerNeedsUpdate(args, roomCode) {
-    const { needsDescription, needsLowerBoundCents, needsUpperBoundCents } = args;
+    const { username, needsDescription, needsLowerBoundCents, needsUpperBoundCents } = args;
     const event = { kind: 'NEEDS_UPDATE' };
 
+    if (typeof username !== 'undefined') {
+        event['name'] = username;
+    }
     if (typeof needsDescription !== 'undefined') {
         event['needs_description'] = needsDescription;
     }

@@ -26,8 +26,9 @@ const useStyles = makeStyles((theme) => ({
 function EditableInfoModal(props) {
     const [open, setOpen] = React.useState(false);
 
-    const handleSubmit = (newSurviveAmount, newThriveAmount, newNeedsDescription) => {
+    const handleSubmit = (newUsername, newSurviveAmount, newThriveAmount, newNeedsDescription) => {
         const args = {
+            username : newUsername,
             needsLowerBoundCents: newSurviveAmount * 100,
             needsUpperBoundCents: newThriveAmount * 100,
             needsDescription: newNeedsDescription,
