@@ -141,5 +141,5 @@ export {
     getSlidersInitializationData,
     getStartingValues,
     registerVote,
-    registerNeedsUpdate,
+    registerUserUpdate,
 };

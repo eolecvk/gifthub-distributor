@@ -4,7 +4,7 @@ import isEqual from 'lodash.isequal';
 import RoomInfo from './RoomInfo';
 import ButtonUpdateDefaultDistribution from './ButtonUpdateDefaultDistribution';
 import SlidersGrid from './SliderGrid';
-import EditableNeedsModal from './EditableNeedsModal';
+import EditableInfoModal from './EditableInfoModal';
 import {
     getNeedsScaleDownRatio,
     getSlidersInitializationData,
