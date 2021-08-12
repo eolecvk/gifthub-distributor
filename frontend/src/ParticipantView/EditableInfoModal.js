@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Modal from '@material-ui/core/Modal';
 import EditableInfoForm from './EditableInfoForm';
-import { registerNeedsUpdate } from './utils';
+import { registerUserUpdate } from './utils';
 import './EditableInfoModal.css';
 
 const useStyles = makeStyles((theme) => ({
@@ -28,12 +28,12 @@ function EditableInfoModal(props) {
 
     const handleSubmit = (newUsername, newSurviveAmount, newThriveAmount, newNeedsDescription) => {
         const args = {
-            username : newUsername,
+            username: newUsername,
             needsLowerBoundCents: newSurviveAmount * 100,
             needsUpperBoundCents: newThriveAmount * 100,
             needsDescription: newNeedsDescription,
         };
-        registerNeedsUpdate(args, props.roomInfo.room_code);
+        registerUserUpdate(args, props.roomInfo.room_code);
         setOpen(false);
     };
 
