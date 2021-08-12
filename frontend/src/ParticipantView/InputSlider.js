@@ -47,7 +47,7 @@ const theme = createTheme({
             },
             mark: {
                 color: 'black',
-                height: 30,
+                height: 25,
                 width: 0.5,
                 marginTop: 0,
                 '&[data-index="0"]': {
@@ -108,23 +108,23 @@ function InputSlider(props) {
         const marks = [];
 
         const surviveButton = (
-            <button
+            <span
                 onClick={() => {
                     handleSliderChangeCommitted('', surviveValue);
                 }}
             >
                 :)
-            </button>
+            </span>
         );
 
         const thriveButton = (
-            <button
+            <span
                 onClick={() => {
                     handleSliderChangeCommitted('', thriveValue);
                 }}
             >
                 :D
-            </button>
+            </span>
         );
 
         const markAvg = {
