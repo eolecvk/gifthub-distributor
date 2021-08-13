@@ -133,20 +133,6 @@ class JoinRoomForm extends Component {
         });
     };
 
-    // onChangeNeedsDescription = (e) => {
-    //     const { name, value } = e.target
-
-    //     this.setState({
-    //         formValues: {
-    //             ...this.state.formValues,
-    //             [name]: value
-    //         },
-    //         errors: {
-    //             ...errors
-    //         }
-    //     })
-    // };
-
     handleInputChange = (e) => {
         const { name, value } = e.target;
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
-
-import ParticipantView from './ParticipantView/ParticipantView';
+import ParticipantViewSwitch from './ParticipantView/ParticipantViewSwitch';
 import ObserverView from './ObserverView/ObserverView';
 import Home from './Home/Home';
 import Header from './Header';
@@ -25,7 +24,7 @@ function App() {
                             <Route
                                 path="/participant"
                                 exact
-                                component={() => <ParticipantView />}
+                                component={() => <ParticipantViewSwitch />}
                             />
                             <Route path="/observer" exact component={() => <ObserverView />} />
                         </Switch>
