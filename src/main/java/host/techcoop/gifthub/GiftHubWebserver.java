@@ -128,7 +128,7 @@ public class GiftHubWebserver {
           User.UserBuilder userBuilder = user.toBuilder();
           if (!"".equals(userUpdateEvent.getName())) {
             userBuilder.name(userUpdateEvent.getName());
-          }          
+          }
           if (!"".equals(userUpdateEvent.getNeedsDescription())) {
             userBuilder.needsDescription(userUpdateEvent.getNeedsDescription());
           }
