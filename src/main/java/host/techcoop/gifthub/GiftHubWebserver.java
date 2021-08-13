@@ -10,6 +10,7 @@ import host.techcoop.gifthub.domain.EmotiveState;
 import host.techcoop.gifthub.domain.GiftHubRoom;
 import host.techcoop.gifthub.domain.User;
 import host.techcoop.gifthub.domain.UserVote;
+import host.techcoop.gifthub.domain.exceptions.PermissionsException;
 import host.techcoop.gifthub.domain.exceptions.RoomJoinException;
 import host.techcoop.gifthub.domain.exceptions.VerificationException;
 import host.techcoop.gifthub.domain.interfaces.Event;
@@ -63,7 +64,13 @@ public class GiftHubWebserver {
           response.header("Content-Type", "application/json");
           response.body("{\"error\": \"That room does not exist\"}");
         });
-
+    exception(
+        PermissionsException.class,
+        (exception, request, response) -> {
+          response.status(403);
+          response.header("Content-Type", "application/json");
+          response.body("{\"error\": \"You do not have permission to view this room\"}");
+        });
     exception(
         VerificationException.class,
         (exception, request, response) -> {
@@ -85,6 +92,9 @@ public class GiftHubWebserver {
   private Object processEvents(Request request, Response response) {
     UpdateRequest voteRequest = gson.fromJson(request.body(), UpdateRequest.class);
     String roomCode = request.params(":roomCode");
+    if (!request.session().attribute(SESSION_ROOM_KEY).equals(roomCode)) {
+      throw new PermissionsException();
+    }
     int userId = request.session().attribute(SESSION_USER_ID_KEY);
     User oldUser = roomDAO.getUserFromRoom(roomCode, userId);
     GiftHubRoom room = roomDAO.getRoomByCode(roomCode);
@@ -165,8 +175,7 @@ public class GiftHubWebserver {
   private String getRoomInfo(Request request, Response response) {
     String roomCode = request.params(":roomCode");
     if (!request.session().attribute(SESSION_ROOM_KEY).equals(roomCode)) {
-      response.status(403);
-      return "{\"error\": \"You do not have permission to view this room\"}";
+      throw new PermissionsException();
     }
     return roomDAO.getRoomInfo(roomCode);
   }
