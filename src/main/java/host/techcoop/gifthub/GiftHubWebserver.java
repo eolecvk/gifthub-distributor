@@ -2,6 +2,7 @@ package host.techcoop.gifthub;
 
 import static spark.Spark.*;
 
+import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -70,7 +71,6 @@ public class GiftHubWebserver {
           response.header("Content-Type", "application/json");
           response.body(gson.toJson(ErrorResponse.from(exception)));
         });
-
     exception(
         RuntimeException.class,
         (exception, request, response) -> {
@@ -137,14 +137,21 @@ public class GiftHubWebserver {
   private String joinRoom(Request request, Response response) {
     String roomCode = request.params(":roomCode");
     JoinRoomRequest joinRequest = gson.fromJson(request.body(), JoinRoomRequest.class);
-    int userId = -1;
+    User user = User.EMPTY_USER;
     if (joinRequest.isParticipant()) {
-      userId = roomDAO.addUserToRoom(roomCode, joinRequest);
+      user = roomDAO.addUserToRoom(roomCode, joinRequest);
     }
     GiftHubRoom room = roomDAO.getRoomByCode(roomCode);
+    if (!Strings.isNullOrEmpty(joinRequest.getPath())) {
+      user =
+          room.getPeople().stream()
+              .filter(person -> person.getPath().equals(joinRequest.getPath()))
+              .findFirst()
+              .orElseThrow(() -> new RoomJoinException());
+    }
     request.session().attribute(SESSION_ROOM_KEY, room.getCode());
-    request.session().attribute(SESSION_USER_ID_KEY, userId);
-    return buildJoinRoomResponse(userId, roomDAO.getRoomInfo(roomCode));
+    request.session().attribute(SESSION_USER_ID_KEY, user.getUserId());
+    return buildJoinRoomResponse(user, roomDAO.getRoomInfo(roomCode));
   }
 
   private String createRoom(Request request, Response response) {
@@ -157,14 +164,20 @@ public class GiftHubWebserver {
 
   private String getRoomInfo(Request request, Response response) {
     String roomCode = request.params(":roomCode");
+    if (!request.session().attribute(SESSION_ROOM_KEY).equals(roomCode)) {
+      response.status(403);
+      return "{\"error\": \"You do not have permission to view this room\"}";
+    }
     return roomDAO.getRoomInfo(roomCode);
   }
 
-  private static String buildJoinRoomResponse(int userId, String roomInfo) {
+  private static String buildJoinRoomResponse(User user, String roomInfo) {
     return new StringBuilder()
         .append("{\"user_id\":")
-        .append(userId)
-        .append(",\"room_info\":")
+        .append(user.getUserId())
+        .append(",\"path\":\"")
+        .append(user.getPath())
+        .append("\",\"room_info\":")
         .append(roomInfo)
         .append("}")
         .toString();

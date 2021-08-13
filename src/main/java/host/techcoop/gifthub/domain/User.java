@@ -13,11 +13,14 @@ import lombok.Value;
 @Value
 @Builder
 public class User {
+  public static final User EMPTY_USER = User.builder().userId(-1).path("").build();
+
   int userId;
   String name;
   String needsDescription;
   ImmutableMap<Integer, Long> centsByUserId;
   ImmutableSetMultimap<Integer, EmotiveKind> emotiveStateByUserId;
+  String path;
   int needsUpperBoundCents;
   int needsLowerBoundCents;
 
@@ -33,11 +36,12 @@ public class User {
         .collect(ImmutableList.toImmutableList());
   }
 
-  public static User fromJoinRoomRequest(JoinRoomRequest request, int userId) {
+  public static User fromJoinRoomRequest(JoinRoomRequest request, int userId, String path) {
     return User.builder()
         .userId(userId)
         .name(request.getName())
         .needsDescription(request.getNeedsDescription())
+        .path(path)
         .centsByUserId(ImmutableMap.of())
         .emotiveStateByUserId(ImmutableSetMultimap.of())
         .needsLowerBoundCents(request.getNeedsLowerBoundCents())

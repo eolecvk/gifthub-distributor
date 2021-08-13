@@ -6,6 +6,7 @@ import lombok.Value;
 public class JoinRoomRequest {
   String name;
   String needsDescription;
+  String path;
   boolean participant;
   int needsUpperBoundCents;
   int needsLowerBoundCents;

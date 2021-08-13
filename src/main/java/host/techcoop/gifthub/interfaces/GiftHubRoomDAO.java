@@ -10,7 +10,7 @@ public interface GiftHubRoomDAO {
 
   GiftHubRoom createRoom(int distributionCents, String name);
 
-  int addUserToRoom(String roomCode, JoinRoomRequest user);
+  User addUserToRoom(String roomCode, JoinRoomRequest user);
 
   User getUserFromRoom(String roomCode, int userId);
 
