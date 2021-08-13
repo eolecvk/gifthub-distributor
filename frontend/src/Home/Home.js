@@ -44,7 +44,8 @@ class Home extends Component {
                 <ButtonGroup
                     orientation="vertical"
                     color="primary"
-                    aria-label="outlined primary button group">
+                    aria-label="outlined primary button group"
+                >
                     <Button
                         variant="contained"
                         color="primary"

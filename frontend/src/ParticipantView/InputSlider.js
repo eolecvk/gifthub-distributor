@@ -47,12 +47,12 @@ const theme = createTheme({
             },
             mark: {
                 color: 'black',
-                height: 6,
-                width: 3,
+                height: 25,
+                width: 0.5,
                 marginTop: 0,
                 '&[data-index="0"]': {
-                    height: 25,
-                    width: 1,
+                    height: 6,
+                    width: 3,
                     marginTop: 0,
                 },
             },
@@ -63,26 +63,28 @@ const theme = createTheme({
             markLabel: {
                 fontSize: 12,
                 color: 'grey',
-                transform: 'translate(-40%, -20%)',
+                //transform: 'translate(-40%, -20%)',
+                transform: 'translate(-40%, 70%)',
                 //Style of avg mark
                 '&[data-index="0"]': {
                     fontSize: 12,
                     color: 'black',
                     //marginTop: 1,
-                    transform: 'translate(-40%, 40%)',
+                    transform: 'translate(-40%, -15%)',
                 },
             },
             markLabelActive: {
                 fontSize: 12,
                 color: 'black',
                 fontWeight: 'bold',
-                transform: 'translate(-40%, -20%)',
+                transform: 'translate(-40%, 70%)',
+                //transform: 'translate(-40%, -20%)',
                 //Style of avg mark
                 '&[data-index="0"]': {
                     fontSize: 12,
                     color: 'black',
                     fontWeight: 'normal',
-                    transform: 'translate(-40%, 40%)',
+                    transform: 'translate(-40%, -15%)',
                 },
             },
         },
@@ -104,17 +106,38 @@ function InputSlider(props) {
 
     function getMarks(groupVoteAvg, surviveValue, thriveValue) {
         const marks = [];
+
+        const surviveButton = (
+            <span
+                onClick={() => {
+                    handleSliderChangeCommitted('', surviveValue);
+                }}
+            >
+                :)
+            </span>
+        );
+
+        const thriveButton = (
+            <span
+                onClick={() => {
+                    handleSliderChangeCommitted('', thriveValue);
+                }}
+            >
+                :D
+            </span>
+        );
+
         const markAvg = {
             value: groupVoteAvg,
             label: `avg:${groupVoteAvg}`,
         };
         const markSurvive = {
             value: surviveValue,
-            label: surviveValue,
+            label: surviveButton,
         };
         const markThrive = {
             value: thriveValue,
-            label: thriveValue,
+            label: thriveButton,
         };
         marks.push(markAvg);
         if (surviveValue <= maxValue) {

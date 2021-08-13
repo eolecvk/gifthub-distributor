@@ -8,6 +8,14 @@ const styles = (theme) => ({
         margin: 'auto',
     },
 
+    username: {
+        '& .MuiTextField-root': {
+            margin: theme.spacing(1),
+            width: 175,
+            marginTop: 15,
+        },
+    },
+
     needsAmount: {
         '& .MuiTextField-root': {
             margin: theme.spacing(1),
@@ -19,17 +27,18 @@ const styles = (theme) => ({
     needsDescription: {
         '& .MuiTextField-root': {
             margin: theme.spacing(1),
-            width: 180,
+            width: 175,
             marginTop: 10,
         },
     },
 });
 
-class EditableNeedsForm extends Component {
+class EditableInfoForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
             errors: {},
+            username: '',
             surviveAmount: '',
             thriveAmount: '',
             needsDescription: '',
@@ -41,11 +50,12 @@ class EditableNeedsForm extends Component {
         this._isMounted = false; //using isMounted react pattern to avoid memory leak https://stackoverflow.com/questions/52061476/cancel-all-subscriptions-and-asyncs-in-the-componentwillunmount-method-how
     }
 
-    parseNeeds = (roomInfo, userId) => {
+    parseInfo = (roomInfo, userId) => {
         const userData = roomInfo.people.filter((el) => {
             return el.person_id === parseInt(userId);
         })[0];
         return {
+            username: userData.name,
             surviveAmount: userData.needs_lower_bound_cents / 100,
             thriveAmount: userData.needs_upper_bound_cents / 100,
             needsDescription: userData.needs_description,
@@ -56,12 +66,13 @@ class EditableNeedsForm extends Component {
         const getNeedsFromBackend = async () => {
             const response = await axios.get(`/api/${this.roomCode}`);
             const responseData = await response.data;
-            const { surviveAmount, thriveAmount, needsDescription } = this.parseNeeds(
+            const { username, surviveAmount, thriveAmount, needsDescription } = this.parseInfo(
                 responseData,
                 this.userId
             );
             this._isMounted &&
                 this.setState({
+                    username: username,
                     surviveAmount: surviveAmount,
                     thriveAmount: thriveAmount,
                     needsDescription: needsDescription,
@@ -78,6 +89,23 @@ class EditableNeedsForm extends Component {
     componentWillUnmount() {
         this._isMounted = false;
     }
+
+    onChangeUsername = (newUsername, roomCode) => {
+        if (newUsername === '') {
+            this.setState({
+                username: newUsername,
+                errors: { ...this.state.errors, username: 'Username is empty' },
+            });
+            return;
+        }
+
+        const errors = this.state.errors;
+        delete errors.username;
+        this.setState({
+            username: newUsername,
+            errors: errors,
+        });
+    };
 
     onChangeSurviveAmount = (newSurviveAmount, roomCode) => {
         if (this.state.thriveAmount && newSurviveAmount > this.state.thriveAmount) {
@@ -153,6 +181,7 @@ class EditableNeedsForm extends Component {
         }
 
         this.props.handleSubmit(
+            this.state.username,
             this.state.surviveAmount,
             this.state.thriveAmount,
             this.state.needsDescription
@@ -164,6 +193,23 @@ class EditableNeedsForm extends Component {
         return (
             <Box overflow="hidden">
                 <form className={classes.paper} noValidate autoComplete="off">
+                    <Box className={classes.username}>
+                        <TextField
+                            key={this.state._isMounted + 'username'}
+                            label="Name"
+                            id="username-input"
+                            value={this.state.username}
+                            onChange={(e) => {
+                                this.onChangeUsername(e.target.value, this.roomCode);
+                            }}
+                            size="small"
+                            variant="outlined"
+                            type="text"
+                            error={!!this.state.errors.username}
+                            helperText={this.state.errors.username && this.state.errors.username}
+                            InputLabelProps={{ shrink: true }}
+                        />
+                    </Box>
                     <Box className={classes.needsAmount}>
                         <TextField
                             key={this.state._isMounted + 'survive'}
@@ -227,4 +273,4 @@ class EditableNeedsForm extends Component {
     }
 }
 
-export default withStyles(styles)(EditableNeedsForm);
+export default withStyles(styles)(EditableInfoForm);

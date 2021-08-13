@@ -13,7 +13,7 @@ import host.techcoop.gifthub.WordGenerator;
 import host.techcoop.gifthub.domain.interfaces.Event;
 import host.techcoop.gifthub.domain.requests.events.AdjustEvent;
 import host.techcoop.gifthub.domain.requests.events.EmotiveEvent;
-import host.techcoop.gifthub.domain.requests.events.NeedsUpdateEvent;
+import host.techcoop.gifthub.domain.requests.events.UserUpdateEvent;
 import host.techcoop.gifthub.interfaces.GiftHubRoomDAO;
 import host.techcoop.gifthub.vendored.RuntimeTypeAdapterFactory;
 import java.io.File;
@@ -42,7 +42,7 @@ public class GiftHubDistributorModule extends AbstractModule {
                 RuntimeTypeAdapterFactory.of(Event.class, "kind")
                     .registerSubtype(AdjustEvent.class, "ADJUST")
                     .registerSubtype(EmotiveEvent.class, "EMOTIVE")
-                    .registerSubtype(NeedsUpdateEvent.class, "NEEDS_UPDATE"))
+                    .registerSubtype(UserUpdateEvent.class, "USER_UPDATE"))
             .create();
     return gson;
   }
