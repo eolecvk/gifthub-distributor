@@ -83,17 +83,6 @@ class ParticipantView extends Component {
     updateDefaultDistribution = (defaultDistribution) => {
         const roomInfo = this.state.roomInfo;
         const needsScaleDownRatio = getNeedsScaleDownRatio(roomInfo, defaultDistribution);
-
-        if (needsScaleDownRatio < 1) {
-            const confirmMsg =
-                "Not enough money to match everyone's needs\n" +
-                "Give them amounts proportional to their needs instead?";
-
-            if (!window.confirm(confirmMsg)) {
-                return;
-            } // press Cancel
-        }
-
         const futureSlidersInitializationData = getSlidersInitializationData(
             roomInfo,
             defaultDistribution
