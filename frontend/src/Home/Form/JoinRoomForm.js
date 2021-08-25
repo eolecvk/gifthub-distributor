@@ -54,7 +54,7 @@ class JoinRoomForm extends Component {
                 if (response.status === 200) {
                     sessionStorage.clear();
                     sessionStorage.setItem('roomInfo', JSON.stringify(response.data.room_info));
-                    history.push(`/#/${this.state.formValues.roomCode}/join`);
+                    history.push(`/${this.state.formValues.roomCode}/join`);
                 }
             })
             .catch((error) => {
