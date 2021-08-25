@@ -7,11 +7,15 @@ class ParticipantViewSwitch extends Component {
     constructor() {
         super();
         this.state = {
-            observerView: false,
+            observerView:
+                sessionStorage.getItem('originIsCreateForm') === 'true'
+                    ? true
+                    : false,
         };
     }
 
     handleSwitchObserverView = () => {
+        sessionStorage.setItem('originIsCreateForm', !this.state.observerView)
         this.setState({ observerView: !this.state.observerView });
     };
 
