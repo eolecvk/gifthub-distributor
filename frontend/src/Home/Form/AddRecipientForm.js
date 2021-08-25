@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { TextField, Grid, Button } from '@material-ui/core';
-import { withRouter } from 'react-router';
 
 // [AddRecipient Form]
 // (fields)
@@ -342,4 +341,4 @@ class AddRecipientForm extends Component {
     }
 }
 
-export default withRouter(AddRecipientForm);
+export default AddRecipientForm;
