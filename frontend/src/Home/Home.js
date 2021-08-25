@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Grid, ButtonGroup, Button } from '@material-ui/core';
-import { HomeModal as Modal } from './Modal/Modal';
+import { HomeModal } from './Modal/Modal';
 
 class Home extends Component {
     constructor() {
@@ -32,6 +32,7 @@ class Home extends Component {
     };
 
     render() {
+
         return (
             <Grid
                 container
@@ -62,12 +63,12 @@ class Home extends Component {
                     >
                         Join Room
                     </Button>
-                    <Modal
+                    <HomeModal
                         modalTitle="Create Room"
                         show={this.state.showCreateRoomModal}
                         handleClose={this.hideCreateRoomModal}
                     />
-                    <Modal
+                    <HomeModal
                         modalTitle="Join Room"
                         show={this.state.showJoinRoomModal}
                         handleClose={this.hideJoinRoomModal}
