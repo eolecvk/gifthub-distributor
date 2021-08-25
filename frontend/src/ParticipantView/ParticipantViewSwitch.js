@@ -6,21 +6,25 @@ import { Switch, FormControlLabel } from '@material-ui/core';
 class ParticipantViewSwitch extends Component {
     constructor() {
         super();
+
+        this.originIsCreateForm = (sessionStorage['originIsCreateForm'] === 'true')
+
+        this.isObserverView = (typeof sessionStorage['isObserverView'] === 'undefined')
+            ? this.originIsCreateForm
+            : (sessionStorage['isObserverView'] === 'true')
+
         this.state = {
-            observerView:
-                sessionStorage.getItem('originIsCreateForm') === 'true'
-                    ? true
-                    : false,
+            isObserverView: this.isObserverView,
         };
     }
 
     handleSwitchObserverView = () => {
-        sessionStorage.setItem('originIsCreateForm', !this.state.observerView)
-        this.setState({ observerView: !this.state.observerView });
+        sessionStorage.setItem('isObserverView', !this.state.isObserverView)
+        this.setState({ isObserverView: !this.state.isObserverView });
     };
 
     render() {
-        const view = this.state.observerView ? <ObserverView /> : <ParticipantView />;
+        const view = this.state.isObserverView ? <ObserverView /> : <ParticipantView />;
 
         return (
             <div>
@@ -31,7 +35,7 @@ class ParticipantViewSwitch extends Component {
                             <Switch
                                 name="observerMode"
                                 inputProps={{ 'aria-label': 'primary checkbox' }}
-                                checked={this.state.observerView}
+                                checked={this.state.isObserverView}
                                 onChange={this.handleSwitchObserverView}
                             />
                         }
