@@ -13,12 +13,10 @@ function ButtonUpdateDefaultDistribution(props) {
             </button>
 
             <button id="survive-button" onClick={(e) => props.updateDefaultDistribution('survive')}>
-                {/* Survive amounts */}
                 <span>:)</span>
             </button>
 
             <button id="thrive-button" onClick={(e) => props.updateDefaultDistribution('thrive')}>
-                {/* Thrive amounts */}
                 <span>:D</span>
             </button>
         </div>
