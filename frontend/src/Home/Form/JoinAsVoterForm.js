@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { TextField, Grid, Button } from '@material-ui/core';
+import { withRouter } from 'react-router';
 
 // [JoinAsVoter Form]
 // (fields)
@@ -123,4 +124,4 @@ class JoinAsVoterForm extends Component {
     }
 }
 
-export default JoinAsVoterForm;
+export default withRouter(JoinAsVoterForm);
