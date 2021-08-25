@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { TextField, Grid, Button } from '@material-ui/core';
 
-// [AddRecipient Form]
+// [EditRecipient Form]
 // (fields)
 //   Name
 //   Survive amount 
@@ -13,7 +13,7 @@ import { TextField, Grid, Button } from '@material-ui/core';
 //   Remove *with confirmation dialog
 
 
-class AddRecipientForm extends Component {
+class EditRecipientForm extends Component {
     constructor(props) {
         super(props);
         this.initialValues = {
@@ -341,4 +341,4 @@ class AddRecipientForm extends Component {
     }
 }
 
-export default AddRecipientForm;
+export default EditRecipientForm;
