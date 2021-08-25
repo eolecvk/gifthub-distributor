@@ -3,6 +3,16 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { TextField, Grid, Button, ButtonGroup } from '@material-ui/core';
 
+
+// [CreateRoom form]
+// (fields)
+//   Room name
+//   Amount Distributed ($)
+// (buttons)
+//   Submit
+//   Close
+
+
 function CreateRoomForm(props) {
     const history = useHistory();
     const defaultValues = {
