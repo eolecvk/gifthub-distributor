@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { TextField, Grid, Button } from '@material-ui/core';
 
-// [EditRecipient Form]
+// [AddRecipient Form]
 // (fields)
 //   Name
 //   Survive amount 
@@ -10,10 +10,8 @@ import { TextField, Grid, Button } from '@material-ui/core';
 //   Need description
 // (buttons)
 //   Submit
-//   Remove *with confirmation dialog
 
-
-class EditRecipientForm extends Component {
+class AddRecipientForm extends Component {
     constructor(props) {
         super(props);
         this.initialValues = {
@@ -166,8 +164,7 @@ class EditRecipientForm extends Component {
         const payload = {
             events: [
                 {
-                    kind: "RECIPIENT_UPDATE",
-                    recipient_id : this.recipientId,
+                    kind: "RECIPIENT_ADD",
                     name: this.state.formValues.name,
                     needs_description: this.state.formValues.needsDescription,
                     needs_lower_bound_cents: this.state.formValues.needsLowerBoundDollars * 100,
@@ -194,38 +191,6 @@ class EditRecipientForm extends Component {
         this.props.handleClose();
     };
 
-    handleRemove = (e) => {
-        e.preventDefault();
-
-        const recipientId = this.props.recipientId
-
-        const payload = {
-            events: [
-                {
-                    kind: "RECIPIENT_REMOVE",
-                    recipient_id: recipientId
-                }
-            ]
-        };
-
-        axios
-            .put(`/api/${this.state.formValues.roomCode} `, payload)
-            .then((response) => {
-                if (response.status === 200) {
-                    sessionStorage.clear();
-                    sessionStorage.setItem('roomInfo', JSON.stringify(response.data.room_info));
-                }
-            })
-            // ERROR HANDLING SPECIFIC TO REMOVING A RECIPIENT
-            // .catch((error) => {
-            //     console.log(error);
-            //     if (error.response.data.error === 'SOME ERROR MESSAGE') {
-            //         // HANDLE ERROR IN SOME WAY
-            //     }
-            // });
-
-        this.props.handleClose();
-    }
 
     render() {
 
@@ -314,16 +279,6 @@ class EditRecipientForm extends Component {
                     >
                         <Button variant="contained" color="primary" type="submit">
                             Submit
-                        </Button>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            type="button"
-                            onClick={(e) => {
-                                this.handleRemove(e);
-                            }}
-                        >
-                            Remove
                         </Button>
                         <Button
                             variant="contained"
