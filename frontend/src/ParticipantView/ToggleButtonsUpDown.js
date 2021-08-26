@@ -42,8 +42,8 @@ class ToggleButtonsUpDown extends React.Component {
     };
 
     getUserData = (roomInfo, sliderId) => {
-        return roomInfo.people.filter((el) => {
-            return el.person_id === parseInt(sliderId);
+        return roomInfo.recipients.filter((el) => {
+            return el.recipient_id === parseInt(sliderId);
         })[0];
     };
 
