@@ -54,16 +54,14 @@ class JoinAsVoterForm extends Component {
             .then((response) => {
                 if (response.status === 200) {
                     sessionStorage.clear();
-                    sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
+                    sessionStorage.setItem('roomInfo', JSON.stringify(response.data.room_info));
                     const path = response.data.path
-                    history.push(`/${this.props.roomCode}/${path}`)
+                    //history.push(`/${this.props.roomCode}/${path}`)
+                    history.push(`/dev`) // for dev
                 }
             })
             .catch((error) => {
-                alert(error.response.data.error)
-                // if (error.response.data.error === 'SOME ERROR MESSAGE') {
-                //     // HANDLE ERROR IN SOME WAY
-                // }
+                console.log(error)
             });
         this.props.handleClose();
     };

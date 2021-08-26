@@ -24,6 +24,10 @@ function getNeedsScaleDownRatio(roomInfo, defaultDistribution) {
 
 function getSlidersInitializationData(roomInfo, defaultDistribution) {
 
+    if (roomInfo.recipients.length === 0){
+        return []
+    }
+
     if (defaultDistribution === 'zero' || defaultDistribution === 'hollow') {
         return roomInfo.recipients.map((recipientData) => ({
             recipientId: recipientData.recipient_id,
