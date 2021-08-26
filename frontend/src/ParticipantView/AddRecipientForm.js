@@ -181,13 +181,7 @@ class AddRecipientForm extends Component {
                     sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
                 }
             })
-        // ERROR HANDLING SPECIFIC TO ADDING A RECIPIENT
-        // .catch((error) => {
-        //     console.log(error);
-        //     if (error.response.data.error === 'SOME ERROR MESSAGE') {
-        //         // HANDLE ERROR IN SOME WAY
-        //     }
-        // });
+            .catch((error) => { console.log(error); })
         this.props.handleClose();
     };
 
