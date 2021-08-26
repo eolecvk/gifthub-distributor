@@ -111,6 +111,7 @@ public class GiftHubWebserver {
     JoinRoomRequest joinRequest = gson.fromJson(request.body(), JoinRoomRequest.class);
     GiftHubRoom room = roomDAO.getRoomByCode(roomCode);
     request.session().attribute(SESSION_ROOM_KEY, room.getCode());
+    request.session().attribute(SESSION_VOTER_ID_KEY, -1);
     return room;
   }
 
