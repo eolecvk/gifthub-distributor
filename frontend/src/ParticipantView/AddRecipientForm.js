@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { TextField, Grid, Button } from '@material-ui/core';
 
+
 // [AddRecipient Form]
 // (fields)
 //   Name
@@ -26,7 +27,7 @@ class AddRecipientForm extends Component {
             errors: {},
         };
 
-        this.recipientId = this.props.recipientId
+        this.roomCode = this.props.roomCode
     }
 
     onChangeSurviveAmount = (e) => {
@@ -174,11 +175,11 @@ class AddRecipientForm extends Component {
         };
 
         axios
-            .put(`/api/${this.state.formValues.roomCode} `, payload)
+            .put(`/api/${this.roomCode} `, payload)
             .then((response) => {
                 if (response.status === 200) {
                     sessionStorage.clear();
-                    sessionStorage.setItem('roomInfo', JSON.stringify(response.data.room_info));
+                    sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
                 }
             })
         // ERROR HANDLING SPECIFIC TO ADDING A RECIPIENT
@@ -297,4 +298,4 @@ class AddRecipientForm extends Component {
     }
 }
 
-export default EditRecipientForm;
+export default AddRecipientForm

@@ -10,6 +10,7 @@ import {
 } from './utils';
 import DissentModal from './DissentModal';
 import UpdateDefaultDistributionModal from './UpdateDefaultDistributionModal';
+import AddRecipientModal from './AddRecipientModal'
 
 class ParticipantView extends Component {
     constructor(props) {
@@ -142,6 +143,7 @@ class ParticipantView extends Component {
                     reset={this.state.reset}
                     dissentModalOpenAtSlider={this.dissentModalOpenAtSlider}
                 />
+                <AddRecipientModal roomCode={this.state.roomInfo.room_code} />
                 <DissentModal
                     dissentModalOpenAtSlider={this.state.dissentModalOpenAtSlider}
                     handleClose={this.dissentModalClose}

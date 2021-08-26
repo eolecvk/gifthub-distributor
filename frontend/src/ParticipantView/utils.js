@@ -99,6 +99,7 @@ function registerEvents(events, roomCode) {
             console.log(`[${response.status}] PUT /api/${roomCode}`);
         })
         .catch((error) => {
+            console.log('Register event error')
             console.log(error);
             console.log(payload);
         });
@@ -116,9 +117,10 @@ function registerVote(sliderValues, roomCode) {
     registerEvents(events, roomCode);
 }
 
-function registerUserUpdate(args, roomCode) {
+function registerRecipientUpdate(args, roomCode) {
+    //WHERE DO WE FIND THE recipient_id ?? :D
     const { username, needsDescription, needsLowerBoundCents, needsUpperBoundCents } = args;
-    const event = { kind: 'USER_UPDATE' };
+    const event = { kind: 'RECIPIENT_UPDATE' };
 
     if (typeof username !== 'undefined') {
         event['name'] = username;
@@ -142,5 +144,5 @@ export {
     getSlidersInitializationData,
     getStartingValues,
     registerVote,
-    registerUserUpdate,
+    registerRecipientUpdate,
 };

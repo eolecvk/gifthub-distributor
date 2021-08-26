@@ -1,0 +1,9 @@
+#addRecipient-button {
+    width: 70px;
+    height: 30px;
+}
+
+#addRecipient-button svg {
+    width: 25px;
+    height: 25px;
+}

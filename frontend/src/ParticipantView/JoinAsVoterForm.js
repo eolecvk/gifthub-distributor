@@ -54,7 +54,7 @@ class JoinAsVoterForm extends Component {
             .then((response) => {
                 if (response.status === 200) {
                     sessionStorage.clear();
-                    sessionStorage.setItem('roomInfo', JSON.stringify(response.data.room_info));
+                    sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
                     const path = response.data.path
                     history.push(`/${this.props.roomCode}/${path}`)
                 }

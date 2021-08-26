@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { TextField, Grid, Button } from '@material-ui/core';
 
+
 // [EditRecipient Form]
 // (fields)
 //   Name
@@ -181,7 +182,7 @@ class EditRecipientForm extends Component {
             .then((response) => {
                 if (response.status === 200) {
                     sessionStorage.clear();
-                    sessionStorage.setItem('roomInfo', JSON.stringify(response.data.room_info));
+                    sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
                 }
             })
         // ERROR HANDLING SPECIFIC TO ADDING A RECIPIENT
@@ -213,7 +214,7 @@ class EditRecipientForm extends Component {
             .then((response) => {
                 if (response.status === 200) {
                     sessionStorage.clear();
-                    sessionStorage.setItem('roomInfo', JSON.stringify(response.data.room_info));
+                    sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
                 }
             })
             // ERROR HANDLING SPECIFIC TO REMOVING A RECIPIENT
@@ -342,4 +343,4 @@ class EditRecipientForm extends Component {
     }
 }
 
-export default EditRecipientForm;
+export default {AddRecipientForm, EditRecipientForm};

@@ -51,9 +51,10 @@ class JoinRoomForm extends Component {
         axios
             .post(`/api/${this.state.formValues.roomCode}/join`, payload)
             .then((response) => {
+                console.log(response)
                 if (response.status === 200) {
                     sessionStorage.clear();
-                    sessionStorage.setItem('roomInfo', JSON.stringify(response.data.room_info));
+                    sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
                     sessionStorage.setItem('originIsCreateForm', false)
                     history.push(`/ABCD`) // for dev only
                     // history.push(`/${this.state.formValues.roomCode}/join`); ???? hmm no
@@ -63,10 +64,7 @@ class JoinRoomForm extends Component {
                 }
             })
             .catch((error) => {
-                console.log(error.response.data.error);
-                if (error.response.data.error === 'That room does not exist') {
-                    alert('That room does not exist');
-                }
+                console.log(error)
             });
         this.props.handleClose();
     };

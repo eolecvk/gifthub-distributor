@@ -7,16 +7,21 @@ import JoinAsVoterModal from './JoinAsVoterModal'
 import {
     getSlidersInitializationData,
 } from './utils';
-
+import AddRecipientModal from './AddRecipientModal'
 import EditableInfoModal from './EditableInfoModal';
 
 
 class ParticipantViewHollow extends Component {
     constructor(props) {
         super(props);
+        this.roomInfoIni = (
+            typeof sessionStorage['roomInfo'] === 'undefined' ||
+            sessionStorage['roomInfo'] === 'undefined')
+            ? ''
+            : JSON.parse(sessionStorage.getItem('roomInfo'))
         this.state = {
-            roomInfo: JSON.parse(sessionStorage.getItem('roomInfo')) || '',
-            defaultDistribution : 'hollow'
+            roomInfo: this.roomInfoIni,
+            defaultDistribution: 'hollow'
         };
     }
     intervalID;
@@ -33,7 +38,7 @@ class ParticipantViewHollow extends Component {
     getData = () => {
         axios.get('/api/' + this.state.roomInfo.room_code).then((response) => {
             // Case:  roomInfo has changed either because of new recipient or because avg has moved somewhere
-            if (!isEqual(this.state.roomInfo, response.data)){
+            if (!isEqual(this.state.roomInfo, response.data)) {
                 this.setState({ roomInfo: response.data });
             }
 
@@ -54,7 +59,7 @@ class ParticipantViewHollow extends Component {
         return (
             <div>
                 <RoomInfo roomInfo={this.state.roomInfo} />
-                <JoinAsVoterModal roomCode={this.state.roomInfo.room_code}/>
+                <JoinAsVoterModal roomCode={this.state.roomInfo.room_code} />
                 <SlidersGrid
                     key={this.state.defaultDistribution + Date.now()} // force class rendering on defaultDistribution update!
                     distribution={this.state.defaultDistribution}
@@ -64,6 +69,7 @@ class ParticipantViewHollow extends Component {
                     reset={this.state.reset}
                     dissentModalOpenAtSlider={this.dissentModalOpenAtSlider}
                 />
+                <AddRecipientModal roomCode={this.state.roomInfo.room_code} />
             </div>
         );
     }
