@@ -36,7 +36,7 @@ class ObserverView extends Component {
         axios
             .get('/api/' + this.state.room_code)
             .then((response) => {
-                this.setState({ people: response.data.people });
+                this.setState({ recipients: response.data.recipients });
                 // call getData() again in 5 seconds
                 this.intervalID = setTimeout(this.getData.bind(this), 1000);
             })
@@ -46,12 +46,12 @@ class ObserverView extends Component {
     };
 
     render() {
-        const people = this.state.people;
+        const recipients = this.state.recipients;
         const totalAmountDollars = this.state.splitting_cents / 100;
         const roomCode = this.state.room_code;
         const roomName = this.state.room_name;
 
-        const data = people
+        const recipientData = recipients
             .sort((p1, p2) => p1.person_id - p2.person_id)
             .map((p) => {
                 const name = p.name;
@@ -76,11 +76,11 @@ class ObserverView extends Component {
             });
 
         const totalDistributed =
-            data.length > 0 ? data.map((p) => p.cents).reduce((p1, p2) => p1 + p2) : 0;
+        recipientData.length > 0 ? recipientData.map((p) => p.cents).reduce((p1, p2) => p1 + p2) : 0;
 
         const barchart = (
-            <ResponsiveContainer width="95%" height="80%" minHeight={100 * people.length}>
-                <ComposedChart width={720} height={480} data={data} layout="vertical">
+            <ResponsiveContainer width="95%" height="80%" minHeight={100 * recipients.length}>
+                <ComposedChart width={720} height={480} data={recipientData} layout="vertical">
                     <YAxis
                         yAxisId={0}
                         width={100}
@@ -107,7 +107,7 @@ class ObserverView extends Component {
                             position="insideLeft"
                             style={{ fontSize: 20, fill: 'white' }}
                         />
-                        {people.map((entry, index) => (
+                        {recipients.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={colors[index + 1]} />
                         ))}
                     </Bar>
