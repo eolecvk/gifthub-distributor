@@ -3,8 +3,8 @@ package host.techcoop.gifthub.domain;
 import lombok.Value;
 
 @Value
-public class UserVote {
-
-  int userId;
-  long cents;
+public class Vote {
+  int recipientId;
+  int voterId;
+  int cents;
 }
