@@ -5,7 +5,12 @@ import RoomInfo from './RoomInfo';
 import ButtonUpdateDefaultDistribution from './ButtonUpdateDefaultDistribution';
 import SlidersGrid from './SliderGrid';
 import EditableInfoModal from './EditableInfoModal';
-import { getSlidersInitializationData, getStartingValues, registerVote } from './utils';
+import {
+    getNeedsScaleDownRatio,
+    getSlidersInitializationData,
+    getStartingValues,
+    registerVote,
+} from './utils';
 import DissentModal from './DissentModal';
 
 class ParticipantView extends Component {
@@ -59,7 +64,6 @@ class ParticipantView extends Component {
         });
     };
 
-    // NEED TO MOVE THIS TO UTILS
     // Generate updated version of state `currentState`
     // when inserting a new move of `newValue` at sliderId `id`
     getStateObjectNewMoves = (currentState, newSliderValues) => {
@@ -78,23 +82,12 @@ class ParticipantView extends Component {
 
     updateDefaultDistribution = (defaultDistribution) => {
         const roomInfo = this.state.roomInfo;
-
-        // Upon clicking a default distribution button...
+        const needsScaleDownRatio = getNeedsScaleDownRatio(roomInfo, defaultDistribution);
         const futureSlidersInitializationData = getSlidersInitializationData(
             roomInfo,
             defaultDistribution
         );
         const futureStartingValues = getStartingValues(futureSlidersInitializationData);
-        const futureTotalCost = Object.values(futureStartingValues).reduce((a, b) => a + b);
-        const roomAmount = roomInfo.splitting_cents / 100;
-
-        // ...checks if newDefaultDistribution yields an invalid state before transitioning
-        if (futureTotalCost > roomAmount) {
-            alert(
-                'Not enough money to set this distribution: ' + futureTotalCost + '/ ' + roomAmount
-            );
-            return;
-        }
 
         // Update grid state stored in memory (will be used for slider grid initialization upon re-rendering)
         const storedSliderGridState = JSON.parse(sessionStorage.getItem('sliderGridState'));
@@ -140,7 +133,6 @@ class ParticipantView extends Component {
             <div>
                 <RoomInfo roomInfo={this.state.roomInfo} />
                 <EditableInfoModal roomInfo={this.state.roomInfo} />
-
                 <ButtonUpdateDefaultDistribution
                     updateDefaultDistribution={this.updateDefaultDistribution}
                 />
