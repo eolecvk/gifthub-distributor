@@ -36,13 +36,13 @@ class ParticipantView extends Component {
 
     getData = () => {
         axios.get('/api/' + this.state.roomInfo.room_code).then((response) => {
-            // Case : new people are detected in the backend roomInfo data compared to roomInfo in client state
-            if (response.data.people.length !== this.state.roomInfo.people.length) {
+            // Case : new recipient is detected in the backend roomInfo data compared to roomInfo in client state
+            if (response.data.recipients.length !== this.state.roomInfo.recipients.length) {
                 const roomCode = this.state.roomInfo.room_code;
                 let newSliderValues = {};
                 for (
-                    let sliderValue = this.state.roomInfo.people.length + 1;
-                    sliderValue <= response.data.people.length;
+                    let sliderValue = this.state.roomInfo.recipients.length + 1;
+                    sliderValue <= response.data.recipients.length;
                     sliderValue++
                 ) {
                     newSliderValues[sliderValue] = 0;
@@ -51,7 +51,7 @@ class ParticipantView extends Component {
                 this.setState({ roomInfo: response.data, reset: true });
             }
 
-            // Case: no new people detected but average has moved?
+            // Case: no new recipient detected but average has moved?
             if (!isEqual(this.state.roomInfo, response.data)) {
                 this.setState({ roomInfo: response.data, reset: false });
             }
