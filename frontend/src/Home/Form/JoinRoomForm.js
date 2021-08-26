@@ -54,11 +54,16 @@ class JoinRoomForm extends Component {
                 if (response.status === 200) {
                     sessionStorage.clear();
                     sessionStorage.setItem('roomInfo', JSON.stringify(response.data.room_info));
-                    history.push(`/${this.state.formValues.roomCode}/join`);
+                    sessionStorage.setItem('originIsCreateForm', false)
+                    history.push(`/ABCD`) // for dev only
+                    // history.push(`/${this.state.formValues.roomCode}/join`); ???? hmm no
+                    //history.push(`/${this.state.formValues.roomCode}`) // THIS WHEN I HAVE IMPLEM DYNAMIC ROUTING
+
+
                 }
             })
             .catch((error) => {
-                console.log(error);
+                console.log(error.response.data.error);
                 if (error.response.data.error === 'That room does not exist') {
                     alert('That room does not exist');
                 }

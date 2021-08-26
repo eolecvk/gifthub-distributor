@@ -24,7 +24,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function JoinAsVoterModal(props) {
-    const [open, setOpen] = React.useState(false);
+
+    const openOnStart = (sessionStorage.getItem('originIsCreateForm') === 'false')
+    const [open, setOpen] = React.useState(openOnStart);
 
     const handleOpen = () => {
         setOpen(true);

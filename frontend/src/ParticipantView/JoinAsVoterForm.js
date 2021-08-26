@@ -55,29 +55,28 @@ class JoinAsVoterForm extends Component {
                 if (response.status === 200) {
                     sessionStorage.clear();
                     sessionStorage.setItem('roomInfo', JSON.stringify(response.data.room_info));
-                    const path = JSON.stringify(response.data.path)
-                    history.push(`/#/${this.props.roomCode}/${path}`)
+                    const path = response.data.path
+                    history.push(`/${this.props.roomCode}/${path}`)
                 }
             })
-        // ERROR HANDLING SPECIFIC TO VoterJoin
-        // .catch((error) => {
-        //     console.log(error);
-        //     if (error.response.data.error === 'SOME ERROR MESSAGE') {
-        //         // HANDLE ERROR IN SOME WAY
-        //     }
-        // });
+            .catch((error) => {
+                alert(error.response.data.error)
+                // if (error.response.data.error === 'SOME ERROR MESSAGE') {
+                //     // HANDLE ERROR IN SOME WAY
+                // }
+            });
         this.props.handleClose();
     };
 
 
     render() {
 
-        const history = this.props.history
+        const { history } = this.props;
 
         return (
             <form
-                onSubmit={(e, history) => {
-                    this.handleSubmit(e);
+                onSubmit={(e) => {
+                    this.handleSubmit(e, history);
                 }}
             >
                 <Grid container alignItems="center" justifyContent="center" direction="column">
