@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import isEqual from 'lodash.isequal';
 import RoomInfo from './RoomInfo';
-import SlidersGrid from './SliderGrid';
+import SlidersGridShadow from './SliderGridShadow';
 import JoinAsVoterModal from './JoinAsVoterModal'
 import {
     getSlidersInitializationData,
@@ -11,17 +11,17 @@ import AddRecipientModal from './AddRecipientModal'
 import EditableInfoModal from './EditableInfoModal';
 
 
-class ParticipantViewHollow extends Component {
+class ParticipantViewShadow extends Component {
     constructor(props) {
         super(props);
-        this.roomInfoIni = (
-            typeof sessionStorage['roomInfo'] === 'undefined' ||
-            sessionStorage['roomInfo'] === 'undefined')
-            ? ''
-            : JSON.parse(sessionStorage.getItem('roomInfo'))
+        // this.roomInfoIni = (
+        //     typeof sessionStorage['roomInfo'] === 'undefined' ||
+        //     sessionStorage['roomInfo'] === 'undefined')
+        //     ? ''
+        //     : JSON.parse(sessionStorage.getItem('roomInfo'))
         this.state = {
-            roomInfo: this.roomInfoIni,
-            defaultDistribution: 'hollow'
+            roomInfo: JSON.parse(sessionStorage.getItem('roomInfo')),//this.roomInfoIni,
+            defaultDistribution: 'shadow'
         };
     }
     intervalID;
@@ -60,7 +60,7 @@ class ParticipantViewHollow extends Component {
             <div>
                 <RoomInfo roomInfo={this.state.roomInfo} />
                 <JoinAsVoterModal roomCode={this.state.roomInfo.room_code} />
-                <SlidersGrid
+                <SlidersGridShadow
                     key={this.state.defaultDistribution + Date.now()} // force class rendering on defaultDistribution update!
                     distribution={this.state.defaultDistribution}
                     slidersInitializationData={slidersInitializationData}
@@ -75,4 +75,4 @@ class ParticipantViewHollow extends Component {
     }
 }
 
-export default ParticipantViewHollow;
+export default ParticipantViewShadow;

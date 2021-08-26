@@ -28,7 +28,7 @@ function getSlidersInitializationData(roomInfo, defaultDistribution) {
         return []
     }
 
-    if (defaultDistribution === 'zero' || defaultDistribution === 'hollow') {
+    if (defaultDistribution === 'zero' || defaultDistribution === 'shadow') {
         return roomInfo.recipients.map((recipientData) => ({
             recipientId: recipientData.recipient_id,
             title: recipientData.name,
