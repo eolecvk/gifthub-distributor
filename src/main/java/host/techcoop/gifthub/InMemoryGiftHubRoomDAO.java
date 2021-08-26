@@ -54,7 +54,7 @@ public class InMemoryGiftHubRoomDAO implements GiftHubRoomDAO {
     synchronized (roomCode) {
       GiftHubRoom room = roomsByCode.getIfPresent(roomCode);
       Voter voter =
-          Voter.builder()
+          Voter.EMPTY_VOTER.toBuilder()
               .name(voterName)
               .voterId(room.getNextVoterId())
               .path(getUniquePath(room.getVotersById().values().asList()))
