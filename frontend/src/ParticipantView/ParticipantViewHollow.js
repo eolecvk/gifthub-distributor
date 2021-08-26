@@ -8,7 +8,6 @@ import {
     getNeedsScaleDownRatio,
     getSlidersInitializationData,
     getStartingValues,
-    ,
 } from './utils';
 
 class ParticipantViewHollow extends Component {
@@ -16,6 +15,7 @@ class ParticipantViewHollow extends Component {
         super(props);
         this.state = {
             roomInfo: JSON.parse(sessionStorage.getItem('roomInfo')) || '',
+            defaultDistribution : 'hollow'
         };
     }
     intervalID;
@@ -31,7 +31,7 @@ class ParticipantViewHollow extends Component {
 
     getData = () => {
         axios.get('/api/' + this.state.roomInfo.room_code).then((response) => {
-            // Case:  roomInfo has changed either because of new people or because avg has moved somewhere
+            // Case:  roomInfo has changed either because of new recipient or because avg has moved somewhere
             if (!isEqual(this.state.roomInfo, response.data)){
                 this.setState({ roomInfo: response.data });
             }

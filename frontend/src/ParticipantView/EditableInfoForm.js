@@ -50,15 +50,15 @@ class EditableInfoForm extends Component {
         this._isMounted = false; //using isMounted react pattern to avoid memory leak https://stackoverflow.com/questions/52061476/cancel-all-subscriptions-and-asyncs-in-the-componentwillunmount-method-how
     }
 
-    parseInfo = (roomInfo, userId) => {
-        const userData = roomInfo.people.filter((el) => {
-            return el.person_id === parseInt(userId);
+    parseInfo = (roomInfo, recipientId) => {
+        const recipientData = roomInfo.recipients.filter((el) => {
+            return el.recipient_id === parseInt(recipientId);
         })[0];
         return {
-            username: userData.name,
-            surviveAmount: userData.needs_lower_bound_cents / 100,
-            thriveAmount: userData.needs_upper_bound_cents / 100,
-            needsDescription: userData.needs_description,
+            username: recipientData.name,
+            surviveAmount: recipientData.needs_lower_bound_cents / 100,
+            thriveAmount: recipientData.needs_upper_bound_cents / 100,
+            needsDescription: recipientData.needs_description,
         };
     };
 

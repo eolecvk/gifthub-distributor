@@ -38,8 +38,8 @@ function DissentModal(props) {
     const userName =
         openAtSlider === ''
             ? ''
-            : roomInfo.people.filter((el) => {
-                  return el.person_id === parseInt(openAtSlider);
+            : roomInfo.recipients.filter((el) => {
+                  return el.recipient_id === parseInt(openAtSlider);
               })[0].name;
 
     const body =
