@@ -1,5 +1,7 @@
 package host.techcoop.gifthub.modules;
 
+import static host.techcoop.gifthub.domain.enums.EventKind.*;
+
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -13,7 +15,11 @@ import host.techcoop.gifthub.WordGenerator;
 import host.techcoop.gifthub.domain.interfaces.Event;
 import host.techcoop.gifthub.domain.requests.events.AdjustEvent;
 import host.techcoop.gifthub.domain.requests.events.EmotiveEvent;
-import host.techcoop.gifthub.domain.requests.events.UserUpdateEvent;
+import host.techcoop.gifthub.domain.requests.events.RecipientAddEvent;
+import host.techcoop.gifthub.domain.requests.events.RecipientRemoveEvent;
+import host.techcoop.gifthub.domain.requests.events.RecipientUpdateEvent;
+import host.techcoop.gifthub.domain.requests.events.RoomUpdateEvent;
+import host.techcoop.gifthub.domain.requests.events.VoterRemoveEvent;
 import host.techcoop.gifthub.interfaces.GiftHubRoomDAO;
 import host.techcoop.gifthub.vendored.RuntimeTypeAdapterFactory;
 import java.io.File;
@@ -40,9 +46,13 @@ public class GiftHubDistributorModule extends AbstractModule {
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .registerTypeAdapterFactory(
                 RuntimeTypeAdapterFactory.of(Event.class, "kind")
-                    .registerSubtype(AdjustEvent.class, "ADJUST")
-                    .registerSubtype(EmotiveEvent.class, "EMOTIVE")
-                    .registerSubtype(UserUpdateEvent.class, "USER_UPDATE"))
+                    .registerSubtype(AdjustEvent.class, ADJUST.toString())
+                    .registerSubtype(EmotiveEvent.class, EMOTIVE.toString())
+                    .registerSubtype(RecipientUpdateEvent.class, RECIPIENT_UPDATE.toString())
+                    .registerSubtype(RecipientAddEvent.class, RECIPIENT_ADD.toString())
+                    .registerSubtype(RecipientRemoveEvent.class, RECIPIENT_REMOVE.toString())
+                    .registerSubtype(RoomUpdateEvent.class, ROOM_UPDATE.toString())
+                    .registerSubtype(VoterRemoveEvent.class, VOTER_REMOVE.toString()))
             .create();
     return gson;
   }

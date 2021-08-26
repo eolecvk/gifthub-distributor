@@ -3,5 +3,9 @@ package host.techcoop.gifthub.domain.enums;
 public enum EventKind {
   ADJUST,
   EMOTIVE,
-  USER_UPDATE
+  RECIPIENT_UPDATE,
+  RECIPIENT_ADD,
+  RECIPIENT_REMOVE,
+  ROOM_UPDATE,
+  VOTER_REMOVE
 }

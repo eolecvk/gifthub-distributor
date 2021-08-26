@@ -1,8 +1,8 @@
 package host.techcoop.gifthub.interfaces;
 
 import host.techcoop.gifthub.domain.GiftHubRoom;
-import host.techcoop.gifthub.domain.User;
-import host.techcoop.gifthub.domain.requests.JoinRoomRequest;
+import host.techcoop.gifthub.domain.Recipient;
+import host.techcoop.gifthub.domain.Voter;
 
 public interface GiftHubRoomDAO {
 
@@ -10,11 +10,22 @@ public interface GiftHubRoomDAO {
 
   GiftHubRoom createRoom(int distributionCents, String name);
 
-  User addUserToRoom(String roomCode, JoinRoomRequest user);
+  Voter addVoterToRoom(String roomCode, String voterName);
 
-  User getUserFromRoom(String roomCode, int userId);
+  Recipient addRecipientToRoom(
+      String roomCode,
+      String name,
+      String needsDescription,
+      int needsUpperBoundCents,
+      int needsLowerBoundCents);
 
-  GiftHubRoom updateUserInRoom(String roomCode, User user);
+  GiftHubRoom updateVoterInRoom(String roomCode, Voter voter);
 
-  String getRoomInfo(String roomCode);
+  GiftHubRoom updateRecipientInRoom(String roomCode, Recipient recipient);
+
+  void removeRecipientFromRoom(String roomCode, int recipientId);
+
+  void removeVoterFromRoom(String roomCode, int voterId);
+
+  GiftHubRoom updateRoomProps(String roomCode, String name, Integer splittingCents);
 }

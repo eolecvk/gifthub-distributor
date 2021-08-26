@@ -6,11 +6,9 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import host.techcoop.gifthub.domain.CachingRoomWrapper;
 import host.techcoop.gifthub.domain.GiftHubRoom;
-import host.techcoop.gifthub.domain.User;
-import host.techcoop.gifthub.domain.exceptions.RoomJoinException;
-import host.techcoop.gifthub.domain.requests.JoinRoomRequest;
+import host.techcoop.gifthub.domain.Recipient;
+import host.techcoop.gifthub.domain.Voter;
 import host.techcoop.gifthub.interfaces.GiftHubRoomDAO;
 import java.util.Random;
 import java.util.Set;
@@ -20,21 +18,19 @@ import java.util.stream.Stream;
 @Singleton
 public class InMemoryGiftHubRoomDAO implements GiftHubRoomDAO {
 
-  private final Cache<String, CachingRoomWrapper> roomsByCode;
-  private final RoomWrapperFactory roomWrapperFactory;
+  private final Cache<String, GiftHubRoom> roomsByCode;
   private final WordGenerator wordGenerator;
   private final Random random = new Random();
 
   @Inject
-  InMemoryGiftHubRoomDAO(RoomWrapperFactory roomWrapperFactory, WordGenerator wordGenerator) {
-    this.roomWrapperFactory = roomWrapperFactory;
+  InMemoryGiftHubRoomDAO(WordGenerator wordGenerator) {
     this.wordGenerator = wordGenerator;
     roomsByCode = CacheBuilder.newBuilder().expireAfterAccess(6, TimeUnit.HOURS).build();
   }
 
   @Override
   public GiftHubRoom getRoomByCode(String code) {
-    return roomsByCode.getIfPresent(code.toUpperCase()).getRoom();
+    return roomsByCode.getIfPresent(code.toUpperCase());
   }
 
   @Override
@@ -42,61 +38,124 @@ public class InMemoryGiftHubRoomDAO implements GiftHubRoomDAO {
     synchronized (roomsByCode) {
       String code = getUniqueCode();
       GiftHubRoom room =
-          GiftHubRoom.builder()
+          GiftHubRoom.EMPTY_ROOM.toBuilder()
               .roomName(name)
               .code(code)
               .splittingCents(distributionCents)
-              .people(ImmutableList.of())
               .build();
-      roomsByCode.put(code, roomWrapperFactory.getWrapper(room));
+      roomsByCode.put(code, room);
       return room;
     }
   }
 
   @Override
-  public User addUserToRoom(String roomCode, JoinRoomRequest request) {
+  public Voter addVoterToRoom(String roomCode, String voterName) {
     roomCode = roomCode.toUpperCase().intern();
-    if (roomsByCode.getIfPresent(roomCode) == null) {
-      throw new RoomJoinException();
-    }
     synchronized (roomCode) {
-      GiftHubRoom room = roomsByCode.getIfPresent(roomCode).getRoom();
-      String path = getUniquePath(room.getPeople());
-      int newUserId = room.getPeople().stream().mapToInt(User::getUserId).max().orElse(0) + 1;
-      User user = User.fromJoinRoomRequest(request, newUserId, path);
-      GiftHubRoom newRoom = room.withUpdatedUser(user);
-      roomsByCode.put(roomCode, roomWrapperFactory.getWrapper(newRoom));
-      return user;
+      GiftHubRoom room = roomsByCode.getIfPresent(roomCode);
+      Voter voter =
+          Voter.builder()
+              .name(voterName)
+              .voterId(room.getNextVoterId())
+              .path(getUniquePath(room.getVotersById().values().asList()))
+              .build();
+      GiftHubRoom newRoom =
+          room.withUpdatedVoter(voter).toBuilder().nextVoterId(voter.getVoterId() + 1).build();
+      roomsByCode.put(roomCode, newRoom);
+      return voter;
     }
   }
 
   @Override
-  public User getUserFromRoom(String roomCode, int userId) {
-    return roomsByCode.getIfPresent(roomCode).getRoom().getPeople().stream()
-        .filter(person -> person.getUserId() == userId)
-        .findFirst()
-        .get();
+  public Recipient addRecipientToRoom(
+      String roomCode,
+      String name,
+      String needsDescription,
+      int needsUpperBoundCents,
+      int needsLowerBoundCents) {
+    roomCode = roomCode.toUpperCase().intern();
+    synchronized (roomCode) {
+      GiftHubRoom room = roomsByCode.getIfPresent(roomCode);
+      Recipient recipient =
+          Recipient.builder()
+              .name(name)
+              .needsDescription(needsDescription)
+              .needsUpperBoundCents(needsUpperBoundCents)
+              .needsLowerBoundCents(needsLowerBoundCents)
+              .recipientId(room.getNextRecipientId())
+              .build();
+      GiftHubRoom newRoom =
+          room.withUpdatedRecipient(recipient).toBuilder()
+              .nextRecipientId(recipient.getRecipientId() + 1)
+              .build();
+      roomsByCode.put(roomCode, newRoom);
+      return recipient;
+    }
   }
 
   @Override
-  public GiftHubRoom updateUserInRoom(String roomCode, User user) {
+  public GiftHubRoom updateVoterInRoom(String roomCode, Voter voter) {
     roomCode = roomCode.toUpperCase().intern();
     synchronized (roomCode) {
-      GiftHubRoom room = roomsByCode.getIfPresent(roomCode).getRoom();
-      GiftHubRoom newRoom = room.withUpdatedUser(user);
-      roomsByCode.put(roomCode, roomWrapperFactory.getWrapper(newRoom));
+      GiftHubRoom room = roomsByCode.getIfPresent(roomCode);
+      GiftHubRoom newRoom = room.withUpdatedVoter(voter);
+      roomsByCode.put(roomCode, newRoom);
       return newRoom;
     }
   }
 
   @Override
-  public String getRoomInfo(String roomCode) {
-    return roomsByCode.getIfPresent(roomCode).getJsonBlob();
+  public GiftHubRoom updateRecipientInRoom(String roomCode, Recipient recipient) {
+    roomCode = roomCode.toUpperCase().intern();
+    synchronized (roomCode) {
+      GiftHubRoom room = roomsByCode.getIfPresent(roomCode);
+      GiftHubRoom newRoom = room.withUpdatedRecipient(recipient);
+      roomsByCode.put(roomCode, newRoom);
+      return newRoom;
+    }
   }
 
-  private String getUniquePath(ImmutableList<User> people) {
+  @Override
+  public void removeRecipientFromRoom(String roomCode, int recipientId) {
+    roomCode = roomCode.toUpperCase().intern();
+    synchronized (roomCode) {
+      GiftHubRoom room = roomsByCode.getIfPresent(roomCode);
+      GiftHubRoom newRoom = room.withRemovedRecipient(recipientId);
+      roomsByCode.put(roomCode, newRoom);
+    }
+  }
+
+  @Override
+  public void removeVoterFromRoom(String roomCode, int voterId) {
+    roomCode = roomCode.toUpperCase().intern();
+    synchronized (roomCode) {
+      GiftHubRoom room = roomsByCode.getIfPresent(roomCode);
+      GiftHubRoom newRoom = room.withRemovedVoter(voterId);
+      roomsByCode.put(roomCode, newRoom);
+    }
+  }
+
+  @Override
+  public GiftHubRoom updateRoomProps(String roomCode, String name, Integer splittingCents) {
+    roomCode = roomCode.toUpperCase().intern();
+    synchronized (roomCode) {
+      GiftHubRoom room = roomsByCode.getIfPresent(roomCode);
+      GiftHubRoom.GiftHubRoomBuilder roomBuilder = room.toBuilder();
+      if (name != null) {
+        roomBuilder.roomName(name);
+      }
+      if (splittingCents != null) {
+        roomBuilder.splittingCents(splittingCents);
+      }
+      GiftHubRoom newRoom = roomBuilder.build();
+      roomsByCode.put(roomCode, newRoom);
+      return newRoom;
+    }
+  }
+
+  private String getUniquePath(ImmutableList<Voter> voters) {
     Set<String> existingPaths =
-        people.stream().map(User::getPath).collect(ImmutableSet.toImmutableSet());
+        voters.stream().map(Voter::getPath).collect(ImmutableSet.toImmutableSet());
     String path;
     while (true) {
       path = wordGenerator.getWords(3, "-");
