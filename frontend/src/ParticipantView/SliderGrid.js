@@ -155,25 +155,25 @@ class SliderGrid extends Component {
 
     render() {
         const sliders = this.props.slidersInitializationData
-            .sort((sl1, sl2) => sl1.personId - sl2.personId)
+            .sort((sl1, sl2) => sl1.recipientId - sl2.recipientId)
             .map((slData) => {
                 return (
                     <InputSlider
-                        key={slData.personId.toString() + 'inputSlider'}
-                        sliderId={slData.personId.toString()}
+                        key={slData.recipientId.toString() + 'inputSlider'}
+                        sliderId={slData.recipientId.toString()}
                         title={slData.title.toUpperCase()}
                         surviveValue={slData.surviveValue}
                         thriveValue={slData.thriveValue}
                         startingValue={
                             this.state.reset
                                 ? slData.startingValue
-                                : this.state.currentValues[slData.personId.toString()]
+                                : this.state.currentValues[slData.recipientId.toString()]
                         }
                         maxValue={slData.maxValue}
                         handleUpdateSlider={this.handleUpdateSlider}
                         handleOpenDissentModal={this.props.dissentModalOpenAtSlider}
-                        userInfo={this.props.roomInfo.people.find((p) => {
-                            return p.person_id.toString() === slData.personId.toString();
+                        recipientInfo={this.props.roomInfo.recipients.find((p) => {
+                            return p.recipient_id.toString() === slData.recipientId.toString();
                         })}
                     />
                 );
