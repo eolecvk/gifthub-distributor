@@ -53,11 +53,12 @@ class JoinAsVoterForm extends Component {
             .post(`/api/${this.props.roomCode}/voterJoin`, payload)
             .then((response) => {
                 if (response.status === 200) {
+                    const path = response.data.path
                     sessionStorage.clear();
                     sessionStorage.setItem('roomInfo', JSON.stringify(response.data.room_info));
-                    const path = response.data.path
+                    sessionStorage.setItem('path', path);
                     //history.push(`/${this.props.roomCode}/${path}`)
-                    history.push(`/dev`) // for dev
+                    history.push(`/ABCD`) // for dev
                 }
             })
             .catch((error) => {

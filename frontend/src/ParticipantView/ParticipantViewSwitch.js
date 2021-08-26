@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ObserverView from '../ObserverView/ObserverView';
+import ParticipantView from './ParticipantView';
 import ParticipantViewShadow from './ParticipantViewShadow';
 import { Switch, FormControlLabel } from '@material-ui/core';
 
@@ -24,9 +25,15 @@ class ParticipantViewSwitch extends Component {
     };
 
     render() {
-        const view = this.state.isObserverView
-            ? <ObserverView />
-            : <ParticipantViewShadow />;
+
+        let view = <ObserverView />
+        if (!this.state.isObserverView) {
+            view = <ParticipantViewShadow />
+            const path = sessionStorage['path']
+            if (path !== 'undefined' && typeof path !== 'undefined') {
+                view = <ParticipantView />
+            }
+        }
 
         return (
             <div>

@@ -52,14 +52,14 @@ class ObserverView extends Component {
         const roomName = this.state.room_name;
 
         const recipientData = recipients
-            .sort((p1, p2) => p1.person_id - p2.person_id)
+            .sort((p1, p2) => p1.recipient_id - p2.recipient_id)
             .map((p) => {
                 const name = p.name;
                 const cents = p.avg_cents / 100;
                 const needs_upper = p.needs_upper_bound_cents / 100;
                 const needs_lower = p.needs_lower_bound_cents / 100;
-                const upper_25 = quantile(p.votes_cents, 0.75) / 100;
-                const lower_25 = quantile(p.votes_cents, 0.25) / 100;
+                const upper_25 = quantile(Object.values(p.votes_cents), 0.75) / 100;
+                const lower_25 = quantile(Object.values(p.votes_cents), 0.25) / 100;
 
                 const countDissentUp = p.emotive.DISSENT_UP ? p.emotive.DISSENT_UP.length : 0;
                 const countDissentDown = p.emotive.DISSENT_DOWN ? p.emotive.DISSENT_DOWN.length : 0;

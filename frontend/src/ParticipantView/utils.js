@@ -113,7 +113,7 @@ function registerVote(sliderValues, roomCode) {
     const events = Object.keys(sliderValues).map((key) => {
         return {
             kind: 'ADJUST',
-            bar_id: key,
+            recipient_id: key,
             new_value_cents: sliderValues[key] * 100,
         };
     });

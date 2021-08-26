@@ -178,7 +178,6 @@ class AddRecipientForm extends Component {
             .put(`/api/${this.roomCode} `, payload)
             .then((response) => {
                 if (response.status === 200) {
-                    sessionStorage.clear();
                     sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
                 }
             })
