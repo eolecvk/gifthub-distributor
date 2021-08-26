@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ObserverView from '../ObserverView/ObserverView';
-import ParticipantView from './ParticipantView';
+import ParticipantViewHollow from './ParticipantViewHollow';
 import { Switch, FormControlLabel } from '@material-ui/core';
 
 class ParticipantViewSwitch extends Component {
@@ -24,7 +24,9 @@ class ParticipantViewSwitch extends Component {
     };
 
     render() {
-        const view = this.state.isObserverView ? <ObserverView /> : <ParticipantView />;
+        const view = this.state.isObserverView
+            ? <ObserverView />
+            : <ParticipantViewHollow />;
 
         return (
             <div>
