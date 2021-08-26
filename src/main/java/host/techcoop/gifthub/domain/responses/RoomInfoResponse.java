@@ -61,10 +61,7 @@ public class RoomInfoResponse {
                         .needsLowerBoundCents(recipient.getNeedsLowerBoundCents())
                         .needsUpperBoundCents(recipient.getNeedsUpperBoundCents())
                         .avgCents(
-                            votesByRecipientId.get(recipient.getRecipientId()).stream()
-                                    .mapToInt(Vote::getCents)
-                                    .sum()
-                                / room.getVotersById().size())
+                            calculateAvgCents(votesByRecipientId, room, recipient.getRecipientId()))
                         .votesCents(
                             votesByRecipientId.get(recipient.getRecipientId()).stream()
                                 .collect(
@@ -84,5 +81,14 @@ public class RoomInfoResponse {
         .voters(voters)
         .recipients(recipients)
         .build();
+  }
+
+  private static int calculateAvgCents(
+      ImmutableListMultimap<Integer, Vote> votesByRecipientId, GiftHubRoom room, int recipientId) {
+    if (room.getVotersById().size() == 0) {
+      return 0;
+    }
+    return votesByRecipientId.get(recipientId).stream().mapToInt(Vote::getCents).sum()
+        / room.getVotersById().size();
   }
 }
