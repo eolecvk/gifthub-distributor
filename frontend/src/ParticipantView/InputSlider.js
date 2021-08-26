@@ -99,10 +99,10 @@ function InputSlider(props) {
         startingValue,
         maxValue,
         handleOpenDissentModal,
-        userInfo,
+        recipientInfo,
     } = props;
-    const needsDescription = userInfo.needs_description;
-    const groupVoteAvg = userInfo.avg_cents / 100;
+    const needsDescription = recipientInfo.needs_description;
+    const groupVoteAvg = recipientInfo.avg_cents / 100;
 
     function getMarks(groupVoteAvg, surviveValue, thriveValue) {
         const marks = [];
