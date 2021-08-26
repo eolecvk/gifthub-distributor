@@ -45,7 +45,8 @@ function CreateRoomForm(props) {
             .then((response) => {
                 if (response.status === 200) {
                     sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
-                    history.push('/observer');
+                    sessionStorage.setItem('originIsCreateForm', true);
+                    history.push('/ABCD');
                 }
             })
             .catch((error) => {

@@ -44,7 +44,7 @@ class EditableInfoForm extends Component {
             needsDescription: '',
         };
 
-        this.userId = sessionStorage.getItem('userId');
+        this.recipientId = 1 //previously fetching userId from sessionStorage
         this.roomCode = this.props.roomInfo.room_code;
         // this.roomCode = sessionStorage.getItem('roomInfo').room_code
         this._isMounted = false; //using isMounted react pattern to avoid memory leak https://stackoverflow.com/questions/52061476/cancel-all-subscriptions-and-asyncs-in-the-componentwillunmount-method-how
@@ -68,7 +68,7 @@ class EditableInfoForm extends Component {
             const responseData = await response.data;
             const { username, surviveAmount, thriveAmount, needsDescription } = this.parseInfo(
                 responseData,
-                this.userId
+                this.recipientId
             );
             this._isMounted &&
                 this.setState({

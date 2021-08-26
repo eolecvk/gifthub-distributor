@@ -1,7 +1,7 @@
 import React from 'react';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import ParticipantViewSwitch from './ParticipantView/ParticipantViewSwitch';
-import ObserverView from './ObserverView/ObserverView';
+import ParticipantView from './ParticipantView/ParticipantView';
 import Home from './Home/Home';
 import Header from './Header';
 
@@ -20,13 +20,22 @@ function App() {
                     <hr />
                     <div style={styleContent}>
                         <Switch>
-                            <Route path="/" exact component={() => <Home />} />
                             <Route
-                                path="/participant"
+                                path="/"
                                 exact
-                                component={() => <ParticipantViewSwitch />}
+                                component={() => <Home />} />
+                            <Route
+                                path="/ABCD"
+                                exact
+                                component={() => <ParticipantViewSwitch/>}
                             />
-                            <Route path="/observer" exact component={() => <ObserverView />} />
+                            {/* For dev only */}
+                            <Route
+                                path="/dev"
+                                exact
+                                component={() => <ParticipantView/>}
+                            />
+                            {/* ~~~~~~~~~~~~ */}
                         </Switch>
                     </div>
                 </div>

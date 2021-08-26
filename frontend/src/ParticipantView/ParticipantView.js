@@ -2,16 +2,14 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import isEqual from 'lodash.isequal';
 import RoomInfo from './RoomInfo';
-import ButtonUpdateDefaultDistribution from './ButtonUpdateDefaultDistribution';
 import SlidersGrid from './SliderGrid';
-import EditableInfoModal from './EditableInfoModal';
 import {
-    getNeedsScaleDownRatio,
     getSlidersInitializationData,
     getStartingValues,
     registerVote,
 } from './utils';
 import DissentModal from './DissentModal';
+import UpdateDefaultDistributionModal from './UpdateDefaultDistributionModal';
 
 class ParticipantView extends Component {
     constructor(props) {
@@ -82,7 +80,7 @@ class ParticipantView extends Component {
 
     updateDefaultDistribution = (defaultDistribution) => {
         const roomInfo = this.state.roomInfo;
-        const needsScaleDownRatio = getNeedsScaleDownRatio(roomInfo, defaultDistribution);
+        //const needsScaleDownRatio = getNeedsScaleDownRatio(roomInfo, defaultDistribution);
         const futureSlidersInitializationData = getSlidersInitializationData(
             roomInfo,
             defaultDistribution
@@ -132,8 +130,7 @@ class ParticipantView extends Component {
         return (
             <div>
                 <RoomInfo roomInfo={this.state.roomInfo} />
-                <EditableInfoModal roomInfo={this.state.roomInfo} />
-                <ButtonUpdateDefaultDistribution
+                <UpdateDefaultDistributionModal
                     updateDefaultDistribution={this.updateDefaultDistribution}
                 />
                 <SlidersGrid

@@ -3,12 +3,13 @@ import axios from 'axios';
 import isEqual from 'lodash.isequal';
 import RoomInfo from './RoomInfo';
 import SlidersGrid from './SliderGrid';
-import EditableInfoModal from './EditableInfoModal';
+import JoinAsVoterModal from './JoinAsVoterModal'
 import {
-    getNeedsScaleDownRatio,
     getSlidersInitializationData,
-    getStartingValues,
 } from './utils';
+
+import EditableInfoModal from './EditableInfoModal';
+
 
 class ParticipantViewHollow extends Component {
     constructor(props) {
@@ -53,8 +54,7 @@ class ParticipantViewHollow extends Component {
         return (
             <div>
                 <RoomInfo roomInfo={this.state.roomInfo} />
-                <button onClick={()=>{console.log('join as voter')}}>Join as voter</button>
-                {/* Replace with <JoinAsVoterModal/> */}
+                <JoinAsVoterModal roomCode={this.state.roomInfo.room_code}/>
                 <SlidersGrid
                     key={this.state.defaultDistribution + Date.now()} // force class rendering on defaultDistribution update!
                     distribution={this.state.defaultDistribution}
