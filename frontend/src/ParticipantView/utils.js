@@ -5,12 +5,12 @@ function getNeedsScaleDownRatio(roomInfo, defaultDistribution) {
 
     if (['survive', 'thrive'].includes(defaultDistribution)) {
         const roomAmount = roomInfo.splitting_cents / 100;
-        const totalNeeds = roomInfo.people
-            .map((userData) => {
+        const totalNeeds = roomInfo.recipients
+            .map((recipientData) => {
                 return (
                     defaultDistribution === 'survive'
-                        ? userData.needs_lower_bound_cents / 100
-                        : userData.needs_upper_bound_cents / 100)
+                        ? recipientData.needs_lower_bound_cents / 100
+                        : recipientData.needs_upper_bound_cents / 100)
             })
             .reduce((a, b) => a + b);
 
@@ -23,32 +23,33 @@ function getNeedsScaleDownRatio(roomInfo, defaultDistribution) {
 }
 
 function getSlidersInitializationData(roomInfo, defaultDistribution) {
-    if (defaultDistribution === 'zero') {
-        return roomInfo.people.map((userData) => ({
-            personId: userData.person_id,
-            title: userData.name,
-            surviveValue: userData.needs_lower_bound_cents / 100,
-            thriveValue: userData.needs_upper_bound_cents / 100,
+
+    if (defaultDistribution === 'zero' || defaultDistribution === 'hollow') {
+        return roomInfo.recipients.map((recipientData) => ({
+            recipientId: recipientData.recipient_id,
+            title: recipientData.name,
+            surviveValue: recipientData.needs_lower_bound_cents / 100,
+            thriveValue: recipientData.needs_upper_bound_cents / 100,
             startingValue: 0,
             maxValue: roomInfo.splitting_cents / 100,
         }));
     }
 
     if (defaultDistribution === 'equal') {
-        const equalSplit = roomInfo.splitting_cents / 100 / roomInfo.people.length;
+        const equalSplit = roomInfo.splitting_cents / 100 / roomInfo.recipients.length;
         const equalSplitFloor = Math.floor(equalSplit);
-        let remainder = roomInfo.splitting_cents / 100 - equalSplitFloor * roomInfo.people.length;
-        let startingValues = Array(roomInfo.people.length).fill(equalSplitFloor);
+        let remainder = roomInfo.splitting_cents / 100 - equalSplitFloor * roomInfo.recipients.length;
+        let startingValues = Array(roomInfo.recipients.length).fill(equalSplitFloor);
 
         for (let i = remainder; i > 0; i--) {
             startingValues[i] += 1;
         }
 
-        return roomInfo.people.map((userData, index) => ({
-            personId: userData.person_id,
-            title: userData.name,
-            surviveValue: userData.needs_lower_bound_cents / 100,
-            thriveValue: userData.needs_upper_bound_cents / 100,
+        return roomInfo.recipients.map((recipientData, index) => ({
+            recipientId: recipientData.recipient_id,
+            title: recipientData.name,
+            surviveValue: recipientData.needs_lower_bound_cents / 100,
+            thriveValue: recipientData.needs_upper_bound_cents / 100,
             startingValue: startingValues[index],
             maxValue: roomInfo.splitting_cents / 100,
         }));
@@ -59,23 +60,23 @@ function getSlidersInitializationData(roomInfo, defaultDistribution) {
     const scaleDownRatio = getNeedsScaleDownRatio(roomInfo, defaultDistribution);
 
     if (defaultDistribution === 'survive') {
-        return roomInfo.people.map((userData) => ({
-            personId: userData.person_id,
-            title: userData.name,
-            surviveValue: userData.needs_lower_bound_cents / 100,
-            thriveValue: userData.needs_upper_bound_cents / 100,
-            startingValue: Math.floor((userData.needs_lower_bound_cents / 100) * scaleDownRatio),
+        return roomInfo.recipients.map((recipientData) => ({
+            recipientId: recipientData.recipient_id,
+            title: recipientData.name,
+            surviveValue: recipientData.needs_lower_bound_cents / 100,
+            thriveValue: recipientData.needs_upper_bound_cents / 100,
+            startingValue: Math.floor((recipientData.needs_lower_bound_cents / 100) * scaleDownRatio),
             maxValue: roomInfo.splitting_cents / 100,
         }));
     }
 
     if (defaultDistribution === 'thrive') {
-        return roomInfo.people.map((userData) => ({
-            personId: userData.person_id,
-            title: userData.name,
-            surviveValue: userData.needs_lower_bound_cents / 100,
-            thriveValue: userData.needs_upper_bound_cents / 100,
-            startingValue: Math.floor((userData.needs_upper_bound_cents / 100) * scaleDownRatio),
+        return roomInfo.recipients.map((recipientData) => ({
+            recipientId: recipientData.recipient_id,
+            title: recipientData.name,
+            surviveValue: recipientData.needs_lower_bound_cents / 100,
+            thriveValue: recipientData.needs_upper_bound_cents / 100,
+            startingValue: Math.floor((recipientData.needs_upper_bound_cents / 100) * scaleDownRatio),
             maxValue: roomInfo.splitting_cents / 100,
         }));
     }
@@ -84,7 +85,7 @@ function getSlidersInitializationData(roomInfo, defaultDistribution) {
 function getStartingValues(slidersInitializationData) {
     let startingValues = {};
     for (const sliderData of slidersInitializationData) {
-        startingValues[sliderData['personId']] = sliderData['startingValue'];
+        startingValues[sliderData['recipientId']] = sliderData['startingValue'];
     }
     return startingValues;
 }
