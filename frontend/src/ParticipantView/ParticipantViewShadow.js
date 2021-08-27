@@ -7,8 +7,8 @@ import JoinAsVoterModal from './JoinAsVoterModal'
 import {
     getSlidersInitializationData,
 } from './utils';
+import RecipientModal from './RecipientModal';
 import AddRecipientModal from './AddRecipientModal'
-import EditableInfoModal from './EditableInfoModal';
 
 
 class ParticipantViewShadow extends Component {
@@ -21,7 +21,8 @@ class ParticipantViewShadow extends Component {
         //     : JSON.parse(sessionStorage.getItem('roomInfo'))
         this.state = {
             roomInfo: JSON.parse(sessionStorage.getItem('roomInfo')),//this.roomInfoIni,
-            defaultDistribution: 'shadow'
+            defaultDistribution: 'shadow',
+            recipientModalOpenAtSlider: '',
         };
     }
     intervalID;
@@ -50,6 +51,17 @@ class ParticipantViewShadow extends Component {
         });
     };
 
+    openRecipientModal = (sliderId) => {
+        this.setState({
+            ...this.state,
+            recipientModalOpenAtSlider: sliderId === '' ? '' : parseInt(sliderId),
+        });
+    };
+
+    closeRecipientModal = () => {
+        this.openRecipientModal('');
+    };
+
     render() {
         const slidersInitializationData = getSlidersInitializationData(
             this.state.roomInfo,
@@ -67,9 +79,13 @@ class ParticipantViewShadow extends Component {
                     roomInfo={this.state.roomInfo}
                     roomAmount={this.state.roomInfo.splitting_cents / 100}
                     reset={this.state.reset}
-                    dissentModalOpenAtSlider={this.dissentModalOpenAtSlider}
+                    openRecipientModal={this.openRecipientModal}
                 />
                 <AddRecipientModal roomCode={this.state.roomInfo.room_code} />
+                <RecipientModal
+                    recipientModalOpenAtSlider={this.state.recipientModalOpenAtSlider}
+                    handleClose={this.closeRecipientModal}
+                />
             </div>
         );
     }

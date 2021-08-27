@@ -121,10 +121,13 @@ function registerVote(sliderValues, roomCode) {
     registerEvents(events, roomCode);
 }
 
-function registerRecipientUpdate(args, roomCode) {
+function registerRecipientUpdate(args) {
     //WHERE DO WE FIND THE recipient_id ?? :D
-    const { username, needsDescription, needsLowerBoundCents, needsUpperBoundCents } = args;
-    const event = { kind: 'RECIPIENT_UPDATE' };
+    const { roomCode, recipientId, username, needsDescription, needsLowerBoundCents, needsUpperBoundCents } = args;
+    const event = {
+        kind: 'RECIPIENT_UPDATE',
+        recipient_id : recipientId
+    };
 
     if (typeof username !== 'undefined') {
         event['name'] = username;

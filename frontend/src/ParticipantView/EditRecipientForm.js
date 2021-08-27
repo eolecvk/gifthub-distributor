@@ -29,6 +29,7 @@ class EditRecipientForm extends Component {
             errors: {},
         };
 
+        this.roomCode = this.props.roomCode
         this.recipientId = this.props.recipientId
     }
 
@@ -168,7 +169,7 @@ class EditRecipientForm extends Component {
             events: [
                 {
                     kind: "RECIPIENT_UPDATE",
-                    recipient_id : this.recipientId,
+                    recipient_id: this.recipientId,
                     name: this.state.formValues.name,
                     needs_description: this.state.formValues.needsDescription,
                     needs_lower_bound_cents: this.state.formValues.needsLowerBoundDollars * 100,
@@ -192,40 +193,44 @@ class EditRecipientForm extends Component {
         //         // HANDLE ERROR IN SOME WAY
         //     }
         // });
-        this.props.handleClose();
+        this.props.handleCloseEditRecipientModal();
     };
 
     handleRemove = (e) => {
         e.preventDefault();
 
-        const recipientId = this.props.recipientId
+        const confirmRes = window.confirm("Are you sure you want to remove the recipient?");
+        if (confirmRes == false) {
+            return
+        }
 
         const payload = {
             events: [
                 {
                     kind: "RECIPIENT_REMOVE",
-                    recipient_id: recipientId
+                    recipient_id: this.recipientId
                 }
             ]
         };
 
         axios
-            .put(`/api/${this.state.formValues.roomCode} `, payload)
+            .put(`/api/${this.roomCode} `, payload)
             .then((response) => {
                 if (response.status === 200) {
                     sessionStorage.clear();
                     sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
                 }
             })
-            // ERROR HANDLING SPECIFIC TO REMOVING A RECIPIENT
-            // .catch((error) => {
-            //     console.log(error);
-            //     if (error.response.data.error === 'SOME ERROR MESSAGE') {
-            //         // HANDLE ERROR IN SOME WAY
-            //     }
-            // });
+        // ERROR HANDLING SPECIFIC TO REMOVING A RECIPIENT
+        // .catch((error) => {
+        //     console.log(error);
+        //     if (error.response.data.error === 'SOME ERROR MESSAGE') {
+        //         // HANDLE ERROR IN SOME WAY
+        //     }
+        // });
 
-        this.props.handleClose();
+        this.props.handleCloseEditRecipientModal();
+        this.props.handleCloseRecipientModal()
     }
 
     render() {
@@ -326,7 +331,8 @@ class EditRecipientForm extends Component {
                         >
                             Remove
                         </Button>
-                        <Button
+                        {/* // Probably don't need a close button */}
+                        {/* <Button
                             variant="contained"
                             color="primary"
                             type="button"
@@ -335,7 +341,7 @@ class EditRecipientForm extends Component {
                             }}
                         >
                             Close
-                        </Button>
+                        </Button> */}
                     </Grid>
                 </Grid>
             </form>
@@ -343,4 +349,4 @@ class EditRecipientForm extends Component {
     }
 }
 
-export default {AddRecipientForm, EditRecipientForm};
+export default EditRecipientForm

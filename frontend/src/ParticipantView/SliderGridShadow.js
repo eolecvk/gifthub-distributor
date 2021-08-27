@@ -47,8 +47,7 @@ class SliderGridShadow extends Component {
                                 : this.state.currentValues[slData.recipientId.toString()]
                         }
                         maxValue={slData.maxValue}
-                        handleUpdateSlider={this.handleUpdateSlider}
-                        handleOpenDissentModal={this.props.dissentModalOpenAtSlider}
+                        openRecipientModal={this.props.openRecipientModal}
                         recipientInfo={this.props.roomInfo.recipients.find((p) => {
                             return p.recipient_id.toString() === slData.recipientId.toString();
                         })}

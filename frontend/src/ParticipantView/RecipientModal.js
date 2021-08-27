@@ -2,14 +2,17 @@ import React, { useEffect } from 'react';
 import { Container, Modal } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ToggleButtonsUpDown from './ToggleButtonsUpDown';
+import EditableInfoModal from './EditRecipientModal'
+import EditRecipientModal from './EditRecipientModal'
 
-function DissentModal(props) {
-    const { dissentModalOpenAtSlider, handleClose } = props;
-    const [openAtSlider, setOpenAtSlider] = React.useState(dissentModalOpenAtSlider);
+
+function RecipientModal(props) {
+    const { recipientId, handleClose } = props;
+    const [openAtSlider, setOpenAtSlider] = React.useState(recipientId);
 
     useEffect(() => {
-        setOpenAtSlider(dissentModalOpenAtSlider);
-    }, [dissentModalOpenAtSlider]);
+        setOpenAtSlider(recipientId);
+    }, [recipientId]);
 
     const useStyles = makeStyles((theme) => ({
         paper: {
@@ -24,8 +27,8 @@ function DissentModal(props) {
             //display: 'flex',
             justifyContent: 'center',
             verticalAlign: 'middle',
-            width: 100,
-            height: 100,
+            width: 200,
+            height: 300,
             backgroundColor: theme.palette.background.paper,
             border: '2px solid #000',
             boxShadow: theme.shadows[5],
@@ -35,20 +38,31 @@ function DissentModal(props) {
 
     const classes = useStyles();
     const roomInfo = JSON.parse(sessionStorage.getItem('roomInfo'));
-    const userName =
-        openAtSlider === ''
-            ? ''
-            : roomInfo.recipients.filter((el) => {
-                  return el.recipient_id === parseInt(openAtSlider);
-              })[0].name;
+    
+    const recipientData = openAtSlider === ''
+        ? ''
+        : roomInfo.recipients.filter((el) => {
+            return el.recipient_id === parseInt(openAtSlider);
+        })[0]
+
+
+    let textBody = `Survive: ${recipientData.needs_lower_bound_cents / 100}$\n` +
+        `Thrive: ${recipientData.needs_upper_bound_cents / 100}$`;
+    if (recipientData.needs_description && recipientData.needs_description !== '') {
+        textBody += `\n\n"${recipientData.needs_description}"`;
+    }
 
     const body =
         openAtSlider === '' ? (
             <div />
         ) : (
             <div className={classes.paper}>
-                <h3>{userName}</h3>
                 <ToggleButtonsUpDown key={openAtSlider} sliderId={openAtSlider} />
+                <div style={{ whiteSpace: 'pre-line' }}>{textBody}</div>
+                <EditRecipientModal
+                    recipientId={recipientId}
+                    handleCloseRecipientModal={handleClose}
+                />
             </div>
         );
 
@@ -68,4 +82,4 @@ function DissentModal(props) {
     );
 }
 
-export default DissentModal;
+export default RecipientModal;

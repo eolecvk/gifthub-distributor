@@ -33,7 +33,7 @@ const styles = (theme) => ({
     },
 });
 
-class EditableInfoForm extends Component {
+class EditRecipientFormDev extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -273,4 +273,4 @@ class EditableInfoForm extends Component {
     }
 }
 
-export default withStyles(styles)(EditableInfoForm);
+export default withStyles(styles)(EditRecipientFormDev);

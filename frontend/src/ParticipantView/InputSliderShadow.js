@@ -84,7 +84,7 @@ function InputSliderShadow(props) {
         thriveValue,
         startingValue,
         maxValue,
-        handleOpenDissentModal,
+        openRecipientModal,
         recipientInfo,
     } = props;
     const needsDescription = recipientInfo.needs_description;
@@ -115,12 +115,9 @@ function InputSliderShadow(props) {
         return marks;
     }
 
-    function getTipTitle(surviveValue, thriveValue, needsDescription) {
-        let tipText = `Survive: ${surviveValue}$\nThrive:   ${thriveValue}$`;
-        if (needsDescription !== '') {
-            tipText += `\n\n"${needsDescription}"`;
-        }
-        return <div style={{ whiteSpace: 'pre-line' }}>{tipText}</div>;
+
+    function handleClickFace(){
+        openRecipientModal(props.sliderId)
     }
 
     // const useStyles = makeStyles({})
@@ -138,24 +135,11 @@ function InputSliderShadow(props) {
                 >
                     <Grid item xs={2}>
                         <Grid item>
-                            <Tooltip
-                                title={getTipTitle(surviveValue, thriveValue, needsDescription)}
-                                aria-label={getTipTitle(
-                                    surviveValue,
-                                    thriveValue,
-                                    needsDescription
-                                )}
-                                arrow={true}
-                                placement={'right'}
-                            >
-                                <FaceIcon
-                                    onClick={() => {
-                                        handleOpenDissentModal(props.sliderId);
-                                    }}
-                                    fontSize="large"
-                                    style={{ color: colors[props.sliderId] }}
-                                />
-                            </Tooltip>
+                            <FaceIcon
+                                onClick={handleClickFace}
+                                fontSize="large"
+                                style={{ color: colors[props.sliderId] }}
+                            />
                         </Grid>
                         <Grid item>
                             <Typography id={props.sliderId.toString() + 'input-slider'}>
@@ -169,8 +153,8 @@ function InputSliderShadow(props) {
                             min={0}
                             max={maxValue}
                             value={startingValue ? startingValue : 0}
-                            onChange={()=>{return null}}
-                            onChangeCommitted={()=>{return null}}
+                            onChange={() => { return null }}
+                            onChangeCommitted={() => { return null }}
                             aria-labelledby={props.sliderId.toString() + 'slider'}
                             marks={getMarks(groupVoteAvg, surviveValue, thriveValue)}
                             valueLabelDisplay="off"
@@ -179,7 +163,7 @@ function InputSliderShadow(props) {
                     </Grid>
                 </Grid>
             </MuiThemeProvider>
-        </div>
+        </div >
     );
 }
 

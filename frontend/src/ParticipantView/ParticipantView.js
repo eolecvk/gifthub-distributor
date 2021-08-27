@@ -8,7 +8,7 @@ import {
     getStartingValues,
     registerVote,
 } from './utils';
-import DissentModal from './DissentModal';
+import RecipientModal from './RecipientModal';
 import UpdateDefaultDistributionModal from './UpdateDefaultDistributionModal';
 import AddRecipientModal from './AddRecipientModal'
 
@@ -19,7 +19,7 @@ class ParticipantView extends Component {
             defaultDistribution: 'zero',
             reset: false,
             roomInfo: JSON.parse(sessionStorage.getItem('roomInfo')) || '',
-            dissentModalOpenAtSlider: '',
+            recipientModalOpenAtSlider: '',
         };
     }
     intervalID;
@@ -111,15 +111,15 @@ class ParticipantView extends Component {
         });
     };
 
-    dissentModalOpenAtSlider = (sliderId) => {
+    openRecipientModal = (sliderId) => {
         this.setState({
             ...this.state,
-            dissentModalOpenAtSlider: sliderId === '' ? '' : parseInt(sliderId),
+            recipientModalOpenAtSlider: sliderId === '' ? '' : parseInt(sliderId),
         });
     };
 
-    dissentModalClose = () => {
-        return this.dissentModalOpenAtSlider('');
+    closeRecipientModal = () => {
+        return this.recipientModalOpenAtSlider('');
     };
 
     render() {
@@ -141,12 +141,12 @@ class ParticipantView extends Component {
                     roomInfo={this.state.roomInfo}
                     roomAmount={this.state.roomInfo.splitting_cents / 100}
                     reset={this.state.reset}
-                    dissentModalOpenAtSlider={this.dissentModalOpenAtSlider}
+                    openRecipientModal={this.openRecipientModal}
                 />
                 <AddRecipientModal roomCode={this.state.roomInfo.room_code} />
-                <DissentModal
-                    dissentModalOpenAtSlider={this.state.dissentModalOpenAtSlider}
-                    handleClose={this.dissentModalClose}
+                <RecipientModal
+                    recipientId={this.state.recipientModalOpenAtSlider}
+                    handleClose={this.closeRecipientModal}
                 />
             </div>
         );

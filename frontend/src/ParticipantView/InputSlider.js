@@ -98,7 +98,7 @@ function InputSlider(props) {
         thriveValue,
         startingValue,
         maxValue,
-        handleOpenDissentModal,
+        openRecipientModal,
         recipientInfo,
     } = props;
     const needsDescription = recipientInfo.needs_description;
@@ -174,12 +174,8 @@ function InputSlider(props) {
         }
     }
 
-    function getTipTitle(surviveValue, thriveValue, needsDescription) {
-        let tipText = `Survive: ${surviveValue}$\nThrive:   ${thriveValue}$`;
-        if (needsDescription !== '') {
-            tipText += `\n\n"${needsDescription}"`;
-        }
-        return <div style={{ whiteSpace: 'pre-line' }}>{tipText}</div>;
+    function handleClickFace(){
+        openRecipientModal(props.sliderId)
     }
 
     // const useStyles = makeStyles({})
@@ -197,24 +193,11 @@ function InputSlider(props) {
                 >
                     <Grid item xs={2}>
                         <Grid item>
-                            <Tooltip
-                                title={getTipTitle(surviveValue, thriveValue, needsDescription)}
-                                aria-label={getTipTitle(
-                                    surviveValue,
-                                    thriveValue,
-                                    needsDescription
-                                )}
-                                arrow={true}
-                                placement={'right'}
-                            >
-                                <FaceIcon
-                                    onClick={() => {
-                                        handleOpenDissentModal(props.sliderId);
-                                    }}
-                                    fontSize="large"
-                                    style={{ color: colors[props.sliderId] }}
-                                />
-                            </Tooltip>
+                            <FaceIcon
+                                onClick={handleClickFace}
+                                fontSize="large"
+                                style={{ color: colors[props.sliderId] }}
+                            />
                         </Grid>
                         <Grid item>
                             <Typography id={props.sliderId.toString() + 'input-slider'}>
@@ -235,7 +218,9 @@ function InputSlider(props) {
                             valueLabelDisplay="on"
                         />
                     </Grid>
-                    <Grid item xs>
+
+                    {/* //Removing input field to the right of the slider bar */}
+                    {/* <Grid item xs>
                         <Input
                             //className={classes.input}
                             key={props.sliderId.toString() + 'input'}
@@ -251,7 +236,7 @@ function InputSlider(props) {
                                 'aria-labelledby': 'input-slider',
                             }}
                         />
-                    </Grid>
+                    </Grid> */}
                 </Grid>
             </MuiThemeProvider>
         </div>
