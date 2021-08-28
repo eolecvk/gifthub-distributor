@@ -1,8 +1,7 @@
 import React from 'react';
 import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
-import { Slider, Input, Tooltip, Grid, Typography } from '@material-ui/core';
-import FaceIcon from '@material-ui/icons/Face';
-import colors from './colors';
+import { Slider, Grid } from '@material-ui/core';
+import RecipientFace from './RecipientFace'
 
 const theme = createTheme({
     overrides: {
@@ -79,6 +78,7 @@ const theme = createTheme({
 
 function InputSliderShadow(props) {
     const {
+        sliderId,
         title,
         surviveValue,
         thriveValue,
@@ -115,11 +115,6 @@ function InputSliderShadow(props) {
         return marks;
     }
 
-
-    function handleClickFace(){
-        openRecipientModal(props.sliderId)
-    }
-
     // const useStyles = makeStyles({})
     // const classes = useStyles();
 
@@ -133,7 +128,12 @@ function InputSliderShadow(props) {
                     direction={'row'}
                     spacing={1}
                 >
-                    <Grid item xs={2}>
+                    <RecipientFace
+                        sliderId={sliderId}
+                        title={title}
+                        openRecipientModal={openRecipientModal}
+                    />
+                    {/* <Grid item xs={2}>
                         <Grid item>
                             <FaceIcon
                                 onClick={handleClickFace}
@@ -146,7 +146,7 @@ function InputSliderShadow(props) {
                                 {title}
                             </Typography>
                         </Grid>
-                    </Grid>
+                    </Grid> */}
                     <Grid item xs={7}>
                         <Slider
                             key={props.sliderId.toString() + 'slider'}

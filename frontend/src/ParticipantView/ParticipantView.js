@@ -119,7 +119,7 @@ class ParticipantView extends Component {
     };
 
     closeRecipientModal = () => {
-        return this.recipientModalOpenAtSlider('');
+        this.openRecipientModal('');
     };
 
     render() {

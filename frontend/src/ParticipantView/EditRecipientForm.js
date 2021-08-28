@@ -18,19 +18,71 @@ class EditRecipientForm extends Component {
     constructor(props) {
         super(props);
         this.initialValues = {
-            name: '',
-            needsLowerBoundDollars: '',
-            needsUpperBoundDollars: '',
-            needsDescription: ''
+            formValues : {
+                name: '',
+                needsLowerBoundDollars: '',
+                needsUpperBoundDollars: '',
+                needsDescription: ''
+            },
+            errors: {}
         };
 
-        this.state = {
-            formValues: this.initialValues,
-            errors: {},
-        };
-
+        this.state = this.initialValues
         this.roomCode = this.props.roomCode
         this.recipientId = this.props.recipientId
+        this._isMounted = false; //using isMounted react pattern to avoid memory leak https://stackoverflow.com/questions/52061476/cancel-all-subscriptions-and-asyncs-in-the-componentwillunmount-method-how
+    }
+
+    parseInfo = (roomInfo, recipientId) => {
+        const recipientData = roomInfo.recipients.filter((el) => {
+            return el.recipient_id === parseInt(recipientId);
+        })[0];
+        return {
+            name: recipientData.name,
+            needsLowerBoundDollars: recipientData.needs_lower_bound_cents / 100,
+            needsUpperBoundDollars: recipientData.needs_upper_bound_cents / 100,
+            needsDescription: recipientData.needs_description,
+        };
+    };
+
+    componentDidMount = () => {
+        const getNeedsFromBackend = async () => {
+            const response = await axios.get(`/api/${this.roomCode}`);
+            const responseData = await response.data;
+
+            const {
+                name,
+                needsLowerBoundDollars,
+                needsUpperBoundDollars,
+                needsDescription
+            } = this.parseInfo(
+                responseData,
+                this.recipientId
+            );
+
+            const formValues = {
+                name: name,
+                needsLowerBoundDollars: needsLowerBoundDollars,
+                needsUpperBoundDollars: needsUpperBoundDollars,
+                needsDescription: needsDescription,
+            }
+
+            this._isMounted &&
+                this.setState({
+                    formValues: formValues,
+                    errors: {}
+                });
+        };
+
+        this._isMounted = true;
+        // Is verifying at least one is unset enough ?
+        if (this.state.formValues.needsLowerBoundDollars === '') {
+            this._isMounted && getNeedsFromBackend();
+        }
+    };
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     onChangeSurviveAmount = (e) => {
@@ -179,20 +231,16 @@ class EditRecipientForm extends Component {
         };
 
         axios
-            .put(`/api/${this.state.formValues.roomCode} `, payload)
+            .put(`/api/${this.roomCode} `, payload)
             .then((response) => {
                 if (response.status === 200) {
                     sessionStorage.clear();
                     sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
                 }
             })
-        // ERROR HANDLING SPECIFIC TO ADDING A RECIPIENT
-        // .catch((error) => {
-        //     console.log(error);
-        //     if (error.response.data.error === 'SOME ERROR MESSAGE') {
-        //         // HANDLE ERROR IN SOME WAY
-        //     }
-        // });
+            .catch((error) => {
+                console.log(error);
+            });
         this.props.handleCloseEditRecipientModal();
     };
 
@@ -200,7 +248,7 @@ class EditRecipientForm extends Component {
         e.preventDefault();
 
         const confirmRes = window.confirm("Are you sure you want to remove the recipient?");
-        if (confirmRes == false) {
+        if (confirmRes === false) {
             return
         }
 
@@ -221,13 +269,9 @@ class EditRecipientForm extends Component {
                     sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
                 }
             })
-        // ERROR HANDLING SPECIFIC TO REMOVING A RECIPIENT
-        // .catch((error) => {
-        //     console.log(error);
-        //     if (error.response.data.error === 'SOME ERROR MESSAGE') {
-        //         // HANDLE ERROR IN SOME WAY
-        //     }
-        // });
+            .catch((error) => {
+                console.log(error);
+            });
 
         this.props.handleCloseEditRecipientModal();
         this.props.handleCloseRecipientModal()

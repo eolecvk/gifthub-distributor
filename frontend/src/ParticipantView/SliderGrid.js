@@ -171,7 +171,7 @@ class SliderGrid extends Component {
                         }
                         maxValue={slData.maxValue}
                         handleUpdateSlider={this.handleUpdateSlider}
-                        handleOpenRecipientModal={this.props.recipientModalOpenAtSlider}
+                        handleOpenRecipientModal={this.props.openRecipientModal}
                         recipientInfo={this.props.roomInfo.recipients.find((p) => {
                             return p.recipient_id.toString() === slData.recipientId.toString();
                         })}

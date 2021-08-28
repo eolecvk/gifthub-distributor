@@ -1,22 +1,10 @@
 import React from 'react';
 import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
 import { Slider, Input, Tooltip, Grid, Typography } from '@material-ui/core';
-import FaceIcon from '@material-ui/icons/Face';
-import colors from './colors';
+import RecipientFace from './RecipientFace'
 
 const theme = createTheme({
     overrides: {
-        MuiTooltip: {
-            tooltip: {
-                fontSize: '1em',
-                color: 'yellow',
-                backgroundColor: 'grey',
-                border: '1px solid #dadde9',
-                left: -20,
-                top: 3,
-                maxWidth: 200,
-            },
-        },
         MuiSlider: {
             thumb: {
                 height: 20,
@@ -93,12 +81,13 @@ const theme = createTheme({
 
 function InputSlider(props) {
     const {
+        sliderId,
         title,
         surviveValue,
         thriveValue,
         startingValue,
         maxValue,
-        openRecipientModal,
+        handleOpenRecipientModal,
         recipientInfo,
     } = props;
     const needsDescription = recipientInfo.needs_description;
@@ -158,25 +147,21 @@ function InputSlider(props) {
         props.handleUpdateSlider(props.sliderId, newValue, isVote);
     }
 
-    function handleInputChange(event) {
-        const newValue = event.target.value === '' ? '' : Number(event.target.value);
-        props.handleUpdateSlider(props.sliderId, newValue, false);
-    }
+    // function handleInputChange(event) {
+    //     const newValue = event.target.value === '' ? '' : Number(event.target.value);
+    //     props.handleUpdateSlider(props.sliderId, newValue, false);
+    // }
 
-    function handleBlur(event) {
-        if (props.startingValue < 0) {
-            props.handleUpdateSlider(props.sliderId, 0, false);
-        } else if (props.startingValue > props.maxValue) {
-            props.handleUpdateSlider(props.sliderId, props.maxValue, false);
-        } else {
-            const newValue = event.target.value === '' ? '' : Number(event.target.value);
-            props.handleUpdateSlider(props.sliderId, newValue, true);
-        }
-    }
-
-    function handleClickFace(){
-        openRecipientModal(props.sliderId)
-    }
+    // function handleBlur(event) {
+    //     if (props.startingValue < 0) {
+    //         props.handleUpdateSlider(props.sliderId, 0, false);
+    //     } else if (props.startingValue > props.maxValue) {
+    //         props.handleUpdateSlider(props.sliderId, props.maxValue, false);
+    //     } else {
+    //         const newValue = event.target.value === '' ? '' : Number(event.target.value);
+    //         props.handleUpdateSlider(props.sliderId, newValue, true);
+    //     }
+    // }
 
     // const useStyles = makeStyles({})
     // const classes = useStyles();
@@ -191,8 +176,12 @@ function InputSlider(props) {
                     direction={'row'}
                     spacing={1}
                 >
-                    <Grid item xs={2}>
-                        <Grid item>
+                    <RecipientFace
+                        sliderId={sliderId}
+                        title={title}
+                        openRecipientModal={handleOpenRecipientModal}
+                    />
+                    {/* <Grid item>
                             <FaceIcon
                                 onClick={handleClickFace}
                                 fontSize="large"
@@ -203,8 +192,7 @@ function InputSlider(props) {
                             <Typography id={props.sliderId.toString() + 'input-slider'}>
                                 {title}
                             </Typography>
-                        </Grid>
-                    </Grid>
+                        </Grid> */}
                     <Grid item xs={7}>
                         <Slider
                             key={props.sliderId.toString() + 'slider'}

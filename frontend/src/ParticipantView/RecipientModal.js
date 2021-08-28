@@ -38,7 +38,7 @@ function RecipientModal(props) {
 
     const classes = useStyles();
     const roomInfo = JSON.parse(sessionStorage.getItem('roomInfo'));
-    
+
     const recipientData = openAtSlider === ''
         ? ''
         : roomInfo.recipients.filter((el) => {
@@ -46,25 +46,44 @@ function RecipientModal(props) {
         })[0]
 
 
-    let textBody = `Survive: ${recipientData.needs_lower_bound_cents / 100}$\n` +
+    let textBody = `Name: ${recipientData.name}\n` +
+        `Survive: ${recipientData.needs_lower_bound_cents / 100}$\n` +
         `Thrive: ${recipientData.needs_upper_bound_cents / 100}$`;
+
     if (recipientData.needs_description && recipientData.needs_description !== '') {
         textBody += `\n\n"${recipientData.needs_description}"`;
     }
 
+    const voterId = sessionStorage.getItem("voterId")
+
+
+    const dissentButtons = (!voterId === 'undefined')
+        ? null
+        : (
+            <ToggleButtonsUpDown
+                key={recipientId}
+                recipientId={recipientId}
+                voterId={parseInt(voterId)}
+                roomCode={roomInfo.room_code}
+            />
+        )
+
     const body =
-        openAtSlider === '' ? (
-            <div />
-        ) : (
-            <div className={classes.paper}>
-                <ToggleButtonsUpDown key={openAtSlider} sliderId={openAtSlider} />
-                <div style={{ whiteSpace: 'pre-line' }}>{textBody}</div>
-                <EditRecipientModal
-                    recipientId={recipientId}
-                    handleCloseRecipientModal={handleClose}
-                />
-            </div>
-        );
+        openAtSlider === ''
+            ? (<div />)
+            : (
+                <div className={classes.paper}>
+                    {dissentButtons}
+                    <div style={{ whiteSpace: 'pre-line' }}>
+                        {textBody}
+                    </div>
+                    <EditRecipientModal
+                        recipientId={recipientId}
+                        roomInfo={roomInfo}
+                        handleCloseRecipientModal={handleClose}
+                    />
+                </div>
+            );
 
     return (
         <div>

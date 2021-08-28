@@ -53,10 +53,16 @@ class JoinAsVoterForm extends Component {
             .post(`/api/${this.props.roomCode}/voterJoin`, payload)
             .then((response) => {
                 if (response.status === 200) {
+
                     const path = response.data.path
+                    const voterId = parseInt(response.voterId)
+                    const roomInfo = JSON.stringify(response.data.room_info)
+
                     sessionStorage.clear();
-                    sessionStorage.setItem('roomInfo', JSON.stringify(response.data.room_info));
                     sessionStorage.setItem('path', path);
+                    sessionStorage.setItem('voterId', voterId)
+                    sessionStorage.setItem('roomInfo', roomInfo);
+
                     //history.push(`/${this.props.roomCode}/${path}`)
                     history.push(`/ABCD`) // for dev
                 }
