@@ -17,6 +17,7 @@ class ParticipantView extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            view: sessionStorage['participantView'] || 'default',
             defaultDistribution: 'zero',
             reset: false,
             roomInfo: JSON.parse(sessionStorage.getItem('roomInfo')) || '',
@@ -129,14 +130,17 @@ class ParticipantView extends Component {
             this.state.defaultDistribution
         );
 
-        return (
+        const participantDefaultView = (
             <div>
                 <RoomInfo roomInfo={this.state.roomInfo} />
                 <span>
                     <UpdateDefaultDistributionModal
                         updateDefaultDistribution={this.updateDefaultDistribution}
                     />
-                    <ZoomOnBars />
+                    <ZoomOnBars switchToZoomedView={() => {
+                        sessionStorage.setItem('participantView', 'zoomed')
+                        this.setState({ view: 'zoomed' })
+                    }} />
                 </span>
                 <SlidersGrid
                     key={this.state.defaultDistribution + Date.now()} // force class rendering on defaultDistribution update!
@@ -153,7 +157,47 @@ class ParticipantView extends Component {
                     handleClose={this.closeRecipientModal}
                 />
             </div>
-        );
+        )
+
+        const participantZoomedView = (
+            <div>
+                <button onClick={() => {
+                    sessionStorage.setItem('participantView', 'default')
+                    this.setState({ view: 'default' })
+                }}>
+                    Go back lol
+                </button>
+            </div>
+        )
+
+        const participantView = this.state.view === 'default'
+            ? participantDefaultView
+            : participantZoomedView
+
+        return participantView
+        // <div>
+        //     <RoomInfo roomInfo={this.state.roomInfo} />
+        //     <span>
+        //         <UpdateDefaultDistributionModal
+        //             updateDefaultDistribution={this.updateDefaultDistribution}
+        //         />
+        //         <ZoomOnBars />
+        //     </span>
+        //     <SlidersGrid
+        //         key={this.state.defaultDistribution + Date.now()} // force class rendering on defaultDistribution update!
+        //         distribution={this.state.defaultDistribution}
+        //         slidersInitializationData={slidersInitializationData}
+        //         roomInfo={this.state.roomInfo}
+        //         roomAmount={this.state.roomInfo.splitting_cents / 100}
+        //         reset={this.state.reset}
+        //         openRecipientModal={this.openRecipientModal}
+        //     />
+        //     <AddRecipientModal roomCode={this.state.roomInfo.room_code} />
+        //     <RecipientModal
+        //         recipientId={this.state.recipientModalOpenAtSlider}
+        //         handleClose={this.closeRecipientModal}
+        //     />
+        // </div>
     }
 }
 

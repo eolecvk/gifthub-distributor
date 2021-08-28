@@ -1,10 +1,10 @@
 import React from 'react'
 import './ZoomOnBars.css'
 
-function ZoomOnBars() {
+function ZoomOnBars(props) {
 
     return (
-        <button id='zoom-button'>
+        <button id='zoom-button' onClick={props.switchToZoomedView}>
             <svg
                 version="1.1"
                 id="zoom-button-icon"
