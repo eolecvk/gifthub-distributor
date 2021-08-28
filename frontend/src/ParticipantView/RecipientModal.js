@@ -57,9 +57,9 @@ function RecipientModal(props) {
     const voterId = sessionStorage.getItem("voterId")
 
 
-    const dissentButtons = (!voterId === 'undefined')
-        ? null
-        : (
+    let dissentButtons
+    if (voterId) {
+        dissentButtons = (
             <ToggleButtonsUpDown
                 key={recipientId}
                 recipientId={recipientId}
@@ -67,6 +67,7 @@ function RecipientModal(props) {
                 roomCode={roomInfo.room_code}
             />
         )
+    }
 
     const body =
         openAtSlider === ''
