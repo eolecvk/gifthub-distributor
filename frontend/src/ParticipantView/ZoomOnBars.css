@@ -1,0 +1,10 @@
+#zoom-button {
+    width: 70px;
+    height: 30px;
+}
+
+#zoom-button svg {
+    width: 25px;
+    height: 25px;
+    enable-background: 'new 0 0 26.676 26.676'
+}

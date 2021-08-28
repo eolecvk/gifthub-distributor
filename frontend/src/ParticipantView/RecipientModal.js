@@ -56,7 +56,6 @@ function RecipientModal(props) {
 
     const voterId = sessionStorage.getItem("voterId")
 
-
     let dissentButtons
     if (voterId) {
         dissentButtons = (

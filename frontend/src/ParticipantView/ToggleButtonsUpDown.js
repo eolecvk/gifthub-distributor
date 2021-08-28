@@ -47,6 +47,8 @@ class ToggleButtonsUpDown extends React.Component {
         })[0];
     };
 
+    // NEED TO REWRITE THIS CAUSE WE JUST NEED THE RESPONSE
+    // NOT PARSING THE WHOLE ROOM INFO???
     parseEmotive = (roomInfo, voterId, recipientId) => {
         // Case: slider has been set to '' as we unmount the modal
         if (this.recipientId === '') {
@@ -56,7 +58,7 @@ class ToggleButtonsUpDown extends React.Component {
         //Parse the emotive state value for a given voterId, recipientId
         //based on a roomInfo object
         const recipientData = this.getRecipientData(roomInfo, recipientId);
-        if (Object.keys(recipientData.emotive).includes(parseInt(voterId))){
+        if (Object.keys(recipientData.emotive).includes(parseInt(voterId))) {
             return recipientData.emotive[parseInt(voterId)]
         }
         return ''
@@ -72,10 +74,15 @@ class ToggleButtonsUpDown extends React.Component {
         emotiveChange['emotion'] = newOpinion || this.state.opinion;
         emotiveChange['toggle'] = newOpinion ? 'ON' : 'OFF';
         const payload = { events: [emotiveChange] };
-        const response = await axios.put(`/api/${this.roomCode}`, payload);
-        const responseData = await response.data;
-        const emotive = this.parseEmotive(responseData, this.voterId, this.recipientId);
-        this.setState({ opinion: emotive });
+
+        try {
+            const response = await axios.put(`/api/${this.roomCode}`, payload)
+            const responseData = await response.data;
+            const emotive = this.parseEmotive(responseData, this.voterId, this.recipientId);
+            this.setState({ opinion: emotive });
+        } catch (err) {
+            console.log(err)
+        }
     };
 
     render() {

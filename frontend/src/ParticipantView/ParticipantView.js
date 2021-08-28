@@ -10,6 +10,7 @@ import {
 } from './utils';
 import RecipientModal from './RecipientModal';
 import UpdateDefaultDistributionModal from './UpdateDefaultDistributionModal';
+import ZoomOnBars from './ZoomOnBars'
 import AddRecipientModal from './AddRecipientModal'
 
 class ParticipantView extends Component {
@@ -131,9 +132,12 @@ class ParticipantView extends Component {
         return (
             <div>
                 <RoomInfo roomInfo={this.state.roomInfo} />
-                <UpdateDefaultDistributionModal
-                    updateDefaultDistribution={this.updateDefaultDistribution}
-                />
+                <span>
+                    <UpdateDefaultDistributionModal
+                        updateDefaultDistribution={this.updateDefaultDistribution}
+                    />
+                    <ZoomOnBars />
+                </span>
                 <SlidersGrid
                     key={this.state.defaultDistribution + Date.now()} // force class rendering on defaultDistribution update!
                     distribution={this.state.defaultDistribution}

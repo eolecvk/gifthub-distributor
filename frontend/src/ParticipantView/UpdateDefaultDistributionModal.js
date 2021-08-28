@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Modal from '@material-ui/core/Modal';
-import './ButtonsUpdateDefaultDistribution.css';
+import './ButtonUpdateDefaultDistribution.css';
 
 
 const useStyles = makeStyles((theme) => ({
