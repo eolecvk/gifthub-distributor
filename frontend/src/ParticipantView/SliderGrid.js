@@ -94,21 +94,22 @@ class SliderGrid extends Component {
             ? this.getStateObjectNewMove(this.state, id, newValue)
             : this.getStateObjectNoMove(this.state, id, newValue);
 
+        // UNCOMMENT THIS TO LIMIT AMOUNT SELECTED SO THAT SUM AMOUNTS <= TOTAL AMOUNT AVAILABLE
         //Check if future state is valid (sum of money distributed <= totalAmount)
         // If not, distribute as much as possible in the slider moved last
-        const futureTotalCost = Object.values(futureState.currentValues).reduce((a, b) => a + b);
+        // const futureTotalCost = Object.values(futureState.currentValues).reduce((a, b) => a + b);
 
-        if (futureTotalCost > this.props.roomAmount) {
-            const currentTotalCost = Object.values(this.state.currentValues).reduce(
-                (a, b) => a + b
-            );
-            const currentValue = this.state.currentValues[id];
-            const maxNewValue = this.props.roomAmount - currentTotalCost + currentValue;
-            actualNewValue = maxNewValue;
-            futureState = isVote
-                ? this.getStateObjectNewMove(this.state, id, maxNewValue)
-                : this.getStateObjectNoMove(this.state, id, maxNewValue);
-        }
+        // if (futureTotalCost > this.props.roomAmount) {
+        //     const currentTotalCost = Object.values(this.state.currentValues).reduce(
+        //         (a, b) => a + b
+        //     );
+        //     const currentValue = this.state.currentValues[id];
+        //     const maxNewValue = this.props.roomAmount - currentTotalCost + currentValue;
+        //     actualNewValue = maxNewValue;
+        //     futureState = isVote
+        //         ? this.getStateObjectNewMove(this.state, id, maxNewValue)
+        //         : this.getStateObjectNoMove(this.state, id, maxNewValue);
+        // }
 
         if (isVote) {
             const voteData = { [`${id}`]: actualNewValue };
