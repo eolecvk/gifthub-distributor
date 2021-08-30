@@ -57,7 +57,7 @@ public class Voter {
   public Voter withUpdatedEmotiveState(EmotiveState state) {
     ImmutableMap.Builder<Integer, EmotiveKind> mapBuilder = ImmutableMap.builder();
     emotiveStateByRecipientId.entrySet().stream()
-        .filter(entry -> entry.getKey().equals(state.getRecipientId()))
+        .filter(entry -> !entry.getKey().equals(state.getRecipientId()))
         .forEach(mapBuilder::put);
     mapBuilder.put(state.getRecipientId(), state.getKind());
     return this.toBuilder().emotiveStateByRecipientId(mapBuilder.build()).build();
