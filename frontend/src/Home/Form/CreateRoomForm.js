@@ -44,9 +44,11 @@ function CreateRoomForm(props) {
             .post('/api/rooms', payload)
             .then((response) => {
                 if (response.status === 200) {
-                    sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
+                    const roomInfo = response.data
+                    const roomCode = roomInfo.room_code
+                    sessionStorage.setItem('roomInfo', JSON.stringify(roomInfo));
                     sessionStorage.setItem('originIsCreateForm', true);
-                    history.push('/ABCD');
+                    history.push(`/${roomCode}`);
                 }
             })
             .catch((error) => {

@@ -53,10 +53,14 @@ class JoinRoomForm extends Component {
             .then((response) => {
                 console.log(response)
                 if (response.status === 200) {
+
+                    const roomInfo = response.data
+                    const roomCode = roomInfo.roomCode
+
                     sessionStorage.clear();
-                    sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
+                    sessionStorage.setItem('roomInfo', JSON.stringify(roomInfo));
                     sessionStorage.setItem('originIsCreateForm', false)
-                    history.push(`/ABCD`) // for dev only
+                    history.push(`/${roomCode}`) // for dev only
                     // history.push(`/${this.state.formValues.roomCode}/join`); ???? hmm no
                     //history.push(`/${this.state.formValues.roomCode}`) // THIS WHEN I HAVE IMPLEM DYNAMIC ROUTING
 
