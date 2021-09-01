@@ -25,9 +25,14 @@ function App() {
                                 exact
                                 component={() => <Home />} />
                             <Route
-                                path="/ABCD"
+                                path="/:roomCode"
                                 exact
-                                component={() => <ParticipantViewSwitch/>}
+                                component={(config) => <ParticipantViewSwitch match={config.match}/>}
+                                />
+                            <Route
+                                path="/:roomCode/:path"
+                                exact
+                                component={(config) => <ParticipantViewSwitch match={config.match}/>}
                             />
                             {/* For dev only */}
                             <Route

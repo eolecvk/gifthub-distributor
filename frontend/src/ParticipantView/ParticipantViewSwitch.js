@@ -5,8 +5,8 @@ import ParticipantViewShadow from './ParticipantViewShadow';
 import { Switch, FormControlLabel } from '@material-ui/core';
 
 class ParticipantViewSwitch extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.originIsCreateForm = (sessionStorage['originIsCreateForm'] === 'true')
 
@@ -25,6 +25,8 @@ class ParticipantViewSwitch extends Component {
     };
 
     render() {
+        console.log(this.props.match.params.roomCode)
+        console.log(this.props.match.params.path)
 
         let view = <ObserverView />
         if (!this.state.isObserverView) {
