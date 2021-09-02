@@ -3,6 +3,7 @@ import axios from 'axios';
 import isEqual from 'lodash.isequal';
 import RoomInfo from './RoomInfo';
 import SlidersGrid from './SliderGrid';
+import RecipientSlide from './RecipientSlide'
 import {
     getSlidersInitializationData,
     getStartingValues,
@@ -10,18 +11,19 @@ import {
 } from './utils';
 import RecipientModal from './RecipientModal';
 import UpdateDefaultDistributionModal from './UpdateDefaultDistributionModal';
-import ZoomOnBars from './ZoomOnBars'
+import ZoomedViewButton from './ZoomedViewButton'
 import AddRecipientModal from './AddRecipientModal'
 
 class ParticipantView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            view: sessionStorage['participantView'] || 'default',
+            view: sessionStorage['participantView'] || 'list',
             defaultDistribution: 'zero',
             reset: false,
             roomInfo: JSON.parse(sessionStorage.getItem('roomInfo')) || '',
             recipientModalOpenAtSlider: '',
+            slideOpenAtSlider : ''
         };
     }
     intervalID;
@@ -130,17 +132,21 @@ class ParticipantView extends Component {
             this.state.defaultDistribution
         );
 
-        const participantDefaultView = (
+        const listView = (
             <div>
                 <RoomInfo roomInfo={this.state.roomInfo} />
                 <span>
                     <UpdateDefaultDistributionModal
                         updateDefaultDistribution={this.updateDefaultDistribution}
                     />
-                    <ZoomOnBars switchToZoomedView={() => {
-                        sessionStorage.setItem('participantView', 'zoomed')
-                        this.setState({ view: 'zoomed' })
-                    }} />
+                    <ZoomedViewButton
+                        switchToZoomedView={() => {
+                            if (this.state.roomInfo.recipients.length === 0) {
+                                return
+                            }
+                            sessionStorage.setItem('participantView', 'zoomed')
+                            this.setState({ view: 'zoomed' })
+                        }} />
                 </span>
                 <SlidersGrid
                     key={this.state.defaultDistribution + Date.now()} // force class rendering on defaultDistribution update!
@@ -159,45 +165,23 @@ class ParticipantView extends Component {
             </div>
         )
 
-        const participantZoomedView = (
+        const zoomedView = (
             <div>
                 <button onClick={() => {
-                    sessionStorage.setItem('participantView', 'default')
-                    this.setState({ view: 'default' })
+                    sessionStorage.setItem('participantView', 'list')
+                    this.setState({ view: 'list' })
                 }}>
-                    Go back lol
+                    Back to list
                 </button>
+                <RecipientSlide/>
             </div>
         )
 
-        const participantView = this.state.view === 'default'
-            ? participantDefaultView
-            : participantZoomedView
+        const participantView = this.state.view === 'list'
+            ? listView
+            : zoomedView
 
         return participantView
-        // <div>
-        //     <RoomInfo roomInfo={this.state.roomInfo} />
-        //     <span>
-        //         <UpdateDefaultDistributionModal
-        //             updateDefaultDistribution={this.updateDefaultDistribution}
-        //         />
-        //         <ZoomOnBars />
-        //     </span>
-        //     <SlidersGrid
-        //         key={this.state.defaultDistribution + Date.now()} // force class rendering on defaultDistribution update!
-        //         distribution={this.state.defaultDistribution}
-        //         slidersInitializationData={slidersInitializationData}
-        //         roomInfo={this.state.roomInfo}
-        //         roomAmount={this.state.roomInfo.splitting_cents / 100}
-        //         reset={this.state.reset}
-        //         openRecipientModal={this.openRecipientModal}
-        //     />
-        //     <AddRecipientModal roomCode={this.state.roomInfo.room_code} />
-        //     <RecipientModal
-        //         recipientId={this.state.recipientModalOpenAtSlider}
-        //         handleClose={this.closeRecipientModal}
-        //     />
-        // </div>
     }
 }
 

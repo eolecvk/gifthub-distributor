@@ -1,7 +1,7 @@
 import React from 'react'
-import './ZoomOnBars.css'
+import './ZoomedViewButton.css'
 
-function ZoomOnBars(props) {
+function ZoomedViewButton(props) {
 
     return (
         <button id='zoom-button' onClick={props.switchToZoomedView}>
@@ -27,4 +27,4 @@ function ZoomOnBars(props) {
 
 }
 
-export default ZoomOnBars
+export default ZoomedViewButton
