@@ -113,8 +113,6 @@ class ObserverView extends Component {
                     </Bar>
                     <Scatter shape="circle" dataKey="needs_upper" fill="#00FF00" />
                     <Scatter shape="circle" dataKey="needs_lower" fill="#FF0000" />
-                    <Scatter shape="cross" dataKey="upper_25" fill="#000000" />
-                    <Scatter shape="cross" dataKey="lower_25" fill="#000000" />
                 </ComposedChart>
             </ResponsiveContainer>
         );

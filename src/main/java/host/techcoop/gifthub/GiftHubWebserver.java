@@ -41,7 +41,7 @@ public class GiftHubWebserver {
               new CacheLoader<GiftHubRoom, String>() {
                 @Override
                 public String load(GiftHubRoom giftHubRoom) throws Exception {
-                  return gson.toJson(RoomInfoResponse.from(giftHubRoom));
+                  return gson.toJson(RoomInfoResponse.buildTestInfo(giftHubRoom));
                 }
               });
 
