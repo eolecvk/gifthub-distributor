@@ -9,12 +9,12 @@ const ViolinBarLine = (props) => {
 
     var data = props.votes_cents;
 
-    var x = d3.scaleLinear().domain(props.x_domain).range([props.width, 0]);
+    var x = d3.scaleLinear().domain(props.x_domain).range([0, props.width]);
 
     var histogram = d3
         .histogram()
         .domain(x.domain())
-        .thresholds(x.ticks(20))
+        .thresholds(x.ticks(30))
         .value((d) => d);
 
     var binnedValues = histogram(data);

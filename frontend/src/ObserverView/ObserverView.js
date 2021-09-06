@@ -61,7 +61,7 @@ class ObserverView extends Component {
 
         return Object.entries(attributedVotes)
             .filter((entry) => range[0] < entry[1] && entry[1] < range[1])
-            .map((entry) => '\n' + entry[0] + ': ' + entry[1])
+            .map((entry) => "" + entry[0] + ': ' + entry[1])
             .reduce((a, b) => a + b, '');
     }
 
