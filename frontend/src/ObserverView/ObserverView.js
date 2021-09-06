@@ -60,8 +60,13 @@ class ObserverView extends Component {
                 )
                 .flat()
         );
-        const orderOfMagnitude = Math.pow(10, Math.floor(Math.log10(maxNumber)));
-        return orderOfMagnitude * Math.floor(maxNumber / orderOfMagnitude) + 2 * orderOfMagnitude;
+        let orderOfMagnitude =  Math.floor(Math.log10(maxNumber));
+        let appliedOrder = Math.pow(10, orderOfMagnitude);
+        if (maxNumber / appliedOrder < 4) {
+            orderOfMagnitude--;
+            appliedOrder = Math.pow(10, orderOfMagnitude);
+        }
+        return appliedOrder * Math.floor(maxNumber / appliedOrder) + 2 * appliedOrder;
     }
 
     makeTooltip(props, maxVote) {
@@ -91,9 +96,9 @@ class ObserverView extends Component {
                 style={{
                     margin: '0px',
                     padding: '5px',
-                    'background-color': 'rgb(255,255,255)',
+                    backgroundColor: 'rgb(255,255,255)',
                     border: '1px solid rgb(204,204,204)',
-                    'white-space': 'nowrap',
+                    whiteSpace: 'nowrap',
                 }}
             >
                 {labels}
