@@ -13,6 +13,7 @@ import {
 } from 'recharts';
 import axios from 'axios';
 import ViolinBarLine from './ViolinBarLine';
+import * as d3 from 'd3';
 import { quantile } from './utils';
 import colors from './../ParticipantView/colors';
 import AmountDistributedProgressBar from '../ParticipantView/AmountDistributedProgressBar';
@@ -45,20 +46,27 @@ class ObserverView extends Component {
 
     makeRectangleBar(color, props) {
         return (
-            <Rectangle
-                x={props.x}
-                y={props.y - 25}
-                width={10}
-                height={60}
-                radius={3}
-                fill={color}
-            />
+            <Rectangle x={props.x} y={props.y - 25} width={5} height={60} radius={3} fill={color} />
         );
+    }
+
+    getStableMax(recipients) {
+        const maxNumber = d3.max(
+            recipients
+                .map((p) =>
+                    [p.needs_upper_bound_cents, p.needs_lower_bound_cents].concat(
+                        Object.values(p.votes_cents)
+                    )
+                )
+                .flat()
+        );
+        const orderOfMagnitude = Math.pow(10, Math.floor(Math.log10(maxNumber)));
+        return orderOfMagnitude * Math.floor(maxNumber / orderOfMagnitude) + 2 * orderOfMagnitude;
     }
 
     makeTooltip(props, maxVote) {
         if (props.payload.length == 0) {
-            return <div className="custom-tooltip" />;
+            return <div />;
         }
         const attributedVotes = props.payload[0].payload.attributed_votes;
         const hoverValue =
@@ -71,11 +79,26 @@ class ObserverView extends Component {
             .sort((entryA, entryB) => entryA[1] - entryB[1])
             .map((entry, index) => (
                 <p key={index}>
-                    {entry[0]}: {currencyFormatter.format(entry[1] / 100.0)}
+                    <b>{entry[0]}:</b> {currencyFormatter.format(entry[1] / 100.0)}
                 </p>
             ));
+        if (labels.length == 0) {
+            return <div />;
+        }
 
-        return <div className="custom-tooltip">{labels}</div>;
+        return (
+            <div
+                style={{
+                    margin: '0px',
+                    padding: '5px',
+                    'background-color': 'rgb(255,255,255)',
+                    border: '1px solid rgb(204,204,204)',
+                    'white-space': 'nowrap',
+                }}
+            >
+                {labels}
+            </div>
+        );
     }
 
     getData = () => {
@@ -93,7 +116,7 @@ class ObserverView extends Component {
 
     render() {
         const recipients = this.state.recipients;
-        const maxVote = Math.max(...recipients.map((p) => Object.values(p.votes_cents)).flat());
+        const maxVote = this.getStableMax(recipients);
         const totalAmountDollars = this.state.splitting_cents / 100;
         const roomCode = this.state.room_code;
         const roomName = this.state.room_name;
@@ -165,7 +188,7 @@ class ObserverView extends Component {
                         axisLine={false}
                     />
                     <XAxis type="number" axisLine={false} domain={[0, maxVote / 100]} />
-                    <Bar dataKey="max_vote" label={false} shape={<ViolinBarLine />}/>
+                    <Bar dataKey="max_vote" label={false} shape={<ViolinBarLine />} />
                     <Scatter
                         shape={(props) => this.makeRectangleBar('#00FF00', props)}
                         dataKey="needs_upper"
@@ -174,7 +197,7 @@ class ObserverView extends Component {
                         shape={(props) => this.makeRectangleBar('#FF0000', props)}
                         dataKey="needs_lower"
                     />
-                    <Scatter shape="circle" dataKey="avg" />
+                    <Scatter shape="cross" dataKey="avg" />
                     <Tooltip content={(props) => this.makeTooltip(props, maxVote)} />
                 </ComposedChart>
             </ResponsiveContainer>

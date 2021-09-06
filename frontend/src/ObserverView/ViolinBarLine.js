@@ -2,10 +2,6 @@ import React from 'react';
 import * as d3 from 'd3';
 
 const ViolinBarLine = (props) => {
-    const svgRef = React.useRef(null);
-    const svgEl = d3.select(svgRef.current);
-    svgEl.selectAll('*').remove();
-
     var data = props.votes_cents;
 
     var x = d3.scaleLinear().domain(props.x_domain).range([0, props.width]);
@@ -18,7 +14,7 @@ const ViolinBarLine = (props) => {
 
     var binnedValues = histogram(data);
 
-    var maxY = Math.max(...binnedValues.map((bin) => bin.length));
+    var maxY = d3.max(binnedValues.map((bin) => bin.length));
 
     var heightScale = d3.scaleLinear().range([0, props.height]).domain([-maxY, maxY]);
 
