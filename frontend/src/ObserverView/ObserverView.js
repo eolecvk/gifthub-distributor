@@ -160,10 +160,7 @@ class ObserverView extends Component {
                 };
             });
 
-        const totalDistributed =
-            recipientData.length > 0
-                ? recipientData.map((p) => p.avg).reduce((p1, p2) => p1 + p2)
-                : 0;
+        const totalDistributed = recipientData.map((p) => p.avg).reduce((p1, p2) => p1 + p2, 0);
 
         const barchart = (
             <ResponsiveContainer width="95%" height="80%" minHeight={100 * recipients.length}>
