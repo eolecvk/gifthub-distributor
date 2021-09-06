@@ -7,6 +7,8 @@ import host.techcoop.gifthub.domain.EmotiveState;
 import host.techcoop.gifthub.domain.GiftHubRoom;
 import host.techcoop.gifthub.domain.Vote;
 import host.techcoop.gifthub.domain.enums.EmotiveKind;
+import java.util.Map.Entry;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 import lombok.Builder;
@@ -235,25 +237,28 @@ public class RoomInfoResponse {
                     .put(9007, 3056)
                     .build())
             .build(),
-        RecipientResponse.builder()
-            .recipientId(7)
-            .name("Oliver")
-            .needsLowerBoundCents(500)
-            .needsUpperBoundCents(2000)
-            .needsDescription("Oliver Needs")
-            .emotive(
-                ImmutableMap.of(9002, EmotiveKind.DISSENT_DOWN, 9003, EmotiveKind.DISSENT_DOWN))
-            .avgCents(4884)
-            .votesCents(
-                ImmutableMap.<Integer, Integer>builder()
-                    .put(9001, 2790)
-                    .put(9002, 7028)
-                    .put(9003, 3971)
-                    .put(9004, 5579)
-                    .put(9005, 385)
-                    .put(9006, 5283)
-                    .put(9007, 9155)
-                    .build())
-            .build());
+        buildAnimatedResponse());
+  }
+
+  private static RecipientResponse buildAnimatedResponse() {
+    Random generator = new Random();
+    AtomicInteger voterId = new AtomicInteger(9001);
+    int offset = (int) ((System.currentTimeMillis() / 1000 % 30) * (5000 / 30));
+    ImmutableMap<Integer, Integer> votes =
+        generator
+            .ints(7, offset, 10000 - offset)
+            .mapToObj(x -> x)
+            .collect(ImmutableMap.toImmutableMap(x -> voterId.getAndIncrement(), x -> x));
+    int avgCents = votes.entrySet().stream().mapToInt(Entry::getValue).sum() / 7;
+    return RecipientResponse.builder()
+        .recipientId(7)
+        .name("Oliver")
+        .needsLowerBoundCents(500)
+        .needsUpperBoundCents(2000)
+        .needsDescription("Oliver Needs")
+        .emotive(ImmutableMap.of(9002, EmotiveKind.DISSENT_DOWN, 9003, EmotiveKind.DISSENT_DOWN))
+        .avgCents(avgCents)
+        .votesCents(votes)
+        .build();
   }
 }

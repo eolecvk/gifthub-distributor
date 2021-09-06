@@ -58,7 +58,7 @@ class ObserverView extends Component {
 
     makeTooltip(props, maxVote) {
         if (props.payload.length == 0) {
-            return '';
+            return <div className="custom-tooltip" />;
         }
         const attributedVotes = props.payload[0].payload.attributed_votes;
         const hoverValue =
@@ -75,7 +75,7 @@ class ObserverView extends Component {
                 </p>
             ));
 
-        return <div>{labels}</div>;
+        return <div className="custom-tooltip">{labels}</div>;
     }
 
     getData = () => {

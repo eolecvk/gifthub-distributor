@@ -5,7 +5,6 @@ const ViolinBarLine = (props) => {
     const svgRef = React.useRef(null);
     const svgEl = d3.select(svgRef.current);
     svgEl.selectAll('*').remove();
-    svgEl.append('g');
 
     var data = props.votes_cents;
 
@@ -23,30 +22,20 @@ const ViolinBarLine = (props) => {
 
     var heightScale = d3.scaleLinear().range([0, props.height]).domain([-maxY, maxY]);
 
-    svgEl
-        .selectAll('.g')
-        .data([binnedValues])
-        .enter()
-        .append('path')
-        .style('stroke', 'none')
-        .style('fill', props.bar_fill)
-        .attr(
-            'd',
-            d3
-                .area()
-                .x(function (d) {
-                    return x(d.x0);
-                })
-                .y0(function (d) {
-                    return heightScale(-d.length);
-                })
-                .y1(function (d) {
-                    return heightScale(d.length);
-                })
-                .curve(d3.curveCatmullRom) // This makes the line smoother to give the violin appearance. Try d3.curveStep to see the difference
-        );
+    var violin = d3
+        .area()
+        .x(function (d) {
+            return x(d.x0) + props.x;
+        })
+        .y0(function (d) {
+            return heightScale(-d.length) + props.y;
+        })
+        .y1(function (d) {
+            return heightScale(d.length) + props.y;
+        })
+        .curve(d3.curveCatmullRom); // This makes the line smoother to give the violin appearance. Try d3.curveStep to see the difference
 
-    return <svg ref={svgRef} width={props.width} height={props.height} x={props.x} y={props.y} />;
+    return <path d={violin(binnedValues)} stroke="none" fill={props.bar_fill} />;
 };
 
 export default ViolinBarLine;
