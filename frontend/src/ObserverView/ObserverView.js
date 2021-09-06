@@ -17,7 +17,15 @@ import { quantile } from './utils';
 import colors from './../ParticipantView/colors';
 import AmountDistributedProgressBar from '../ParticipantView/AmountDistributedProgressBar';
 
-// Example: https://blog.stvmlbrn.com/2019/02/20/automatically-refreshing-data-in-react.html
+const currencyFormatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+
+    // These options are needed to round to whole numbers if that's what you want.
+    //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+    //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+});
+
 class ObserverView extends Component {
     constructor() {
         super();
@@ -48,7 +56,6 @@ class ObserverView extends Component {
         );
     }
 
-    // once we set the x axis domain manually, we can calculate the value that is being hovered over here.
     makeTooltip(props, maxVote) {
         if (props.payload.length == 0) {
             return '';
@@ -59,10 +66,16 @@ class ObserverView extends Component {
         const rangeDivider = maxVote / 40;
         const range = [hoverValue - rangeDivider, hoverValue + rangeDivider];
 
-        return Object.entries(attributedVotes)
+        const labels = Object.entries(attributedVotes)
             .filter((entry) => range[0] < entry[1] && entry[1] < range[1])
-            .map((entry) => "" + entry[0] + ': ' + entry[1])
-            .reduce((a, b) => a + b, '');
+            .sort((entryA, entryB) => entryA[1] - entryB[1])
+            .map((entry, index) => (
+                <p key={index}>
+                    {entry[0]}: {currencyFormatter.format(entry[1] / 100.0)}
+                </p>
+            ));
+
+        return <div>{labels}</div>;
     }
 
     getData = () => {
