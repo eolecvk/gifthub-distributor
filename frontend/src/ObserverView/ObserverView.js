@@ -9,6 +9,7 @@ import {
     ResponsiveContainer,
     Scatter,
     Rectangle,
+    Tooltip,
 } from 'recharts';
 import axios from 'axios';
 import { quantile } from './utils';
@@ -31,6 +32,14 @@ class ObserverView extends Component {
 
     componentWillUnmount() {
         clearTimeout(this.intervalID);
+    }
+
+    makeRectangleBar(color, props) {
+        return <Rectangle x={props.x} y={props.y-25}  width={10} height={60} radius={3} fill={color}/>;
+    }
+
+    makeTooltip(props) {
+      return "" + props.label + ": " + (props.coordinate.x - props.viewBox.left)/(props.viewBox.width);
     }
 
     getData = () => {
@@ -112,8 +121,10 @@ class ObserverView extends Component {
                             <Cell key={`cell-${index}`} fill={colors[index + 1]} />
                         ))}
                     </Bar>
-                    <Scatter shape={(props) => <Rectangle x={props.x-5} y={props.y-20} width={10} height={40} radius={3} fill="#00FF00"/>} dataKey="needs_upper"/>
-                    <Scatter shape={(props) => <Rectangle x={props.x-5} y={props.y-20}  width={10} height={40} radius={3} fill="#FF0000"/>} dataKey="needs_lower"/>
+                    <Scatter shape={(props) => this.makeRectangleBar("#00FF00", props)} dataKey="needs_upper"/>
+                    <Scatter shape={(props) => this.makeRectangleBar("#FF0000", props)} dataKey="needs_lower"/>
+                    <Scatter shape="circle" dataKey="cents"/>
+                    <Tooltip content={(props) => this.makeTooltip(props)}/>
                 </ComposedChart>
             </ResponsiveContainer>
         );
