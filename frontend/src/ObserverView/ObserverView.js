@@ -8,6 +8,7 @@ import {
     LabelList,
     ResponsiveContainer,
     Scatter,
+    Rectangle,
 } from 'recharts';
 import axios from 'axios';
 import { quantile } from './utils';
@@ -61,8 +62,8 @@ class ObserverView extends Component {
                 const upper_25 = quantile(Object.values(p.votes_cents), 0.75) / 100;
                 const lower_25 = quantile(Object.values(p.votes_cents), 0.25) / 100;
 
-                const countDissentUp = p.emotive.DISSENT_UP ? p.emotive.DISSENT_UP.length : 0;
-                const countDissentDown = p.emotive.DISSENT_DOWN ? p.emotive.DISSENT_DOWN.length : 0;
+                const countDissentUp = Object.entries(p.emotive).filter(entry => entry[1] === "DISSENT_UP").length;
+                const countDissentDown = Object.entries(p.emotive).filter(entry => entry[1] === "DISSENT_DOWN").length;
                 const dissent = `👇${countDissentDown}  👆${countDissentUp}`;
                 return {
                     name: name,
@@ -96,7 +97,7 @@ class ObserverView extends Component {
                         type="category"
                         dataKey="dissent"
                         tick={{ fontSize: 20 }}
-                        orientation="right"
+                        orientation="left"
                         tickLine={false}
                         axisLine={false}
                     />
@@ -111,8 +112,8 @@ class ObserverView extends Component {
                             <Cell key={`cell-${index}`} fill={colors[index + 1]} />
                         ))}
                     </Bar>
-                    <Scatter shape="circle" dataKey="needs_upper" fill="#00FF00" />
-                    <Scatter shape="circle" dataKey="needs_lower" fill="#FF0000" />
+                    <Scatter shape={(props) => <Rectangle x={props.x-5} y={props.y-20} width={10} height={40} radius={3} fill="#00FF00"/>} dataKey="needs_upper"/>
+                    <Scatter shape={(props) => <Rectangle x={props.x-5} y={props.y-20}  width={10} height={40} radius={3} fill="#FF0000"/>} dataKey="needs_lower"/>
                 </ComposedChart>
             </ResponsiveContainer>
         );
