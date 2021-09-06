@@ -3,16 +3,12 @@ import axios from 'axios';
 import isEqual from 'lodash.isequal';
 import RoomInfo from './RoomInfo';
 import SlidersGrid from './SliderGrid';
-import RecipientSlide from './RecipientSlide'
-import {
-    getSlidersInitializationData,
-    getStartingValues,
-    registerVote,
-} from './utils';
+import RecipientSlide from './RecipientSlide';
+import { getSlidersInitializationData, getStartingValues, registerVote } from './utils';
 import RecipientModal from './RecipientModal';
 import UpdateDefaultDistributionModal from './UpdateDefaultDistributionModal';
-import ZoomedViewButton from './ZoomedViewButton'
-import AddRecipientModal from './AddRecipientModal'
+import ZoomedViewButton from './ZoomedViewButton';
+import AddRecipientModal from './AddRecipientModal';
 
 class ParticipantView extends Component {
     constructor(props) {
@@ -23,7 +19,7 @@ class ParticipantView extends Component {
             reset: false,
             roomInfo: JSON.parse(sessionStorage.getItem('roomInfo')) || '',
             recipientModalOpenAtSlider: '',
-            slideOpenAtSlider : ''
+            slideOpenAtSlider: '',
         };
     }
     intervalID;
@@ -142,11 +138,12 @@ class ParticipantView extends Component {
                     <ZoomedViewButton
                         switchToZoomedView={() => {
                             if (this.state.roomInfo.recipients.length === 0) {
-                                return
+                                return;
                             }
-                            sessionStorage.setItem('participantView', 'zoomed')
-                            this.setState({ view: 'zoomed' })
-                        }} />
+                            sessionStorage.setItem('participantView', 'zoomed');
+                            this.setState({ view: 'zoomed' });
+                        }}
+                    />
                 </span>
                 <SlidersGrid
                     key={this.state.defaultDistribution + Date.now()} // force class rendering on defaultDistribution update!
@@ -163,25 +160,25 @@ class ParticipantView extends Component {
                     handleClose={this.closeRecipientModal}
                 />
             </div>
-        )
+        );
 
         const zoomedView = (
             <div>
-                <button onClick={() => {
-                    sessionStorage.setItem('participantView', 'list')
-                    this.setState({ view: 'list' })
-                }}>
+                <button
+                    onClick={() => {
+                        sessionStorage.setItem('participantView', 'list');
+                        this.setState({ view: 'list' });
+                    }}
+                >
                     Back to list
                 </button>
-                <RecipientSlide/>
+                <RecipientSlide />
             </div>
-        )
+        );
 
-        const participantView = this.state.view === 'list'
-            ? listView
-            : zoomedView
+        const participantView = this.state.view === 'list' ? listView : zoomedView;
 
-        return participantView
+        return participantView;
     }
 }
 

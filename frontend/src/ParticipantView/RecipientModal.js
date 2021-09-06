@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
 import { Container, Modal } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import RecipientInfo from './RecipientInfo'
+import RecipientInfo from './RecipientInfo';
 
 // import ToggleButtonsUpDown from './ToggleButtonsUpDown';
 // import EditRecipientModal from './EditRecipientModal'
-
 
 function RecipientModal(props) {
     const { recipientId, handleClose } = props;
@@ -45,7 +44,6 @@ function RecipientModal(props) {
     //     : roomInfo.recipients.filter((el) => {
     //         return el.recipient_id === parseInt(openAtSlider);
     //     })[0]
-
 
     // let textBody = `Name: ${recipientData.name}\n` +
     //     `Survive: ${recipientData.needs_lower_bound_cents / 100}$\n` +
@@ -95,10 +93,7 @@ function RecipientModal(props) {
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                 >
-                    <RecipientInfo
-                        recipientId={openAtSlider}
-                        handleClose={handleClose}
-                    />
+                    <RecipientInfo recipientId={openAtSlider} handleClose={handleClose} />
                 </Modal>
             </Container>
         </div>

@@ -3,13 +3,10 @@ import axios from 'axios';
 import isEqual from 'lodash.isequal';
 import RoomInfo from './RoomInfo';
 import SlidersGridShadow from './SliderGridShadow';
-import JoinAsVoterModal from './JoinAsVoterModal'
-import {
-    getSlidersInitializationData,
-} from './utils';
+import JoinAsVoterModal from './JoinAsVoterModal';
+import { getSlidersInitializationData } from './utils';
 import RecipientModal from './RecipientModal';
-import AddRecipientModal from './AddRecipientModal'
-
+import AddRecipientModal from './AddRecipientModal';
 
 class ParticipantViewShadow extends Component {
     constructor(props) {
@@ -20,7 +17,7 @@ class ParticipantViewShadow extends Component {
         //     ? ''
         //     : JSON.parse(sessionStorage.getItem('roomInfo'))
         this.state = {
-            roomInfo: JSON.parse(sessionStorage.getItem('roomInfo')),//this.roomInfoIni,
+            roomInfo: JSON.parse(sessionStorage.getItem('roomInfo')), //this.roomInfoIni,
             defaultDistribution: 'shadow',
             recipientModalOpenAtSlider: '',
         };

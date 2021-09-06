@@ -1,7 +1,7 @@
 import React from 'react';
 import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
 import { Slider, Grid } from '@material-ui/core';
-import RecipientFace from './RecipientFace'
+import RecipientFace from './RecipientFace';
 
 const theme = createTheme({
     overrides: {
@@ -19,7 +19,7 @@ const theme = createTheme({
         MuiSlider: {
             thumb: {
                 height: 0,
-                width: 0
+                width: 0,
             },
             track: {
                 height: 3,
@@ -153,8 +153,12 @@ function InputSliderShadow(props) {
                             min={0}
                             max={maxValue}
                             value={startingValue ? startingValue : 0}
-                            onChange={() => { return null }}
-                            onChangeCommitted={() => { return null }}
+                            onChange={() => {
+                                return null;
+                            }}
+                            onChangeCommitted={() => {
+                                return null;
+                            }}
                             aria-labelledby={props.sliderId.toString() + 'slider'}
                             marks={getMarks(groupVoteAvg, surviveValue, thriveValue)}
                             valueLabelDisplay="off"
@@ -163,7 +167,7 @@ function InputSliderShadow(props) {
                     </Grid>
                 </Grid>
             </MuiThemeProvider>
-        </div >
+        </div>
     );
 }
 

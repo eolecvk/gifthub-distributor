@@ -20,26 +20,23 @@ function App() {
                     <hr />
                     <div style={styleContent}>
                         <Switch>
-                            <Route
-                                path="/"
-                                exact
-                                component={() => <Home />} />
+                            <Route path="/" exact component={() => <Home />} />
                             <Route
                                 path="/:roomCode"
                                 exact
-                                component={(config) => <ParticipantViewSwitch match={config.match}/>}
-                                />
+                                component={(config) => (
+                                    <ParticipantViewSwitch match={config.match} />
+                                )}
+                            />
                             <Route
                                 path="/:roomCode/:path"
                                 exact
-                                component={(config) => <ParticipantViewSwitch match={config.match}/>}
+                                component={(config) => (
+                                    <ParticipantViewSwitch match={config.match} />
+                                )}
                             />
                             {/* For dev only */}
-                            <Route
-                                path="/dev"
-                                exact
-                                component={() => <ParticipantView/>}
-                            />
+                            <Route path="/dev" exact component={() => <ParticipantView />} />
                             {/* ~~~~~~~~~~~~ */}
                         </Switch>
                     </div>

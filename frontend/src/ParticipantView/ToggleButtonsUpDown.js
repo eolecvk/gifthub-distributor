@@ -11,7 +11,7 @@ class ToggleButtonsUpDown extends React.Component {
             opinion: 'unset',
         };
         this.recipientId = this.props.recipientId === '' ? '' : parseInt(this.props.recipientId);
-        this.roomCode = this.props.roomCode
+        this.roomCode = this.props.roomCode;
         this.voterId = sessionStorage.getItem('voterId');
         this._isMounted = false; //using isMounted react pattern to avoid memory leak https://stackoverflow.com/questions/52061476/cancel-all-subscriptions-and-asyncs-in-the-componentwillunmount-method-how
     }
@@ -59,9 +59,9 @@ class ToggleButtonsUpDown extends React.Component {
         //based on a roomInfo object
         const recipientData = this.getRecipientData(roomInfo, recipientId);
         if (Object.keys(recipientData.emotive).includes(parseInt(voterId))) {
-            return recipientData.emotive[parseInt(voterId)]
+            return recipientData.emotive[parseInt(voterId)];
         }
-        return ''
+        return '';
     };
 
     handleOpinion = async (event, newOpinion) => {
@@ -76,12 +76,12 @@ class ToggleButtonsUpDown extends React.Component {
         const payload = { events: [emotiveChange] };
 
         try {
-            const response = await axios.put(`/api/${this.roomCode}`, payload)
+            const response = await axios.put(`/api/${this.roomCode}`, payload);
             const responseData = await response.data;
             const emotive = this.parseEmotive(responseData, this.voterId, this.recipientId);
             this.setState({ opinion: emotive });
         } catch (err) {
-            console.log(err)
+            console.log(err);
         }
     };
 

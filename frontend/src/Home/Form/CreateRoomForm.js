@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { TextField, Grid, Button, ButtonGroup } from '@material-ui/core';
 
-
 // [CreateRoom form]
 // (fields)
 //   Room name
@@ -11,7 +10,6 @@ import { TextField, Grid, Button, ButtonGroup } from '@material-ui/core';
 // (buttons)
 //   Submit
 //   Close
-
 
 function CreateRoomForm(props) {
     const history = useHistory();
@@ -44,8 +42,8 @@ function CreateRoomForm(props) {
             .post('/api/rooms', payload)
             .then((response) => {
                 if (response.status === 200) {
-                    const roomInfo = response.data
-                    const roomCode = roomInfo.room_code
+                    const roomInfo = response.data;
+                    const roomCode = roomInfo.room_code;
                     sessionStorage.setItem('roomInfo', JSON.stringify(roomInfo));
                     sessionStorage.setItem('originIsCreateForm', true);
                     history.push(`/${roomCode}`);

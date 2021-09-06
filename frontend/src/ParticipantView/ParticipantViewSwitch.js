@@ -8,11 +8,12 @@ class ParticipantViewSwitch extends Component {
     constructor(props) {
         super(props);
 
-        this.originIsCreateForm = (sessionStorage['originIsCreateForm'] === 'true')
+        this.originIsCreateForm = sessionStorage['originIsCreateForm'] === 'true';
 
-        this.isObserverView = (typeof sessionStorage['isObserverView'] === 'undefined')
-            ? this.originIsCreateForm
-            : (sessionStorage['isObserverView'] === 'true')
+        this.isObserverView =
+            typeof sessionStorage['isObserverView'] === 'undefined'
+                ? this.originIsCreateForm
+                : sessionStorage['isObserverView'] === 'true';
 
         this.state = {
             isObserverView: this.isObserverView,
@@ -20,20 +21,20 @@ class ParticipantViewSwitch extends Component {
     }
 
     handleSwitchObserverView = () => {
-        sessionStorage.setItem('isObserverView', !this.state.isObserverView)
+        sessionStorage.setItem('isObserverView', !this.state.isObserverView);
         this.setState({ isObserverView: !this.state.isObserverView });
     };
 
     render() {
-        console.log(this.props.match.params.roomCode)
-        console.log(this.props.match.params.path)
+        console.log(this.props.match.params.roomCode);
+        console.log(this.props.match.params.path);
 
-        let view = <ObserverView />
+        let view = <ObserverView />;
         if (!this.state.isObserverView) {
-            view = <ParticipantViewShadow />
-            const path = sessionStorage['path']
+            view = <ParticipantViewShadow />;
+            const path = sessionStorage['path'];
             if (path !== 'undefined' && typeof path !== 'undefined') {
-                view = <ParticipantView />
+                view = <ParticipantView />;
             }
         }
 

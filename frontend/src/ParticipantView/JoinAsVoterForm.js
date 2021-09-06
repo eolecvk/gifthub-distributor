@@ -10,7 +10,6 @@ import { withRouter } from 'react-router';
 // (buttons)
 //   Submit
 
-
 class JoinAsVoterForm extends Component {
     constructor(props) {
         super(props);
@@ -24,7 +23,6 @@ class JoinAsVoterForm extends Component {
         };
     }
 
-
     handleInputChange = (e) => {
         const { name, value } = e.target;
 
@@ -37,7 +35,6 @@ class JoinAsVoterForm extends Component {
         });
     };
 
-
     handleSubmit = (e, history) => {
         e.preventDefault();
 
@@ -46,34 +43,31 @@ class JoinAsVoterForm extends Component {
         }
 
         const payload = {
-            name: this.state.formValues.name
+            name: this.state.formValues.name,
         };
 
         axios
             .post(`/api/${this.props.roomCode}/voterJoin`, payload)
             .then((response) => {
                 if (response.status === 200) {
-
-                    const path = response.data.path
-                    const voterId = response.data.voter_id
-                    const roomInfo = JSON.stringify(response.data.room_info)
+                    const path = response.data.path;
+                    const voterId = response.data.voter_id;
+                    const roomInfo = JSON.stringify(response.data.room_info);
 
                     sessionStorage.clear();
                     sessionStorage.setItem('path', path);
-                    sessionStorage.setItem('voterId', voterId)
+                    sessionStorage.setItem('voterId', voterId);
                     sessionStorage.setItem('roomInfo', roomInfo);
-                    history.push(`/${roomInfo.room_code}`)
+                    history.push(`/${roomInfo.room_code}`);
                 }
             })
             .catch((error) => {
-                console.log(error)
+                console.log(error);
             });
         this.props.handleClose();
     };
 
-
     render() {
-
         const { history } = this.props;
 
         return (
@@ -83,10 +77,7 @@ class JoinAsVoterForm extends Component {
                 }}
             >
                 <Grid container alignItems="center" justifyContent="center" direction="column">
-                    <Grid
-                        container
-                        style={{ padding: 10 }}
-                    >
+                    <Grid container style={{ padding: 10 }}>
                         <Grid>
                             <TextField
                                 id="name"

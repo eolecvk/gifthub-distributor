@@ -10,7 +10,6 @@ import { withRouter } from 'react-router';
 //    Submit
 //    Close
 
-
 class JoinRoomForm extends Component {
     constructor(props) {
         super(props);
@@ -36,7 +35,6 @@ class JoinRoomForm extends Component {
         });
     };
 
-
     handleSubmit = (e, history) => {
         e.preventDefault();
 
@@ -51,24 +49,21 @@ class JoinRoomForm extends Component {
         axios
             .post(`/api/${this.state.formValues.roomCode}/join`, payload)
             .then((response) => {
-                console.log(response)
+                console.log(response);
                 if (response.status === 200) {
-
-                    const roomInfo = response.data
-                    const roomCode = roomInfo.roomCode
+                    const roomInfo = response.data;
+                    const roomCode = roomInfo.roomCode;
 
                     sessionStorage.clear();
                     sessionStorage.setItem('roomInfo', JSON.stringify(roomInfo));
-                    sessionStorage.setItem('originIsCreateForm', false)
-                    history.push(`/${roomCode}`) // for dev only
+                    sessionStorage.setItem('originIsCreateForm', false);
+                    history.push(`/${roomCode}`); // for dev only
                     // history.push(`/${this.state.formValues.roomCode}/join`); ???? hmm no
                     //history.push(`/${this.state.formValues.roomCode}`) // THIS WHEN I HAVE IMPLEM DYNAMIC ROUTING
-
-
                 }
             })
             .catch((error) => {
-                console.log(error)
+                console.log(error);
             });
         this.props.handleClose();
     };
@@ -95,7 +90,6 @@ class JoinRoomForm extends Component {
                                 required
                             />
                         </Grid>
-
                     </Grid>
                     <Grid
                         container

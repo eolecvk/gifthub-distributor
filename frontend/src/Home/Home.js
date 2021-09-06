@@ -32,7 +32,6 @@ class Home extends Component {
     };
 
     render() {
-
         return (
             <Grid
                 container

@@ -4,7 +4,6 @@ import Container from '@material-ui/core/Container';
 import Modal from '@material-ui/core/Modal';
 import './ButtonUpdateDefaultDistribution.css';
 
-
 const useStyles = makeStyles((theme) => ({
     paper: {
         position: 'absolute',
@@ -34,10 +33,9 @@ function UpdateDefaultDistributionModal(props) {
     };
 
     const handleClickDistributionButton = (distributionName) => {
-        props.updateDefaultDistribution(distributionName)
+        props.updateDefaultDistribution(distributionName);
         setOpen(false);
-    }
-
+    };
 
     const classes = useStyles();
     const body = (
@@ -45,29 +43,40 @@ function UpdateDefaultDistributionModal(props) {
             <h3 id="simple-modal-title">Select a quick distribution</h3>
             <div>
                 <div>
-                    <button id="reset-button" onClick={(e) => handleClickDistributionButton('zero')}>
+                    <button
+                        id="reset-button"
+                        onClick={(e) => handleClickDistributionButton('zero')}
+                    >
                         <span>Set to 0</span>
                     </button>
                 </div>
 
                 <div>
-                    <button id="equal-button" onClick={(e) => handleClickDistributionButton('equal')}>
+                    <button
+                        id="equal-button"
+                        onClick={(e) => handleClickDistributionButton('equal')}
+                    >
                         <span>Set equally</span>
                     </button>
                 </div>
 
                 <div>
-                    <button id="survive-button" onClick={(e) => handleClickDistributionButton('survive')}>
+                    <button
+                        id="survive-button"
+                        onClick={(e) => handleClickDistributionButton('survive')}
+                    >
                         <span>Set to survive</span>
                     </button>
                 </div>
 
                 <div>
-                    <button id="thrive-button" onClick={(e) => handleClickDistributionButton('thrive')}>
+                    <button
+                        id="thrive-button"
+                        onClick={(e) => handleClickDistributionButton('thrive')}
+                    >
                         <span>Set to thrive</span>
                     </button>
                 </div>
-
             </div>
         </div>
     );
@@ -85,8 +94,8 @@ function UpdateDefaultDistributionModal(props) {
                     <path
                         d="M12 2.02c-5.51 0-9.98 4.47-9.98 9.98s4.47 9.98 9.98
                         9.98 9.98-4.47 9.98-9.98S17.51 2.02 12 2.02zM11.48
-                        20v-6.26H8L13 4v6.26h3.35L11.48 20z">
-                    </path>
+                        20v-6.26H8L13 4v6.26h3.35L11.48 20z"
+                    ></path>
                 </svg>
             </button>
             <Container>
