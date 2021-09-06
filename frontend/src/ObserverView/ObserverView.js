@@ -165,7 +165,7 @@ class ObserverView extends Component {
                         axisLine={false}
                     />
                     <XAxis type="number" axisLine={false} domain={[0, maxVote / 100]} />
-                    <Bar dataKey="max_vote" label={true} shape={<ViolinBarLine />} />
+                    <Bar dataKey="max_vote" label={false} shape={<ViolinBarLine />}/>
                     <Scatter
                         shape={(props) => this.makeRectangleBar('#00FF00', props)}
                         dataKey="needs_upper"
