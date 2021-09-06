@@ -29,7 +29,7 @@ const ViolinBarLine = (props) => {
         .y1(function (d) {
             return heightScale(d.length) + props.y;
         })
-        .curve(d3.curveCatmullRom); // This makes the line smoother to give the violin appearance. Try d3.curveStep to see the difference
+        .curve(d3.curveMonotoneX);
 
     return <path d={violin(binnedValues)} stroke="none" fill={props.bar_fill} />;
 };
