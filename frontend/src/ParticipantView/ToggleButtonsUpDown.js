@@ -58,9 +58,9 @@ class ToggleButtonsUpDown extends React.Component {
         //Parse the emotive state value for a given voterId, recipientId
         //based on a roomInfo object
         const recipientData = this.getRecipientData(roomInfo, recipientId);
-        const emotiveVoterIds = Object.keys(recipientData.emotive)
+        const emotiveVoterIds = Object.keys(recipientData.emotive);
         if (emotiveVoterIds.includes(voterId)) {
-            const recipientEmotiveVoteValue = recipientData.emotive[voterId]
+            const recipientEmotiveVoteValue = recipientData.emotive[voterId];
             return recipientEmotiveVoteValue;
         }
         return '';
