@@ -94,7 +94,7 @@ function InputSliderZoomedView(props) {
     //maxValue ???
     //startingValue ???
 
-    function getMarks(groupVoteAvg, surviveValue, thriveValue) {
+    function getMarks(surviveValue, thriveValue) { // removed arg: groupVoteAvg
         const marks = [];
 
         const surviveButton = (
@@ -188,7 +188,7 @@ function InputSliderZoomedView(props) {
                             onChange={handleSliderChange}
                             onChangeCommitted={handleSliderChangeCommitted}
                             aria-labelledby={props.sliderId.toString() + 'slider'}
-                            marks={getMarks(groupVoteAvg, surviveValue, thriveValue)}
+                            marks={getMarks(surviveValue, thriveValue)}
                             valueLabelDisplay="on"
                         />
                     </Grid>

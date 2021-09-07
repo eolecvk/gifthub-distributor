@@ -74,7 +74,6 @@ class ParticipantViewShadow extends Component {
                     distribution={this.state.defaultDistribution}
                     slidersInitializationData={slidersInitializationData}
                     roomInfo={this.state.roomInfo}
-                    roomAmount={this.state.roomInfo.splitting_cents / 100}
                     reset={this.state.reset}
                     openRecipientModal={this.openRecipientModal}
                 />

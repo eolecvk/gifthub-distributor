@@ -26,8 +26,8 @@ class ParticipantViewSwitch extends Component {
     };
 
     render() {
-        console.log(this.props.match.params.roomCode);
-        console.log(this.props.match.params.path);
+        //console.log(this.props.match.path);
+        //console.log(this.props.match);
 
         let view = <ObserverView />;
         if (!this.state.isObserverView) {

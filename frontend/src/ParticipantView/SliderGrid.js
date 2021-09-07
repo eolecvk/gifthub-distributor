@@ -180,7 +180,7 @@ class SliderGrid extends Component {
                 );
             });
 
-        const amountTotal = this.props.roomAmount;
+        const amountTotal = this.props.roomInfo.splitting_cents / 100;
         const amountDistributed =
             Object.values(this.state.currentValues).length > 0
                 ? Object.values(this.state.currentValues)
