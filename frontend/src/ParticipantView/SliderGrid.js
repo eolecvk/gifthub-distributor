@@ -115,7 +115,7 @@ class SliderGrid extends Component {
             const voteData = { [`${id}`]: actualNewValue };
             const roomCode = JSON.parse(sessionStorage.getItem('roomInfo')).room_code;
             registerVote(voteData, roomCode);
-            
+
             // is not part of registerVote
             //sessionStorage.setItem('sliderGridState', JSON.stringify(futureState));
         }

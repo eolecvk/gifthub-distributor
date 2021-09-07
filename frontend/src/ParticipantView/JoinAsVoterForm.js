@@ -52,7 +52,7 @@ class JoinAsVoterForm extends Component {
                 if (response.status === 200) {
                     const path = response.data.path;
                     const voterId = response.data.voter_id;
-                    const roomInfo = response.data.room_info
+                    const roomInfo = response.data.room_info;
 
                     sessionStorage.clear();
                     sessionStorage.setItem('path', path);

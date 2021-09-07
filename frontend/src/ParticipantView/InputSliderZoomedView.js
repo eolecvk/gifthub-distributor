@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
 import { Slider, Input, Grid } from '@material-ui/core';
 import { registerVote } from './utils';
@@ -81,10 +81,10 @@ const theme = createTheme({
 
 function InputSliderZoomedView(props) {
     const { sliderId, startingValue } = props;
-    const [ currentValue , setCurrentValue] = useState(startingValue)
+    const [currentValue, setCurrentValue] = useState(startingValue);
 
     const roomInfo = JSON.parse(sessionStorage.getItem('roomInfo'));
-    const roomCode = roomInfo.room_code
+    const roomCode = roomInfo.room_code;
     const recipientInfo = roomInfo.recipients.filter(
         (recipientData) => recipientData.recipient_id === sliderId
     )[0];
@@ -97,7 +97,8 @@ function InputSliderZoomedView(props) {
     //maxValue ???
     //startingValue ???
 
-    function getMarks(surviveValue, thriveValue) { // removed arg: groupVoteAvg
+    function getMarks(surviveValue, thriveValue) {
+        // removed arg: groupVoteAvg
         const marks = [];
 
         const surviveButton = (
@@ -150,11 +151,11 @@ function InputSliderZoomedView(props) {
     }
 
     function handleSliderChange(event, newValue, isVote) {
-        if (isVote){
-            const sliderValues = {[sliderId] : newValue}
-            registerVote(sliderValues, roomCode)
+        if (isVote) {
+            const sliderValues = { [sliderId]: newValue };
+            registerVote(sliderValues, roomCode);
         }
-        setCurrentValue(newValue)
+        setCurrentValue(newValue);
     }
 
     function handleInputChange(event) {

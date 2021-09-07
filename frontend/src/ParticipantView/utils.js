@@ -111,7 +111,7 @@ function getStateObjectNewMoves(currentState, newSliderValues) {
             ],
         },
     };
-};
+}
 
 function registerEvents(events, roomCode) {
     const payload = { events: events };
@@ -129,11 +129,10 @@ function registerEvents(events, roomCode) {
 }
 
 function registerVote(newSliderValues, roomCode) {
-
     // EDIT SLIDERGRIDSTATE IN SESSIONSTORAGE
-    const currentGridState = JSON.parse(sessionStorage.getItem('sliderGridState'))
-    const newGridState = getStateObjectNewMoves(currentGridState, newSliderValues)
-    sessionStorage.setItem('sliderGridState', JSON.stringify(newGridState))
+    const currentGridState = JSON.parse(sessionStorage.getItem('sliderGridState'));
+    const newGridState = getStateObjectNewMoves(currentGridState, newSliderValues);
+    sessionStorage.setItem('sliderGridState', JSON.stringify(newGridState));
 
     // SEND REQUEST TO
     const events = Object.keys(newSliderValues).map((key) => {
@@ -179,16 +178,16 @@ function registerRecipientUpdate(args) {
     registerEvents(events, roomCode);
 }
 
-function parseSliderStartingValue(recipientId){
-    let parsedStartingValue
-    try{
-        const sliderGridState = JSON.parse(sessionStorage.getItem('sliderGridState'))
-        const sliderValues = sliderGridState.currentValues
-        parsedStartingValue = sliderValues[`${recipientId}`]
+function parseSliderStartingValue(recipientId) {
+    let parsedStartingValue;
+    try {
+        const sliderGridState = JSON.parse(sessionStorage.getItem('sliderGridState'));
+        const sliderValues = sliderGridState.currentValues;
+        parsedStartingValue = sliderValues[`${recipientId}`];
     } catch {
-        parsedStartingValue = 0
+        parsedStartingValue = 0;
     }
-    return parsedStartingValue
+    return parsedStartingValue;
 }
 
 export {
@@ -198,5 +197,5 @@ export {
     getStateObjectNewMoves,
     registerVote,
     registerRecipientUpdate,
-    parseSliderStartingValue
+    parseSliderStartingValue,
 };

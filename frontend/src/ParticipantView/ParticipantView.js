@@ -8,7 +8,7 @@ import {
     getSlidersInitializationData,
     getStartingValues,
     registerVote,
-    getStateObjectNewMoves
+    getStateObjectNewMoves,
 } from './utils';
 import RecipientModal from './RecipientModal';
 import UpdateDefaultDistributionModal from './UpdateDefaultDistributionModal';
@@ -26,7 +26,7 @@ class ParticipantView extends Component {
             recipientModalOpenAtSlider: '',
             slideOpenAtSlider: '',
         };
-        this.getStateObjectNewMoves = getStateObjectNewMoves
+        this.getStateObjectNewMoves = getStateObjectNewMoves;
     }
     intervalID;
 
