@@ -20,7 +20,7 @@ class ToggleButtonsUpDown extends React.Component {
         const getOpinionFromBackend = async () => {
             const response = await axios.get(`/api/${this.roomCode}`);
             const responseData = await response.data;
-            const emotive = this.parseEmotive(responseData, this.userId, this.recipientId);
+            const emotive = this.parseEmotive(responseData, this.voterId, this.recipientId);
             this._isMounted && this.setState({ opinion: emotive });
         };
 
@@ -58,8 +58,10 @@ class ToggleButtonsUpDown extends React.Component {
         //Parse the emotive state value for a given voterId, recipientId
         //based on a roomInfo object
         const recipientData = this.getRecipientData(roomInfo, recipientId);
-        if (Object.keys(recipientData.emotive).includes(parseInt(voterId))) {
-            return recipientData.emotive[parseInt(voterId)];
+        const emotiveVoterIds = Object.keys(recipientData.emotive)
+        if (emotiveVoterIds.includes(voterId)) {
+            const recipientEmotiveVoteValue = recipientData.emotive[voterId]
+            return recipientEmotiveVoteValue;
         }
         return '';
     };
