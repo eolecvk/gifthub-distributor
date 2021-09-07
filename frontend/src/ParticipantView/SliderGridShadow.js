@@ -29,7 +29,6 @@ class SliderGridShadow extends Component {
     //     registerVote(voteData, roomCode);
     // }
 
-
     render() {
         const sliders = this.props.slidersInitializationData
             .sort((sl1, sl2) => sl1.recipientId - sl2.recipientId)
@@ -59,15 +58,11 @@ class SliderGridShadow extends Component {
         const amountDistributed =
             Object.values(this.state.currentValues).length > 0
                 ? Object.values(this.state.currentValues)
-                    .map((v) => (v ? v : 0))
-                    .reduce((a, b) => a + b)
+                      .map((v) => (v ? v : 0))
+                      .reduce((a, b) => a + b)
                 : 0;
 
-        return (
-            <div style={{ marginTop: 50 }}>
-                {sliders}
-            </div>
-        );
+        return <div style={{ marginTop: 50 }}>{sliders}</div>;
     }
 }
 

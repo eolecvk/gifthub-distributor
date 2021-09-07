@@ -29,7 +29,7 @@ function EditRecipientModal(props) {
     const handleSubmit = (newUsername, newSurviveAmount, newThriveAmount, newNeedsDescription) => {
         const args = {
             roomCode: props.roomInfo.room_code,
-            recipientId:props.recipientId,
+            recipientId: props.recipientId,
             username: newUsername,
             needsLowerBoundCents: newSurviveAmount * 100,
             needsUpperBoundCents: newThriveAmount * 100,
@@ -48,8 +48,8 @@ function EditRecipientModal(props) {
     };
 
     const handleCloseRecipientModal = () => {
-        props.handleCloseRecipientModal()
-    }
+        props.handleCloseRecipientModal();
+    };
 
     const classes = useStyles();
     const body = (
@@ -79,8 +79,8 @@ function EditRecipientModal(props) {
                 >
                     <path
                         d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02
-                        0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z">
-                    </path>
+                        0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+                    ></path>
                 </svg>
             </button>
             <Container>

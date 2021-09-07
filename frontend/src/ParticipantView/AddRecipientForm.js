@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { TextField, Grid, Button } from '@material-ui/core';
 
-
 // [AddRecipient Form]
 // (fields)
 //   Name
-//   Survive amount 
+//   Survive amount
 //   Thrive amount
 //   Need description
 // (buttons)
@@ -19,7 +18,7 @@ class AddRecipientForm extends Component {
             name: '',
             needsLowerBoundDollars: '',
             needsUpperBoundDollars: '',
-            needsDescription: ''
+            needsDescription: '',
         };
 
         this.state = {
@@ -27,7 +26,7 @@ class AddRecipientForm extends Component {
             errors: {},
         };
 
-        this.roomCode = this.props.roomCode
+        this.roomCode = this.props.roomCode;
     }
 
     onChangeSurviveAmount = (e) => {
@@ -154,7 +153,6 @@ class AddRecipientForm extends Component {
         });
     };
 
-
     handleSubmit = (e) => {
         e.preventDefault();
 
@@ -165,13 +163,13 @@ class AddRecipientForm extends Component {
         const payload = {
             events: [
                 {
-                    kind: "RECIPIENT_ADD",
+                    kind: 'RECIPIENT_ADD',
                     name: this.state.formValues.name,
                     needs_description: this.state.formValues.needsDescription,
                     needs_lower_bound_cents: this.state.formValues.needsLowerBoundDollars * 100,
                     needs_upper_bound_cents: this.state.formValues.needsUpperBoundDollars * 100,
-                }
-            ]
+                },
+            ],
         };
 
         axios
@@ -181,13 +179,13 @@ class AddRecipientForm extends Component {
                     sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
                 }
             })
-            .catch((error) => { console.log(error); })
+            .catch((error) => {
+                console.log(error);
+            });
         this.props.handleClose();
     };
 
-
     render() {
-
         return (
             <form
                 onSubmit={(e) => {
@@ -195,10 +193,7 @@ class AddRecipientForm extends Component {
                 }}
             >
                 <Grid container alignItems="center" justifyContent="center" direction="column">
-                    <Grid
-                        container
-                        style={{ padding: 10 }}
-                    >
+                    <Grid container style={{ padding: 10 }}>
                         <Grid>
                             <TextField
                                 id="name"
@@ -291,4 +286,4 @@ class AddRecipientForm extends Component {
     }
 }
 
-export default AddRecipientForm
+export default AddRecipientForm;

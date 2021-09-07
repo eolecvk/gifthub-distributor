@@ -2,8 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Modal from '@material-ui/core/Modal';
-import JoinAsVoterForm from './JoinAsVoterForm'
-
+import JoinAsVoterForm from './JoinAsVoterForm';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -23,8 +22,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function JoinAsVoterModal(props) {
-
-    const openOnStart = (sessionStorage.getItem('originIsCreateForm') === 'false')
+    const openOnStart = sessionStorage.getItem('originIsCreateForm') === 'false';
     const [open, setOpen] = React.useState(openOnStart);
 
     const handleOpen = () => {
@@ -35,15 +33,11 @@ function JoinAsVoterModal(props) {
         setOpen(false);
     };
 
-
     const classes = useStyles();
     const body = (
         <div className={classes.paper}>
             <h3 id="simple-modal-title">Join as voter</h3>
-            <JoinAsVoterForm
-                handleClose={handleClose}
-                roomCode={props.roomCode}
-            />
+            <JoinAsVoterForm handleClose={handleClose} roomCode={props.roomCode} />
         </div>
     );
 

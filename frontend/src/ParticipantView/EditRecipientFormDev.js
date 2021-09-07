@@ -44,7 +44,7 @@ class EditRecipientFormDev extends Component {
             needsDescription: '',
         };
 
-        this.recipientId = 1 //previously fetching userId from sessionStorage
+        this.recipientId = 1; //previously fetching userId from sessionStorage
         this.roomCode = this.props.roomInfo.room_code;
         // this.roomCode = sessionStorage.getItem('roomInfo').room_code
         this._isMounted = false; //using isMounted react pattern to avoid memory leak https://stackoverflow.com/questions/52061476/cancel-all-subscriptions-and-asyncs-in-the-componentwillunmount-method-how

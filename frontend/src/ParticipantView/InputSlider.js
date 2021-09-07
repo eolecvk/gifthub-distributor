@@ -1,7 +1,7 @@
 import React from 'react';
 import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
 import { Slider, Input, Tooltip, Grid, Typography } from '@material-ui/core';
-import RecipientFace from './RecipientFace'
+import RecipientFace from './RecipientFace';
 
 const theme = createTheme({
     overrides: {

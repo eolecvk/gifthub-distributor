@@ -7,10 +7,9 @@ function getNeedsScaleDownRatio(roomInfo, defaultDistribution) {
         const roomAmount = roomInfo.splitting_cents / 100;
         const totalNeeds = roomInfo.recipients
             .map((recipientData) => {
-                return (
-                    defaultDistribution === 'survive'
-                        ? recipientData.needs_lower_bound_cents / 100
-                        : recipientData.needs_upper_bound_cents / 100)
+                return defaultDistribution === 'survive'
+                    ? recipientData.needs_lower_bound_cents / 100
+                    : recipientData.needs_upper_bound_cents / 100;
             })
             .reduce((a, b) => a + b);
 
@@ -23,9 +22,8 @@ function getNeedsScaleDownRatio(roomInfo, defaultDistribution) {
 }
 
 function getSlidersInitializationData(roomInfo, defaultDistribution) {
-
-    if (roomInfo.recipients.length === 0){
-        return []
+    if (roomInfo.recipients.length === 0) {
+        return [];
     }
 
     if (defaultDistribution === 'zero' || defaultDistribution === 'shadow') {
@@ -42,7 +40,8 @@ function getSlidersInitializationData(roomInfo, defaultDistribution) {
     if (defaultDistribution === 'equal') {
         const equalSplit = roomInfo.splitting_cents / 100 / roomInfo.recipients.length;
         const equalSplitFloor = Math.floor(equalSplit);
-        let remainder = roomInfo.splitting_cents / 100 - equalSplitFloor * roomInfo.recipients.length;
+        let remainder =
+            roomInfo.splitting_cents / 100 - equalSplitFloor * roomInfo.recipients.length;
         let startingValues = Array(roomInfo.recipients.length).fill(equalSplitFloor);
 
         for (let i = remainder; i > 0; i--) {
@@ -69,7 +68,9 @@ function getSlidersInitializationData(roomInfo, defaultDistribution) {
             title: recipientData.name,
             surviveValue: recipientData.needs_lower_bound_cents / 100,
             thriveValue: recipientData.needs_upper_bound_cents / 100,
-            startingValue: Math.floor((recipientData.needs_lower_bound_cents / 100) * scaleDownRatio),
+            startingValue: Math.floor(
+                (recipientData.needs_lower_bound_cents / 100) * scaleDownRatio
+            ),
             maxValue: roomInfo.splitting_cents / 100,
         }));
     }
@@ -80,7 +81,9 @@ function getSlidersInitializationData(roomInfo, defaultDistribution) {
             title: recipientData.name,
             surviveValue: recipientData.needs_lower_bound_cents / 100,
             thriveValue: recipientData.needs_upper_bound_cents / 100,
-            startingValue: Math.floor((recipientData.needs_upper_bound_cents / 100) * scaleDownRatio),
+            startingValue: Math.floor(
+                (recipientData.needs_upper_bound_cents / 100) * scaleDownRatio
+            ),
             maxValue: roomInfo.splitting_cents / 100,
         }));
     }
@@ -103,7 +106,7 @@ function registerEvents(events, roomCode) {
             console.log(`[${response.status}] PUT /api/${roomCode}`);
         })
         .catch((error) => {
-            console.log('Register event error')
+            console.log('Register event error');
             console.log(error);
             console.log(payload);
         });
@@ -123,10 +126,17 @@ function registerVote(sliderValues, roomCode) {
 
 function registerRecipientUpdate(args) {
     //WHERE DO WE FIND THE recipient_id ?? :D
-    const { roomCode, recipientId, username, needsDescription, needsLowerBoundCents, needsUpperBoundCents } = args;
+    const {
+        roomCode,
+        recipientId,
+        username,
+        needsDescription,
+        needsLowerBoundCents,
+        needsUpperBoundCents,
+    } = args;
     const event = {
         kind: 'RECIPIENT_UPDATE',
-        recipient_id : recipientId
+        recipient_id: recipientId,
     };
 
     if (typeof username !== 'undefined') {

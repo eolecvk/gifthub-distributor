@@ -1,11 +1,10 @@
-import React from 'react'
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import ToggleButtonsUpDown from './ToggleButtonsUpDown';
-import EditRecipientModal from './EditRecipientModal'
+import EditRecipientModal from './EditRecipientModal';
 
 function RecipientInfo(props) {
-
-    const {recipientId, handleClose} = props
+    const { recipientId, handleClose } = props;
 
     const useStyles = makeStyles((theme) => ({
         paper: {
@@ -33,14 +32,15 @@ function RecipientInfo(props) {
 
     const roomInfo = JSON.parse(sessionStorage.getItem('roomInfo'));
 
-    const recipientData = recipientId === ''
-        ? ''
-        : roomInfo.recipients.filter((el) => {
-            return el.recipient_id === parseInt(recipientId);
-        })[0]
+    const recipientData =
+        recipientId === ''
+            ? ''
+            : roomInfo.recipients.filter((el) => {
+                  return el.recipient_id === parseInt(recipientId);
+              })[0];
 
-
-    let textBody = `Name: ${recipientData.name}\n` +
+    let textBody =
+        `Name: ${recipientData.name}\n` +
         `Survive: ${recipientData.needs_lower_bound_cents / 100}$\n` +
         `Thrive: ${recipientData.needs_upper_bound_cents / 100}$`;
 
@@ -48,9 +48,9 @@ function RecipientInfo(props) {
         textBody += `\n\n"${recipientData.needs_description}"`;
     }
 
-    const voterId = sessionStorage.getItem("voterId")
+    const voterId = sessionStorage.getItem('voterId');
 
-    let dissentButtons
+    let dissentButtons;
     if (voterId) {
         dissentButtons = (
             <ToggleButtonsUpDown
@@ -59,27 +59,25 @@ function RecipientInfo(props) {
                 voterId={parseInt(voterId)}
                 roomCode={roomInfo.room_code}
             />
-        )
+        );
     }
 
     const body =
-        recipientId === ''
-            ? (<div />)
-            : (
-                <div className={classes.paper}>
-                    {dissentButtons}
-                    <div style={{ whiteSpace: 'pre-line' }}>
-                        {textBody}
-                    </div>
-                    <EditRecipientModal
-                        recipientId={recipientId}
-                        roomInfo={roomInfo}
-                        //handleCloseRecipientModal={handleClose} Not applicable
-                    />
-                </div>
-            );
+        recipientId === '' ? (
+            <div />
+        ) : (
+            <div className={classes.paper}>
+                {dissentButtons}
+                <div style={{ whiteSpace: 'pre-line' }}>{textBody}</div>
+                <EditRecipientModal
+                    recipientId={recipientId}
+                    roomInfo={roomInfo}
+                    //handleCloseRecipientModal={handleClose} Not applicable
+                />
+            </div>
+        );
 
-    return body
+    return body;
 }
 
-export default RecipientInfo
+export default RecipientInfo;

@@ -2,34 +2,32 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { TextField, Grid, Button } from '@material-ui/core';
 
-
 // [EditRecipient Form]
 // (fields)
 //   Name
-//   Survive amount 
+//   Survive amount
 //   Thrive amount
 //   Need description
 // (buttons)
 //   Submit
 //   Remove *with confirmation dialog
 
-
 class EditRecipientForm extends Component {
     constructor(props) {
         super(props);
         this.initialValues = {
-            formValues : {
+            formValues: {
                 name: '',
                 needsLowerBoundDollars: '',
                 needsUpperBoundDollars: '',
-                needsDescription: ''
+                needsDescription: '',
             },
-            errors: {}
+            errors: {},
         };
 
-        this.state = this.initialValues
-        this.roomCode = this.props.roomCode
-        this.recipientId = this.props.recipientId
+        this.state = this.initialValues;
+        this.roomCode = this.props.roomCode;
+        this.recipientId = this.props.recipientId;
         this._isMounted = false; //using isMounted react pattern to avoid memory leak https://stackoverflow.com/questions/52061476/cancel-all-subscriptions-and-asyncs-in-the-componentwillunmount-method-how
     }
 
@@ -54,23 +52,20 @@ class EditRecipientForm extends Component {
                 name,
                 needsLowerBoundDollars,
                 needsUpperBoundDollars,
-                needsDescription
-            } = this.parseInfo(
-                responseData,
-                this.recipientId
-            );
+                needsDescription,
+            } = this.parseInfo(responseData, this.recipientId);
 
             const formValues = {
                 name: name,
                 needsLowerBoundDollars: needsLowerBoundDollars,
                 needsUpperBoundDollars: needsUpperBoundDollars,
                 needsDescription: needsDescription,
-            }
+            };
 
             this._isMounted &&
                 this.setState({
                     formValues: formValues,
-                    errors: {}
+                    errors: {},
                 });
         };
 
@@ -209,7 +204,6 @@ class EditRecipientForm extends Component {
         });
     };
 
-
     handleSubmit = (e) => {
         e.preventDefault();
 
@@ -220,14 +214,14 @@ class EditRecipientForm extends Component {
         const payload = {
             events: [
                 {
-                    kind: "RECIPIENT_UPDATE",
+                    kind: 'RECIPIENT_UPDATE',
                     recipient_id: this.recipientId,
                     name: this.state.formValues.name,
                     needs_description: this.state.formValues.needsDescription,
                     needs_lower_bound_cents: this.state.formValues.needsLowerBoundDollars * 100,
                     needs_upper_bound_cents: this.state.formValues.needsUpperBoundDollars * 100,
-                }
-            ]
+                },
+            ],
         };
 
         axios
@@ -247,18 +241,18 @@ class EditRecipientForm extends Component {
     handleRemove = (e) => {
         e.preventDefault();
 
-        const confirmRes = window.confirm("Are you sure you want to remove the recipient?");
+        const confirmRes = window.confirm('Are you sure you want to remove the recipient?');
         if (confirmRes === false) {
-            return
+            return;
         }
 
         const payload = {
             events: [
                 {
-                    kind: "RECIPIENT_REMOVE",
-                    recipient_id: this.recipientId
-                }
-            ]
+                    kind: 'RECIPIENT_REMOVE',
+                    recipient_id: this.recipientId,
+                },
+            ],
         };
 
         axios
@@ -274,11 +268,10 @@ class EditRecipientForm extends Component {
             });
 
         this.props.handleCloseEditRecipientModal();
-        this.props.handleCloseRecipientModal()
-    }
+        this.props.handleCloseRecipientModal();
+    };
 
     render() {
-
         return (
             <form
                 onSubmit={(e) => {
@@ -286,10 +279,7 @@ class EditRecipientForm extends Component {
                 }}
             >
                 <Grid container alignItems="center" justifyContent="center" direction="column">
-                    <Grid
-                        container
-                        style={{ padding: 10 }}
-                    >
+                    <Grid container style={{ padding: 10 }}>
                         <Grid>
                             <TextField
                                 id="name"
@@ -393,4 +383,4 @@ class EditRecipientForm extends Component {
     }
 }
 
-export default EditRecipientForm
+export default EditRecipientForm;
