@@ -1,30 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import InputSliderZoomedView from './InputSliderZoomedView';
 import RecipientInfo from './RecipientInfo';
+import {parseSliderStartingValue} from './utils'
 
 function RecipientSlide() {
+
     const [recipientId, setRecipientId] = useState(1);
-    const [startingValue, setStartingValue] = useState(0)
-
-    // const recipientInfo = roomInfo.recipients.filter(
-    //     (recipientData) => recipientData.recipient_id === parseInt(sliderId)
-    // )[0];
-
-    const parseStartingValue = (recipientId) => {
-        let parsedStartingValue
-        try{
-            const sliderGridState = JSON.parse(sessionStorage.getItem('sliderGridState'))
-            const sliderValues = sliderGridState.currentValues
-            parsedStartingValue = sliderValues[`${recipientId}`]
-        } catch {
-            parsedStartingValue = 0
-        }
-        return parsedStartingValue
-    }
+    const [startingValue, setStartingValue] = useState(parseSliderStartingValue(recipientId))
 
 
     useEffect(() => {
-        const newStartingValue = parseStartingValue(recipientId)
+        const newStartingValue = parseSliderStartingValue(recipientId)
         setStartingValue(newStartingValue)
     }, [recipientId])
 

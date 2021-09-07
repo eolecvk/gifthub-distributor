@@ -4,7 +4,12 @@ import isEqual from 'lodash.isequal';
 import RoomInfo from './RoomInfo';
 import SlidersGrid from './SliderGrid';
 import RecipientSlide from './RecipientSlide';
-import { getSlidersInitializationData, getStartingValues, registerVote } from './utils';
+import {
+    getSlidersInitializationData,
+    getStartingValues,
+    registerVote,
+    getStateObjectNewMoves
+} from './utils';
 import RecipientModal from './RecipientModal';
 import UpdateDefaultDistributionModal from './UpdateDefaultDistributionModal';
 import ZoomedViewButton from './ZoomedViewButton';
@@ -21,6 +26,7 @@ class ParticipantView extends Component {
             recipientModalOpenAtSlider: '',
             slideOpenAtSlider: '',
         };
+        this.getStateObjectNewMoves = getStateObjectNewMoves
     }
     intervalID;
 
@@ -63,21 +69,21 @@ class ParticipantView extends Component {
         });
     };
 
-    // Generate updated version of state `currentState`
-    // when inserting a new move of `newValue` at sliderId `id`
-    getStateObjectNewMoves = (currentState, newSliderValues) => {
-        return {
-            currentValues: { ...newSliderValues }, // NEED TO DEPRECATED THIS
-            reset: false,
-            history: {
-                index: currentState.history.index + 1,
-                states: [
-                    ...currentState.history.states.slice(0, currentState.history.index + 1),
-                    { ...newSliderValues },
-                ],
-            },
-        };
-    };
+    // // Generate updated version of state `currentState`
+    // // when inserting a new move of `newValue` at sliderId `id`
+    // getStateObjectNewMoves = (currentState, newSliderValues) => {
+    //     return {
+    //         currentValues: { ...newSliderValues }, // NEED TO DEPRECATED THIS
+    //         reset: false,
+    //         history: {
+    //             index: currentState.history.index + 1,
+    //             states: [
+    //                 ...currentState.history.states.slice(0, currentState.history.index + 1),
+    //                 { ...newSliderValues },
+    //             ],
+    //         },
+    //     };
+    // };
 
     updateDefaultDistribution = (defaultDistribution) => {
         const roomInfo = this.state.roomInfo;

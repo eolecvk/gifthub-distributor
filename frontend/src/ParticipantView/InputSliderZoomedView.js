@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
 import { Slider, Input, Grid } from '@material-ui/core';
+import { registerVote } from './utils';
 
 const theme = createTheme({
     overrides: {
@@ -53,12 +54,12 @@ const theme = createTheme({
                 //transform: 'translate(-40%, -20%)',
                 transform: 'translate(-40%, 70%)',
                 //Style of avg mark
-                '&[data-index="0"]': {
-                    fontSize: 12,
-                    color: 'black',
-                    //marginTop: 1,
-                    transform: 'translate(-40%, -15%)',
-                },
+                // '&[data-index="0"]': {
+                //     fontSize: 12,
+                //     color: 'black',
+                //     //marginTop: 1,
+                //     transform: 'translate(-40%, -15%)',
+                // },
             },
             markLabelActive: {
                 fontSize: 12,
@@ -67,12 +68,12 @@ const theme = createTheme({
                 transform: 'translate(-40%, 70%)',
                 //transform: 'translate(-40%, -20%)',
                 //Style of avg mark
-                '&[data-index="0"]': {
-                    fontSize: 12,
-                    color: 'black',
-                    fontWeight: 'normal',
-                    transform: 'translate(-40%, -15%)',
-                },
+                // '&[data-index="0"]': {
+                //     fontSize: 12,
+                //     color: 'black',
+                //     fontWeight: 'normal',
+                //     transform: 'translate(-40%, -15%)',
+                // },
             },
         },
     },
@@ -80,8 +81,10 @@ const theme = createTheme({
 
 function InputSliderZoomedView(props) {
     const { sliderId, startingValue } = props;
+    const [ currentValue , setCurrentValue] = useState(startingValue)
 
     const roomInfo = JSON.parse(sessionStorage.getItem('roomInfo'));
+    const roomCode = roomInfo.room_code
     const recipientInfo = roomInfo.recipients.filter(
         (recipientData) => recipientData.recipient_id === sliderId
     )[0];
@@ -147,22 +150,26 @@ function InputSliderZoomedView(props) {
     }
 
     function handleSliderChange(event, newValue, isVote) {
-        props.handleUpdateSlider(sliderId, newValue, isVote);
+        if (isVote){
+            const sliderValues = {[sliderId] : newValue}
+            registerVote(sliderValues, roomCode)
+        }
+        setCurrentValue(newValue)
     }
 
     function handleInputChange(event) {
         const newValue = event.target.value === '' ? '' : Number(event.target.value);
-        props.handleUpdateSlider(sliderId, newValue, false);
+        handleSliderChange(event, newValue, false);
     }
 
     function handleBlur(event) {
         if (props.startingValue < 0) {
-            props.handleUpdateSlider(sliderId, 0, false);
+            handleSliderChange(sliderId, 0, false);
         } else if (props.startingValue > props.maxValue) {
-            props.handleUpdateSlider(sliderId, props.maxValue, false);
+            handleSliderChange(sliderId, props.maxValue, false);
         } else {
             const newValue = event.target.value === '' ? '' : Number(event.target.value);
-            props.handleUpdateSlider(sliderId, newValue, true);
+            handleSliderChange(sliderId, newValue, true);
         }
     }
 
@@ -184,7 +191,7 @@ function InputSliderZoomedView(props) {
                             key={props.sliderId.toString() + 'slider'}
                             min={0}
                             max={maxValue}
-                            value={startingValue ? startingValue : 0}
+                            value={currentValue}
                             onChange={handleSliderChange}
                             onChangeCommitted={handleSliderChangeCommitted}
                             aria-labelledby={props.sliderId.toString() + 'slider'}
@@ -197,7 +204,7 @@ function InputSliderZoomedView(props) {
                         <Input
                             //className={classes.input}
                             key={props.sliderId.toString() + 'input'}
-                            value={startingValue !== '' ? startingValue : ''}
+                            value={currentValue !== '' ? currentValue : ''}
                             margin="dense"
                             onChange={handleInputChange}
                             onBlur={handleBlur}
