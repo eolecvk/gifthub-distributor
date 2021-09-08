@@ -4,7 +4,7 @@ import ToggleButtonsUpDown from './ToggleButtonsUpDown';
 import EditRecipientModal from './EditRecipientModal';
 
 function RecipientInfo(props) {
-    const { recipientId, handleClose } = props;
+    const { recipientId } = props;
 
     const useStyles = makeStyles((theme) => ({
         paper: {
@@ -69,11 +69,7 @@ function RecipientInfo(props) {
             <div className={classes.paper}>
                 {dissentButtons}
                 <div style={{ whiteSpace: 'pre-line' }}>{textBody}</div>
-                <EditRecipientModal
-                    recipientId={recipientId}
-                    roomInfo={roomInfo}
-                    //handleCloseRecipientModal={handleClose} Not applicable
-                />
+                <EditRecipientModal recipientId={recipientId} roomInfo={roomInfo} />
             </div>
         );
 

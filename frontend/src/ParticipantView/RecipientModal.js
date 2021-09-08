@@ -1,10 +1,6 @@
 import React, { useEffect } from 'react';
 import { Container, Modal } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import RecipientInfo from './RecipientInfo';
-
-// import ToggleButtonsUpDown from './ToggleButtonsUpDown';
-// import EditRecipientModal from './EditRecipientModal'
 
 function RecipientModal(props) {
     const { recipientId, handleClose } = props;
@@ -93,7 +89,7 @@ function RecipientModal(props) {
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                 >
-                    <RecipientInfo recipientId={openAtSlider} handleClose={handleClose} />
+                    <RecipientInfo recipientId={openAtSlider} />
                 </Modal>
             </Container>
         </div>

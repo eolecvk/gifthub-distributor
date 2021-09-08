@@ -1,6 +1,6 @@
 import React from 'react';
 import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
-import { Slider, Input, Tooltip, Grid, Typography } from '@material-ui/core';
+import { Slider, Grid } from '@material-ui/core';
 import RecipientFace from './RecipientFace';
 
 const theme = createTheme({
@@ -90,7 +90,6 @@ function InputSlider(props) {
         handleOpenRecipientModal,
         recipientInfo,
     } = props;
-    const needsDescription = recipientInfo.needs_description;
     const groupVoteAvg = recipientInfo.avg_cents / 100;
 
     function getMarks(groupVoteAvg, surviveValue, thriveValue) {

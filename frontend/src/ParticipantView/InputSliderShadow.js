@@ -87,7 +87,6 @@ function InputSliderShadow(props) {
         openRecipientModal,
         recipientInfo,
     } = props;
-    const needsDescription = recipientInfo.needs_description;
     const groupVoteAvg = recipientInfo.avg_cents / 100;
 
     function getMarks(groupVoteAvg, surviveValue, thriveValue) {

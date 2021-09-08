@@ -1,7 +1,6 @@
 import React from 'react';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import ParticipantViewSwitch from './ParticipantView/ParticipantViewSwitch';
-import ParticipantView from './ParticipantView/ParticipantView';
 import Home from './Home/Home';
 
 function App() {
