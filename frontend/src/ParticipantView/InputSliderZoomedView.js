@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
 import { Slider, Input, Grid } from '@material-ui/core';
-import { registerVote } from './utils';
+import { parseSliderStartingValue, registerVote } from './utils';
 
 const theme = createTheme({
     overrides: {
@@ -80,8 +80,13 @@ const theme = createTheme({
 });
 
 function InputSliderZoomedView(props) {
-    const { sliderId, startingValue } = props;
-    const [currentValue, setCurrentValue] = useState(startingValue);
+    const { sliderId } = props;
+    const startingValueDev = parseSliderStartingValue(sliderId)
+    const [currentValue, setCurrentValue] = useState(startingValueDev);
+
+    useEffect( () => {
+        setCurrentValue(parseSliderStartingValue(sliderId))
+    }, [sliderId])
 
     const roomInfo = JSON.parse(sessionStorage.getItem('roomInfo'));
     const roomCode = roomInfo.room_code;

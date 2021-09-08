@@ -101,13 +101,13 @@ function getStartingValues(slidersInitializationData) {
 // when inserting a new move of `newValue` at sliderId `id`
 function getStateObjectNewMoves(currentState, newSliderValues) {
     return {
-        currentValues: { ...newSliderValues }, // NEED TO DEPRECATED THIS
+        currentValues: { ...currentState.currentValues, ...newSliderValues }, // NEED TO DEPRECATED THIS
         reset: false,
         history: {
             index: currentState.history.index + 1,
             states: [
                 ...currentState.history.states.slice(0, currentState.history.index + 1),
-                { ...newSliderValues },
+                {  ...currentState.currentValues, ...newSliderValues },
             ],
         },
     };

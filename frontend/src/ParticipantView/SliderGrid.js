@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getStartingValues, registerVote } from './utils';
+import { getStartingValues, registerVote, getStateObjectNewMoves } from './utils';
 import InputSlider from './InputSlider';
 import ButtonsUndoRedo from './ButtonsUndoRedo';
 import AmountDistributedProgressBar from './AmountDistributedProgressBar';
@@ -51,17 +51,19 @@ class SliderGrid extends Component {
     // Generate updated version of state `currentState`
     // when inserting a new move of `newValue` at sliderId `id`
     getStateObjectNewMove = (currentState, id, newValue) => {
-        return {
-            currentValues: { ...currentState.currentValues, [`${id}`]: newValue }, // NEED TO DEPRECATED THIS
-            reset: false,
-            history: {
-                index: currentState.history.index + 1,
-                states: [
-                    ...currentState.history.states.slice(0, currentState.history.index + 1),
-                    { ...currentState.currentValues, [`${id}`]: newValue },
-                ],
-            },
-        };
+        const newSliderValues = {[`${id}`]: newValue}
+        return getStateObjectNewMoves(currentState, newSliderValues)
+        // return {
+        //     currentValues: { ...currentState.currentValues, [`${id}`]: newValue }, // NEED TO DEPRECATED THIS
+        //     reset: false,
+        //     history: {
+        //         index: currentState.history.index + 1,
+        //         states: [
+        //             ...currentState.history.states.slice(0, currentState.history.index + 1),
+        //             { ...currentState.currentValues, [`${id}`]: newValue },
+        //         ],
+        //     },
+        // };
     };
 
     // Generate updated version of state `currentState`
