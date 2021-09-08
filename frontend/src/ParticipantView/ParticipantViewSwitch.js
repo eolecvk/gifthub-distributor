@@ -8,13 +8,10 @@ import { Switch, FormControlLabel } from '@material-ui/core';
 class ParticipantViewSwitch extends Component {
     constructor(props) {
         super(props);
-
+        this.path = this.props.match.params.path || sessionStorage.getItem('path');
         this.originIsCreateForm = sessionStorage['originIsCreateForm'] === 'true';
-
         this.isObserverView =
-            typeof sessionStorage['isObserverView'] === 'undefined'
-                ? this.originIsCreateForm
-                : sessionStorage['isObserverView'] === 'true';
+            sessionStorage['isObserverView'] === 'true' || this.originIsCreateForm;
 
         this.state = {
             isReady: false,
@@ -23,12 +20,38 @@ class ParticipantViewSwitch extends Component {
     }
 
     async componentDidMount() {
-        if (!sessionStorage.getItem('roomInfo')) {
-            await axios.get('/api/' + this.props.match.params.roomCode).then((response) => {
-                sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
+        async function joinRoomRequest(roomCode) {
+            await axios.post(`/api/${roomCode}/join`, {}).then((response) => {
+                console.log(response);
+                if (response.status === 200) {
+                    const roomInfo = response.data;
+                    sessionStorage.clear();
+                    sessionStorage.setItem('roomInfo', JSON.stringify(roomInfo));
+                    sessionStorage.setItem('originIsCreateForm', false);
+                }
             });
         }
-        this.setState({ isReady: true });
+        // async function refreshRoomInfo(roomCode) {
+        //     await axios.get('/api/' + roomCode).then((response) => {
+        //         sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
+        //     });
+        // }
+
+        const roomCode = this.props.match.params.roomCode;
+        const cachedRoomInfo = sessionStorage.getItem('roomInfo');
+        const cachedRoomCode = cachedRoomInfo ? cachedRoomInfo.room_code : '';
+
+        if (cachedRoomInfo) {
+            if (cachedRoomCode === roomCode) {
+                this.setState({ isReady: true });
+            } else {
+                await joinRoomRequest(roomCode);
+                this.setState({ isReady: true });
+            }
+        } else {
+            await joinRoomRequest(roomCode);
+            this.setState({ isReady: true });
+        }
     }
 
     handleSwitchObserverView = () => {
@@ -42,13 +65,13 @@ class ParticipantViewSwitch extends Component {
             return null;
         }
 
-        let view = <ObserverView />;
-        if (!this.state.isObserverView) {
+        let view;
+        if (this.state.isObserverView) {
+            view = <ObserverView />;
+        } else if (this.path) {
+            view = <ParticipantView />;
+        } else {
             view = <ParticipantViewShadow />;
-            const path = sessionStorage['path'];
-            if (path !== 'undefined' && typeof path !== 'undefined') {
-                view = <ParticipantView />;
-            }
         }
 
         return (

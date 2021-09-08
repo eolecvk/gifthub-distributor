@@ -53,12 +53,13 @@ class JoinAsVoterForm extends Component {
                     const path = response.data.path;
                     const voterId = response.data.voter_id;
                     const roomInfo = response.data.room_info;
+                    const roomCode = roomInfo.room_code;
 
                     sessionStorage.clear();
                     sessionStorage.setItem('path', path);
                     sessionStorage.setItem('voterId', voterId);
                     sessionStorage.setItem('roomInfo', JSON.stringify(roomInfo));
-                    history.push(`/${roomInfo.room_code}`);
+                    history.push(`/${roomCode}/${path}`);
                 }
             })
             .catch((error) => {
