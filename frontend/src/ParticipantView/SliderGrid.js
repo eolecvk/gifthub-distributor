@@ -51,8 +51,8 @@ class SliderGrid extends Component {
     // Generate updated version of state `currentState`
     // when inserting a new move of `newValue` at sliderId `id`
     getStateObjectNewMove = (currentState, id, newValue) => {
-        const newSliderValues = {[`${id}`]: newValue}
-        return getStateObjectNewMoves(currentState, newSliderValues)
+        const newSliderValues = { [`${id}`]: newValue };
+        return getStateObjectNewMoves(currentState, newSliderValues);
         // return {
         //     currentValues: { ...currentState.currentValues, [`${id}`]: newValue }, // NEED TO DEPRECATED THIS
         //     reset: false,

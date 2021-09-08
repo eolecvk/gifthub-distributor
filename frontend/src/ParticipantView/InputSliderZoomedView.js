@@ -81,12 +81,12 @@ const theme = createTheme({
 
 function InputSliderZoomedView(props) {
     const { sliderId } = props;
-    const startingValueDev = parseSliderStartingValue(sliderId)
+    const startingValueDev = parseSliderStartingValue(sliderId);
     const [currentValue, setCurrentValue] = useState(startingValueDev);
 
-    useEffect( () => {
-        setCurrentValue(parseSliderStartingValue(sliderId))
-    }, [sliderId])
+    useEffect(() => {
+        setCurrentValue(parseSliderStartingValue(sliderId));
+    }, [sliderId]);
 
     const roomInfo = JSON.parse(sessionStorage.getItem('roomInfo'));
     const roomCode = roomInfo.room_code;

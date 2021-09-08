@@ -107,7 +107,7 @@ function getStateObjectNewMoves(currentState, newSliderValues) {
             index: currentState.history.index + 1,
             states: [
                 ...currentState.history.states.slice(0, currentState.history.index + 1),
-                {  ...currentState.currentValues, ...newSliderValues },
+                { ...currentState.currentValues, ...newSliderValues },
             ],
         },
     };
