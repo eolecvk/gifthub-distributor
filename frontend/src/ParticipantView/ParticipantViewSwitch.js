@@ -20,6 +20,29 @@ class ParticipantViewSwitch extends Component {
     }
 
     async componentDidMount() {
+        function initializeSliderValues(roomInfo, voterId) {
+            let currentValues = {};
+            roomInfo.recipients.forEach((recipientData) => {
+                const recipientId = recipientData.recipient_id;
+                const recipientVoterIds = Object.keys(recipientData.votes_cents);
+                if (recipientVoterIds.includes(`${voterId}`)) {
+                    const voteValue = recipientData.votes_cents[voterId] / 100;
+                    currentValues[recipientId] = voteValue;
+                }
+            });
+
+            const iniSliderValues = {
+                reset: false,
+                currentValues: currentValues,
+                history: {
+                    index: 0,
+                    states: [currentValues],
+                },
+            };
+
+            sessionStorage.setItem('sliderGridState', JSON.stringify(iniSliderValues));
+        }
+
         async function voterJoinRequest(roomCode, path) {
             const payload = { path: path };
             await axios
@@ -34,6 +57,7 @@ class ParticipantViewSwitch extends Component {
                         sessionStorage.setItem('path', path);
                         sessionStorage.setItem('voterId', voterId);
                         sessionStorage.setItem('roomInfo', JSON.stringify(roomInfo));
+                        initializeSliderValues(roomInfo, voterId);
                     }
                 })
                 .catch((error) => {
@@ -47,16 +71,10 @@ class ParticipantViewSwitch extends Component {
                 if (response.status === 200) {
                     const roomInfo = response.data;
                     sessionStorage.clear();
-                    sessionStorage.setItem('entryPoint', 'link');
                     sessionStorage.setItem('roomInfo', JSON.stringify(roomInfo));
                 }
             });
         }
-        // async function refreshRoomInfo(roomCode) {
-        //     await axios.get('/api/' + roomCode).then((response) => {
-        //         sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
-        //     });
-        // }
 
         const roomCode = this.props.match.params.roomCode;
         const path = this.props.match.params.path;
@@ -66,6 +84,7 @@ class ParticipantViewSwitch extends Component {
             const cachedRoomCode = cachedRoomInfo ? cachedRoomInfo.room_code : '';
             if (cachedRoomCode !== roomCode) {
                 await joinRoomRequest(roomCode);
+                sessionStorage.setItem('entryPoint', 'link');
             }
         } catch {
             await joinRoomRequest(roomCode);
