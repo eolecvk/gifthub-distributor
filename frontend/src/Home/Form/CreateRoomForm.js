@@ -45,7 +45,7 @@ function CreateRoomForm(props) {
                     const roomInfo = response.data;
                     const roomCode = roomInfo.room_code;
                     sessionStorage.setItem('roomInfo', JSON.stringify(roomInfo));
-                    sessionStorage.setItem('originIsCreateForm', true);
+                    sessionStorage.setItem('entryPoint', 'createForm');
                     history.push(`/${roomCode}`);
                 }
             })

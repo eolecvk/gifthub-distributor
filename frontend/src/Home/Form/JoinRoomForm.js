@@ -56,7 +56,7 @@ class JoinRoomForm extends Component {
 
                     sessionStorage.clear();
                     sessionStorage.setItem('roomInfo', JSON.stringify(roomInfo));
-                    sessionStorage.setItem('originIsCreateForm', false);
+                    sessionStorage.setItem('entryPoint', 'joinForm');
                     history.push(`/${roomCode}`); // for dev only
                     // history.push(`/${this.state.formValues.roomCode}/join`); ???? hmm no
                     //history.push(`/${this.state.formValues.roomCode}`) // THIS WHEN I HAVE IMPLEM DYNAMIC ROUTING

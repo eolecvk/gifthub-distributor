@@ -22,9 +22,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function JoinAsVoterModal(props) {
-    let openOnStart = true;
-    if (sessionStorage.getItem('originIsCreateForm') === 'true') {
-        openOnStart = false;
+    let openOnStart = false;
+    if (sessionStorage.getItem('entryPoint') === 'link') {
+        openOnStart = true;
     }
     const [open, setOpen] = React.useState(openOnStart);
 
@@ -33,6 +33,7 @@ function JoinAsVoterModal(props) {
     };
 
     const handleClose = () => {
+        sessionStorage.setItem('entryPoint', '');
         setOpen(false);
     };
 

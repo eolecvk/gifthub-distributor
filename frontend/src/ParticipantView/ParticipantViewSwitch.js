@@ -20,14 +20,35 @@ class ParticipantViewSwitch extends Component {
     }
 
     async componentDidMount() {
+        async function voterJoinRequest(roomCode, path) {
+            const payload = { path: path };
+            await axios
+                .post(`/api/${roomCode}/voterJoin`, payload)
+                .then((response) => {
+                    if (response.status === 200) {
+                        const path = response.data.path;
+                        const voterId = response.data.voter_id;
+                        const roomInfo = response.data.room_info;
+
+                        sessionStorage.clear();
+                        sessionStorage.setItem('path', path);
+                        sessionStorage.setItem('voterId', voterId);
+                        sessionStorage.setItem('roomInfo', JSON.stringify(roomInfo));
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+
         async function joinRoomRequest(roomCode) {
             await axios.post(`/api/${roomCode}/join`, {}).then((response) => {
                 console.log(response);
                 if (response.status === 200) {
                     const roomInfo = response.data;
                     sessionStorage.clear();
+                    sessionStorage.setItem('entryPoint', 'link');
                     sessionStorage.setItem('roomInfo', JSON.stringify(roomInfo));
-                    sessionStorage.setItem('originIsCreateForm', false);
                 }
             });
         }
@@ -38,20 +59,23 @@ class ParticipantViewSwitch extends Component {
         // }
 
         const roomCode = this.props.match.params.roomCode;
-        const cachedRoomInfo = sessionStorage.getItem('roomInfo');
-        const cachedRoomCode = cachedRoomInfo ? cachedRoomInfo.room_code : '';
+        const path = this.props.match.params.path;
 
-        if (cachedRoomInfo) {
-            if (cachedRoomCode === roomCode) {
-                this.setState({ isReady: true });
-            } else {
+        try {
+            const cachedRoomInfo = JSON.parse(sessionStorage.getItem('roomInfo'));
+            const cachedRoomCode = cachedRoomInfo ? cachedRoomInfo.room_code : '';
+            if (cachedRoomCode !== roomCode) {
                 await joinRoomRequest(roomCode);
-                this.setState({ isReady: true });
             }
-        } else {
+        } catch {
             await joinRoomRequest(roomCode);
-            this.setState({ isReady: true });
         }
+
+        if (path) {
+            await voterJoinRequest(roomCode, path);
+        }
+
+        this.setState({ isReady: true });
     }
 
     handleSwitchObserverView = () => {
