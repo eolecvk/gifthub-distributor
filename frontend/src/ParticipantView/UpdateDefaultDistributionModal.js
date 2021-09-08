@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
+import { Tooltip, Container } from '@material-ui/core';
 import Modal from '@material-ui/core/Modal';
 import './ButtonUpdateDefaultDistribution.css';
 
@@ -83,21 +83,23 @@ function UpdateDefaultDistributionModal(props) {
 
     return (
         <div className={classes.root}>
-            <button id="distributions-button" onClick={() => handleOpen()}>
-                <svg
-                    version="1.1"
-                    id="quick-distributions-icon"
-                    x="0px"
-                    y="0px"
-                    viewBox="0 0 26.676 26.676"
-                >
-                    <path
-                        d="M12 2.02c-5.51 0-9.98 4.47-9.98 9.98s4.47 9.98 9.98
+            <Tooltip title="Quick distributions">
+                <button id="distributions-button" onClick={() => handleOpen()}>
+                    <svg
+                        version="1.1"
+                        id="quick-distributions-icon"
+                        x="0px"
+                        y="0px"
+                        viewBox="0 0 26.676 26.676"
+                    >
+                        <path
+                            d="M12 2.02c-5.51 0-9.98 4.47-9.98 9.98s4.47 9.98 9.98
                         9.98 9.98-4.47 9.98-9.98S17.51 2.02 12 2.02zM11.48
                         20v-6.26H8L13 4v6.26h3.35L11.48 20z"
-                    ></path>
-                </svg>
-            </button>
+                        ></path>
+                    </svg>
+                </button>
+            </Tooltip>
             <Container>
                 <Modal
                     open={open}

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import isEqual from 'lodash.isequal';
+import { Tooltip } from '@material-ui/core';
 import RoomInfo from './RoomInfo';
 import SlidersGrid from './SliderGrid';
 import RecipientSlide from './RecipientSlide';
@@ -169,14 +170,16 @@ class ParticipantView extends Component {
 
         const zoomedView = (
             <div>
-                <button
-                    onClick={() => {
-                        sessionStorage.setItem('participantView', 'list');
-                        this.setState({ view: 'list' });
-                    }}
-                >
-                    Back to list
-                </button>
+                <Tooltip title="View with all the recipients">
+                    <button
+                        onClick={() => {
+                            sessionStorage.setItem('participantView', 'list');
+                            this.setState({ view: 'list' });
+                        }}
+                    >
+                        Back to list
+                    </button>
+                </Tooltip>
                 <RecipientSlide />
             </div>
         );
