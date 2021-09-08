@@ -9,7 +9,7 @@ class ParticipantViewSwitch extends Component {
     constructor(props) {
         super(props);
         this.path = this.props.match.params.path || sessionStorage.getItem('path');
-        this.originIsCreateForm = sessionStorage['originIsCreateForm'] === 'true';
+        this.originIsCreateForm = sessionStorage['entryPoint'] === 'createForm';
         this.isObserverView =
             sessionStorage['isObserverView'] === 'true' || this.originIsCreateForm;
 
