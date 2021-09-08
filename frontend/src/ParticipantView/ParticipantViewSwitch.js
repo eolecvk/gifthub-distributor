@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import ObserverView from '../ObserverView/ObserverView';
 import ParticipantView from './ParticipantView';
 import ParticipantViewShadow from './ParticipantViewShadow';
@@ -16,8 +17,18 @@ class ParticipantViewSwitch extends Component {
                 : sessionStorage['isObserverView'] === 'true';
 
         this.state = {
+            isReady: false,
             isObserverView: this.isObserverView,
         };
+    }
+
+    async componentDidMount() {
+        if (!sessionStorage.getItem('roomInfo')) {
+            await axios.get('/api/' + this.props.match.params.roomCode).then((response) => {
+                sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
+            });
+        }
+        this.setState({ isReady: true });
     }
 
     handleSwitchObserverView = () => {
@@ -26,8 +37,10 @@ class ParticipantViewSwitch extends Component {
     };
 
     render() {
-        //console.log(this.props.match.path);
-        //console.log(this.props.match);
+        //roomInfo not yet loaded
+        if (!this.state.isReady) {
+            return null;
+        }
 
         let view = <ObserverView />;
         if (!this.state.isObserverView) {
