@@ -184,8 +184,11 @@ function parseSliderStartingValue(recipientId) {
         const sliderGridState = JSON.parse(sessionStorage.getItem('sliderGridState'));
         const sliderValues = sliderGridState.currentValues;
         parsedStartingValue = sliderValues[`${recipientId}`];
+        if (!parsedStartingValue) {
+            parsedStartingValue = 0;
+        }
     } catch {
-        parsedStartingValue = 0;
+        return 0;
     }
     return parsedStartingValue;
 }
