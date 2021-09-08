@@ -24,14 +24,13 @@ const theme = createTheme({
                 fontSize: 12,
             },
             track: {
-                height: 3,
+                height: 6,
                 borderRadius: 2,
-                color: 'transparent',
+                color: 'orange',
             },
             rail: {
                 height: 6,
                 color: 'black',
-                backgroundImage: 'linear-gradient(.25turn, red, green)',
             },
             mark: {
                 color: 'black',
