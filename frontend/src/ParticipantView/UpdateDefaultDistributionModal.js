@@ -1,10 +1,11 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { ButtonGroup, Tooltip, Container } from '@material-ui/core';
-import Modal from '@material-ui/core/Modal';
+//import Modal from '@material-ui/core/Modal';
 import './ButtonUpdateDefaultDistribution.css';
 import CustomButton from '../CustomButton';
 import OfflineBoltIcon from '@material-ui/icons/OfflineBolt';
+import CustomModal from '../CustomModal';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -41,34 +42,32 @@ function UpdateDefaultDistributionModal(props) {
 
     const classes = useStyles();
     const body = (
-        <div className={classes.paper}>
-            <h3 id="simple-modal-title">Select a quick distribution</h3>
-            <ButtonGroup orientation="vertical">
-                <CustomButton
-                    title="Set to 0"
-                    size="small"
-                    onClick={(e) => handleClickDistributionButton('zero')}
-                />
+        // <div className={classes.paper}>
+        <ButtonGroup orientation="vertical">
+            <CustomButton
+                title="Set to 0"
+                size="small"
+                onClick={(e) => handleClickDistributionButton('zero')}
+            />
 
-                <CustomButton
-                    title="Set equally"
-                    size="small"
-                    onClick={(e) => handleClickDistributionButton('equal')}
-                />
+            <CustomButton
+                title="Set equally"
+                size="small"
+                onClick={(e) => handleClickDistributionButton('equal')}
+            />
 
-                <CustomButton
-                    title="Set to survive"
-                    size="small"
-                    onClick={(e) => handleClickDistributionButton('survive')}
-                />
+            <CustomButton
+                title="Set to survive"
+                size="small"
+                onClick={(e) => handleClickDistributionButton('survive')}
+            />
 
-                <CustomButton
-                    title="Set to thrive"
-                    size="small"
-                    onClick={(e) => handleClickDistributionButton('thrive')}
-                />
-            </ButtonGroup>
-        </div>
+            <CustomButton
+                title="Set to thrive"
+                size="small"
+                onClick={(e) => handleClickDistributionButton('thrive')}
+            />
+        </ButtonGroup>
     );
 
     return (
@@ -81,14 +80,20 @@ function UpdateDefaultDistributionModal(props) {
             />
 
             <Container>
-                <Modal
+                {/* <Modal
                     open={open}
                     onClose={handleClose}
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                 >
                     {body}
-                </Modal>
+                </Modal> */}
+                <CustomModal
+                    form={body}
+                    modalTitle="Quick distribution"
+                    show={open}
+                    handleClose={handleClose}
+                />
             </Container>
         </div>
     );
