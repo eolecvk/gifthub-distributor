@@ -1,9 +1,11 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Tooltip, Container } from '@material-ui/core';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Modal from '@material-ui/core/Modal';
 import AddRecipientForm from './AddRecipientForm';
 import './AddRecipientModal.css';
+import CustomButton from '../CustomButton';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -43,8 +45,8 @@ function AddRecipientModal(props) {
 
     return (
         <div className={classes.root}>
-            <Tooltip title="Add a new recipient">
-                <button id="addRecipient-button" onClick={() => handleOpen()}>
+            {/* <Tooltip title="Add a new recipient"> */}
+            {/* <button id="addRecipient-button" onClick={() => handleOpen()}>
                     <svg version="1.1" id="undo-icon" x="0px" y="0px" viewBox="0 0 26.676 26.676">
                         <path
                             d="M13 7h-2v4H7v2h4v4h2v-4h4v-2h-4V7zm-1-5C6.48 2 2 6.48 2
@@ -52,8 +54,17 @@ function AddRecipientModal(props) {
                     0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
                         ></path>
                     </svg>
-                </button>
-            </Tooltip>
+                </button> */}
+
+            {/* </Tooltip> */}
+
+            <CustomButton
+                title="Add a recipient"
+                startIcon={<AddCircleOutlineIcon />}
+                size="small"
+                onClick={() => handleOpen()}
+            />
+
             <Container>
                 <Modal
                     open={open}

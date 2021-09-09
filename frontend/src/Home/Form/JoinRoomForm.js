@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { TextField, Grid, Button } from '@material-ui/core';
+import { TextField, Grid } from '@material-ui/core';
 import { withRouter } from 'react-router';
+import CustomButton from '../../CustomButton';
 
 // [JoinRoom Form]
 // (field)
@@ -94,19 +95,18 @@ class JoinRoomForm extends Component {
                         justifyContent="flex-end"
                         style={{ marginTop: 20 }}
                     >
-                        <Button variant="contained" color="primary" type="submit">
-                            Submit
-                        </Button>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            type="button"
+                        <CustomButton
+                            title="Submit"
+                            onClick={(e) => {
+                                this.handleSubmit(e, history);
+                            }}
+                        />
+                        <CustomButton
+                            title="Close"
                             onClick={(e) => {
                                 this.props.handleClose();
                             }}
-                        >
-                            Close
-                        </Button>
+                        />
                     </Grid>
                 </Grid>
             </form>

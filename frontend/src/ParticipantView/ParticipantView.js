@@ -16,6 +16,9 @@ import UpdateDefaultDistributionModal from './UpdateDefaultDistributionModal';
 import ZoomedViewButton from './ZoomedViewButton';
 import AddRecipientModal from './AddRecipientModal';
 
+import PageviewIcon from '@material-ui/icons/Pageview';
+import CustomButton from '../CustomButton';
+
 class ParticipantView extends Component {
     constructor(props) {
         super(props);
@@ -142,8 +145,12 @@ class ParticipantView extends Component {
                     <UpdateDefaultDistributionModal
                         updateDefaultDistribution={this.updateDefaultDistribution}
                     />
-                    <ZoomedViewButton
-                        switchToZoomedView={() => {
+
+                    <CustomButton
+                        title="Single Recipient View"
+                        size="small"
+                        startIcon={<PageviewIcon />}
+                        onClick={() => {
                             if (this.state.roomInfo.recipients.length === 0) {
                                 return;
                             }
@@ -151,6 +158,16 @@ class ParticipantView extends Component {
                             this.setState({ view: 'zoomed' });
                         }}
                     />
+
+                    {/* <ZoomedViewButton
+                        switchToZoomedView={() => {
+                            if (this.state.roomInfo.recipients.length === 0) {
+                                return;
+                            }
+                            sessionStorage.setItem('participantView', 'zoomed');
+                            this.setState({ view: 'zoomed' });
+                        }}
+                    /> */}
                 </span>
                 <SlidersGrid
                     key={this.state.defaultDistribution + Date.now()} // force class rendering on defaultDistribution update!
@@ -171,14 +188,13 @@ class ParticipantView extends Component {
         const zoomedView = (
             <div>
                 <Tooltip title="View with all the recipients">
-                    <button
+                    <CustomButton
+                        title="Back to list"
                         onClick={() => {
                             sessionStorage.setItem('participantView', 'list');
                             this.setState({ view: 'list' });
                         }}
-                    >
-                        Back to list
-                    </button>
+                    />
                 </Tooltip>
                 <RecipientSlide />
             </div>

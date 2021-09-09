@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Grid, ButtonGroup, Button } from '@material-ui/core';
+import { Grid, ButtonGroup } from '@material-ui/core';
 import { HomeModal } from './Modal/Modal';
+import CustomButton from '../CustomButton';
 
 class Home extends Component {
     constructor() {
@@ -46,22 +47,12 @@ class Home extends Component {
                     color="primary"
                     aria-label="outlined primary button group"
                 >
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        type="button"
-                        onClick={() => this.showCreateRoomModal()}
-                    >
-                        Create Room
-                    </Button>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        type="button"
-                        onClick={() => this.showJoinRoomModal()}
-                    >
-                        Join Room
-                    </Button>
+                    <CustomButton
+                        title="Create Room"
+                        onClick={this.showCreateRoomModal}
+                        size="large"
+                    />
+                    <CustomButton title="Join Room" onClick={this.showJoinRoomModal} size="large" />
                     <HomeModal
                         modalTitle="Create Room"
                         show={this.state.showCreateRoomModal}

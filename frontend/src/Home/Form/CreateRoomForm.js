@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import axios from 'axios';
-import { TextField, Grid, Button, ButtonGroup } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
+import { TextField, Grid, ButtonGroup } from '@material-ui/core';
+import CustomButton from '../../CustomButton';
 
 // [CreateRoom form]
 // (fields)
@@ -87,10 +88,18 @@ function CreateRoomForm(props) {
                 </Grid>
                 <Grid container justifyContent="flex-end" style={{ marginTop: 25 }}>
                     <ButtonGroup>
-                        <Button variant="contained" color="primary" type="submit">
-                            Submit
-                        </Button>
-                        <Button
+                        <CustomButton
+                            title="Submit"
+                            onClick={handleSubmit}
+                            //type="submit"
+                        />
+                        <CustomButton
+                            title="Close"
+                            onClick={(e) => {
+                                props.handleClose();
+                            }}
+                        />
+                        {/* <Button
                             variant="contained"
                             color="primary"
                             type="button"
@@ -99,7 +108,7 @@ function CreateRoomForm(props) {
                             }}
                         >
                             Close
-                        </Button>
+                        </Button> */}
                     </ButtonGroup>
                 </Grid>
             </Grid>
