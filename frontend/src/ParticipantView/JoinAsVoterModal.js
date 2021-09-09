@@ -1,9 +1,10 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Container } from '@material-ui/core';
-import Modal from '@material-ui/core/Modal';
+// import Modal from '@material-ui/core/Modal';
 import JoinAsVoterForm from './JoinAsVoterForm';
 import CustomButton from '../CustomButton';
+import CustomModal from '../CustomModal';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -38,26 +39,19 @@ function JoinAsVoterModal(props) {
         setOpen(false);
     };
 
-    const classes = useStyles();
-    const body = (
-        <div className={classes.paper}>
-            <h3 id="simple-modal-title">Join as voter</h3>
-            <JoinAsVoterForm handleClose={handleClose} roomCode={props.roomCode} />
-        </div>
-    );
+    //const classes = useStyles();
 
     return (
-        <div className={classes.root}>
+        // <div className={classes.root}>
+        <div>
             <CustomButton title="Join as voter" onClick={handleOpen} />
             <Container>
-                <Modal
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby="simple-modal-title"
-                    aria-describedby="simple-modal-description"
-                >
-                    {body}
-                </Modal>
+                <CustomModal
+                    title="Join as voter"
+                    form={<JoinAsVoterForm handleClose={handleClose} roomCode={props.roomCode} />}
+                    show={open}
+                    handleClose={handleClose}
+                />
             </Container>
         </div>
     );

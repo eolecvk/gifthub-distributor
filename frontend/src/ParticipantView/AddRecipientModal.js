@@ -2,10 +2,11 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Tooltip, Container } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import Modal from '@material-ui/core/Modal';
+// import Modal from '@material-ui/core/Modal';
 import AddRecipientForm from './AddRecipientForm';
 import './AddRecipientModal.css';
 import CustomButton from '../CustomButton';
+import CustomModal from '../CustomModal';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -36,15 +37,18 @@ function AddRecipientModal(props) {
     };
 
     const classes = useStyles();
-    const body = (
-        <div className={classes.paper}>
-            <h3 id="simple-modal-title">Add new recipient</h3>
-            <AddRecipientForm handleClose={handleClose} roomCode={props.roomCode} />
-        </div>
-    );
+    // const body = (
+    //     <div className={classes.paper}>
+    //         <h3 id="simple-modal-title">Add new recipient</h3>
+    //         <AddRecipientForm handleClose={handleClose} roomCode={props.roomCode} />
+    //     </div>
+    // );
+
+    const body = <AddRecipientForm handleClose={handleClose} roomCode={props.roomCode} />;
 
     return (
-        <div className={classes.root}>
+        <div>
+            {/* // <div className={classes.root}> */}
             {/* <Tooltip title="Add a new recipient"> */}
             {/* <button id="addRecipient-button" onClick={() => handleOpen()}>
                     <svg version="1.1" id="undo-icon" x="0px" y="0px" viewBox="0 0 26.676 26.676">
@@ -66,14 +70,21 @@ function AddRecipientModal(props) {
             />
 
             <Container>
-                <Modal
+                {/* <Modal
                     open={open}
                     onClose={handleClose}
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                 >
                     {body}
-                </Modal>
+                </Modal> */}
+
+                <CustomModal
+                    show={open}
+                    handleClose={handleClose}
+                    form={body}
+                    title="Add a new recipient"
+                />
             </Container>
         </div>
     );

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Container, Modal } from '@material-ui/core';
 import RecipientInfo from './RecipientInfo';
+import CustomModal from '../CustomModal';
 
 function RecipientModal(props) {
     const { recipientId, handleClose } = props;
@@ -83,14 +84,20 @@ function RecipientModal(props) {
     return (
         <div>
             <Container>
-                <Modal
+                {/* <Modal
                     open={openAtSlider !== '' ? true : false}
                     onClose={handleClose}
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                 >
                     <RecipientInfo recipientId={openAtSlider} />
-                </Modal>
+                </Modal> */}
+                <CustomModal
+                    title="Recipient Info"
+                    form={<RecipientInfo recipientId={openAtSlider} />}
+                    show={openAtSlider !== '' ? true : false}
+                    handleClose={handleClose}
+                />
             </Container>
         </div>
     );

@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { Grid, ButtonGroup } from '@material-ui/core';
-import { HomeModal } from './Modal/Modal';
+// import { HomeModal } from './Modal/Modal';
+import CreateRoomForm from './Form/CreateRoomForm';
+import JoinRoomForm from './Form/JoinRoomForm';
 import CustomButton from '../CustomButton';
+import CustomModal from '../CustomModal';
 
 class Home extends Component {
     constructor() {
@@ -53,17 +56,21 @@ class Home extends Component {
                         size="large"
                     />
                     <CustomButton title="Join Room" onClick={this.showJoinRoomModal} size="large" />
-                    <HomeModal
-                        modalTitle="Create Room"
-                        show={this.state.showCreateRoomModal}
-                        handleClose={this.hideCreateRoomModal}
-                    />
-                    <HomeModal
-                        modalTitle="Join Room"
-                        show={this.state.showJoinRoomModal}
-                        handleClose={this.hideJoinRoomModal}
-                    />
                 </ButtonGroup>
+
+                <CustomModal
+                    title="Create Room"
+                    form={<CreateRoomForm handleClose={this.hideCreateRoomModal} />}
+                    handleClose={this.hideCreateRoomModal}
+                    show={this.state.showCreateRoomModal}
+                />
+
+                <CustomModal
+                    title="Join Room"
+                    form={<JoinRoomForm handleClose={this.hideJoinRoomModal} />}
+                    handleClose={this.hideJoinRoomModal}
+                    show={this.state.showJoinRoomModal}
+                />
             </Grid>
         );
     }

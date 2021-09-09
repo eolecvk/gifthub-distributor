@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { TextField, Grid, Button } from '@material-ui/core';
+import { TextField, Grid, Button, ButtonGroup } from '@material-ui/core';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import PublishIcon from '@material-ui/icons/Publish';
+import CustomButton from '../CustomButton';
 
 // [EditRecipient Form]
 // (fields)
@@ -26,7 +29,7 @@ class EditRecipientForm extends Component {
         };
 
         this.state = this.initialValues;
-        this.roomCode = this.props.roomCode;
+        this.roomCode = this.props.roomInfo.room_code;
         this.recipientId = this.props.recipientId;
         this._isMounted = false; //using isMounted react pattern to avoid memory leak https://stackoverflow.com/questions/52061476/cancel-all-subscriptions-and-asyncs-in-the-componentwillunmount-method-how
     }
@@ -352,30 +355,26 @@ class EditRecipientForm extends Component {
                         justifyContent="flex-end"
                         style={{ marginTop: 20 }}
                     >
-                        <Button variant="contained" color="primary" type="submit">
-                            Submit
-                        </Button>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            type="button"
-                            onClick={(e) => {
-                                this.handleRemove(e);
-                            }}
-                        >
-                            Remove
-                        </Button>
-                        {/* // Probably don't need a close button */}
-                        {/* <Button
-                            variant="contained"
-                            color="primary"
-                            type="button"
-                            onClick={(e) => {
-                                this.props.handleClose();
-                            }}
-                        >
-                            Close
-                        </Button> */}
+                        <ButtonGroup orientation="vertical">
+                            <CustomButton
+                                key="submit-button"
+                                title="Submit"
+                                startIcon={<PublishIcon />}
+                                color="red"
+                                onClick={(e) => {
+                                    this.handleSubmit(e);
+                                }}
+                            />
+                            <CustomButton
+                                key="remove-button"
+                                title="Remove"
+                                startIcon={<HighlightOffIcon />}
+                                color="green"
+                                onClick={(e) => {
+                                    this.handleRemove(e);
+                                }}
+                            />
+                        </ButtonGroup>
                     </Grid>
                 </Grid>
             </form>

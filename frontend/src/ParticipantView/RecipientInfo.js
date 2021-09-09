@@ -45,7 +45,7 @@ function RecipientInfo(props) {
         `Thrive: ${recipientData.needs_upper_bound_cents / 100}$`;
 
     if (recipientData.needs_description && recipientData.needs_description !== '') {
-        textBody += `\n\n"${recipientData.needs_description}"`;
+        textBody += `\n\n"Description:\n${recipientData.needs_description}"`;
     }
 
     const voterId = sessionStorage.getItem('voterId');
@@ -66,7 +66,8 @@ function RecipientInfo(props) {
         recipientId === '' ? (
             <div />
         ) : (
-            <div className={classes.paper}>
+            // <div className={classes.paper}>
+            <div>
                 {dissentButtons}
                 <div style={{ whiteSpace: 'pre-line' }}>{textBody}</div>
                 <EditRecipientModal recipientId={recipientId} roomInfo={roomInfo} />

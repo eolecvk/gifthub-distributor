@@ -90,7 +90,7 @@ function UpdateDefaultDistributionModal(props) {
                 </Modal> */}
                 <CustomModal
                     form={body}
-                    modalTitle="Quick distribution"
+                    title="Quick distribution"
                     show={open}
                     handleClose={handleClose}
                 />
