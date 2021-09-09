@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import isEqual from 'lodash.isequal';
 import { Tooltip } from '@material-ui/core';
+import ListIcon from '@material-ui/icons/List';
 import RoomInfo from './RoomInfo';
 import SlidersGrid from './SliderGrid';
 import RecipientSlide from './RecipientSlide';
@@ -190,6 +191,7 @@ class ParticipantView extends Component {
                 <Tooltip title="View with all the recipients">
                     <CustomButton
                         title="Back to list"
+                        startIcon={<ListIcon />}
                         onClick={() => {
                             sessionStorage.setItem('participantView', 'list');
                             this.setState({ view: 'list' });

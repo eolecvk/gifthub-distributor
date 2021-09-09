@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { ButtonGroup } from '@material-ui/core';
+import CustomButton from '../CustomButton';
 import InputSliderZoomedView from './InputSliderZoomedView';
 import RecipientInfo from './RecipientInfo';
 import { parseSliderStartingValue } from './utils';
@@ -46,8 +48,13 @@ function RecipientSlide() {
 
     return (
         <div>
-            <button onClick={handleSwitchToPreviousRecipient}>Previous Recipient</button>
-            <button onClick={handleSwitchToNextRecipient}>Next Recipient</button>
+            <ButtonGroup>
+                <CustomButton
+                    title="Previous recipient"
+                    onClick={handleSwitchToPreviousRecipient}
+                />
+                <CustomButton title="Next recipient" onClick={handleSwitchToNextRecipient} />
+            </ButtonGroup>
             <InputSliderZoomedView sliderId={recipientId} startingValue={startingValue} />
             <RecipientInfo recipientId={recipientId} />
         </div>

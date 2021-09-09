@@ -226,6 +226,7 @@ class AddRecipientForm extends Component {
                                         this.state.errors.needsLowerBoundDollars &&
                                         this.state.errors.needsLowerBoundDollars
                                     }
+                                    InputLabelProps={{ shrink: true }}
                                 />
                             </Grid>
                             <Grid item xs={4}>
@@ -242,6 +243,7 @@ class AddRecipientForm extends Component {
                                         this.state.errors.needsUpperBoundDollars &&
                                         this.state.errors.needsUpperBoundDollars
                                     }
+                                    InputLabelProps={{ shrink: true }}
                                 />
                             </Grid>
                         </Grid>

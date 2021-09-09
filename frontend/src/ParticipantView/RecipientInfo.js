@@ -40,12 +40,12 @@ function RecipientInfo(props) {
               })[0];
 
     let textBody =
-        `Name: ${recipientData.name}\n` +
+        `Recipient: ${recipientData.name}\n` +
         `Survive: ${recipientData.needs_lower_bound_cents / 100}$\n` +
         `Thrive: ${recipientData.needs_upper_bound_cents / 100}$`;
 
     if (recipientData.needs_description && recipientData.needs_description !== '') {
-        textBody += `\n\n"Description:\n${recipientData.needs_description}"`;
+        textBody += `\n\nDescription:\n${recipientData.needs_description}`;
     }
 
     const voterId = sessionStorage.getItem('voterId');
