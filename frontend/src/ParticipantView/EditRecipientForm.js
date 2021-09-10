@@ -264,6 +264,9 @@ class EditRecipientForm extends Component {
                 if (response.status === 200) {
                     sessionStorage.clear();
                     sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
+                    if (response.data.recipients.length === 0) {
+                        sessionStorage.setItem('view', 'list');
+                    }
                 }
             })
             .catch((error) => {
@@ -271,7 +274,10 @@ class EditRecipientForm extends Component {
             });
 
         this.props.handleCloseEditRecipientModal();
-        this.props.handleCloseRecipientModal();
+
+        try {
+            this.props.handleCloseRecipientModal();
+        } catch {}
     };
 
     render() {

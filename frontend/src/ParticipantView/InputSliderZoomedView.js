@@ -178,14 +178,10 @@ function InputSliderZoomedView(props) {
         }
     }
 
-    // const useStyles = makeStyles({})
-    // const classes = useStyles();
-
     return (
-        <div style={{ marginTop: 30 }}>
+        <div style={{ marginTop: 60, marginBottom: 40 }}>
             <MuiThemeProvider theme={theme}>
                 <Grid
-                    //className={classes.root}
                     key={props.sliderId.toString() + 'grid'}
                     container
                     direction={'row'}
@@ -207,7 +203,6 @@ function InputSliderZoomedView(props) {
 
                     <Grid item xs>
                         <Input
-                            //className={classes.input}
                             key={props.sliderId.toString() + 'input'}
                             value={currentValue !== '' ? currentValue : ''}
                             margin="dense"

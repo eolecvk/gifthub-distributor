@@ -130,7 +130,19 @@ function registerEvents(events, roomCode) {
 
 function registerVote(newSliderValues, roomCode) {
     // EDIT SLIDERGRIDSTATE IN SESSIONSTORAGE
-    const currentGridState = JSON.parse(sessionStorage.getItem('sliderGridState'));
+    let currentGridState = JSON.parse(sessionStorage.getItem('sliderGridState'));
+
+    if (!currentGridState) {
+        currentGridState = {
+            currentValues: {}, // NEED TO DEPRECATED THIS
+            reset: false,
+            history: {
+                index: 0,
+                states: [],
+            },
+        };
+    }
+
     const newGridState = getStateObjectNewMoves(currentGridState, newSliderValues);
     sessionStorage.setItem('sliderGridState', JSON.stringify(newGridState));
 
