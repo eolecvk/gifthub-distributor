@@ -13,19 +13,15 @@ function CustomModal(props) {
     );
 
     return (
-        <div>
-            <Container>
-                <Modal
-                    className="modal"
-                    open={show}
-                    onClose={handleClose}
-                    aria-labelledby="simple-modal-title"
-                    aria-describedby="simple-modal-description"
-                >
-                    {content}
-                </Modal>
-            </Container>
-        </div>
+        <Modal
+            className="modal"
+            open={show}
+            onClose={handleClose}
+            aria-labelledby="simple-modal-title"
+            aria-describedby="simple-modal-description"
+        >
+            {content}
+        </Modal>
     );
 }
 
