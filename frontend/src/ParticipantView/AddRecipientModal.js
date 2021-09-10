@@ -1,29 +1,10 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Tooltip, Container } from '@material-ui/core';
+import { Grid, Container } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-// import Modal from '@material-ui/core/Modal';
 import AddRecipientForm from './AddRecipientForm';
-import './AddRecipientModal.css';
 import CustomButton from '../CustomButton';
 import CustomModal from '../CustomModal';
-
-const useStyles = makeStyles((theme) => ({
-    paper: {
-        position: 'absolute',
-        top: 25 + '%',
-        left: 12 + '%',
-        transform: 'translateY(' + -50 + '%), translateX(' + -50 + '%)',
-        margin: 'auto',
-        justifyContent: 'center',
-        verticalAlign: 'middle',
-        width: 220,
-        backgroundColor: theme.palette.background.paper,
-        border: '2px solid #000',
-        boxShadow: theme.shadows[5],
-        padding: theme.spacing(3, 4, 3),
-    },
-}));
+import './AddRecipientModal.css';
 
 function AddRecipientModal(props) {
     const [open, setOpen] = React.useState(false);
@@ -36,54 +17,25 @@ function AddRecipientModal(props) {
         setOpen(false);
     };
 
-    const classes = useStyles();
-    // const body = (
-    //     <div className={classes.paper}>
-    //         <h3 id="simple-modal-title">Add new recipient</h3>
-    //         <AddRecipientForm handleClose={handleClose} roomCode={props.roomCode} />
-    //     </div>
-    // );
-
     const body = <AddRecipientForm handleClose={handleClose} roomCode={props.roomCode} />;
 
     return (
         <div>
-            {/* // <div className={classes.root}> */}
-            {/* <Tooltip title="Add a new recipient"> */}
-            {/* <button id="addRecipient-button" onClick={() => handleOpen()}>
-                    <svg version="1.1" id="undo-icon" x="0px" y="0px" viewBox="0 0 26.676 26.676">
-                        <path
-                            d="M13 7h-2v4H7v2h4v4h2v-4h4v-2h-4V7zm-1-5C6.48 2 2 6.48 2
-                    12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41
-                    0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
-                        ></path>
-                    </svg>
-                </button> */}
-
-            {/* </Tooltip> */}
-
-            <CustomButton
-                title="Add a recipient"
-                startIcon={<AddCircleOutlineIcon />}
-                size="small"
-                onClick={() => handleOpen()}
-            />
+            <Grid container alignItems="center" justifyContent="center" style={{ marginTop: 40 }}>
+                <CustomButton
+                    title="Add a recipient"
+                    startIcon={<AddCircleOutlineIcon />}
+                    size="medium"
+                    onClick={() => handleOpen()}
+                />
+            </Grid>
 
             <Container>
-                {/* <Modal
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby="simple-modal-title"
-                    aria-describedby="simple-modal-description"
-                >
-                    {body}
-                </Modal> */}
-
                 <CustomModal
                     show={open}
                     handleClose={handleClose}
                     form={body}
-                    title="Add a new recipient"
+                    title="Add a recipient"
                 />
             </Container>
         </div>

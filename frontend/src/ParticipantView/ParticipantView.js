@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import isEqual from 'lodash.isequal';
-import { Tooltip } from '@material-ui/core';
+import { Tooltip, ButtonGroup } from '@material-ui/core';
 import ListIcon from '@material-ui/icons/List';
 import RoomInfo from './RoomInfo';
 import SlidersGrid from './SliderGrid';
@@ -14,9 +14,8 @@ import {
 } from './utils';
 import RecipientModal from './RecipientModal';
 import UpdateDefaultDistributionModal from './UpdateDefaultDistributionModal';
-import ZoomedViewButton from './ZoomedViewButton';
 import AddRecipientModal from './AddRecipientModal';
-
+import OfflineBoltIcon from '@material-ui/icons/OfflineBolt';
 import PageviewIcon from '@material-ui/icons/Pageview';
 import CustomButton from '../CustomButton';
 
@@ -30,6 +29,7 @@ class ParticipantView extends Component {
             roomInfo: JSON.parse(sessionStorage.getItem('roomInfo')) || '',
             recipientModalOpenAtSlider: '',
             slideOpenAtSlider: '',
+            showDefaultDistributionModal: false,
         };
         this.getStateObjectNewMoves = getStateObjectNewMoves;
     }
@@ -90,6 +90,14 @@ class ParticipantView extends Component {
     //     };
     // };
 
+    showQuickDistributionModal = () => {
+        this.setState({ showDefaultDistributionModal: true });
+    };
+
+    hideQuickDistributionModal = () => {
+        this.setState({ showDefaultDistributionModal: false });
+    };
+
     updateDefaultDistribution = (defaultDistribution) => {
         const roomInfo = this.state.roomInfo;
         //const needsScaleDownRatio = getNeedsScaleDownRatio(roomInfo, defaultDistribution);
@@ -142,11 +150,14 @@ class ParticipantView extends Component {
         const listView = (
             <div>
                 <RoomInfo roomInfo={this.state.roomInfo} />
-                <span>
-                    <UpdateDefaultDistributionModal
-                        updateDefaultDistribution={this.updateDefaultDistribution}
-                    />
 
+                <ButtonGroup orientation="vertical" style={{ marginTop: 10, marginBottom: 10 }}>
+                    <CustomButton
+                        title="Quick distributions"
+                        size="small"
+                        startIcon={<OfflineBoltIcon />}
+                        onClick={this.showQuickDistributionModal}
+                    />
                     <CustomButton
                         title="Single Recipient View"
                         size="small"
@@ -159,17 +170,14 @@ class ParticipantView extends Component {
                             this.setState({ view: 'zoomed' });
                         }}
                     />
+                </ButtonGroup>
 
-                    {/* <ZoomedViewButton
-                        switchToZoomedView={() => {
-                            if (this.state.roomInfo.recipients.length === 0) {
-                                return;
-                            }
-                            sessionStorage.setItem('participantView', 'zoomed');
-                            this.setState({ view: 'zoomed' });
-                        }}
-                    /> */}
-                </span>
+                <UpdateDefaultDistributionModal
+                    show={this.state.showDefaultDistributionModal}
+                    hideQuickDistributionModal={this.hideQuickDistributionModal}
+                    updateDefaultDistribution={this.updateDefaultDistribution}
+                />
+
                 <SlidersGrid
                     key={this.state.defaultDistribution + Date.now()} // force class rendering on defaultDistribution update!
                     distribution={this.state.defaultDistribution}

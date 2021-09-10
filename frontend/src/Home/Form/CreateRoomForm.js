@@ -99,16 +99,6 @@ function CreateRoomForm(props) {
                                 props.handleClose();
                             }}
                         />
-                        {/* <Button
-                            variant="contained"
-                            color="primary"
-                            type="button"
-                            onClick={(e) => {
-                                props.handleClose();
-                            }}
-                        >
-                            Close
-                        </Button> */}
                     </ButtonGroup>
                 </Grid>
             </Grid>
