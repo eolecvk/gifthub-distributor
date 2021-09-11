@@ -1,10 +1,16 @@
 import React from 'react';
 import { Button, Tooltip } from '@material-ui/core';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
-import { green, red } from '@material-ui/core/colors';
+import { green, red, grey } from '@material-ui/core/colors';
 
 function CustomButton(props) {
     const { title, onClick, size, tooltip, startIcon, color } = props;
+
+    const buttonThemeGrey = createTheme({
+        palette: {
+            primary: grey,
+        },
+    });
 
     const buttonThemeGreen = createTheme({
         palette: {
@@ -18,7 +24,7 @@ function CustomButton(props) {
         },
     });
 
-    let buttonTheme = buttonThemeGreen;
+    let buttonTheme = buttonThemeGrey;
     if (color === 'red') {
         buttonTheme = buttonThemeRed;
     }

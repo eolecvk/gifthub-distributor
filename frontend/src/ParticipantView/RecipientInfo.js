@@ -1,6 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Container } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import ToggleButtonsUpDown from './ToggleButtonsUpDown';
 import EditRecipientModal from './EditRecipientModal';
 

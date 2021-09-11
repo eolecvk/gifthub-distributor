@@ -147,52 +147,58 @@ class ParticipantView extends Component {
             this.state.defaultDistribution
         );
 
-        const listView = (
-            <div>
-                <RoomInfo roomInfo={this.state.roomInfo} />
+        const listView =
+            this.state.roomInfo.recipients.length === 0 ? (
+                <div>
+                    <RoomInfo roomInfo={this.state.roomInfo} />
+                    <AddRecipientModal roomCode={this.state.roomInfo.room_code} />
+                </div>
+            ) : (
+                <div>
+                    <RoomInfo roomInfo={this.state.roomInfo} />
 
-                <ButtonGroup orientation="vertical" style={{ marginTop: 10, marginBottom: 10 }}>
-                    <CustomButton
-                        title="Quick distributions"
-                        size="small"
-                        startIcon={<OfflineBoltIcon />}
-                        onClick={this.showQuickDistributionModal}
+                    <ButtonGroup orientation="vertical" style={{ marginTop: 10, marginBottom: 10 }}>
+                        <CustomButton
+                            title="Quick distributions"
+                            size="small"
+                            startIcon={<OfflineBoltIcon />}
+                            onClick={this.showQuickDistributionModal}
+                        />
+                        <CustomButton
+                            title="Single Recipient View"
+                            size="small"
+                            startIcon={<PageviewIcon />}
+                            onClick={() => {
+                                if (this.state.roomInfo.recipients.length === 0) {
+                                    return;
+                                }
+                                sessionStorage.setItem('participantView', 'zoomed');
+                                this.setState({ view: 'zoomed' });
+                            }}
+                        />
+                    </ButtonGroup>
+
+                    <UpdateDefaultDistributionModal
+                        show={this.state.showDefaultDistributionModal}
+                        hideQuickDistributionModal={this.hideQuickDistributionModal}
+                        updateDefaultDistribution={this.updateDefaultDistribution}
                     />
-                    <CustomButton
-                        title="Single Recipient View"
-                        size="small"
-                        startIcon={<PageviewIcon />}
-                        onClick={() => {
-                            if (this.state.roomInfo.recipients.length === 0) {
-                                return;
-                            }
-                            sessionStorage.setItem('participantView', 'zoomed');
-                            this.setState({ view: 'zoomed' });
-                        }}
+
+                    <SlidersGrid
+                        key={this.state.defaultDistribution + Date.now()} // force class rendering on defaultDistribution update!
+                        distribution={this.state.defaultDistribution}
+                        slidersInitializationData={slidersInitializationData}
+                        roomInfo={this.state.roomInfo}
+                        reset={this.state.reset}
+                        openRecipientModal={this.openRecipientModal}
                     />
-                </ButtonGroup>
-
-                <UpdateDefaultDistributionModal
-                    show={this.state.showDefaultDistributionModal}
-                    hideQuickDistributionModal={this.hideQuickDistributionModal}
-                    updateDefaultDistribution={this.updateDefaultDistribution}
-                />
-
-                <SlidersGrid
-                    key={this.state.defaultDistribution + Date.now()} // force class rendering on defaultDistribution update!
-                    distribution={this.state.defaultDistribution}
-                    slidersInitializationData={slidersInitializationData}
-                    roomInfo={this.state.roomInfo}
-                    reset={this.state.reset}
-                    openRecipientModal={this.openRecipientModal}
-                />
-                <AddRecipientModal roomCode={this.state.roomInfo.room_code} />
-                <RecipientModal
-                    recipientId={this.state.recipientModalOpenAtSlider}
-                    handleClose={this.closeRecipientModal}
-                />
-            </div>
-        );
+                    <AddRecipientModal roomCode={this.state.roomInfo.room_code} />
+                    <RecipientModal
+                        recipientId={this.state.recipientModalOpenAtSlider}
+                        handleClose={this.closeRecipientModal}
+                    />
+                </div>
+            );
 
         const zoomedView = (
             <div>
