@@ -8,13 +8,25 @@ import {
     LabelList,
     ResponsiveContainer,
     Scatter,
+    Rectangle,
+    Tooltip,
 } from 'recharts';
 import axios from 'axios';
+import ViolinBarLine from './ViolinBarLine';
+import * as d3 from 'd3';
 import { quantile } from './utils';
 import colors from './../ParticipantView/colors';
 import AmountDistributedProgressBar from '../ParticipantView/AmountDistributedProgressBar';
 
-// Example: https://blog.stvmlbrn.com/2019/02/20/automatically-refreshing-data-in-react.html
+const currencyFormatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+
+    // These options are needed to round to whole numbers if that's what you want.
+    //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+    //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+});
+
 class ObserverView extends Component {
     constructor() {
         super();
@@ -32,6 +44,68 @@ class ObserverView extends Component {
         clearTimeout(this.intervalID);
     }
 
+    makeRectangleBar(color, props) {
+        return (
+            <Rectangle x={props.x} y={props.y - 25} width={5} height={60} radius={3} fill={color} />
+        );
+    }
+
+    getStableMax(recipients) {
+        const maxNumber = d3.max(
+            recipients
+                .map((p) =>
+                    [p.needs_upper_bound_cents, p.needs_lower_bound_cents].concat(
+                        Object.values(p.votes_cents)
+                    )
+                )
+                .flat()
+        );
+        let orderOfMagnitude = Math.floor(Math.log10(maxNumber));
+        let appliedOrder = Math.pow(10, orderOfMagnitude);
+        if (maxNumber / appliedOrder < 4) {
+            orderOfMagnitude--;
+            appliedOrder = Math.pow(10, orderOfMagnitude);
+        }
+        return appliedOrder * Math.floor(maxNumber / appliedOrder) + 2 * appliedOrder;
+    }
+
+    makeTooltip(props, maxVote) {
+        if (props.payload.length == 0) {
+            return <div />;
+        }
+        const attributedVotes = props.payload[0].payload.attributed_votes;
+        const hoverValue =
+            ((props.coordinate.x - props.viewBox.left) / props.viewBox.width) * maxVote;
+        const rangeDivider = maxVote / 40;
+        const range = [hoverValue - rangeDivider, hoverValue + rangeDivider];
+
+        const labels = Object.entries(attributedVotes)
+            .filter((entry) => range[0] < entry[1] && entry[1] < range[1])
+            .sort((entryA, entryB) => entryA[1] - entryB[1])
+            .map((entry, index) => (
+                <p key={index}>
+                    <b>{entry[0]}:</b> {currencyFormatter.format(entry[1] / 100.0)}
+                </p>
+            ));
+        if (labels.length == 0) {
+            return <div />;
+        }
+
+        return (
+            <div
+                style={{
+                    margin: '0px',
+                    padding: '5px',
+                    backgroundColor: 'rgb(255,255,255)',
+                    border: '1px solid rgb(204,204,204)',
+                    whiteSpace: 'nowrap',
+                }}
+            >
+                {labels}
+            </div>
+        );
+    }
+
     getData = () => {
         axios
             .get('/api/' + this.state.room_code)
@@ -47,38 +121,50 @@ class ObserverView extends Component {
 
     render() {
         const recipients = this.state.recipients;
+        const maxVote = this.getStableMax(recipients);
         const totalAmountDollars = this.state.splitting_cents / 100;
         const roomCode = this.state.room_code;
         const roomName = this.state.room_name;
+        const voterNamesByVoterId = Object.fromEntries(
+            this.state.voters.map((voter) => [voter.voter_id, voter.name])
+        );
 
         const recipientData = recipients
             .sort((p1, p2) => p1.recipient_id - p2.recipient_id)
-            .map((p) => {
+            .map((p, index) => {
                 const name = p.name;
-                const cents = p.avg_cents / 100;
+                const avg = p.avg_cents / 100;
                 const needs_upper = p.needs_upper_bound_cents / 100;
                 const needs_lower = p.needs_lower_bound_cents / 100;
-                const upper_25 = quantile(Object.values(p.votes_cents), 0.75) / 100;
-                const lower_25 = quantile(Object.values(p.votes_cents), 0.25) / 100;
+                const attributedVotes = Object.fromEntries(
+                    Object.entries(p.votes_cents).map((entry) => [
+                        voterNamesByVoterId[entry[0]],
+                        entry[1],
+                    ])
+                );
 
-                const countDissentUp = p.emotive.DISSENT_UP ? p.emotive.DISSENT_UP.length : 0;
-                const countDissentDown = p.emotive.DISSENT_DOWN ? p.emotive.DISSENT_DOWN.length : 0;
+                const countDissentUp = Object.entries(p.emotive).filter(
+                    (entry) => entry[1] === 'DISSENT_UP'
+                ).length;
+                const countDissentDown = Object.entries(p.emotive).filter(
+                    (entry) => entry[1] === 'DISSENT_DOWN'
+                ).length;
                 const dissent = `👇${countDissentDown}  👆${countDissentUp}`;
                 return {
                     name: name,
                     dissent: dissent,
-                    cents: cents,
+                    x_domain: [0, maxVote],
+                    max_vote: maxVote / 100,
+                    votes_cents: Object.values(p.votes_cents),
+                    attributed_votes: attributedVotes,
+                    avg: avg,
+                    bar_fill: colors[index + 1],
                     needs_upper: needs_upper,
                     needs_lower: needs_lower,
-                    upper_25: upper_25,
-                    lower_25: lower_25,
                 };
             });
 
-        const totalDistributed =
-            recipientData.length > 0
-                ? recipientData.map((p) => p.cents).reduce((p1, p2) => p1 + p2)
-                : 0;
+        const totalDistributed = recipientData.map((p) => p.avg).reduce((p1, p2) => p1 + p2, 0);
 
         const barchart = (
             <ResponsiveContainer width="95%" height="80%" minHeight={100 * recipients.length}>
@@ -98,25 +184,22 @@ class ObserverView extends Component {
                         type="category"
                         dataKey="dissent"
                         tick={{ fontSize: 20 }}
-                        orientation="right"
+                        orientation="left"
                         tickLine={false}
                         axisLine={false}
                     />
-                    <XAxis type="number" axisLine={false} />
-                    <Bar dataKey="cents" label={true}>
-                        <LabelList
-                            dataKey="cents"
-                            position="insideLeft"
-                            style={{ fontSize: 20, fill: 'white' }}
-                        />
-                        {recipients.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={colors[index + 1]} />
-                        ))}
-                    </Bar>
-                    <Scatter shape="circle" dataKey="needs_upper" fill="#00FF00" />
-                    <Scatter shape="circle" dataKey="needs_lower" fill="#FF0000" />
-                    <Scatter shape="cross" dataKey="upper_25" fill="#000000" />
-                    <Scatter shape="cross" dataKey="lower_25" fill="#000000" />
+                    <XAxis type="number" axisLine={false} domain={[0, maxVote / 100]} />
+                    <Bar dataKey="max_vote" label={false} shape={<ViolinBarLine />} />
+                    <Scatter
+                        shape={(props) => this.makeRectangleBar('#00FF00', props)}
+                        dataKey="needs_upper"
+                    />
+                    <Scatter
+                        shape={(props) => this.makeRectangleBar('#FF0000', props)}
+                        dataKey="needs_lower"
+                    />
+                    <Scatter shape="cross" dataKey="avg" />
+                    <Tooltip content={(props) => this.makeTooltip(props, maxVote)} />
                 </ComposedChart>
             </ResponsiveContainer>
         );

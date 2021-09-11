@@ -29,6 +29,7 @@ import spark.Response;
 
 @Singleton
 public class GiftHubWebserver {
+  private static final boolean CACHE_DISABLED = false;
   private static final String SESSION_ROOM_KEY = "room";
   private static final String SESSION_VOTER_ID_KEY = "voter_id";
 
@@ -155,6 +156,9 @@ public class GiftHubWebserver {
 
   @SneakyThrows
   private String toRoomInfoResponse(Object room) {
+    if (CACHE_DISABLED) {
+      return gson.toJson(RoomInfoResponse.buildTestInfo((GiftHubRoom) room));
+    }
     return gsonRoomCache.get((GiftHubRoom) room);
   }
 
