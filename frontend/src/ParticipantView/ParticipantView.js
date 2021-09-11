@@ -159,12 +159,6 @@ class ParticipantView extends Component {
 
                     <ButtonGroup orientation="vertical" style={{ marginTop: 10, marginBottom: 10 }}>
                         <CustomButton
-                            title="Quick distributions"
-                            size="small"
-                            startIcon={<OfflineBoltIcon />}
-                            onClick={this.showQuickDistributionModal}
-                        />
-                        <CustomButton
                             title="Single Recipient View"
                             size="small"
                             startIcon={<PageviewIcon />}
@@ -175,6 +169,12 @@ class ParticipantView extends Component {
                                 sessionStorage.setItem('participantView', 'zoomed');
                                 this.setState({ view: 'zoomed' });
                             }}
+                        />
+                        <CustomButton
+                            title="Quick distributions"
+                            size="small"
+                            startIcon={<OfflineBoltIcon />}
+                            onClick={this.showQuickDistributionModal}
                         />
                     </ButtonGroup>
 

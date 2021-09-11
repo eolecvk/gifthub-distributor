@@ -7,15 +7,12 @@ import JoinAsVoterModal from './JoinAsVoterModal';
 import { getSlidersInitializationData } from './utils';
 import RecipientModal from './RecipientModal';
 import AddRecipientModal from './AddRecipientModal';
+import { ButtonGroup, Grid } from '@material-ui/core';
+import CustomButton from '../CustomButton';
 
 class ParticipantViewShadow extends Component {
     constructor(props) {
         super(props);
-        // this.roomInfoIni = (
-        //     typeof sessionStorage['roomInfo'] === 'undefined' ||
-        //     sessionStorage['roomInfo'] === 'undefined')
-        //     ? ''
-        //     : JSON.parse(sessionStorage.getItem('roomInfo'))
         this.state = {
             roomInfo: JSON.parse(sessionStorage.getItem('roomInfo')), //this.roomInfoIni,
             defaultDistribution: 'shadow',

@@ -22,10 +22,11 @@ function AddRecipientModal(props) {
     return (
         <div>
             <Grid container alignItems="center" justifyContent="center" style={{ marginTop: 40 }}>
+                {' '}
                 <CustomButton
-                    title="Add a recipient"
+                    title="Add recipient"
                     startIcon={<AddCircleOutlineIcon />}
-                    size="medium"
+                    size="large"
                     onClick={() => handleOpen()}
                 />
             </Grid>
@@ -35,7 +36,7 @@ function AddRecipientModal(props) {
                     show={open}
                     handleClose={handleClose}
                     form={body}
-                    title="Add a recipient"
+                    title="New recipient"
                 />
             </Container>
         </div>
