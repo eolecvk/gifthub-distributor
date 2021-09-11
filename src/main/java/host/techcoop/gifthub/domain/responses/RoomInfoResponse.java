@@ -1,17 +1,11 @@
 package host.techcoop.gifthub.domain.responses;
 
-import static com.google.common.collect.ImmutableList.toImmutableList;
-import static com.google.common.collect.ImmutableListMultimap.toImmutableListMultimap;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
-import com.google.common.collect.ListMultimap;
+import com.google.common.collect.ImmutableMap;
 import host.techcoop.gifthub.domain.EmotiveState;
 import host.techcoop.gifthub.domain.GiftHubRoom;
-import host.techcoop.gifthub.domain.UserVote;
-import host.techcoop.gifthub.domain.enums.EmotiveKind;
-import java.util.Collection;
-import java.util.List;
+import host.techcoop.gifthub.domain.Vote;
 import lombok.Builder;
 import lombok.Value;
 
@@ -22,55 +16,79 @@ public class RoomInfoResponse {
   String roomName;
   String roomCode;
   int splittingCents;
-  List<UserResponse> people;
+  ImmutableList<VoterResponse> voters;
+  ImmutableList<RecipientResponse> recipients;
+
+  public RoomInfoResponse.RoomInfoResponseBuilder toBuilder() {
+    return RoomInfoResponse.builder()
+        .roomName(roomName)
+        .roomCode(roomCode)
+        .splittingCents(splittingCents)
+        .voters(voters)
+        .recipients(recipients);
+  }
 
   public static RoomInfoResponse from(GiftHubRoom room) {
-    ListMultimap<Integer, UserVote> votesByUserId =
-        room.getPeople().stream()
-            .flatMap(person -> person.getVotes().stream())
-            .collect(toImmutableListMultimap(UserVote::getUserId, x -> x));
+    ImmutableListMultimap<Integer, Vote> votesByRecipientId =
+        room.getVotersById().values().stream()
+            .flatMap(voter -> voter.getVotes().stream())
+            .collect(ImmutableListMultimap.toImmutableListMultimap(Vote::getRecipientId, x -> x));
 
-    ListMultimap<Integer, EmotiveState> emotiveStatesByUserId =
-        room.getPeople().stream()
-            .flatMap(person -> person.getEmotiveStates().stream())
-            .collect(toImmutableListMultimap(EmotiveState::getUserId, x -> x));
+    ImmutableListMultimap<Integer, EmotiveState> emotiveStatesByRecipientId =
+        room.getVotersById().values().stream()
+            .flatMap(voter -> voter.getEmotiveStates().stream())
+            .collect(
+                ImmutableListMultimap.toImmutableListMultimap(
+                    EmotiveState::getRecipientId, x -> x));
 
-    List<UserResponse> userResponses =
-        room.getPeople().stream()
+    ImmutableList<VoterResponse> voters =
+        room.getVotersById().values().stream()
             .map(
-                user -> {
-                  Collection<UserVote> votes = votesByUserId.get(user.getUserId());
-                  Collection<EmotiveState> emotiveStates =
-                      emotiveStatesByUserId.get(user.getUserId());
-
-                  ListMultimap<EmotiveKind, Integer> usersByEmotiveKind =
-                      emotiveStates.stream()
-                          .collect(
-                              ImmutableListMultimap.toImmutableListMultimap(
-                                  EmotiveState::getKind, EmotiveState::getEmoterId));
-
-                  ImmutableList<Long> anonVotes =
-                      votes.stream().map(UserVote::getCents).collect(toImmutableList());
-                  long averageVote =
-                      anonVotes.stream().mapToLong(x -> x).sum() / room.getPeople().size();
-                  return UserResponse.builder()
-                      .name(user.getName())
-                      .votesCents(anonVotes)
-                      .needsDescription(user.getNeedsDescription())
-                      .needsLowerBoundCents(user.getNeedsLowerBoundCents())
-                      .needsUpperBoundCents(user.getNeedsUpperBoundCents())
-                      .personId(user.getUserId())
-                      .avgCents(averageVote)
-                      .emotive(usersByEmotiveKind.asMap())
-                      .build();
-                })
-            .collect(toImmutableList());
+                voter ->
+                    VoterResponse.builder()
+                        .voterId(voter.getVoterId())
+                        .name(voter.getName())
+                        .build())
+            .collect(ImmutableList.toImmutableList());
+    ImmutableList<RecipientResponse> recipients =
+        room.getRecipientsById().values().stream()
+            .map(
+                recipient ->
+                    RecipientResponse.builder()
+                        .recipientId(recipient.getRecipientId())
+                        .name(recipient.getName())
+                        .needsDescription(recipient.getNeedsDescription())
+                        .needsLowerBoundCents(recipient.getNeedsLowerBoundCents())
+                        .needsUpperBoundCents(recipient.getNeedsUpperBoundCents())
+                        .avgCents(
+                            calculateAvgCents(votesByRecipientId, room, recipient.getRecipientId()))
+                        .votesCents(
+                            votesByRecipientId.get(recipient.getRecipientId()).stream()
+                                .collect(
+                                    ImmutableMap.toImmutableMap(Vote::getVoterId, Vote::getCents)))
+                        .emotive(
+                            emotiveStatesByRecipientId.get(recipient.getRecipientId()).stream()
+                                .collect(
+                                    ImmutableMap.toImmutableMap(
+                                        EmotiveState::getVoterId, EmotiveState::getKind)))
+                        .build())
+            .collect(ImmutableList.toImmutableList());
 
     return RoomInfoResponse.builder()
-        .roomCode(room.getCode())
         .roomName(room.getRoomName())
+        .roomCode(room.getCode())
         .splittingCents(room.getSplittingCents())
-        .people(userResponses)
+        .voters(voters)
+        .recipients(recipients)
         .build();
+  }
+
+  private static int calculateAvgCents(
+      ImmutableListMultimap<Integer, Vote> votesByRecipientId, GiftHubRoom room, int recipientId) {
+    if (room.getVotersById().size() == 0) {
+      return 0;
+    }
+    return votesByRecipientId.get(recipientId).stream().mapToInt(Vote::getCents).sum()
+        / room.getVotersById().size();
   }
 }
