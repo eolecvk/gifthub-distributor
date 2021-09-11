@@ -80,8 +80,8 @@ const theme = createTheme({
 
 function InputSliderZoomedView(props) {
     const { sliderId } = props;
-    const startingValueDev = parseSliderStartingValue(sliderId);
-    const [currentValue, setCurrentValue] = useState(startingValueDev);
+    const startingValue = parseSliderStartingValue(sliderId);
+    const [currentValue, setCurrentValue] = useState(startingValue);
 
     useEffect(() => {
         setCurrentValue(parseSliderStartingValue(sliderId));
@@ -93,13 +93,14 @@ function InputSliderZoomedView(props) {
         (recipientData) => recipientData.recipient_id === sliderId
     )[0];
 
-    const maxValue = roomInfo.splitting_cents / 100;
-    const surviveValue = recipientInfo.needs_lower_bound_cents / 100;
-    const thriveValue = recipientInfo.needs_upper_bound_cents / 100;
-    //const groupVoteAvg = recipientInfo.avg_cents / 100;
+    let maxValue, surviveValue, thriveValue;
 
-    //maxValue ???
-    //startingValue ???
+    if (recipientInfo) {
+        maxValue = roomInfo.splitting_cents / 100;
+        surviveValue = recipientInfo.needs_lower_bound_cents / 100;
+        thriveValue = recipientInfo.needs_upper_bound_cents / 100;
+        //const groupVoteAvg = recipientInfo.avg_cents / 100;
+    }
 
     function getMarks(surviveValue, thriveValue) {
         // removed arg: groupVoteAvg
@@ -178,7 +179,7 @@ function InputSliderZoomedView(props) {
         }
     }
 
-    return (
+    const InputSliderZoomedView = recipientInfo ? (
         <div style={{ marginTop: 60, marginBottom: 40 }}>
             <MuiThemeProvider theme={theme}>
                 <Grid
@@ -220,7 +221,9 @@ function InputSliderZoomedView(props) {
                 </Grid>
             </MuiThemeProvider>
         </div>
-    );
+    ) : null;
+
+    return InputSliderZoomedView;
 }
 
 export default InputSliderZoomedView;

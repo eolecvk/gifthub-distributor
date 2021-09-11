@@ -5,9 +5,7 @@ import Home from './Home/Home';
 
 function App() {
     const styleContent = {
-        marginTop: '50px',
-        marginBottom: '25px',
-        padding: '25px',
+        padding: '15px',
     };
 
     return (

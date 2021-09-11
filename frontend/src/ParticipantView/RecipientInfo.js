@@ -16,36 +16,35 @@ function RecipientInfo(props) {
                   return el.recipient_id === parseInt(recipientId);
               })[0];
 
+    if (!recipientData) {
+        return null;
+    }
+
     const textBody =
         `Recipient: ${recipientData.name}\n` +
         `Survive: ${recipientData.needs_lower_bound_cents / 100}$\n` +
         `Thrive: ${recipientData.needs_upper_bound_cents / 100}$`;
 
-    let needsDescription;
+    let needsDescription = recipientData.needs_description;
 
-    try {
-        needsDescription = recipientData.needs_description;
-        if (needsDescription !== '') {
-            needsDescription = (
-                <Grid item>
-                    <p style={{ marginTop: 10 + 'px' }}>Needs description:</p>
-                    <p
-                        style={{
-                            width: 300 + 'px',
-                            maxHeight: 300 + 'px',
-                            whiteSpace: 'pre-line',
-                            overflow: 'scroll',
-                            wordWrap: 'break-word',
-                        }}
-                    >
-                        {needsDescription}
-                    </p>
-                </Grid>
-            );
-        } else {
-            needsDescription = null;
-        }
-    } catch {
+    if (needsDescription) {
+        needsDescription = (
+            <Grid item>
+                <p style={{ marginTop: 10 + 'px' }}>Needs description:</p>
+                <p
+                    style={{
+                        width: 300 + 'px',
+                        maxHeight: 300 + 'px',
+                        whiteSpace: 'pre-line',
+                        overflow: 'scroll',
+                        wordWrap: 'break-word',
+                    }}
+                >
+                    {needsDescription}
+                </p>
+            </Grid>
+        );
+    } else {
         needsDescription = null;
     }
 
