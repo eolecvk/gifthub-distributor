@@ -124,38 +124,31 @@ function InputSlider(props) {
     }
 
     return (
-        <div style={{ marginTop: 30 }}>
-            <MuiThemeProvider theme={theme}>
-                <Grid
-                    key={props.sliderId.toString() + 'grid'}
-                    container
-                    direction={'row'}
-                    spacing={6}
-                >
-                    <Grid container item xs={1}>
-                        <RecipientFace
-                            sliderId={sliderId}
-                            title={title}
-                            openRecipientModal={handleOpenRecipientModal}
-                            currentAvg={groupVoteAvg}
-                        />
-                    </Grid>
-                    <Grid item xs={10}>
-                        <Slider
-                            key={props.sliderId.toString() + 'slider'}
-                            min={0}
-                            max={maxValue}
-                            value={startingValue ? startingValue : 0}
-                            onChange={handleSliderChange}
-                            onChangeCommitted={handleSliderChangeCommitted}
-                            aria-labelledby={props.sliderId.toString() + 'slider'}
-                            marks={getMarks(surviveValue, thriveValue)}
-                            valueLabelDisplay="on"
-                        />
-                    </Grid>
+        <MuiThemeProvider theme={theme}>
+            <Grid key={props.sliderId.toString() + 'grid'} container direction={'row'} spacing={8}>
+                <Grid container item xs={1}>
+                    <RecipientFace
+                        sliderId={sliderId}
+                        title={title}
+                        openRecipientModal={handleOpenRecipientModal}
+                        currentAvg={groupVoteAvg}
+                    />
                 </Grid>
-            </MuiThemeProvider>
-        </div>
+                <Grid item xs={9}>
+                    <Slider
+                        key={props.sliderId.toString() + 'slider'}
+                        min={0}
+                        max={maxValue}
+                        value={startingValue ? startingValue : 0}
+                        onChange={handleSliderChange}
+                        onChangeCommitted={handleSliderChangeCommitted}
+                        aria-labelledby={props.sliderId.toString() + 'slider'}
+                        marks={getMarks(surviveValue, thriveValue)}
+                        valueLabelDisplay="on"
+                    />
+                </Grid>
+            </Grid>
+        </MuiThemeProvider>
     );
 }
 
