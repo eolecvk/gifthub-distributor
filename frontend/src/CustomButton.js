@@ -1,10 +1,10 @@
 import React from 'react';
-import { Button, Tooltip } from '@material-ui/core';
+import { IconButton, Button, Tooltip } from '@material-ui/core';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import { green, red, grey } from '@material-ui/core/colors';
 
 function CustomButton(props) {
-    const { title, onClick, size, tooltip, startIcon, color } = props;
+    const { title, onClick, size, tooltip, startIcon, endIcon, color, style } = props;
 
     const buttonThemeGrey = createTheme({
         palette: {
@@ -29,9 +29,12 @@ function CustomButton(props) {
         buttonTheme = buttonThemeRed;
     }
 
-    let customButton = (
+    let customButton;
+    customButton = (
         <Button
+            style={style}
             startIcon={startIcon}
+            endIcon={endIcon}
             variant="contained"
             color="primary"
             size={size || 'medium'}
