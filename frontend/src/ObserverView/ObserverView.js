@@ -60,7 +60,7 @@ class ObserverView extends Component {
                 )
                 .flat()
         );
-        let orderOfMagnitude =  Math.floor(Math.log10(maxNumber));
+        let orderOfMagnitude = Math.floor(Math.log10(maxNumber));
         let appliedOrder = Math.pow(10, orderOfMagnitude);
         if (maxNumber / appliedOrder < 4) {
             orderOfMagnitude--;
@@ -159,7 +159,6 @@ class ObserverView extends Component {
                     attributed_votes: attributedVotes,
                     avg: avg,
                     bar_fill: colors[index + 1],
-                    domain: [0, 8000],
                     needs_upper: needs_upper,
                     needs_lower: needs_lower,
                 };
