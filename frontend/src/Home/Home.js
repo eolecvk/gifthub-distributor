@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Grid, ButtonGroup } from '@material-ui/core';
-// import { HomeModal } from './Modal/Modal';
 import CreateRoomForm from './Form/CreateRoomForm';
 import JoinRoomForm from './Form/JoinRoomForm';
 import CustomButton from '../CustomButton';

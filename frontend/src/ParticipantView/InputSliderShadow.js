@@ -48,7 +48,6 @@ const theme = createTheme({
             markLabel: {
                 fontSize: 12,
                 color: 'grey',
-                //transform: 'translate(-40%, -20%)',
                 transform: 'translate(-40%, 70%)',
                 //Style of avg mark
                 '&[data-index="0"]': {
@@ -63,7 +62,6 @@ const theme = createTheme({
                 color: 'black',
                 fontWeight: 'bold',
                 transform: 'translate(-40%, 70%)',
-                //transform: 'translate(-40%, -20%)',
                 //Style of avg mark
                 '&[data-index="0"]': {
                     fontSize: 12,

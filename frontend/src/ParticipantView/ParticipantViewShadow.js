@@ -14,7 +14,7 @@ class ParticipantViewShadow extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            roomInfo: JSON.parse(sessionStorage.getItem('roomInfo')), //this.roomInfoIni,
+            roomInfo: JSON.parse(sessionStorage.getItem('roomInfo')),
             defaultDistribution: 'shadow',
             recipientModalOpenAtSlider: '',
         };
@@ -79,13 +79,7 @@ class ParticipantViewShadow extends Component {
                     alignItems="center"
                     justifyContent="center"
                     style={{ marginTop: 40 }}
-                >
-                    <ButtonGroup orientation="vertical">
-                        <CustomButton title="Join as voter" />
-                        <CustomButton title="Add a recipient" />
-                    </ButtonGroup>
-                </Grid>
-
+                ></Grid>
                 <AddRecipientModal roomCode={this.state.roomInfo.room_code} />
                 <RecipientModal
                     recipientId={this.state.recipientModalOpenAtSlider}

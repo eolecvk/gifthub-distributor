@@ -17,17 +17,8 @@ class SliderGridShadow extends Component {
 
         const storedState = JSON.parse(sessionStorage.getItem('sliderGridState'));
         const iniState = storedState || defaultState;
-        //const iniState = this.props.reset ? defaultState : storedState
         this.state = iniState;
     }
-
-    //Initial vote + initalization of the history in sessionStorage
-    // componentDidMount() {
-    //     sessionStorage.setItem('sliderGridState', JSON.stringify(this.state));
-    //     const voteData = this.state.currentValues;
-    //     const roomCode = JSON.parse(sessionStorage.getItem('roomInfo')).room_code;
-    //     registerVote(voteData, roomCode);
-    // }
 
     render() {
         const sliders = this.props.slidersInitializationData

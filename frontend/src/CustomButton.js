@@ -12,22 +12,7 @@ function CustomButton(props) {
         },
     });
 
-    // const buttonThemeGreen = createTheme({
-    //     palette: {
-    //         primary: green,
-    //     },
-    // });
-
-    const buttonThemeRed = createTheme({
-        palette: {
-            primary: red,
-        },
-    });
-
     let buttonTheme = buttonThemeGrey;
-    if (color === 'red') {
-        buttonTheme = buttonThemeRed;
-    }
 
     let customButton;
     customButton = (

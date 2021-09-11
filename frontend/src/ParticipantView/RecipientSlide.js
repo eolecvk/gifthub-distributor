@@ -7,12 +7,10 @@ import { parseSliderStartingValue } from './utils';
 
 function RecipientSlide() {
     const [recipientId, setRecipientId] = useState(1);
-    //const [startingValue, setStartingValue] = useState(parseSliderStartingValue(recipientId));
     let startingValue = parseSliderStartingValue(recipientId);
 
     useEffect(() => {
         const newStartingValue = parseSliderStartingValue(recipientId);
-        //setStartingValue(newStartingValue);
         startingValue = newStartingValue;
     }, [recipientId]);
 

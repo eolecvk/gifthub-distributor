@@ -90,11 +90,7 @@ function CreateRoomForm(props) {
                 </Grid>
                 <Grid container justifyContent="flex-end" style={{ marginTop: 25 }}>
                     <ButtonGroup>
-                        <CustomButton
-                            title="Submit"
-                            onClick={handleSubmit}
-                            //type="submit"
-                        />
+                        <CustomButton title="Submit" onClick={handleSubmit} />
                         <CustomButton
                             title="Close"
                             onClick={(e) => {
