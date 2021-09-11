@@ -10,7 +10,7 @@ import lombok.Value;
 @EqualsAndHashCode(callSuper = false)
 public class RecipientAddEvent implements Event {
   String name;
-  String needDescription;
+  String needsDescription;
   Integer needsLowerBoundCents;
   Integer needsUpperBoundCents;
 
@@ -22,6 +22,6 @@ public class RecipientAddEvent implements Event {
   @Override
   public void apply(GiftHubRoomDAO roomDAO, String roomCode, int voterId) {
     roomDAO.addRecipientToRoom(
-        roomCode, name, needDescription, needsUpperBoundCents, needsLowerBoundCents);
+        roomCode, name, needsDescription, needsUpperBoundCents, needsLowerBoundCents);
   }
 }
