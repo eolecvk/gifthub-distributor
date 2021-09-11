@@ -1,7 +1,8 @@
 import React from 'react';
 import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
-import { Slider, Input, Tooltip, Grid, Typography } from '@material-ui/core';
+import { Slider, Grid } from '@material-ui/core';
 import RecipientFace from './RecipientFace';
+import { formatAsUSD } from '../utils';
 
 const theme = createTheme({
     overrides: {
@@ -24,14 +25,14 @@ const theme = createTheme({
                 fontSize: 12,
             },
             track: {
-                height: 3,
+                height: 6,
                 borderRadius: 2,
-                color: 'transparent',
+                color: 'orange',
             },
             rail: {
                 height: 6,
                 color: 'black',
-                backgroundImage: 'linear-gradient(.25turn, red, green)',
+                //backgroundImage: 'linear-gradient(.25turn, red, green)',
             },
             mark: {
                 color: 'black',
@@ -90,7 +91,6 @@ function InputSlider(props) {
         handleOpenRecipientModal,
         recipientInfo,
     } = props;
-    const needsDescription = recipientInfo.needs_description;
     const groupVoteAvg = recipientInfo.avg_cents / 100;
 
     function getMarks(groupVoteAvg, surviveValue, thriveValue) {
@@ -118,7 +118,7 @@ function InputSlider(props) {
 
         const markAvg = {
             value: groupVoteAvg,
-            label: `avg:${groupVoteAvg}`,
+            label: `avg:${formatAsUSD(groupVoteAvg)}`,
         };
         const markSurvive = {
             value: surviveValue,
@@ -147,53 +147,23 @@ function InputSlider(props) {
         props.handleUpdateSlider(props.sliderId, newValue, isVote);
     }
 
-    // function handleInputChange(event) {
-    //     const newValue = event.target.value === '' ? '' : Number(event.target.value);
-    //     props.handleUpdateSlider(props.sliderId, newValue, false);
-    // }
-
-    // function handleBlur(event) {
-    //     if (props.startingValue < 0) {
-    //         props.handleUpdateSlider(props.sliderId, 0, false);
-    //     } else if (props.startingValue > props.maxValue) {
-    //         props.handleUpdateSlider(props.sliderId, props.maxValue, false);
-    //     } else {
-    //         const newValue = event.target.value === '' ? '' : Number(event.target.value);
-    //         props.handleUpdateSlider(props.sliderId, newValue, true);
-    //     }
-    // }
-
-    // const useStyles = makeStyles({})
-    // const classes = useStyles();
-
     return (
         <div style={{ marginTop: 30 }}>
             <MuiThemeProvider theme={theme}>
                 <Grid
-                    //className={classes.root}
                     key={props.sliderId.toString() + 'grid'}
                     container
                     direction={'row'}
-                    spacing={1}
+                    spacing={6}
                 >
-                    <RecipientFace
-                        sliderId={sliderId}
-                        title={title}
-                        openRecipientModal={handleOpenRecipientModal}
-                    />
-                    {/* <Grid item>
-                            <FaceIcon
-                                onClick={handleClickFace}
-                                fontSize="large"
-                                style={{ color: colors[props.sliderId] }}
-                            />
-                        </Grid>
-                        <Grid item>
-                            <Typography id={props.sliderId.toString() + 'input-slider'}>
-                                {title}
-                            </Typography>
-                        </Grid> */}
-                    <Grid item xs={7}>
+                    <Grid container item xs={1}>
+                        <RecipientFace
+                            sliderId={sliderId}
+                            title={title}
+                            openRecipientModal={handleOpenRecipientModal}
+                        />
+                    </Grid>
+                    <Grid item xs={10}>
                         <Slider
                             key={props.sliderId.toString() + 'slider'}
                             min={0}
@@ -206,25 +176,6 @@ function InputSlider(props) {
                             valueLabelDisplay="on"
                         />
                     </Grid>
-
-                    {/* //Removing input field to the right of the slider bar */}
-                    {/* <Grid item xs>
-                        <Input
-                            //className={classes.input}
-                            key={props.sliderId.toString() + 'input'}
-                            value={startingValue !== '' ? startingValue : ''}
-                            margin="dense"
-                            onChange={handleInputChange}
-                            onBlur={handleBlur}
-                            inputProps={{
-                                step: 1,
-                                min: 0,
-                                max: maxValue,
-                                type: 'number',
-                                'aria-labelledby': 'input-slider',
-                            }}
-                        />
-                    </Grid> */}
                 </Grid>
             </MuiThemeProvider>
         </div>

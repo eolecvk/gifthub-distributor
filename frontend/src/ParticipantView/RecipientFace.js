@@ -11,7 +11,7 @@ function RecipientFace(props) {
     }
 
     return (
-        <Grid item xs={2}>
+        <Grid container direction="column" alignItems="center" justifyContent="center">
             <Grid item>
                 <FaceIcon
                     onClick={handleClickFace}

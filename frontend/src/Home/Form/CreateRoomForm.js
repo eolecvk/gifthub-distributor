@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import axios from 'axios';
-import { TextField, Grid, Button, ButtonGroup } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
+import { TextField, Grid, ButtonGroup } from '@material-ui/core';
+import CustomButton from '../../CustomButton';
 
 // [CreateRoom form]
 // (fields)
@@ -45,7 +46,7 @@ function CreateRoomForm(props) {
                     const roomInfo = response.data;
                     const roomCode = roomInfo.room_code;
                     sessionStorage.setItem('roomInfo', JSON.stringify(roomInfo));
-                    sessionStorage.setItem('originIsCreateForm', true);
+                    sessionStorage.setItem('entryPoint', 'createForm');
                     history.push(`/${roomCode}`);
                 }
             })
@@ -72,6 +73,7 @@ function CreateRoomForm(props) {
                         type="text"
                         value={formValues.roomName}
                         onChange={handleInputChange}
+                        InputLabelProps={{ shrink: true }}
                     />
                 </Grid>
                 <Grid item xs>
@@ -83,23 +85,22 @@ function CreateRoomForm(props) {
                         value={formValues.splittingDollars}
                         onChange={handleInputChange}
                         inputProps={{ min: 0 }}
+                        InputLabelProps={{ shrink: true }}
                     />
                 </Grid>
                 <Grid container justifyContent="flex-end" style={{ marginTop: 25 }}>
                     <ButtonGroup>
-                        <Button variant="contained" color="primary" type="submit">
-                            Submit
-                        </Button>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            type="button"
+                        <CustomButton
+                            title="Submit"
+                            onClick={handleSubmit}
+                            //type="submit"
+                        />
+                        <CustomButton
+                            title="Close"
                             onClick={(e) => {
                                 props.handleClose();
                             }}
-                        >
-                            Close
-                        </Button>
+                        />
                     </ButtonGroup>
                 </Grid>
             </Grid>

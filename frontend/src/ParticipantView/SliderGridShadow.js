@@ -54,14 +54,6 @@ class SliderGridShadow extends Component {
                 );
             });
 
-        const amountTotal = this.props.roomAmount;
-        const amountDistributed =
-            Object.values(this.state.currentValues).length > 0
-                ? Object.values(this.state.currentValues)
-                      .map((v) => (v ? v : 0))
-                      .reduce((a, b) => a + b)
-                : 0;
-
         return <div style={{ marginTop: 50 }}>{sliders}</div>;
     }
 }

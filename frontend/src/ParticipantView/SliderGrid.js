@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getStartingValues, registerVote } from './utils';
+import { getStartingValues, registerVote, getStateObjectNewMoves } from './utils';
 import InputSlider from './InputSlider';
 import ButtonsUndoRedo from './ButtonsUndoRedo';
 import AmountDistributedProgressBar from './AmountDistributedProgressBar';
@@ -51,17 +51,19 @@ class SliderGrid extends Component {
     // Generate updated version of state `currentState`
     // when inserting a new move of `newValue` at sliderId `id`
     getStateObjectNewMove = (currentState, id, newValue) => {
-        return {
-            currentValues: { ...currentState.currentValues, [`${id}`]: newValue }, // NEED TO DEPRECATED THIS
-            reset: false,
-            history: {
-                index: currentState.history.index + 1,
-                states: [
-                    ...currentState.history.states.slice(0, currentState.history.index + 1),
-                    { ...currentState.currentValues, [`${id}`]: newValue },
-                ],
-            },
-        };
+        const newSliderValues = { [`${id}`]: newValue };
+        return getStateObjectNewMoves(currentState, newSliderValues);
+        // return {
+        //     currentValues: { ...currentState.currentValues, [`${id}`]: newValue }, // NEED TO DEPRECATED THIS
+        //     reset: false,
+        //     history: {
+        //         index: currentState.history.index + 1,
+        //         states: [
+        //             ...currentState.history.states.slice(0, currentState.history.index + 1),
+        //             { ...currentState.currentValues, [`${id}`]: newValue },
+        //         ],
+        //     },
+        // };
     };
 
     // Generate updated version of state `currentState`
@@ -115,7 +117,9 @@ class SliderGrid extends Component {
             const voteData = { [`${id}`]: actualNewValue };
             const roomCode = JSON.parse(sessionStorage.getItem('roomInfo')).room_code;
             registerVote(voteData, roomCode);
-            sessionStorage.setItem('sliderGridState', JSON.stringify(futureState));
+
+            // is not part of registerVote
+            //sessionStorage.setItem('sliderGridState', JSON.stringify(futureState));
         }
         this.setState(futureState);
     };
@@ -180,7 +184,7 @@ class SliderGrid extends Component {
                 );
             });
 
-        const amountTotal = this.props.roomAmount;
+        const amountTotal = this.props.roomInfo.splitting_cents / 100;
         const amountDistributed =
             Object.values(this.state.currentValues).length > 0
                 ? Object.values(this.state.currentValues)
@@ -190,11 +194,11 @@ class SliderGrid extends Component {
 
         return (
             <div>
-                <ButtonsUndoRedo undoMove={this.undoMove} redoMove={this.redoMove} />
                 <AmountDistributedProgressBar
                     amountDistributed={amountDistributed}
                     amountTotal={amountTotal}
                 />
+                <ButtonsUndoRedo undoMove={this.undoMove} redoMove={this.redoMove} />
                 <div style={{ marginTop: 50 }}>{sliders}</div>
             </div>
         );

@@ -1,28 +1,14 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Modal from '@material-ui/core/Modal';
+import { Container } from '@material-ui/core';
 import JoinAsVoterForm from './JoinAsVoterForm';
-
-const useStyles = makeStyles((theme) => ({
-    paper: {
-        position: 'absolute',
-        top: 25 + '%',
-        left: 12 + '%',
-        transform: 'translateY(' + -50 + '%), translateX(' + -50 + '%)',
-        margin: 'auto',
-        justifyContent: 'center',
-        verticalAlign: 'middle',
-        width: 220,
-        backgroundColor: theme.palette.background.paper,
-        border: '2px solid #000',
-        boxShadow: theme.shadows[5],
-        padding: theme.spacing(3, 4, 3),
-    },
-}));
+import CustomButton from '../CustomButton';
+import CustomModal from '../CustomModal';
 
 function JoinAsVoterModal(props) {
-    const openOnStart = sessionStorage.getItem('originIsCreateForm') === 'false';
+    let openOnStart = false;
+    if (sessionStorage.getItem('entryPoint') === 'link') {
+        openOnStart = true;
+    }
     const [open, setOpen] = React.useState(openOnStart);
 
     const handleOpen = () => {
@@ -30,31 +16,20 @@ function JoinAsVoterModal(props) {
     };
 
     const handleClose = () => {
+        sessionStorage.setItem('entryPoint', '');
         setOpen(false);
     };
 
-    const classes = useStyles();
-    const body = (
-        <div className={classes.paper}>
-            <h3 id="simple-modal-title">Join as voter</h3>
-            <JoinAsVoterForm handleClose={handleClose} roomCode={props.roomCode} />
-        </div>
-    );
-
     return (
-        <div className={classes.root}>
-            <button id="joinAsVoter-button" onClick={() => handleOpen()}>
-                Join as voter
-            </button>
+        <div>
+            <CustomButton title="Join as voter" onClick={handleOpen} />
             <Container>
-                <Modal
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby="simple-modal-title"
-                    aria-describedby="simple-modal-description"
-                >
-                    {body}
-                </Modal>
+                <CustomModal
+                    title="Join as voter"
+                    form={<JoinAsVoterForm handleClose={handleClose} roomCode={props.roomCode} />}
+                    show={open}
+                    handleClose={handleClose}
+                />
             </Container>
         </div>
     );

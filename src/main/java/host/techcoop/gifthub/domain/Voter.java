@@ -66,7 +66,7 @@ public class Voter {
   public Voter withRemovedEmotiveState(int recipientId) {
     ImmutableMap.Builder<Integer, EmotiveKind> mapBuilder = ImmutableMap.builder();
     emotiveStateByRecipientId.entrySet().stream()
-        .filter(entry -> entry.getKey().equals(recipientId))
+        .filter(entry -> !entry.getKey().equals(recipientId))
         .forEach(mapBuilder::put);
     return this.toBuilder().emotiveStateByRecipientId(mapBuilder.build()).build();
   }

@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
-import { Grid, ButtonGroup, Button } from '@material-ui/core';
-import { HomeModal } from './Modal/Modal';
+import { Grid, ButtonGroup } from '@material-ui/core';
+// import { HomeModal } from './Modal/Modal';
+import CreateRoomForm from './Form/CreateRoomForm';
+import JoinRoomForm from './Form/JoinRoomForm';
+import CustomButton from '../CustomButton';
+import CustomModal from '../CustomModal';
 
 class Home extends Component {
     constructor() {
@@ -46,33 +50,27 @@ class Home extends Component {
                     color="primary"
                     aria-label="outlined primary button group"
                 >
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        type="button"
-                        onClick={() => this.showCreateRoomModal()}
-                    >
-                        Create Room
-                    </Button>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        type="button"
-                        onClick={() => this.showJoinRoomModal()}
-                    >
-                        Join Room
-                    </Button>
-                    <HomeModal
-                        modalTitle="Create Room"
-                        show={this.state.showCreateRoomModal}
-                        handleClose={this.hideCreateRoomModal}
+                    <CustomButton
+                        title="Create Room"
+                        onClick={this.showCreateRoomModal}
+                        size="large"
                     />
-                    <HomeModal
-                        modalTitle="Join Room"
-                        show={this.state.showJoinRoomModal}
-                        handleClose={this.hideJoinRoomModal}
-                    />
+                    <CustomButton title="Join Room" onClick={this.showJoinRoomModal} size="large" />
                 </ButtonGroup>
+
+                <CustomModal
+                    title="Create Room"
+                    form={<CreateRoomForm handleClose={this.hideCreateRoomModal} />}
+                    handleClose={this.hideCreateRoomModal}
+                    show={this.state.showCreateRoomModal}
+                />
+
+                <CustomModal
+                    title="Join Room"
+                    form={<JoinRoomForm handleClose={this.hideJoinRoomModal} />}
+                    handleClose={this.hideJoinRoomModal}
+                    show={this.state.showJoinRoomModal}
+                />
             </Grid>
         );
     }

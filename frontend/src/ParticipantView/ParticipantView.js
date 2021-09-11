@@ -1,14 +1,23 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import isEqual from 'lodash.isequal';
+import { ButtonGroup } from '@material-ui/core';
+import ListIcon from '@material-ui/icons/List';
 import RoomInfo from './RoomInfo';
 import SlidersGrid from './SliderGrid';
 import RecipientSlide from './RecipientSlide';
-import { getSlidersInitializationData, getStartingValues, registerVote } from './utils';
+import {
+    getSlidersInitializationData,
+    getStartingValues,
+    registerVote,
+    getStateObjectNewMoves,
+} from './utils';
 import RecipientModal from './RecipientModal';
 import UpdateDefaultDistributionModal from './UpdateDefaultDistributionModal';
-import ZoomedViewButton from './ZoomedViewButton';
 import AddRecipientModal from './AddRecipientModal';
+import OfflineBoltIcon from '@material-ui/icons/OfflineBolt';
+import PageviewIcon from '@material-ui/icons/Pageview';
+import CustomButton from '../CustomButton';
 
 class ParticipantView extends Component {
     constructor(props) {
@@ -20,7 +29,9 @@ class ParticipantView extends Component {
             roomInfo: JSON.parse(sessionStorage.getItem('roomInfo')) || '',
             recipientModalOpenAtSlider: '',
             slideOpenAtSlider: '',
+            showDefaultDistributionModal: false,
         };
+        this.getStateObjectNewMoves = getStateObjectNewMoves;
     }
     intervalID;
 
@@ -63,20 +74,28 @@ class ParticipantView extends Component {
         });
     };
 
-    // Generate updated version of state `currentState`
-    // when inserting a new move of `newValue` at sliderId `id`
-    getStateObjectNewMoves = (currentState, newSliderValues) => {
-        return {
-            currentValues: { ...newSliderValues }, // NEED TO DEPRECATED THIS
-            reset: false,
-            history: {
-                index: currentState.history.index + 1,
-                states: [
-                    ...currentState.history.states.slice(0, currentState.history.index + 1),
-                    { ...newSliderValues },
-                ],
-            },
-        };
+    // // Generate updated version of state `currentState`
+    // // when inserting a new move of `newValue` at sliderId `id`
+    // getStateObjectNewMoves = (currentState, newSliderValues) => {
+    //     return {
+    //         currentValues: { ...newSliderValues }, // NEED TO DEPRECATED THIS
+    //         reset: false,
+    //         history: {
+    //             index: currentState.history.index + 1,
+    //             states: [
+    //                 ...currentState.history.states.slice(0, currentState.history.index + 1),
+    //                 { ...newSliderValues },
+    //             ],
+    //         },
+    //     };
+    // };
+
+    showQuickDistributionModal = () => {
+        this.setState({ showDefaultDistributionModal: true });
+    };
+
+    hideQuickDistributionModal = () => {
+        this.setState({ showDefaultDistributionModal: false });
     };
 
     updateDefaultDistribution = (defaultDistribution) => {
@@ -128,50 +147,69 @@ class ParticipantView extends Component {
             this.state.defaultDistribution
         );
 
-        const listView = (
-            <div>
-                <RoomInfo roomInfo={this.state.roomInfo} />
-                <span>
+        const listView =
+            this.state.roomInfo.recipients.length === 0 ? (
+                <div>
+                    <RoomInfo roomInfo={this.state.roomInfo} />
+                    <AddRecipientModal roomCode={this.state.roomInfo.room_code} />
+                </div>
+            ) : (
+                <div>
+                    <RoomInfo roomInfo={this.state.roomInfo} />
+
+                    <ButtonGroup orientation="vertical" style={{ marginTop: 10, marginBottom: 10 }}>
+                        <CustomButton
+                            title="Single Recipient View"
+                            size="small"
+                            startIcon={<PageviewIcon />}
+                            onClick={() => {
+                                if (this.state.roomInfo.recipients.length === 0) {
+                                    return;
+                                }
+                                sessionStorage.setItem('participantView', 'zoomed');
+                                this.setState({ view: 'zoomed' });
+                            }}
+                        />
+                        <CustomButton
+                            title="Quick distributions"
+                            size="small"
+                            startIcon={<OfflineBoltIcon />}
+                            onClick={this.showQuickDistributionModal}
+                        />
+                    </ButtonGroup>
+
                     <UpdateDefaultDistributionModal
+                        show={this.state.showDefaultDistributionModal}
+                        hideQuickDistributionModal={this.hideQuickDistributionModal}
                         updateDefaultDistribution={this.updateDefaultDistribution}
                     />
-                    <ZoomedViewButton
-                        switchToZoomedView={() => {
-                            if (this.state.roomInfo.recipients.length === 0) {
-                                return;
-                            }
-                            sessionStorage.setItem('participantView', 'zoomed');
-                            this.setState({ view: 'zoomed' });
-                        }}
+
+                    <SlidersGrid
+                        key={this.state.defaultDistribution + Date.now()} // force class rendering on defaultDistribution update!
+                        distribution={this.state.defaultDistribution}
+                        slidersInitializationData={slidersInitializationData}
+                        roomInfo={this.state.roomInfo}
+                        reset={this.state.reset}
+                        openRecipientModal={this.openRecipientModal}
                     />
-                </span>
-                <SlidersGrid
-                    key={this.state.defaultDistribution + Date.now()} // force class rendering on defaultDistribution update!
-                    distribution={this.state.defaultDistribution}
-                    slidersInitializationData={slidersInitializationData}
-                    roomInfo={this.state.roomInfo}
-                    roomAmount={this.state.roomInfo.splitting_cents / 100}
-                    reset={this.state.reset}
-                    openRecipientModal={this.openRecipientModal}
-                />
-                <AddRecipientModal roomCode={this.state.roomInfo.room_code} />
-                <RecipientModal
-                    recipientId={this.state.recipientModalOpenAtSlider}
-                    handleClose={this.closeRecipientModal}
-                />
-            </div>
-        );
+                    <AddRecipientModal roomCode={this.state.roomInfo.room_code} />
+                    <RecipientModal
+                        recipientId={this.state.recipientModalOpenAtSlider}
+                        handleClose={this.closeRecipientModal}
+                    />
+                </div>
+            );
 
         const zoomedView = (
             <div>
-                <button
+                <CustomButton
+                    title="Back to list"
+                    startIcon={<ListIcon />}
                     onClick={() => {
                         sessionStorage.setItem('participantView', 'list');
                         this.setState({ view: 'list' });
                     }}
-                >
-                    Back to list
-                </button>
+                />
                 <RecipientSlide />
             </div>
         );

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { TextField, Grid, Button } from '@material-ui/core';
+import { TextField, Grid, ButtonGroup } from '@material-ui/core';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import PublishIcon from '@material-ui/icons/Publish';
+import CustomButton from '../CustomButton';
 
 // [EditRecipient Form]
 // (fields)
@@ -26,7 +29,7 @@ class EditRecipientForm extends Component {
         };
 
         this.state = this.initialValues;
-        this.roomCode = this.props.roomCode;
+        this.roomCode = this.props.roomInfo.room_code;
         this.recipientId = this.props.recipientId;
         this._isMounted = false; //using isMounted react pattern to avoid memory leak https://stackoverflow.com/questions/52061476/cancel-all-subscriptions-and-asyncs-in-the-componentwillunmount-method-how
     }
@@ -261,6 +264,9 @@ class EditRecipientForm extends Component {
                 if (response.status === 200) {
                     sessionStorage.clear();
                     sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
+                    if (response.data.recipients.length === 0) {
+                        sessionStorage.setItem('view', 'list');
+                    }
                 }
             })
             .catch((error) => {
@@ -268,7 +274,10 @@ class EditRecipientForm extends Component {
             });
 
         this.props.handleCloseEditRecipientModal();
-        this.props.handleCloseRecipientModal();
+
+        try {
+            this.props.handleCloseRecipientModal();
+        } catch {}
     };
 
     render() {
@@ -289,6 +298,7 @@ class EditRecipientForm extends Component {
                                 value={this.state.formValues.name}
                                 onChange={this.handleInputChange}
                                 required
+                                InputLabelProps={{ shrink: true }}
                             />
                         </Grid>
                         <Grid
@@ -311,6 +321,7 @@ class EditRecipientForm extends Component {
                                         this.state.errors.needsLowerBoundDollars &&
                                         this.state.errors.needsLowerBoundDollars
                                     }
+                                    InputLabelProps={{ shrink: true }}
                                 />
                             </Grid>
                             <Grid item xs={4}>
@@ -327,6 +338,7 @@ class EditRecipientForm extends Component {
                                         this.state.errors.needsUpperBoundDollars &&
                                         this.state.errors.needsUpperBoundDollars
                                     }
+                                    InputLabelProps={{ shrink: true }}
                                 />
                             </Grid>
                         </Grid>
@@ -342,6 +354,7 @@ class EditRecipientForm extends Component {
                                 rows={4}
                                 variant="filled"
                                 fullWidth={true}
+                                InputLabelProps={{ shrink: true }}
                             />
                         </Grid>
                     </Grid>
@@ -352,30 +365,26 @@ class EditRecipientForm extends Component {
                         justifyContent="flex-end"
                         style={{ marginTop: 20 }}
                     >
-                        <Button variant="contained" color="primary" type="submit">
-                            Submit
-                        </Button>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            type="button"
-                            onClick={(e) => {
-                                this.handleRemove(e);
-                            }}
-                        >
-                            Remove
-                        </Button>
-                        {/* // Probably don't need a close button */}
-                        {/* <Button
-                            variant="contained"
-                            color="primary"
-                            type="button"
-                            onClick={(e) => {
-                                this.props.handleClose();
-                            }}
-                        >
-                            Close
-                        </Button> */}
+                        <ButtonGroup orientation="vertical">
+                            <CustomButton
+                                key="submit-button"
+                                title="Submit"
+                                startIcon={<PublishIcon />}
+                                color="red"
+                                onClick={(e) => {
+                                    this.handleSubmit(e);
+                                }}
+                            />
+                            <CustomButton
+                                key="remove-button"
+                                title="Remove"
+                                startIcon={<HighlightOffIcon />}
+                                color="green"
+                                onClick={(e) => {
+                                    this.handleRemove(e);
+                                }}
+                            />
+                        </ButtonGroup>
                     </Grid>
                 </Grid>
             </form>

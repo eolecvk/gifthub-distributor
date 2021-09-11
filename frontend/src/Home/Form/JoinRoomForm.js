@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { TextField, Grid, Button } from '@material-ui/core';
+import { TextField, Grid } from '@material-ui/core';
 import { withRouter } from 'react-router';
+import CustomButton from '../../CustomButton';
 
 // [JoinRoom Form]
 // (field)
@@ -52,14 +53,11 @@ class JoinRoomForm extends Component {
                 console.log(response);
                 if (response.status === 200) {
                     const roomInfo = response.data;
-                    const roomCode = roomInfo.roomCode;
-
+                    const roomCode = roomInfo.room_code;
                     sessionStorage.clear();
                     sessionStorage.setItem('roomInfo', JSON.stringify(roomInfo));
-                    sessionStorage.setItem('originIsCreateForm', false);
-                    history.push(`/${roomCode}`); // for dev only
-                    // history.push(`/${this.state.formValues.roomCode}/join`); ???? hmm no
-                    //history.push(`/${this.state.formValues.roomCode}`) // THIS WHEN I HAVE IMPLEM DYNAMIC ROUTING
+                    sessionStorage.setItem('entryPoint', 'joinForm');
+                    history.push(`/${roomCode}`);
                 }
             })
             .catch((error) => {
@@ -88,6 +86,7 @@ class JoinRoomForm extends Component {
                                 value={this.state.formValues.roomCode}
                                 onChange={this.handleInputChange}
                                 required
+                                InputLabelProps={{ shrink: true }}
                             />
                         </Grid>
                     </Grid>
@@ -97,19 +96,18 @@ class JoinRoomForm extends Component {
                         justifyContent="flex-end"
                         style={{ marginTop: 20 }}
                     >
-                        <Button variant="contained" color="primary" type="submit">
-                            Submit
-                        </Button>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            type="button"
+                        <CustomButton
+                            title="Submit"
+                            onClick={(e) => {
+                                this.handleSubmit(e, history);
+                            }}
+                        />
+                        <CustomButton
+                            title="Close"
                             onClick={(e) => {
                                 this.props.handleClose();
                             }}
-                        >
-                            Close
-                        </Button>
+                        />
                     </Grid>
                 </Grid>
             </form>

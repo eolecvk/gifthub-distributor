@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { TextField, Grid, Button } from '@material-ui/core';
+import { TextField, Grid } from '@material-ui/core';
+import CustomButton from '../CustomButton';
 
 // [AddRecipient Form]
 // (fields)
@@ -203,6 +204,7 @@ class AddRecipientForm extends Component {
                                 value={this.state.formValues.name}
                                 onChange={this.handleInputChange}
                                 required
+                                InputLabelProps={{ shrink: true }}
                             />
                         </Grid>
                         <Grid
@@ -225,6 +227,7 @@ class AddRecipientForm extends Component {
                                         this.state.errors.needsLowerBoundDollars &&
                                         this.state.errors.needsLowerBoundDollars
                                     }
+                                    InputLabelProps={{ shrink: true }}
                                 />
                             </Grid>
                             <Grid item xs={4}>
@@ -241,6 +244,7 @@ class AddRecipientForm extends Component {
                                         this.state.errors.needsUpperBoundDollars &&
                                         this.state.errors.needsUpperBoundDollars
                                     }
+                                    InputLabelProps={{ shrink: true }}
                                 />
                             </Grid>
                         </Grid>
@@ -256,6 +260,7 @@ class AddRecipientForm extends Component {
                                 rows={4}
                                 variant="filled"
                                 fullWidth={true}
+                                InputLabelProps={{ shrink: true }}
                             />
                         </Grid>
                     </Grid>
@@ -266,19 +271,18 @@ class AddRecipientForm extends Component {
                         justifyContent="flex-end"
                         style={{ marginTop: 20 }}
                     >
-                        <Button variant="contained" color="primary" type="submit">
-                            Submit
-                        </Button>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            type="button"
+                        <CustomButton
+                            title="Submit"
+                            onClick={(e) => {
+                                this.handleSubmit(e);
+                            }}
+                        />
+                        <CustomButton
+                            title="Close"
                             onClick={(e) => {
                                 this.props.handleClose();
                             }}
-                        >
-                            Close
-                        </Button>
+                        />
                     </Grid>
                 </Grid>
             </form>

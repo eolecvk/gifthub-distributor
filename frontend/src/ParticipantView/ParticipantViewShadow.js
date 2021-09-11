@@ -7,15 +7,12 @@ import JoinAsVoterModal from './JoinAsVoterModal';
 import { getSlidersInitializationData } from './utils';
 import RecipientModal from './RecipientModal';
 import AddRecipientModal from './AddRecipientModal';
+import { ButtonGroup, Grid } from '@material-ui/core';
+import CustomButton from '../CustomButton';
 
 class ParticipantViewShadow extends Component {
     constructor(props) {
         super(props);
-        // this.roomInfoIni = (
-        //     typeof sessionStorage['roomInfo'] === 'undefined' ||
-        //     sessionStorage['roomInfo'] === 'undefined')
-        //     ? ''
-        //     : JSON.parse(sessionStorage.getItem('roomInfo'))
         this.state = {
             roomInfo: JSON.parse(sessionStorage.getItem('roomInfo')), //this.roomInfoIni,
             defaultDistribution: 'shadow',
@@ -74,10 +71,21 @@ class ParticipantViewShadow extends Component {
                     distribution={this.state.defaultDistribution}
                     slidersInitializationData={slidersInitializationData}
                     roomInfo={this.state.roomInfo}
-                    roomAmount={this.state.roomInfo.splitting_cents / 100}
                     reset={this.state.reset}
                     openRecipientModal={this.openRecipientModal}
                 />
+                <Grid
+                    container
+                    alignItems="center"
+                    justifyContent="center"
+                    style={{ marginTop: 40 }}
+                >
+                    <ButtonGroup orientation="vertical">
+                        <CustomButton title="Join as voter" />
+                        <CustomButton title="Add a recipient" />
+                    </ButtonGroup>
+                </Grid>
+
                 <AddRecipientModal roomCode={this.state.roomInfo.room_code} />
                 <RecipientModal
                     recipientId={this.state.recipientModalOpenAtSlider}
