@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { TextField, Grid } from '@material-ui/core';
 import CustomButton from '../CustomButton';
+import { updateRoomInfo } from './utils';
 
 // [AddRecipient Form]
 // (fields)
@@ -177,7 +178,8 @@ class AddRecipientForm extends Component {
             .put(`/api/${this.roomCode} `, payload)
             .then((response) => {
                 if (response.status === 200) {
-                    sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
+                    //sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
+                    updateRoomInfo(this.roomCode);
                 }
             })
             .catch((error) => {
