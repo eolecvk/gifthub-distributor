@@ -73,6 +73,7 @@ function CreateRoomForm(props) {
                         type="text"
                         value={formValues.roomName}
                         onChange={handleInputChange}
+                        InputLabelProps={{ shrink: true }}
                     />
                 </Grid>
                 <Grid item xs>
@@ -84,6 +85,7 @@ function CreateRoomForm(props) {
                         value={formValues.splittingDollars}
                         onChange={handleInputChange}
                         inputProps={{ min: 0 }}
+                        InputLabelProps={{ shrink: true }}
                     />
                 </Grid>
                 <Grid container justifyContent="flex-end" style={{ marginTop: 25 }}>

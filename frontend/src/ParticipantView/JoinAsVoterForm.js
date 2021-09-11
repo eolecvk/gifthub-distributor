@@ -89,6 +89,7 @@ class JoinAsVoterForm extends Component {
                                 value={this.state.formValues.name}
                                 onChange={this.handleInputChange}
                                 required
+                                InputLabelProps={{ shrink: true }}
                             />
                         </Grid>
 

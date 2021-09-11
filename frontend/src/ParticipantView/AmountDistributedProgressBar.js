@@ -1,4 +1,5 @@
 import { LinearProgress, Typography, Box } from '@material-ui/core';
+import { formatAsUSD } from '../utils';
 
 function AmountDistributedProgressBar(props) {
     const { amountDistributed, amountTotal } = props;
@@ -18,10 +19,9 @@ function AmountDistributedProgressBar(props) {
                     <Box width="55%" mr={2}>
                         <LinearProgress variant="determinate" value={progress} />
                     </Box>
-                    <Typography
-                        variant="body1"
-                        color="textSecondary"
-                    >{`${amountDistributed}/${amountTotal} $`}</Typography>
+                    <Typography variant="body1" color="textSecondary">{`${formatAsUSD(
+                        amountDistributed
+                    )}/${formatAsUSD(amountTotal)}`}</Typography>
                 </Box>
             </Box>
         </div>

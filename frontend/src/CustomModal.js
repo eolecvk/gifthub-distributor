@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Modal } from '@material-ui/core';
+import { Modal } from '@material-ui/core';
 import './CustomModal.css';
 
 function CustomModal(props) {

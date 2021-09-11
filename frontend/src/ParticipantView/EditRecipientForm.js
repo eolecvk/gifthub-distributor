@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { TextField, Grid, Button, ButtonGroup } from '@material-ui/core';
+import { TextField, Grid, ButtonGroup } from '@material-ui/core';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import PublishIcon from '@material-ui/icons/Publish';
 import CustomButton from '../CustomButton';
@@ -298,6 +298,7 @@ class EditRecipientForm extends Component {
                                 value={this.state.formValues.name}
                                 onChange={this.handleInputChange}
                                 required
+                                InputLabelProps={{ shrink: true }}
                             />
                         </Grid>
                         <Grid
@@ -320,6 +321,7 @@ class EditRecipientForm extends Component {
                                         this.state.errors.needsLowerBoundDollars &&
                                         this.state.errors.needsLowerBoundDollars
                                     }
+                                    InputLabelProps={{ shrink: true }}
                                 />
                             </Grid>
                             <Grid item xs={4}>
@@ -336,6 +338,7 @@ class EditRecipientForm extends Component {
                                         this.state.errors.needsUpperBoundDollars &&
                                         this.state.errors.needsUpperBoundDollars
                                     }
+                                    InputLabelProps={{ shrink: true }}
                                 />
                             </Grid>
                         </Grid>
@@ -351,6 +354,7 @@ class EditRecipientForm extends Component {
                                 rows={4}
                                 variant="filled"
                                 fullWidth={true}
+                                InputLabelProps={{ shrink: true }}
                             />
                         </Grid>
                     </Grid>

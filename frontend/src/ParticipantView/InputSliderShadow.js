@@ -114,14 +114,10 @@ function InputSliderShadow(props) {
         return marks;
     }
 
-    // const useStyles = makeStyles({})
-    // const classes = useStyles();
-
     return (
         <div style={{ marginTop: 30 }}>
             <MuiThemeProvider theme={theme}>
                 <Grid
-                    //className={classes.root}
                     key={props.sliderId.toString() + 'grid'}
                     container
                     direction={'row'}
@@ -132,20 +128,6 @@ function InputSliderShadow(props) {
                         title={title}
                         openRecipientModal={openRecipientModal}
                     />
-                    {/* <Grid item xs={2}>
-                        <Grid item>
-                            <FaceIcon
-                                onClick={handleClickFace}
-                                fontSize="large"
-                                style={{ color: colors[props.sliderId] }}
-                            />
-                        </Grid>
-                        <Grid item>
-                            <Typography id={props.sliderId.toString() + 'input-slider'}>
-                                {title}
-                            </Typography>
-                        </Grid>
-                    </Grid> */}
                     <Grid item xs={7}>
                         <Slider
                             key={props.sliderId.toString() + 'slider'}

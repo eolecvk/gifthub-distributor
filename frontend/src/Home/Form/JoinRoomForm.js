@@ -86,6 +86,7 @@ class JoinRoomForm extends Component {
                                 value={this.state.formValues.roomCode}
                                 onChange={this.handleInputChange}
                                 required
+                                InputLabelProps={{ shrink: true }}
                             />
                         </Grid>
                     </Grid>

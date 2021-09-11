@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { Container, Modal } from '@material-ui/core';
 import RecipientInfo from './RecipientInfo';
 import CustomModal from '../CustomModal';
 

@@ -204,6 +204,7 @@ class AddRecipientForm extends Component {
                                 value={this.state.formValues.name}
                                 onChange={this.handleInputChange}
                                 required
+                                InputLabelProps={{ shrink: true }}
                             />
                         </Grid>
                         <Grid
@@ -259,6 +260,7 @@ class AddRecipientForm extends Component {
                                 rows={4}
                                 variant="filled"
                                 fullWidth={true}
+                                InputLabelProps={{ shrink: true }}
                             />
                         </Grid>
                     </Grid>

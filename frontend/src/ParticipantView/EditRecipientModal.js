@@ -1,6 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Tooltip, Container } from '@material-ui/core';
+import { Grid, Container } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import EditRecipientForm from './EditRecipientForm';
 import { registerRecipientUpdate } from './utils';

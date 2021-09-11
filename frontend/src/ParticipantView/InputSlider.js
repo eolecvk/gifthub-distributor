@@ -2,6 +2,7 @@ import React from 'react';
 import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
 import { Slider, Grid } from '@material-ui/core';
 import RecipientFace from './RecipientFace';
+import { formatAsUSD } from '../utils';
 
 const theme = createTheme({
     overrides: {
@@ -117,7 +118,7 @@ function InputSlider(props) {
 
         const markAvg = {
             value: groupVoteAvg,
-            label: `avg:${groupVoteAvg}`,
+            label: `avg:${formatAsUSD(groupVoteAvg)}`,
         };
         const markSurvive = {
             value: surviveValue,

@@ -2,6 +2,7 @@ import React from 'react';
 import { Grid } from '@material-ui/core';
 import ToggleButtonsUpDown from './ToggleButtonsUpDown';
 import EditRecipientModal from './EditRecipientModal';
+import { formatAsUSD } from '../utils';
 
 function RecipientInfo(props) {
     const { recipientId } = props;
@@ -21,8 +22,8 @@ function RecipientInfo(props) {
 
     const textBody =
         `Recipient: ${recipientData.name}\n` +
-        `Survive: ${recipientData.needs_lower_bound_cents / 100}$\n` +
-        `Thrive: ${recipientData.needs_upper_bound_cents / 100}$`;
+        `Survive: ${formatAsUSD(recipientData.needs_lower_bound_cents / 100)}\n` +
+        `Thrive: ${formatAsUSD(recipientData.needs_upper_bound_cents / 100)}`;
 
     let needsDescription = recipientData.needs_description;
 

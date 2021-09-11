@@ -74,6 +74,18 @@ class ParticipantViewShadow extends Component {
                     reset={this.state.reset}
                     openRecipientModal={this.openRecipientModal}
                 />
+                <Grid
+                    container
+                    alignItems="center"
+                    justifyContent="center"
+                    style={{ marginTop: 40 }}
+                >
+                    <ButtonGroup orientation="vertical">
+                        <CustomButton title="Join as voter" />
+                        <CustomButton title="Add a recipient" />
+                    </ButtonGroup>
+                </Grid>
+
                 <AddRecipientModal roomCode={this.state.roomInfo.room_code} />
                 <RecipientModal
                     recipientId={this.state.recipientModalOpenAtSlider}
