@@ -19,7 +19,6 @@ class SliderGrid extends Component {
 
         const storedState = JSON.parse(sessionStorage.getItem('sliderGridState'));
         const iniState = storedState || defaultState;
-        //const iniState = this.props.reset ? defaultState : storedState
         this.state = iniState;
     }
 
@@ -53,17 +52,6 @@ class SliderGrid extends Component {
     getStateObjectNewMove = (currentState, id, newValue) => {
         const newSliderValues = { [`${id}`]: newValue };
         return getStateObjectNewMoves(currentState, newSliderValues);
-        // return {
-        //     currentValues: { ...currentState.currentValues, [`${id}`]: newValue }, // NEED TO DEPRECATED THIS
-        //     reset: false,
-        //     history: {
-        //         index: currentState.history.index + 1,
-        //         states: [
-        //             ...currentState.history.states.slice(0, currentState.history.index + 1),
-        //             { ...currentState.currentValues, [`${id}`]: newValue },
-        //         ],
-        //     },
-        // };
     };
 
     // Generate updated version of state `currentState`
@@ -117,9 +105,6 @@ class SliderGrid extends Component {
             const voteData = { [`${id}`]: actualNewValue };
             const roomCode = JSON.parse(sessionStorage.getItem('roomInfo')).room_code;
             registerVote(voteData, roomCode);
-
-            // is not part of registerVote
-            //sessionStorage.setItem('sliderGridState', JSON.stringify(futureState));
         }
         this.setState(futureState);
     };
