@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getStartingValues, registerVote } from './utils';
+import { getStartingValues, registerVote, getStateObjectNewMoves } from './utils';
 import InputSlider from './InputSlider';
 import ButtonsUndoRedo from './ButtonsUndoRedo';
 import AmountDistributedProgressBar from './AmountDistributedProgressBar';
@@ -51,17 +51,19 @@ class SliderGrid extends Component {
     // Generate updated version of state `currentState`
     // when inserting a new move of `newValue` at sliderId `id`
     getStateObjectNewMove = (currentState, id, newValue) => {
-        return {
-            currentValues: { ...currentState.currentValues, [`${id}`]: newValue }, // NEED TO DEPRECATED THIS
-            reset: false,
-            history: {
-                index: currentState.history.index + 1,
-                states: [
-                    ...currentState.history.states.slice(0, currentState.history.index + 1),
-                    { ...currentState.currentValues, [`${id}`]: newValue },
-                ],
-            },
-        };
+        const newSliderValues = { [`${id}`]: newValue };
+        return getStateObjectNewMoves(currentState, newSliderValues);
+        // return {
+        //     currentValues: { ...currentState.currentValues, [`${id}`]: newValue }, // NEED TO DEPRECATED THIS
+        //     reset: false,
+        //     history: {
+        //         index: currentState.history.index + 1,
+        //         states: [
+        //             ...currentState.history.states.slice(0, currentState.history.index + 1),
+        //             { ...currentState.currentValues, [`${id}`]: newValue },
+        //         ],
+        //     },
+        // };
     };
 
     // Generate updated version of state `currentState`
@@ -94,27 +96,30 @@ class SliderGrid extends Component {
             ? this.getStateObjectNewMove(this.state, id, newValue)
             : this.getStateObjectNoMove(this.state, id, newValue);
 
+        // UNCOMMENT THIS TO LIMIT AMOUNT SELECTED SO THAT SUM AMOUNTS <= TOTAL AMOUNT AVAILABLE
         //Check if future state is valid (sum of money distributed <= totalAmount)
         // If not, distribute as much as possible in the slider moved last
-        const futureTotalCost = Object.values(futureState.currentValues).reduce((a, b) => a + b);
+        // const futureTotalCost = Object.values(futureState.currentValues).reduce((a, b) => a + b);
 
-        if (futureTotalCost > this.props.roomAmount) {
-            const currentTotalCost = Object.values(this.state.currentValues).reduce(
-                (a, b) => a + b
-            );
-            const currentValue = this.state.currentValues[id];
-            const maxNewValue = this.props.roomAmount - currentTotalCost + currentValue;
-            actualNewValue = maxNewValue;
-            futureState = isVote
-                ? this.getStateObjectNewMove(this.state, id, maxNewValue)
-                : this.getStateObjectNoMove(this.state, id, maxNewValue);
-        }
+        // if (futureTotalCost > this.props.roomAmount) {
+        //     const currentTotalCost = Object.values(this.state.currentValues).reduce(
+        //         (a, b) => a + b
+        //     );
+        //     const currentValue = this.state.currentValues[id];
+        //     const maxNewValue = this.props.roomAmount - currentTotalCost + currentValue;
+        //     actualNewValue = maxNewValue;
+        //     futureState = isVote
+        //         ? this.getStateObjectNewMove(this.state, id, maxNewValue)
+        //         : this.getStateObjectNoMove(this.state, id, maxNewValue);
+        // }
 
         if (isVote) {
             const voteData = { [`${id}`]: actualNewValue };
             const roomCode = JSON.parse(sessionStorage.getItem('roomInfo')).room_code;
             registerVote(voteData, roomCode);
-            sessionStorage.setItem('sliderGridState', JSON.stringify(futureState));
+
+            // is not part of registerVote
+            //sessionStorage.setItem('sliderGridState', JSON.stringify(futureState));
         }
         this.setState(futureState);
     };
@@ -155,31 +160,31 @@ class SliderGrid extends Component {
 
     render() {
         const sliders = this.props.slidersInitializationData
-            .sort((sl1, sl2) => sl1.personId - sl2.personId)
+            .sort((sl1, sl2) => sl1.recipientId - sl2.recipientId)
             .map((slData) => {
                 return (
                     <InputSlider
-                        key={slData.personId.toString() + 'inputSlider'}
-                        sliderId={slData.personId.toString()}
+                        key={slData.recipientId.toString() + 'inputSlider'}
+                        sliderId={slData.recipientId.toString()}
                         title={slData.title.toUpperCase()}
                         surviveValue={slData.surviveValue}
                         thriveValue={slData.thriveValue}
                         startingValue={
                             this.state.reset
                                 ? slData.startingValue
-                                : this.state.currentValues[slData.personId.toString()]
+                                : this.state.currentValues[slData.recipientId.toString()]
                         }
                         maxValue={slData.maxValue}
                         handleUpdateSlider={this.handleUpdateSlider}
-                        handleOpenDissentModal={this.props.dissentModalOpenAtSlider}
-                        userInfo={this.props.roomInfo.people.find((p) => {
-                            return p.person_id.toString() === slData.personId.toString();
+                        handleOpenRecipientModal={this.props.openRecipientModal}
+                        recipientInfo={this.props.roomInfo.recipients.find((p) => {
+                            return p.recipient_id.toString() === slData.recipientId.toString();
                         })}
                     />
                 );
             });
 
-        const amountTotal = this.props.roomAmount;
+        const amountTotal = this.props.roomInfo.splitting_cents / 100;
         const amountDistributed =
             Object.values(this.state.currentValues).length > 0
                 ? Object.values(this.state.currentValues)
@@ -189,11 +194,11 @@ class SliderGrid extends Component {
 
         return (
             <div>
-                <ButtonsUndoRedo undoMove={this.undoMove} redoMove={this.redoMove} />
                 <AmountDistributedProgressBar
                     amountDistributed={amountDistributed}
                     amountTotal={amountTotal}
                 />
+                <ButtonsUndoRedo undoMove={this.undoMove} redoMove={this.redoMove} />
                 <div style={{ marginTop: 50 }}>{sliders}</div>
             </div>
         );

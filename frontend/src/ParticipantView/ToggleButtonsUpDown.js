@@ -10,9 +10,9 @@ class ToggleButtonsUpDown extends React.Component {
         this.state = {
             opinion: 'unset',
         };
-        this.sliderId = this.props.sliderId === '' ? '' : parseInt(this.props.sliderId);
-        this.userId = sessionStorage.getItem('userId');
-        this.roomCode = JSON.parse(sessionStorage.getItem('roomInfo')).room_code;
+        this.recipientId = this.props.recipientId === '' ? '' : parseInt(this.props.recipientId);
+        this.roomCode = this.props.roomCode;
+        this.voterId = sessionStorage.getItem('voterId');
         this._isMounted = false; //using isMounted react pattern to avoid memory leak https://stackoverflow.com/questions/52061476/cancel-all-subscriptions-and-asyncs-in-the-componentwillunmount-method-how
     }
 
@@ -20,7 +20,7 @@ class ToggleButtonsUpDown extends React.Component {
         const getOpinionFromBackend = async () => {
             const response = await axios.get(`/api/${this.roomCode}`);
             const responseData = await response.data;
-            const emotive = this.parseEmotive(responseData, this.userId, this.sliderId);
+            const emotive = this.parseEmotive(responseData, this.voterId, this.recipientId);
             this._isMounted && this.setState({ opinion: emotive });
         };
 
@@ -41,33 +41,27 @@ class ToggleButtonsUpDown extends React.Component {
         return true;
     };
 
-    getUserData = (roomInfo, sliderId) => {
-        return roomInfo.people.filter((el) => {
-            return el.person_id === parseInt(sliderId);
+    getRecipientData = (roomInfo, recipientId) => {
+        return roomInfo.recipients.filter((el) => {
+            return el.recipient_id === parseInt(recipientId);
         })[0];
     };
 
-    parseEmotive = (roomInfo, userId, sliderId) => {
+    // NEED TO REWRITE THIS CAUSE WE JUST NEED THE RESPONSE
+    // NOT PARSING THE WHOLE ROOM INFO???
+    parseEmotive = (roomInfo, voterId, recipientId) => {
         // Case: slider has been set to '' as we unmount the modal
-        if (this.sliderId === '') {
+        if (this.recipientId === '') {
             return '';
         }
 
-        //Parse the emotive state value for a given userId and sliderId
+        //Parse the emotive state value for a given voterId, recipientId
         //based on a roomInfo object
-        const userData = this.getUserData(roomInfo, sliderId);
-
-        if (
-            typeof userData.emotive.DISSENT_UP !== 'undefined' &&
-            userData.emotive.DISSENT_UP.includes(parseInt(userId))
-        ) {
-            return 'DISSENT_UP';
-        }
-        if (
-            typeof userData.emotive.DISSENT_DOWN !== 'undefined' &&
-            userData.emotive.DISSENT_DOWN.includes(parseInt(userId))
-        ) {
-            return 'DISSENT_DOWN';
+        const recipientData = this.getRecipientData(roomInfo, recipientId);
+        const emotiveVoterIds = Object.keys(recipientData.emotive);
+        if (emotiveVoterIds.includes(voterId)) {
+            const recipientEmotiveVoteValue = recipientData.emotive[voterId];
+            return recipientEmotiveVoteValue;
         }
         return '';
     };
@@ -78,14 +72,19 @@ class ToggleButtonsUpDown extends React.Component {
         // based on the confirmation from the backend
         let emotiveChange = {};
         emotiveChange['kind'] = 'EMOTIVE';
-        emotiveChange['bar_id'] = this.sliderId;
+        emotiveChange['recipient_id'] = this.recipientId;
         emotiveChange['emotion'] = newOpinion || this.state.opinion;
         emotiveChange['toggle'] = newOpinion ? 'ON' : 'OFF';
         const payload = { events: [emotiveChange] };
-        const response = await axios.put(`/api/${this.roomCode}`, payload);
-        const responseData = await response.data;
-        const emotive = this.parseEmotive(responseData, this.userId, this.sliderId);
-        this.setState({ opinion: emotive });
+
+        try {
+            const response = await axios.put(`/api/${this.roomCode}`, payload);
+            const responseData = await response.data;
+            const emotive = this.parseEmotive(responseData, this.voterId, this.recipientId);
+            this.setState({ opinion: emotive });
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     render() {

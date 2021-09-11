@@ -1,27 +1,37 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import isEqual from 'lodash.isequal';
+import { ButtonGroup } from '@material-ui/core';
+import ListIcon from '@material-ui/icons/List';
 import RoomInfo from './RoomInfo';
-import ButtonUpdateDefaultDistribution from './ButtonUpdateDefaultDistribution';
 import SlidersGrid from './SliderGrid';
-import EditableInfoModal from './EditableInfoModal';
+import RecipientSlide from './RecipientSlide';
 import {
-    getNeedsScaleDownRatio,
     getSlidersInitializationData,
     getStartingValues,
     registerVote,
+    getStateObjectNewMoves,
 } from './utils';
-import DissentModal from './DissentModal';
+import RecipientModal from './RecipientModal';
+import UpdateDefaultDistributionModal from './UpdateDefaultDistributionModal';
+import AddRecipientModal from './AddRecipientModal';
+import OfflineBoltIcon from '@material-ui/icons/OfflineBolt';
+import PageviewIcon from '@material-ui/icons/Pageview';
+import CustomButton from '../CustomButton';
 
 class ParticipantView extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            view: sessionStorage['participantView'] || 'list',
             defaultDistribution: 'zero',
             reset: false,
             roomInfo: JSON.parse(sessionStorage.getItem('roomInfo')) || '',
-            dissentModalOpenAtSlider: '',
+            recipientModalOpenAtSlider: '',
+            slideOpenAtSlider: '',
+            showDefaultDistributionModal: false,
         };
+        this.getStateObjectNewMoves = getStateObjectNewMoves;
     }
     intervalID;
 
@@ -36,13 +46,13 @@ class ParticipantView extends Component {
 
     getData = () => {
         axios.get('/api/' + this.state.roomInfo.room_code).then((response) => {
-            // Case : new people are detected in the backend roomInfo data compared to roomInfo in client state
-            if (response.data.people.length !== this.state.roomInfo.people.length) {
+            // Case : new recipient is detected in the backend roomInfo data compared to roomInfo in client state
+            if (response.data.recipients.length !== this.state.roomInfo.recipients.length) {
                 const roomCode = this.state.roomInfo.room_code;
                 let newSliderValues = {};
                 for (
-                    let sliderValue = this.state.roomInfo.people.length + 1;
-                    sliderValue <= response.data.people.length;
+                    let sliderValue = this.state.roomInfo.recipients.length + 1;
+                    sliderValue <= response.data.recipients.length;
                     sliderValue++
                 ) {
                     newSliderValues[sliderValue] = 0;
@@ -51,7 +61,7 @@ class ParticipantView extends Component {
                 this.setState({ roomInfo: response.data, reset: true });
             }
 
-            // Case: no new people detected but average has moved?
+            // Case: no new recipient detected but average has moved?
             if (!isEqual(this.state.roomInfo, response.data)) {
                 this.setState({ roomInfo: response.data, reset: false });
             }
@@ -64,25 +74,33 @@ class ParticipantView extends Component {
         });
     };
 
-    // Generate updated version of state `currentState`
-    // when inserting a new move of `newValue` at sliderId `id`
-    getStateObjectNewMoves = (currentState, newSliderValues) => {
-        return {
-            currentValues: { ...newSliderValues }, // NEED TO DEPRECATED THIS
-            reset: false,
-            history: {
-                index: currentState.history.index + 1,
-                states: [
-                    ...currentState.history.states.slice(0, currentState.history.index + 1),
-                    { ...newSliderValues },
-                ],
-            },
-        };
+    // // Generate updated version of state `currentState`
+    // // when inserting a new move of `newValue` at sliderId `id`
+    // getStateObjectNewMoves = (currentState, newSliderValues) => {
+    //     return {
+    //         currentValues: { ...newSliderValues }, // NEED TO DEPRECATED THIS
+    //         reset: false,
+    //         history: {
+    //             index: currentState.history.index + 1,
+    //             states: [
+    //                 ...currentState.history.states.slice(0, currentState.history.index + 1),
+    //                 { ...newSliderValues },
+    //             ],
+    //         },
+    //     };
+    // };
+
+    showQuickDistributionModal = () => {
+        this.setState({ showDefaultDistributionModal: true });
+    };
+
+    hideQuickDistributionModal = () => {
+        this.setState({ showDefaultDistributionModal: false });
     };
 
     updateDefaultDistribution = (defaultDistribution) => {
         const roomInfo = this.state.roomInfo;
-        const needsScaleDownRatio = getNeedsScaleDownRatio(roomInfo, defaultDistribution);
+        //const needsScaleDownRatio = getNeedsScaleDownRatio(roomInfo, defaultDistribution);
         const futureSlidersInitializationData = getSlidersInitializationData(
             roomInfo,
             defaultDistribution
@@ -112,15 +130,15 @@ class ParticipantView extends Component {
         });
     };
 
-    dissentModalOpenAtSlider = (sliderId) => {
+    openRecipientModal = (sliderId) => {
         this.setState({
             ...this.state,
-            dissentModalOpenAtSlider: sliderId === '' ? '' : parseInt(sliderId),
+            recipientModalOpenAtSlider: sliderId === '' ? '' : parseInt(sliderId),
         });
     };
 
-    dissentModalClose = () => {
-        return this.dissentModalOpenAtSlider('');
+    closeRecipientModal = () => {
+        this.openRecipientModal('');
     };
 
     render() {
@@ -129,28 +147,76 @@ class ParticipantView extends Component {
             this.state.defaultDistribution
         );
 
-        return (
+        const listView =
+            this.state.roomInfo.recipients.length === 0 ? (
+                <div>
+                    <RoomInfo roomInfo={this.state.roomInfo} />
+                    <AddRecipientModal roomCode={this.state.roomInfo.room_code} />
+                </div>
+            ) : (
+                <div>
+                    <RoomInfo roomInfo={this.state.roomInfo} />
+
+                    <ButtonGroup orientation="vertical" style={{ marginTop: 10, marginBottom: 10 }}>
+                        <CustomButton
+                            title="Single Recipient View"
+                            size="small"
+                            startIcon={<PageviewIcon />}
+                            onClick={() => {
+                                if (this.state.roomInfo.recipients.length === 0) {
+                                    return;
+                                }
+                                sessionStorage.setItem('participantView', 'zoomed');
+                                this.setState({ view: 'zoomed' });
+                            }}
+                        />
+                        <CustomButton
+                            title="Quick distributions"
+                            size="small"
+                            startIcon={<OfflineBoltIcon />}
+                            onClick={this.showQuickDistributionModal}
+                        />
+                    </ButtonGroup>
+
+                    <UpdateDefaultDistributionModal
+                        show={this.state.showDefaultDistributionModal}
+                        hideQuickDistributionModal={this.hideQuickDistributionModal}
+                        updateDefaultDistribution={this.updateDefaultDistribution}
+                    />
+
+                    <SlidersGrid
+                        key={this.state.defaultDistribution + Date.now()} // force class rendering on defaultDistribution update!
+                        distribution={this.state.defaultDistribution}
+                        slidersInitializationData={slidersInitializationData}
+                        roomInfo={this.state.roomInfo}
+                        reset={this.state.reset}
+                        openRecipientModal={this.openRecipientModal}
+                    />
+                    <AddRecipientModal roomCode={this.state.roomInfo.room_code} />
+                    <RecipientModal
+                        recipientId={this.state.recipientModalOpenAtSlider}
+                        handleClose={this.closeRecipientModal}
+                    />
+                </div>
+            );
+
+        const zoomedView = (
             <div>
-                <RoomInfo roomInfo={this.state.roomInfo} />
-                <EditableInfoModal roomInfo={this.state.roomInfo} />
-                <ButtonUpdateDefaultDistribution
-                    updateDefaultDistribution={this.updateDefaultDistribution}
+                <CustomButton
+                    title="Back to list"
+                    startIcon={<ListIcon />}
+                    onClick={() => {
+                        sessionStorage.setItem('participantView', 'list');
+                        this.setState({ view: 'list' });
+                    }}
                 />
-                <SlidersGrid
-                    key={this.state.defaultDistribution + Date.now()} // force class rendering on defaultDistribution update!
-                    distribution={this.state.defaultDistribution}
-                    slidersInitializationData={slidersInitializationData}
-                    roomInfo={this.state.roomInfo}
-                    roomAmount={this.state.roomInfo.splitting_cents / 100}
-                    reset={this.state.reset}
-                    dissentModalOpenAtSlider={this.dissentModalOpenAtSlider}
-                />
-                <DissentModal
-                    dissentModalOpenAtSlider={this.state.dissentModalOpenAtSlider}
-                    handleClose={this.dissentModalClose}
-                />
+                <RecipientSlide />
             </div>
         );
+
+        const participantView = this.state.view === 'list' ? listView : zoomedView;
+
+        return participantView;
     }
 }
 

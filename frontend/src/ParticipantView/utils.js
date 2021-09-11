@@ -5,12 +5,11 @@ function getNeedsScaleDownRatio(roomInfo, defaultDistribution) {
 
     if (['survive', 'thrive'].includes(defaultDistribution)) {
         const roomAmount = roomInfo.splitting_cents / 100;
-        const totalNeeds = roomInfo.people
-            .map((userData) => {
-                return (
-                    defaultDistribution === 'survive'
-                        ? userData.needs_lower_bound_cents / 100
-                        : userData.needs_upper_bound_cents / 100)
+        const totalNeeds = roomInfo.recipients
+            .map((recipientData) => {
+                return defaultDistribution === 'survive'
+                    ? recipientData.needs_lower_bound_cents / 100
+                    : recipientData.needs_upper_bound_cents / 100;
             })
             .reduce((a, b) => a + b);
 
@@ -23,32 +22,37 @@ function getNeedsScaleDownRatio(roomInfo, defaultDistribution) {
 }
 
 function getSlidersInitializationData(roomInfo, defaultDistribution) {
-    if (defaultDistribution === 'zero') {
-        return roomInfo.people.map((userData) => ({
-            personId: userData.person_id,
-            title: userData.name,
-            surviveValue: userData.needs_lower_bound_cents / 100,
-            thriveValue: userData.needs_upper_bound_cents / 100,
+    if (roomInfo.recipients.length === 0) {
+        return [];
+    }
+
+    if (defaultDistribution === 'zero' || defaultDistribution === 'shadow') {
+        return roomInfo.recipients.map((recipientData) => ({
+            recipientId: recipientData.recipient_id,
+            title: recipientData.name,
+            surviveValue: recipientData.needs_lower_bound_cents / 100,
+            thriveValue: recipientData.needs_upper_bound_cents / 100,
             startingValue: 0,
             maxValue: roomInfo.splitting_cents / 100,
         }));
     }
 
     if (defaultDistribution === 'equal') {
-        const equalSplit = roomInfo.splitting_cents / 100 / roomInfo.people.length;
+        const equalSplit = roomInfo.splitting_cents / 100 / roomInfo.recipients.length;
         const equalSplitFloor = Math.floor(equalSplit);
-        let remainder = roomInfo.splitting_cents / 100 - equalSplitFloor * roomInfo.people.length;
-        let startingValues = Array(roomInfo.people.length).fill(equalSplitFloor);
+        let remainder =
+            roomInfo.splitting_cents / 100 - equalSplitFloor * roomInfo.recipients.length;
+        let startingValues = Array(roomInfo.recipients.length).fill(equalSplitFloor);
 
         for (let i = remainder; i > 0; i--) {
             startingValues[i] += 1;
         }
 
-        return roomInfo.people.map((userData, index) => ({
-            personId: userData.person_id,
-            title: userData.name,
-            surviveValue: userData.needs_lower_bound_cents / 100,
-            thriveValue: userData.needs_upper_bound_cents / 100,
+        return roomInfo.recipients.map((recipientData, index) => ({
+            recipientId: recipientData.recipient_id,
+            title: recipientData.name,
+            surviveValue: recipientData.needs_lower_bound_cents / 100,
+            thriveValue: recipientData.needs_upper_bound_cents / 100,
             startingValue: startingValues[index],
             maxValue: roomInfo.splitting_cents / 100,
         }));
@@ -59,23 +63,27 @@ function getSlidersInitializationData(roomInfo, defaultDistribution) {
     const scaleDownRatio = getNeedsScaleDownRatio(roomInfo, defaultDistribution);
 
     if (defaultDistribution === 'survive') {
-        return roomInfo.people.map((userData) => ({
-            personId: userData.person_id,
-            title: userData.name,
-            surviveValue: userData.needs_lower_bound_cents / 100,
-            thriveValue: userData.needs_upper_bound_cents / 100,
-            startingValue: Math.floor((userData.needs_lower_bound_cents / 100) * scaleDownRatio),
+        return roomInfo.recipients.map((recipientData) => ({
+            recipientId: recipientData.recipient_id,
+            title: recipientData.name,
+            surviveValue: recipientData.needs_lower_bound_cents / 100,
+            thriveValue: recipientData.needs_upper_bound_cents / 100,
+            startingValue: Math.floor(
+                (recipientData.needs_lower_bound_cents / 100) * scaleDownRatio
+            ),
             maxValue: roomInfo.splitting_cents / 100,
         }));
     }
 
     if (defaultDistribution === 'thrive') {
-        return roomInfo.people.map((userData) => ({
-            personId: userData.person_id,
-            title: userData.name,
-            surviveValue: userData.needs_lower_bound_cents / 100,
-            thriveValue: userData.needs_upper_bound_cents / 100,
-            startingValue: Math.floor((userData.needs_upper_bound_cents / 100) * scaleDownRatio),
+        return roomInfo.recipients.map((recipientData) => ({
+            recipientId: recipientData.recipient_id,
+            title: recipientData.name,
+            surviveValue: recipientData.needs_lower_bound_cents / 100,
+            thriveValue: recipientData.needs_upper_bound_cents / 100,
+            startingValue: Math.floor(
+                (recipientData.needs_upper_bound_cents / 100) * scaleDownRatio
+            ),
             maxValue: roomInfo.splitting_cents / 100,
         }));
     }
@@ -84,9 +92,25 @@ function getSlidersInitializationData(roomInfo, defaultDistribution) {
 function getStartingValues(slidersInitializationData) {
     let startingValues = {};
     for (const sliderData of slidersInitializationData) {
-        startingValues[sliderData['personId']] = sliderData['startingValue'];
+        startingValues[sliderData['recipientId']] = sliderData['startingValue'];
     }
     return startingValues;
+}
+
+// Generate updated version of state `currentState`
+// when inserting a new move of `newValue` at sliderId `id`
+function getStateObjectNewMoves(currentState, newSliderValues) {
+    return {
+        currentValues: { ...currentState.currentValues, ...newSliderValues }, // NEED TO DEPRECATED THIS
+        reset: false,
+        history: {
+            index: currentState.history.index + 1,
+            states: [
+                ...currentState.history.states.slice(0, currentState.history.index + 1),
+                { ...currentState.currentValues, ...newSliderValues },
+            ],
+        },
+    };
 }
 
 function registerEvents(events, roomCode) {
@@ -98,26 +122,56 @@ function registerEvents(events, roomCode) {
             console.log(`[${response.status}] PUT /api/${roomCode}`);
         })
         .catch((error) => {
+            console.log('Register event error');
             console.log(error);
             console.log(payload);
         });
 }
 
-function registerVote(sliderValues, roomCode) {
-    const events = Object.keys(sliderValues).map((key) => {
+function registerVote(newSliderValues, roomCode) {
+    // EDIT SLIDERGRIDSTATE IN SESSIONSTORAGE
+    let currentGridState = JSON.parse(sessionStorage.getItem('sliderGridState'));
+
+    if (!currentGridState) {
+        currentGridState = {
+            currentValues: {}, // NEED TO DEPRECATED THIS
+            reset: false,
+            history: {
+                index: 0,
+                states: [],
+            },
+        };
+    }
+
+    const newGridState = getStateObjectNewMoves(currentGridState, newSliderValues);
+    sessionStorage.setItem('sliderGridState', JSON.stringify(newGridState));
+
+    // SEND REQUEST TO
+    const events = Object.keys(newSliderValues).map((key) => {
         return {
             kind: 'ADJUST',
-            bar_id: key,
-            new_value_cents: sliderValues[key] * 100,
+            recipient_id: key,
+            new_value_cents: newSliderValues[key] * 100,
         };
     });
 
     registerEvents(events, roomCode);
 }
 
-function registerUserUpdate(args, roomCode) {
-    const { username, needsDescription, needsLowerBoundCents, needsUpperBoundCents } = args;
-    const event = { kind: 'USER_UPDATE' };
+function registerRecipientUpdate(args) {
+    //WHERE DO WE FIND THE recipient_id ?? :D
+    const {
+        roomCode,
+        recipientId,
+        username,
+        needsDescription,
+        needsLowerBoundCents,
+        needsUpperBoundCents,
+    } = args;
+    const event = {
+        kind: 'RECIPIENT_UPDATE',
+        recipient_id: recipientId,
+    };
 
     if (typeof username !== 'undefined') {
         event['name'] = username;
@@ -136,10 +190,27 @@ function registerUserUpdate(args, roomCode) {
     registerEvents(events, roomCode);
 }
 
+function parseSliderStartingValue(recipientId) {
+    let parsedStartingValue;
+    try {
+        const sliderGridState = JSON.parse(sessionStorage.getItem('sliderGridState'));
+        const sliderValues = sliderGridState.currentValues;
+        parsedStartingValue = sliderValues[`${recipientId}`];
+        if (!parsedStartingValue) {
+            parsedStartingValue = 0;
+        }
+    } catch {
+        return 0;
+    }
+    return parsedStartingValue;
+}
+
 export {
     getNeedsScaleDownRatio,
     getSlidersInitializationData,
     getStartingValues,
+    getStateObjectNewMoves,
     registerVote,
-    registerUserUpdate,
+    registerRecipientUpdate,
+    parseSliderStartingValue,
 };

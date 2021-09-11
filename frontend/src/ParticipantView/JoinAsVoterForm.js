@@ -2,20 +2,20 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { TextField, Grid } from '@material-ui/core';
 import { withRouter } from 'react-router';
-import CustomButton from '../../CustomButton';
+import CustomButton from '../CustomButton';
 
-// [JoinRoom Form]
-// (field)
-//   Room code
-// (button)
-//    Submit
-//    Close
+// [JoinAsVoter Form]
+// (fields)
+//   Name
 
-class JoinRoomForm extends Component {
+// (buttons)
+//   Submit
+
+class JoinAsVoterForm extends Component {
     constructor(props) {
         super(props);
         this.initialValues = {
-            roomCode: '',
+            name: '',
         };
 
         this.state = {
@@ -44,20 +44,23 @@ class JoinRoomForm extends Component {
         }
 
         const payload = {
-            // auth can go here
+            name: this.state.formValues.name,
         };
 
         axios
-            .post(`/api/${this.state.formValues.roomCode}/join`, payload)
+            .post(`/api/${this.props.roomCode}/voterJoin`, payload)
             .then((response) => {
-                console.log(response);
                 if (response.status === 200) {
-                    const roomInfo = response.data;
+                    const path = response.data.path;
+                    const voterId = response.data.voter_id;
+                    const roomInfo = response.data.room_info;
                     const roomCode = roomInfo.room_code;
+
                     sessionStorage.clear();
+                    sessionStorage.setItem('path', path);
+                    sessionStorage.setItem('voterId', voterId);
                     sessionStorage.setItem('roomInfo', JSON.stringify(roomInfo));
-                    sessionStorage.setItem('entryPoint', 'joinForm');
-                    history.push(`/${roomCode}`);
+                    history.push(`/${roomCode}/${path}`);
                 }
             })
             .catch((error) => {
@@ -76,38 +79,39 @@ class JoinRoomForm extends Component {
                 }}
             >
                 <Grid container alignItems="center" justifyContent="center" direction="column">
-                    <Grid container direction="row">
-                        <Grid item>
+                    <Grid container style={{ padding: 10 }}>
+                        <Grid>
                             <TextField
-                                id="room-code-input"
-                                name="roomCode"
-                                label="Room code:"
+                                id="name"
+                                name="name"
+                                label="Name:"
                                 type="string"
-                                value={this.state.formValues.roomCode}
+                                value={this.state.formValues.name}
                                 onChange={this.handleInputChange}
                                 required
                                 InputLabelProps={{ shrink: true }}
                             />
                         </Grid>
-                    </Grid>
-                    <Grid
-                        container
-                        alignItems="center"
-                        justifyContent="flex-end"
-                        style={{ marginTop: 20 }}
-                    >
-                        <CustomButton
-                            title="Submit"
-                            onClick={(e) => {
-                                this.handleSubmit(e, history);
-                            }}
-                        />
-                        <CustomButton
-                            title="Close"
-                            onClick={(e) => {
-                                this.props.handleClose();
-                            }}
-                        />
+
+                        <Grid
+                            container
+                            alignItems="center"
+                            justifyContent="flex-end"
+                            style={{ marginTop: 20 }}
+                        >
+                            <CustomButton
+                                title="Submit"
+                                onClick={(e) => {
+                                    this.handleSubmit(e, history);
+                                }}
+                            />
+                            <CustomButton
+                                title="Close"
+                                onClick={(e) => {
+                                    this.props.handleClose();
+                                }}
+                            />
+                        </Grid>
                     </Grid>
                 </Grid>
             </form>
@@ -115,4 +119,4 @@ class JoinRoomForm extends Component {
     }
 }
 
-export default withRouter(JoinRoomForm);
+export default withRouter(JoinAsVoterForm);
