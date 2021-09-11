@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Grid } from '@material-ui/core';
 import ToggleButtonsUpDown from './ToggleButtonsUpDown';
 import EditRecipientModal from './EditRecipientModal';
@@ -6,7 +6,17 @@ import { formatAsUSD } from '../utils';
 
 function RecipientInfo(props) {
     const { recipientId } = props;
-    const roomInfo = JSON.parse(sessionStorage.getItem('roomInfo'));
+    const [roomInfo, setRoomInfo] = useState(JSON.parse(sessionStorage.getItem('roomInfo')));
+
+    const refreshRoomInfo = () => {
+        setRoomInfo(JSON.parse(sessionStorage.getItem('roomInfo')));
+    };
+
+    useEffect(() => {
+        const interval = setInterval(refreshRoomInfo, 300);
+        return () => clearInterval(interval);
+    }, []);
+
     const voterId = sessionStorage.getItem('voterId');
 
     const recipientData =
@@ -22,8 +32,9 @@ function RecipientInfo(props) {
 
     const textBody =
         `Recipient: ${recipientData.name}\n` +
-        `Survive: ${formatAsUSD(recipientData.needs_lower_bound_cents / 100)}\n` +
-        `Thrive: ${formatAsUSD(recipientData.needs_upper_bound_cents / 100)}`;
+        `Current amount: ${formatAsUSD(recipientData.avg_cents / 100)}\n` +
+        `Survive amount: ${formatAsUSD(recipientData.needs_lower_bound_cents / 100)}\n` +
+        `Thrive amount: ${formatAsUSD(recipientData.needs_upper_bound_cents / 100)}`;
 
     let needsDescription = recipientData.needs_description;
 
@@ -72,7 +83,6 @@ function RecipientInfo(props) {
                 </Grid>
             </Grid>
         );
-
     return body;
 }
 
