@@ -32,49 +32,28 @@ const theme = createTheme({
             rail: {
                 height: 6,
                 color: 'black',
-                //backgroundImage: 'linear-gradient(.25turn, red, green)',
             },
             mark: {
-                color: 'black',
-                height: 25,
-                width: 0.5,
+                color: 'grey',
+                height: 15,
+                width: 4,
                 marginTop: 0,
-                '&[data-index="0"]': {
-                    height: 6,
-                    width: 3,
-                    marginTop: 0,
-                },
             },
             markActive: {
                 opacity: 1,
-                backgroundColor: 'currentColor',
+                backgroundColor: 'orange',
             },
             markLabel: {
-                fontSize: 12,
+                fontSize: 18,
                 color: 'grey',
-                //transform: 'translate(-40%, -20%)',
-                transform: 'translate(-40%, 70%)',
-                //Style of avg mark
-                '&[data-index="0"]': {
-                    fontSize: 12,
-                    color: 'black',
-                    //marginTop: 1,
-                    transform: 'translate(-40%, -15%)',
-                },
+                fontWeight: 'bold',
+                transform: 'translate(-40%, 0%)',
             },
             markLabelActive: {
-                fontSize: 12,
-                color: 'black',
+                fontSize: 18,
+                color: 'orange',
                 fontWeight: 'bold',
-                transform: 'translate(-40%, 70%)',
-                //transform: 'translate(-40%, -20%)',
-                //Style of avg mark
-                '&[data-index="0"]': {
-                    fontSize: 12,
-                    color: 'black',
-                    fontWeight: 'normal',
-                    transform: 'translate(-40%, -15%)',
-                },
+                transform: 'translate(-40%, 0%)',
             },
         },
     },
@@ -93,7 +72,7 @@ function InputSlider(props) {
     } = props;
     const groupVoteAvg = recipientInfo.avg_cents / 100;
 
-    function getMarks(groupVoteAvg, surviveValue, thriveValue) {
+    function getMarks(surviveValue, thriveValue) {
         const marks = [];
 
         const surviveButton = (
@@ -116,19 +95,16 @@ function InputSlider(props) {
             </span>
         );
 
-        const markAvg = {
-            value: groupVoteAvg,
-            label: `avg:${formatAsUSD(groupVoteAvg)}`,
-        };
         const markSurvive = {
             value: surviveValue,
             label: surviveButton,
         };
+
         const markThrive = {
             value: thriveValue,
             label: thriveButton,
         };
-        marks.push(markAvg);
+
         if (surviveValue <= maxValue) {
             marks.push(markSurvive);
         }
@@ -161,6 +137,7 @@ function InputSlider(props) {
                             sliderId={sliderId}
                             title={title}
                             openRecipientModal={handleOpenRecipientModal}
+                            currentAvg={groupVoteAvg}
                         />
                     </Grid>
                     <Grid item xs={10}>
@@ -172,7 +149,7 @@ function InputSlider(props) {
                             onChange={handleSliderChange}
                             onChangeCommitted={handleSliderChangeCommitted}
                             aria-labelledby={props.sliderId.toString() + 'slider'}
-                            marks={getMarks(groupVoteAvg, surviveValue, thriveValue)}
+                            marks={getMarks(surviveValue, thriveValue)}
                             valueLabelDisplay="on"
                         />
                     </Grid>
