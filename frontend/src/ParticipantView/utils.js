@@ -205,6 +205,13 @@ function parseSliderStartingValue(recipientId) {
     return parsedStartingValue;
 }
 
+function updateRoomInfo(roomCode) {
+    axios.get('/api/' + roomCode).then((response) => {
+        sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
+        return response.data;
+    });
+}
+
 export {
     getNeedsScaleDownRatio,
     getSlidersInitializationData,
@@ -213,4 +220,5 @@ export {
     registerVote,
     registerRecipientUpdate,
     parseSliderStartingValue,
+    updateRoomInfo,
 };
