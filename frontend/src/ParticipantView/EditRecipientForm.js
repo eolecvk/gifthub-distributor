@@ -4,7 +4,6 @@ import { TextField, Grid, ButtonGroup } from '@material-ui/core';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import PublishIcon from '@material-ui/icons/Publish';
 import CustomButton from '../CustomButton';
-import { updateRoomInfo } from './utils';
 
 // [EditRecipient Form]
 // (fields)
@@ -232,7 +231,7 @@ class EditRecipientForm extends Component {
             .put(`/api/${this.roomCode} `, payload)
             .then((response) => {
                 if (response.status === 200) {
-                    sessionStorage('roomInfo', JSON.stringify(response.data));
+                    sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
                 }
             })
             .catch((error) => {
