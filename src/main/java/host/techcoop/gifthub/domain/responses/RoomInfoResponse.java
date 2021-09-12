@@ -35,19 +35,19 @@ public class RoomInfoResponse {
 
   public static RoomInfoResponse from(GiftHubRoom room) {
     ImmutableListMultimap<Integer, Vote> votesByRecipientId =
-        room.getVotersById().values().stream()
+        room.getVoters().stream()
             .flatMap(voter -> voter.getVotes().stream())
             .collect(ImmutableListMultimap.toImmutableListMultimap(Vote::getRecipientId, x -> x));
 
     ImmutableListMultimap<Integer, EmotiveState> emotiveStatesByRecipientId =
-        room.getVotersById().values().stream()
+        room.getVoters().stream()
             .flatMap(voter -> voter.getEmotiveStates().stream())
             .collect(
                 ImmutableListMultimap.toImmutableListMultimap(
                     EmotiveState::getRecipientId, x -> x));
 
     ImmutableList<VoterResponse> voters =
-        room.getVotersById().values().stream()
+        room.getVoters().stream()
             .map(
                 voter ->
                     VoterResponse.builder()

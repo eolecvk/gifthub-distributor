@@ -21,6 +21,10 @@ public interface GiftHubRoomDAO {
 
   GiftHubRoom updateVoterInRoom(String roomCode, Voter voter);
 
+  GiftHubRoom undo(String roomCode, int voterId);
+
+  GiftHubRoom redo(String roomCode, int voterId);
+
   GiftHubRoom updateRecipientInRoom(String roomCode, Recipient recipient);
 
   void removeRecipientFromRoom(String roomCode, int recipientId);

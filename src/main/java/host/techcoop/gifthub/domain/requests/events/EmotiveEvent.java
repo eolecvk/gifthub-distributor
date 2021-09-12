@@ -30,7 +30,7 @@ public class EmotiveEvent implements Event {
       throw new PermissionsException();
     }
     GiftHubRoom room = roomDAO.getRoomByCode(roomCode);
-    Voter voter = room.getVotersById().get(voterId);
+    Voter voter = room.getVotersById().get(voterId).getVoter();
     switch (toggle) {
       case OFF:
         voter = voter.withRemovedEmotiveState(recipientId);

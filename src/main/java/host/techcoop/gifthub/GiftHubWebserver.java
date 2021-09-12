@@ -22,7 +22,6 @@ import host.techcoop.gifthub.domain.responses.RoomInfoResponse;
 import host.techcoop.gifthub.interfaces.GiftHubRoomDAO;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.Map.Entry;
 import lombok.SneakyThrows;
 import spark.Request;
 import spark.Response;
@@ -123,8 +122,7 @@ public class GiftHubWebserver {
     Voter voter = null; // get voter from request
     if (!Strings.isNullOrEmpty(joinRequest.getPath())) {
       voter =
-          room.getVotersById().entrySet().stream()
-              .map(Entry::getValue)
+          room.getVoters().stream()
               .filter(v -> v.getPath().equals(joinRequest.getPath()))
               .findFirst()
               .orElseThrow(RoomJoinException::new);

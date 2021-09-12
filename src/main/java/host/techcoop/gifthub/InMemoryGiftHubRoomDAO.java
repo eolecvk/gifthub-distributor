@@ -9,6 +9,7 @@ import com.google.inject.Singleton;
 import host.techcoop.gifthub.domain.GiftHubRoom;
 import host.techcoop.gifthub.domain.Recipient;
 import host.techcoop.gifthub.domain.Voter;
+import host.techcoop.gifthub.domain.VoterHistory;
 import host.techcoop.gifthub.interfaces.GiftHubRoomDAO;
 import java.util.Random;
 import java.util.Set;
@@ -105,6 +106,28 @@ public class InMemoryGiftHubRoomDAO implements GiftHubRoomDAO {
   }
 
   @Override
+  public GiftHubRoom undo(String roomCode, int voterId) {
+    roomCode = roomCode.toUpperCase().intern();
+    synchronized (roomCode) {
+      GiftHubRoom room = roomsByCode.getIfPresent(roomCode);
+      GiftHubRoom newRoom = room.withUndo(voterId);
+      roomsByCode.put(roomCode, newRoom);
+      return newRoom;
+    }
+  }
+
+  @Override
+  public GiftHubRoom redo(String roomCode, int voterId) {
+    roomCode = roomCode.toUpperCase().intern();
+    synchronized (roomCode) {
+      GiftHubRoom room = roomsByCode.getIfPresent(roomCode);
+      GiftHubRoom newRoom = room.withRedo(voterId);
+      roomsByCode.put(roomCode, newRoom);
+      return newRoom;
+    }
+  }
+
+  @Override
   public GiftHubRoom updateRecipientInRoom(String roomCode, Recipient recipient) {
     roomCode = roomCode.toUpperCase().intern();
     synchronized (roomCode) {
@@ -153,9 +176,12 @@ public class InMemoryGiftHubRoomDAO implements GiftHubRoomDAO {
     }
   }
 
-  private String getUniquePath(ImmutableList<Voter> voters) {
+  private String getUniquePath(ImmutableList<VoterHistory> voters) {
     Set<String> existingPaths =
-        voters.stream().map(Voter::getPath).collect(ImmutableSet.toImmutableSet());
+        voters.stream()
+            .map(VoterHistory::getVoter)
+            .map(Voter::getPath)
+            .collect(ImmutableSet.toImmutableSet());
     String path;
     while (true) {
       path = wordGenerator.getWords(3, "-");

@@ -18,7 +18,9 @@ import host.techcoop.gifthub.domain.requests.events.EmotiveEvent;
 import host.techcoop.gifthub.domain.requests.events.RecipientAddEvent;
 import host.techcoop.gifthub.domain.requests.events.RecipientRemoveEvent;
 import host.techcoop.gifthub.domain.requests.events.RecipientUpdateEvent;
+import host.techcoop.gifthub.domain.requests.events.RedoEvent;
 import host.techcoop.gifthub.domain.requests.events.RoomUpdateEvent;
+import host.techcoop.gifthub.domain.requests.events.UndoEvent;
 import host.techcoop.gifthub.domain.requests.events.VoterRemoveEvent;
 import host.techcoop.gifthub.interfaces.GiftHubRoomDAO;
 import host.techcoop.gifthub.vendored.RuntimeTypeAdapterFactory;
@@ -51,8 +53,10 @@ public class GiftHubDistributorModule extends AbstractModule {
                     .registerSubtype(RecipientUpdateEvent.class, RECIPIENT_UPDATE.toString())
                     .registerSubtype(RecipientAddEvent.class, RECIPIENT_ADD.toString())
                     .registerSubtype(RecipientRemoveEvent.class, RECIPIENT_REMOVE.toString())
+                    .registerSubtype(RedoEvent.class, REDO.toString())
                     .registerSubtype(RoomUpdateEvent.class, ROOM_UPDATE.toString())
-                    .registerSubtype(VoterRemoveEvent.class, VOTER_REMOVE.toString()))
+                    .registerSubtype(VoterRemoveEvent.class, VOTER_REMOVE.toString())
+                    .registerSubtype(UndoEvent.class, UNDO.toString()))
             .create();
     return gson;
   }

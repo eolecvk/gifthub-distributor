@@ -30,6 +30,7 @@ public class AdjustEvent implements Event {
     Voter voter =
         room.getVotersById()
             .get(voterId)
+            .getVoter()
             .withUpdatedVote(new Vote(recipientId, voterId, newValueCents));
     roomDAO.updateVoterInRoom(roomCode, voter);
   }
