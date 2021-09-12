@@ -128,23 +128,25 @@ function registerEvents(events, roomCode) {
         });
 }
 
-function registerVote(newSliderValues, roomCode) {
-    // EDIT SLIDERGRIDSTATE IN SESSIONSTORAGE
-    let currentGridState = JSON.parse(sessionStorage.getItem('sliderGridState'));
+function registerVote(newSliderValues, roomCode, updateCache = true) {
+    if (updateCache) {
+        // EDIT SLIDERGRIDSTATE IN SESSIONSTORAGE
+        let currentGridState = JSON.parse(sessionStorage.getItem('sliderGridState'));
 
-    if (!currentGridState) {
-        currentGridState = {
-            currentValues: {}, // NEED TO DEPRECATED THIS
-            reset: false,
-            history: {
-                index: 0,
-                states: [],
-            },
-        };
+        if (!currentGridState) {
+            currentGridState = {
+                currentValues: {}, // NEED TO DEPRECATED THIS
+                reset: false,
+                history: {
+                    index: 0,
+                    states: [],
+                },
+            };
+        }
+
+        const newGridState = getStateObjectNewMoves(currentGridState, newSliderValues);
+        sessionStorage.setItem('sliderGridState', JSON.stringify(newGridState));
     }
-
-    const newGridState = getStateObjectNewMoves(currentGridState, newSliderValues);
-    sessionStorage.setItem('sliderGridState', JSON.stringify(newGridState));
 
     // SEND REQUEST TO
     const events = Object.keys(newSliderValues).map((key) => {

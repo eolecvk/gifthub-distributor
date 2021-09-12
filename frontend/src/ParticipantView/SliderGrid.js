@@ -54,7 +54,12 @@ class SliderGrid extends Component {
     // Generate updated version of state `currentState`
     // when undoing one move
     getStateObjectOnUndo = (currentState) => {
-        return {
+        // base case: undo on first move returns unchanged state
+        if (currentState.history.index === 0) {
+            return currentState;
+        }
+
+        const prevState = {
             currentValues: currentState.history.states[currentState.history.index - 1], // NEED TO DEPRECATED THIS
             reset: currentState.reset,
             history: {
@@ -62,10 +67,24 @@ class SliderGrid extends Component {
                 states: currentState.history.states,
             },
         };
+
+        const nSlidersPrev = Object.keys(prevState.currentValues).length;
+        const nSlidersCurr = Object.keys(currentState.currentValues).length;
+
+        if (nSlidersPrev !== nSlidersCurr) {
+            return this.getStateObjectOnUndo(prevState);
+        } else {
+            return prevState;
+        }
     };
 
     getStateObjectOnRedo = (currentState) => {
-        return {
+        // base case: redo on last move returns unchanged state
+        if (currentState.history.index === currentState.history.states.length - 1) {
+            return currentState;
+        }
+
+        const nextState = {
             currentValues: currentState.history.states[currentState.history.index + 1], // NEED TO DEPRECATED THIS
             reset: currentState.reset,
             history: {
@@ -73,6 +92,15 @@ class SliderGrid extends Component {
                 states: currentState.history.states,
             },
         };
+
+        const nSlidersCurr = Object.keys(currentState.currentValues).length;
+        const nSlidersNext = Object.keys(nextState.currentValues).length;
+
+        if (nSlidersNext !== nSlidersCurr) {
+            return this.getStateObjectOnRedo(nextState);
+        } else {
+            return nextState;
+        }
     };
 
     handleUpdateSlider = (id, newValue, isVote) => {
@@ -112,13 +140,14 @@ class SliderGrid extends Component {
             return;
         }
 
-        // Register vote for undo move
-        const voteData = this.state.history.states[this.state.history.index - 1];
         const roomCode = JSON.parse(sessionStorage.getItem('roomInfo')).room_code;
-        registerVote(voteData, roomCode);
+        const newState = this.getStateObjectOnUndo(this.state);
+        const voteData = newState.currentValues;
+
+        // Register vote for undo move
+        registerVote(voteData, roomCode, false);
 
         // Update slider state stored in sessionStorage
-        const newState = this.getStateObjectOnUndo(this.state);
         sessionStorage.setItem('sliderGridState', JSON.stringify(newState));
         this.setState(newState);
     };
@@ -129,13 +158,14 @@ class SliderGrid extends Component {
             return;
         }
 
-        // Register vote for redo move
-        const voteData = this.state.history.states[this.state.history.index + 1];
         const roomCode = JSON.parse(sessionStorage.getItem('roomInfo')).room_code;
-        registerVote(voteData, roomCode);
+        const newState = this.getStateObjectOnRedo(this.state);
+        const voteData = newState.currentValues;
+
+        // Register vote for undo move
+        registerVote(voteData, roomCode, false);
 
         // Update slider state stored in sessionStorage
-        const newState = this.getStateObjectOnRedo(this.state);
         sessionStorage.setItem('sliderGridState', JSON.stringify(newState));
         this.setState(newState);
     };
