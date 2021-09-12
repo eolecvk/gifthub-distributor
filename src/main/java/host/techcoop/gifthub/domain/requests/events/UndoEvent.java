@@ -13,6 +13,6 @@ public class UndoEvent implements Event {
 
   @Override
   public void apply(GiftHubRoomDAO roomDAO, String roomCode, int voterId) {
-    roomDAO.redo(roomCode, voterId);
+    roomDAO.undo(roomCode, voterId);
   }
 }
