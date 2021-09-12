@@ -28,6 +28,19 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
     //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
 });
 
+const renderCustomizedLabel = (props) => {
+  const { x, y, width, height, value } = props;
+
+  return (
+    <g>
+      <text x={x-width/30} >
+        <tspan y={y+height/4}>{value.name}</tspan>
+        <tspan y={y+height/4}>{value.avg}</tspan>
+      </text>
+    </g>
+  );
+};
+
 class ObserverView extends Component {
     constructor() {
         super();
@@ -151,8 +164,9 @@ class ObserverView extends Component {
                     (entry) => entry[1] === 'DISSENT_DOWN'
                 ).length;
                 const dissent = `👇${countDissentDown}  👆${countDissentUp}`;
+                const nameAndAvg = {name: name, avg: avg};
                 return {
-                    name: name,
+                    name_and_avg: nameAndAvg,
                     dissent: dissent,
                     x_domain: [0, maxVote],
                     max_vote: maxVote / 100,
@@ -176,7 +190,6 @@ class ObserverView extends Component {
                         width={100}
                         type="category"
                         dataKey="empty"
-                        label={<CustomNameLabel/>}
                         tick={{ fontSize: 20 }}
                         orientation="left"
                         tickLine={false}
@@ -192,7 +205,9 @@ class ObserverView extends Component {
                         axisLine={false}
                     />
                     <XAxis type="number" axisLine={false} domain={[0, maxVote / 100]} />
-                    <Bar dataKey="max_vote" label={false} shape={<ViolinBarLine />} />
+                    <Bar dataKey="max_vote" label={false} shape={<ViolinBarLine />}>
+                        <LabelList dataKey = "name_and_avg" content={renderCustomizedLabel}/>
+                    </Bar>
                     <Scatter
                         shape={(props) => this.makeRectangleBar('#00FF00', props)}
                         dataKey="needs_upper"
