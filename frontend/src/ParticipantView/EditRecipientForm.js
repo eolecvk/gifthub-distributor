@@ -232,7 +232,7 @@ class EditRecipientForm extends Component {
             .put(`/api/${this.roomCode} `, payload)
             .then((response) => {
                 if (response.status === 200) {
-                    updateRoomInfo(this.roomCode);
+                    sessionStorage('roomInfo', JSON.stringify(response.data));
                 }
             })
             .catch((error) => {
