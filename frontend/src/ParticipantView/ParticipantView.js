@@ -98,7 +98,7 @@ class ParticipantView extends Component {
             reset: false,
             history: {
                 index: 0,
-                states: [futureStartingValues],
+                transitions: [futureStartingValues],
             },
         };
         const currentSliderGridState = storedSliderGridState || defaultSliderGridState;

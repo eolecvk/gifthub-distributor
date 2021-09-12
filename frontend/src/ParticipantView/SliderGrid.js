@@ -13,7 +13,7 @@ class SliderGrid extends Component {
             reset: this.props.reset,
             history: {
                 index: 0,
-                states: [getStartingValues(this.props.slidersInitializationData)],
+                transitions: [getStartingValues(this.props.slidersInitializationData)],
             },
         };
 
@@ -34,15 +34,21 @@ class SliderGrid extends Component {
     // when udating the value of `currentValue` (upon sliding the cursor mouse-down)
     // history does not get updated since it's a temporary change (no mouse-up event, no vote)
     getStateObjectNoMove = (currentState, id, newValue) => {
+        const previousValue = Object.keys(currentState.currentValues).includes(id)
+            ? currentState.currentValues[id]
+            : 0;
+
+        const newTransition = {
+            before: { [`${id}`]: previousValue },
+            after: { [`${id}`]: newValue },
+        };
+
         return {
             currentValues: { ...currentState.currentValues, [`${id}`]: newValue }, // NEED TO DEPRECATED THIS
             reset: false,
             history: {
                 index: currentState.history.index,
-                states: [
-                    ...currentState.history.states,
-                    { ...currentState.currentValues, [`${id}`]: newValue },
-                ],
+                transitions: [...currentState.history.transitions, newTransition],
             },
         };
     };
@@ -57,12 +63,24 @@ class SliderGrid extends Component {
     // Generate updated version of state `currentState`
     // when undoing one move
     getStateObjectOnUndo = (currentState) => {
+        //If we are in an invalid state for undo, return input object
+        if (
+            currentState.history.index === 0 ||
+            currentState.history.index - 1 >= currentState.history.transitions.length
+        ) {
+            return currentState;
+        }
+
+        //Else apply latest transition in reverse
+        const latestTransition = currentState.history.transitions.at(-1);
+        const previousValues = { ...currentState.currentValues, ...latestTransition['before'] };
+
         return {
-            currentValues: currentState.history.states[currentState.history.index - 1], // NEED TO DEPRECATED THIS
+            currentValues: previousValues,
             reset: currentState.reset,
             history: {
                 index: currentState.history.index - 1,
-                states: currentState.history.states,
+                transitions: currentState.history.transitions,
             },
         };
     };

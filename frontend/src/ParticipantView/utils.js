@@ -100,14 +100,25 @@ function getStartingValues(slidersInitializationData) {
 // Generate updated version of state `currentState`
 // when inserting a new move of `newValue` at sliderId `id`
 function getStateObjectNewMoves(currentState, newSliderValues) {
+    let previousSliderValues = {};
+    Object.keys(newSliderValues).forEach((k) => {
+        const prevValue = Object.keys(currentState).includes(k) ? currentState[k] : 0;
+        previousSliderValues[k] = prevValue;
+    });
+
+    const newTransition = {
+        before: previousSliderValues,
+        after: newSliderValues,
+    };
+
     return {
         currentValues: { ...currentState.currentValues, ...newSliderValues }, // NEED TO DEPRECATED THIS
         reset: false,
         history: {
             index: currentState.history.index + 1,
-            states: [
-                ...currentState.history.states.slice(0, currentState.history.index + 1),
-                { ...currentState.currentValues, ...newSliderValues },
+            transitions: [
+                ...currentState.history.transitions.slice(0, currentState.history.index + 1),
+                newTransition,
             ],
         },
     };
