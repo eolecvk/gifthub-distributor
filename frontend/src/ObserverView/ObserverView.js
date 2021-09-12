@@ -13,6 +13,7 @@ import {
 } from 'recharts';
 import axios from 'axios';
 import ViolinBarLine from './ViolinBarLine';
+import CustomNameLabel from './CustomNameLabel';
 import * as d3 from 'd3';
 import { quantile } from './utils';
 import colors from './../ParticipantView/colors';
@@ -161,6 +162,7 @@ class ObserverView extends Component {
                     bar_fill: colors[index + 1],
                     needs_upper: needs_upper,
                     needs_lower: needs_lower,
+                    empty: "",
                 };
             });
 
@@ -173,7 +175,8 @@ class ObserverView extends Component {
                         yAxisId={0}
                         width={100}
                         type="category"
-                        dataKey="name"
+                        dataKey="empty"
+                        label={<CustomNameLabel/>}
                         tick={{ fontSize: 20 }}
                         orientation="left"
                         tickLine={false}
