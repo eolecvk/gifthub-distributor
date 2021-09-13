@@ -100,6 +100,17 @@ function getStartingValues(slidersInitializationData) {
 // Generate updated version of state `currentState`
 // when inserting a new move of `newValue` at sliderId `id`
 function getStateObjectNewMoves(currentState, newSliderValues) {
+    if (!currentGridState) {
+        currentGridState = {
+            currentValues: {}, // NEED TO DEPRECATED THIS
+            reset: false,
+            history: {
+                index: -1,
+                states: [],
+            },
+        };
+    }
+
     return {
         currentValues: { ...currentState.currentValues, ...newSliderValues }, // NEED TO DEPRECATED THIS
         reset: false,
@@ -130,25 +141,13 @@ function registerEvents(events, roomCode) {
 
 function registerVote(newSliderValues, roomCode, updateCache = true) {
     if (updateCache) {
-        // EDIT SLIDERGRIDSTATE IN SESSIONSTORAGE
+        // Edit SliderGidState in sessionStorage (not used for undo/redo)
         let currentGridState = JSON.parse(sessionStorage.getItem('sliderGridState'));
-
-        if (!currentGridState) {
-            currentGridState = {
-                currentValues: {}, // NEED TO DEPRECATED THIS
-                reset: false,
-                history: {
-                    index: 0,
-                    states: [],
-                },
-            };
-        }
-
         const newGridState = getStateObjectNewMoves(currentGridState, newSliderValues);
         sessionStorage.setItem('sliderGridState', JSON.stringify(newGridState));
     }
 
-    // SEND REQUEST TO
+    // Send PUT (ADJUST) request to backend
     const events = Object.keys(newSliderValues).map((key) => {
         return {
             kind: 'ADJUST',
