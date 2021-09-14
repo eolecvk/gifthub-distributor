@@ -1,15 +1,19 @@
 import React from 'react';
 const CustomNameLabel = (props) => {
-  const { x, y, width, height, value } = props;
+    const { x, y, height, value } = props;
 
-  return (
-    <g>
-      <text>
-        <tspan x={"7em"} dy={y+height/2.5}>{value.name}</tspan>
-        <tspan x={"7em"} dy={"1.5em"}>{value.amt}</tspan>
-      </text>
-    </g>
-  );
-}
+    return (
+        <g>
+            <text>
+                <tspan x={x - 90} dy={y + height / 2.5}>
+                    {value.name}
+                </tspan>
+                <tspan x={x - 90} dy={25}>
+                    {value.amt}
+                </tspan>
+            </text>
+        </g>
+    );
+};
 
 export default CustomNameLabel;

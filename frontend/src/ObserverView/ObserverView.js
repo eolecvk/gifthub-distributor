@@ -151,7 +151,7 @@ class ObserverView extends Component {
                     (entry) => entry[1] === 'DISSENT_DOWN'
                 ).length;
                 const dissent = `👇${countDissentDown}  👆${countDissentUp}`;
-                const nameAndAmt = {name: name, amt: currencyFormatter.format(avg)};
+                const nameAndAmt = { name: name, amt: currencyFormatter.format(avg) };
                 return {
                     name_and_amt: nameAndAmt,
                     dissent: dissent,
@@ -163,7 +163,7 @@ class ObserverView extends Component {
                     bar_fill: colors[index + 1],
                     needs_upper: needs_upper,
                     needs_lower: needs_lower,
-                    empty: "",
+                    empty: '',
                 };
             });
 
@@ -191,9 +191,18 @@ class ObserverView extends Component {
                         tickLine={false}
                         axisLine={false}
                     />
-                  <XAxis type="number" axisLine={false} domain={[0, maxVote / 100]} interval = {0} /> //Interval set to 0 for bug fix (sometimes) around LabelList: https://github.com/recharts/recharts/issues/1664#issuecomment-770315614 , https://github.com/recharts/recharts/issues/829
-                    <Bar dataKey="max_vote" label={false} shape={<ViolinBarLine />}> // ?? If isAnimationActive false seems to fully fix issue, but why: https://stackoverflow.com/questions/55722306/label-list-is-not-showing-in-recharts
-                        <LabelList textAnchor='end' dataKey="name_and_amt" content={<CustomNameLabel />} rotate ={0}/>
+                    <XAxis type="number" axisLine={false} domain={[0, maxVote / 100]} />
+                    /* If isAnimationActive is set to false on the bar chart, it seems to fully fix
+                    the missing LabelList issue:
+                    https://github.com/recharts/recharts/issues/1664#issuecomment-770315614
+                    https://github.com/recharts/recharts/issues/829 */
+                    <Bar
+                        dataKey="max_vote"
+                        label={false}
+                        shape={<ViolinBarLine />}
+                        isAnimationActive={false}
+                    >
+                        <LabelList dataKey="name_and_amt" content={<CustomNameLabel />} />
                     </Bar>
                     <Scatter
                         shape={(props) => this.makeRectangleBar('#00FF00', props)}
