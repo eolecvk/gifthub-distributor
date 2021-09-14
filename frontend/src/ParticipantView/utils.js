@@ -100,8 +100,8 @@ function getStartingValues(slidersInitializationData) {
 // Generate updated version of state `currentState`
 // when inserting a new move of `newValue` at sliderId `id`
 function getStateObjectNewMoves(currentState, newSliderValues) {
-    if (!currentGridState) {
-        currentGridState = {
+    if (!currentState) {
+        currentState = {
             currentValues: {}, // NEED TO DEPRECATED THIS
             reset: false,
             history: {
