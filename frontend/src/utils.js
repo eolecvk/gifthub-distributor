@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 function formatAsUSD(inputValue) {
     const currencyFormatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -10,4 +12,10 @@ function formatAsUSD(inputValue) {
     return currencyFormatter.format(inputValue);
 }
 
-export { formatAsUSD };
+function refreshCachedRoomInfo(roomCode) {
+    axios.get('/api/' + roomCode).then((response) => {
+        sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
+    });
+}
+
+export { formatAsUSD, refreshCachedRoomInfo };

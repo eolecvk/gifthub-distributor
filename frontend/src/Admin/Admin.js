@@ -3,14 +3,16 @@ import RoomManagement from './RoomManagement';
 import RecipientsManagement from './RecipientsManagement';
 import VotersManagement from './VotersManagement';
 
-function Admin() {
+function Admin(props) {
+    const { roomCode } = props.match.params;
+
     return (
         <div>
             <h1 style={{ textAlign: 'center' }}>Admin</h1>
             <div>
-                <RoomManagement />
-                <RecipientsManagement />
-                <VotersManagement />
+                <RoomManagement roomCode={roomCode} />
+                <RecipientsManagement roomCode={roomCode} />
+                <VotersManagement roomCode={roomCode} />
             </div>
         </div>
     );
