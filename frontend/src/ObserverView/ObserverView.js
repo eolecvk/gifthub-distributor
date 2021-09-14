@@ -28,19 +28,6 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
     //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
 });
 
-const renderCustomizedLabel = (props) => {
-  const { x, y, width, height, value } = props;
-
-  return (
-    <g>
-      <text x={x-width/30} >
-        <tspan y={y+height/4}>{value.name}</tspan>
-        <tspan y={y+height/4}>{value.avg}</tspan>
-      </text>
-    </g>
-  );
-};
-
 class ObserverView extends Component {
     constructor() {
         super();
@@ -164,9 +151,9 @@ class ObserverView extends Component {
                     (entry) => entry[1] === 'DISSENT_DOWN'
                 ).length;
                 const dissent = `👇${countDissentDown}  👆${countDissentUp}`;
-                const nameAndAvg = {name: name, avg: avg};
+                const nameAndAmt = {name: name, amt: currencyFormatter.format(avg)};
                 return {
-                    name_and_avg: nameAndAvg,
+                    name_and_amt: nameAndAmt,
                     dissent: dissent,
                     x_domain: [0, maxVote],
                     max_vote: maxVote / 100,
@@ -204,9 +191,9 @@ class ObserverView extends Component {
                         tickLine={false}
                         axisLine={false}
                     />
-                    <XAxis type="number" axisLine={false} domain={[0, maxVote / 100]} />
-                    <Bar dataKey="max_vote" label={false} shape={<ViolinBarLine />}>
-                        <LabelList dataKey = "name_and_avg" content={renderCustomizedLabel}/>
+                  <XAxis type="number" axisLine={false} domain={[0, maxVote / 100]} interval = {0} /> //Interval set to 0 for bug fix (sometimes) around LabelList: https://github.com/recharts/recharts/issues/1664#issuecomment-770315614 , https://github.com/recharts/recharts/issues/829
+                    <Bar dataKey="max_vote" label={false} shape={<ViolinBarLine />}> // ?? If isAnimationActive false seems to fully fix issue, but why: https://stackoverflow.com/questions/55722306/label-list-is-not-showing-in-recharts
+                        <LabelList textAnchor='end' dataKey="name_and_amt" content={<CustomNameLabel />} rotate ={0}/>
                     </Bar>
                     <Scatter
                         shape={(props) => this.makeRectangleBar('#00FF00', props)}
