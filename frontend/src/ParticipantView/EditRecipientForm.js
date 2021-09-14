@@ -231,7 +231,6 @@ class EditRecipientForm extends Component {
             .put(`/api/${this.roomCode} `, payload)
             .then((response) => {
                 if (response.status === 200) {
-                    sessionStorage.clear();
                     sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
                 }
             })
@@ -262,7 +261,6 @@ class EditRecipientForm extends Component {
             .put(`/api/${this.roomCode} `, payload)
             .then((response) => {
                 if (response.status === 200) {
-                    sessionStorage.clear();
                     sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
                     if (response.data.recipients.length === 0) {
                         sessionStorage.setItem('view', 'list');
