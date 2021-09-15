@@ -32,17 +32,17 @@ function EditRoomForm(props) {
 
         //form payload
         const payload = {
+            kind: 'ROOM_UPDATE',
             room_name: formValues.roomName,
             splitting_cents: formValues.splittingDollars * 100,
         };
 
         //send request with axios
         axios
-            .post('/api/rooms', payload)
+            .put(`/api/${roomCode}`, payload)
             .then((response) => {
                 if (response.status === 200) {
                     const roomInfo = response.data;
-                    const roomCode = roomInfo.room_code;
                     sessionStorage.setItem('roomInfo', JSON.stringify(roomInfo));
                 }
             })
