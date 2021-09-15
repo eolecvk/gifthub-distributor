@@ -38,13 +38,10 @@ function RoomManagement(props) {
 
     const exportRoomInfoToJson = (e) => {
         e.preventDefault();
-
-        //const roomInfo = fetchRoomInfo(roomCode)
         refreshCachedRoomInfo(roomCode);
         const roomInfo = JSON.parse(sessionStorage.getItem('roomInfo'));
-
         downloadFile({
-            data: JSON.stringify(roomInfo),
+            data: JSON.stringify(roomInfo, null, '\t'),
             fileName: `${roomCode}.json`,
             fileType: 'text/json',
         });

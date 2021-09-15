@@ -23,7 +23,7 @@ function VotersManagement(props) {
                 <CustomButton
                     title="MANAGE VOTERS"
                     startIcon={<HighlightOffIcon />}
-                    size="small"
+                    size="medium"
                     onClick={handleOpenVotersManagementModal}
                 />
             </div>
