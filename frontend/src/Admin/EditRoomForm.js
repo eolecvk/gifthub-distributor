@@ -19,7 +19,7 @@ function EditRoomForm(props) {
 
     const [formValues, setFormValues] = useState(defaultValues);
 
-    const {roomCode} = props
+    const { roomCode } = props;
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -34,9 +34,15 @@ function EditRoomForm(props) {
 
         //form payload
         const payload = {
-            kind: 'ROOM_UPDATE',
-            room_name: formValues.roomName,
-            splitting_cents: formValues.splittingDollars * 100,
+            events: [
+                {
+                    kind: 'ROOM_UPDATE',
+                    name: formValues.roomName ? formValues.roomName : undefined,
+                    splitting_cents: formValues.splittingDollars
+                        ? formValues.splittingDollars * 100
+                        : undefined,
+                },
+            ],
         };
 
         //send request with axios
