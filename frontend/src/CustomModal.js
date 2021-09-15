@@ -3,7 +3,7 @@ import { Modal } from '@material-ui/core';
 import './CustomModal.css';
 
 function CustomModal(props) {
-    const { form, title, show, handleClose } = props;
+    const { form, title, show, handleClose, style } = props;
 
     const content = (
         <div className="modal-content">
@@ -14,6 +14,7 @@ function CustomModal(props) {
 
     return (
         <Modal
+            style={style}
             className="modal"
             open={show}
             onClose={handleClose}

@@ -23,7 +23,7 @@ function VotersManagement(props) {
                 <CustomButton
                     title="MANAGE VOTERS"
                     startIcon={<HighlightOffIcon />}
-                    size="medium"
+                    size="small"
                     onClick={handleOpenVotersManagementModal}
                 />
             </div>
@@ -33,6 +33,7 @@ function VotersManagement(props) {
                 form={<VotersManagementForm roomCode={roomCode} />}
                 show={openVotersManagementModal}
                 handleClose={handleCloseVotersManagementModal}
+                style={{ width: 300 + 'px' }}
             />
         </div>
     );
