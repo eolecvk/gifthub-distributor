@@ -19,6 +19,8 @@ function EditRoomForm(props) {
 
     const [formValues, setFormValues] = useState(defaultValues);
 
+    const {roomCode} = props
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormValues({
