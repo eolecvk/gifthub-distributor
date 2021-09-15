@@ -33,7 +33,6 @@ function VotersManagement(props) {
                 form={<VotersManagementForm roomCode={roomCode} />}
                 show={openVotersManagementModal}
                 handleClose={handleCloseVotersManagementModal}
-                style={{ width: 300 + 'px' }}
             />
         </div>
     );

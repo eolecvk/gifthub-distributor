@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { withRouter } from 'react-router';
 import ObserverView from '../ObserverView/ObserverView';
 import ParticipantView from './ParticipantView';
 import ParticipantViewShadow from './ParticipantViewShadow';
@@ -17,9 +18,13 @@ class ParticipantViewSwitch extends Component {
             isReady: false,
             isObserverView: this.isObserverView,
         };
+        this.history = props.history;
     }
 
     async componentDidMount() {
+        const that = this;
+        const history = that.history;
+
         function initializeSliderValues(roomInfo, voterId) {
             let currentValues = {};
             roomInfo.recipients.forEach((recipientData) => {
@@ -61,13 +66,12 @@ class ParticipantViewSwitch extends Component {
                     }
                 })
                 .catch((error) => {
-                    console.log(error);
+                    history.push(`/${roomCode}`);
                 });
         }
 
         async function joinRoomRequest(roomCode) {
             await axios.post(`/api/${roomCode}/join`, {}).then((response) => {
-                console.log(response);
                 if (response.status === 200) {
                     const roomInfo = response.data;
                     sessionStorage.clear();
@@ -104,6 +108,8 @@ class ParticipantViewSwitch extends Component {
     };
 
     render() {
+        //const { history } = this.props
+
         //roomInfo not yet loaded
         if (!this.state.isReady) {
             return null;
@@ -140,4 +146,4 @@ class ParticipantViewSwitch extends Component {
     }
 }
 
-export default ParticipantViewSwitch;
+export default withRouter(ParticipantViewSwitch);
