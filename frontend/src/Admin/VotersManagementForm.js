@@ -15,7 +15,17 @@ function VotersManagementForm(props) {
     const [roomInfo, setRoomInfo] = useState(JSON.parse(sessionStorage.getItem('roomInfo')));
 
     const refreshRoomInfo = () => {
-        setRoomInfo(JSON.parse(sessionStorage.getItem('roomInfo')));
+        axios
+            .get(`/api/${roomCode}`)
+            .then((response) => {
+                if (response.status === 200) {
+                    sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
+                    setRoomInfo(response.data);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     };
 
     useEffect(() => {
