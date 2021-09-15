@@ -2,9 +2,10 @@ import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
 import FaceIcon from '@material-ui/icons/Face';
 import colors from './colors';
+import { formatAsUSD } from '../utils';
 
 function RecipientFace(props) {
-    const { sliderId, title, openRecipientModal } = props;
+    const { sliderId, title, openRecipientModal, currentAvg } = props;
 
     function handleClickFace() {
         openRecipientModal(sliderId);
@@ -20,7 +21,10 @@ function RecipientFace(props) {
                 />
             </Grid>
             <Grid item>
-                <Typography id={sliderId.toString() + 'input-slider'}>{title}</Typography>
+                <Typography id={'title' + sliderId.toString()}>{title}</Typography>
+                <Typography id={'amount' + sliderId.toString()}>
+                    {formatAsUSD(currentAvg)}
+                </Typography>
             </Grid>
         </Grid>
     );

@@ -90,7 +90,8 @@ class ParticipantViewSwitch extends Component {
             await joinRoomRequest(roomCode);
         }
 
-        if (path) {
+        const cachedPath = sessionStorage.getItem('path');
+        if (path && path !== cachedPath) {
             await voterJoinRequest(roomCode, path);
         }
 

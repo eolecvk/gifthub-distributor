@@ -31,44 +31,26 @@ const theme = createTheme({
                 color: 'black',
             },
             mark: {
-                color: 'black',
-                height: 25,
-                width: 0.5,
+                color: 'grey',
+                height: 15,
+                width: 4,
                 marginTop: 0,
-                '&[data-index="0"]': {
-                    height: 6,
-                    width: 3,
-                    marginTop: 0,
-                },
             },
             markActive: {
                 opacity: 1,
-                backgroundColor: 'currentColor',
+                backgroundColor: 'black',
             },
             markLabel: {
-                fontSize: 12,
+                fontSize: 18,
                 color: 'grey',
-                transform: 'translate(-40%, 70%)',
-                //Style of avg mark
-                '&[data-index="0"]': {
-                    fontSize: 12,
-                    color: 'black',
-                    //marginTop: 1,
-                    transform: 'translate(-40%, -15%)',
-                },
+                fontWeight: 'bold',
+                transform: 'translate(-40%, 0%)',
             },
             markLabelActive: {
-                fontSize: 12,
+                fontSize: 18,
                 color: 'black',
                 fontWeight: 'bold',
-                transform: 'translate(-40%, 70%)',
-                //Style of avg mark
-                '&[data-index="0"]': {
-                    fontSize: 12,
-                    color: 'black',
-                    fontWeight: 'normal',
-                    transform: 'translate(-40%, -15%)',
-                },
+                transform: 'translate(-40%, 0%)',
             },
         },
     },
@@ -87,12 +69,9 @@ function InputSliderShadow(props) {
     } = props;
     const groupVoteAvg = recipientInfo.avg_cents / 100;
 
-    function getMarks(groupVoteAvg, surviveValue, thriveValue) {
+    function getMarks(surviveValue, thriveValue) {
         const marks = [];
-        const markAvg = {
-            value: groupVoteAvg,
-            label: `avg:${groupVoteAvg}`,
-        };
+
         const markSurvive = {
             value: surviveValue,
             label: ':)',
@@ -101,7 +80,7 @@ function InputSliderShadow(props) {
             value: thriveValue,
             label: ':D',
         };
-        marks.push(markAvg);
+
         if (surviveValue <= maxValue) {
             marks.push(markSurvive);
         }
@@ -125,6 +104,7 @@ function InputSliderShadow(props) {
                         sliderId={sliderId}
                         title={title}
                         openRecipientModal={openRecipientModal}
+                        currentAvg={groupVoteAvg}
                     />
                     <Grid item xs={7}>
                         <Slider
@@ -139,7 +119,7 @@ function InputSliderShadow(props) {
                                 return null;
                             }}
                             aria-labelledby={props.sliderId.toString() + 'slider'}
-                            marks={getMarks(groupVoteAvg, surviveValue, thriveValue)}
+                            marks={getMarks(surviveValue, thriveValue)}
                             valueLabelDisplay="off"
                             disabled={true}
                         />

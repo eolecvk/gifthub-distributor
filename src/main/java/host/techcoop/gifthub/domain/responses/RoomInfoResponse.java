@@ -53,6 +53,8 @@ public class RoomInfoResponse {
                     VoterResponse.builder()
                         .voterId(voter.getVoterId())
                         .name(voter.getName())
+                        .distributedCents(
+                            voter.getCentsByRecipientId().values().stream().mapToInt(x -> x).sum())
                         .build())
             .collect(ImmutableList.toImmutableList());
     ImmutableList<RecipientResponse> recipients =
