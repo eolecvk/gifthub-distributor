@@ -40,14 +40,15 @@ function RecipientInfo(props) {
 
     if (needsDescription) {
         needsDescription = (
-            <Grid item>
+            <Grid item style={{ width: 100 + '%' }}>
                 <p style={{ marginTop: 10 + 'px' }}>Needs description:</p>
                 <p
                     style={{
-                        width: 300 + 'px',
+                        //width: 300 + 'px',
                         maxHeight: 300 + 'px',
                         whiteSpace: 'pre-line',
-                        overflow: 'auto',
+                        overflowX: 'hidden',
+                        overflowY: 'auto',
                         wordWrap: 'break-word',
                     }}
                 >
@@ -72,9 +73,9 @@ function RecipientInfo(props) {
         recipientId === '' ? (
             <div />
         ) : (
-            <Grid container direction="column" style={{ whiteSpace: 'pre-line' }}>
+            <Grid container direction="column" item style={{ whiteSpace: 'pre-line' }}>
                 {dissentButtons}
-                <Grid item xs zeroMinWidth>
+                <Grid item xs zeroMinWidth style={{ marginTop: 15 + 'px', wordWrap: 'break-word' }}>
                     {textBody}
                 </Grid>
                 {needsDescription}
