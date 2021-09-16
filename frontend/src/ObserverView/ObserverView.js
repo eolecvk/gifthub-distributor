@@ -13,6 +13,7 @@ import {
 } from 'recharts';
 import axios from 'axios';
 import ViolinBarLine from './ViolinBarLine';
+import CustomNameLabel from './CustomNameLabel';
 import * as d3 from 'd3';
 import { quantile } from './utils';
 import colors from './../ParticipantView/colors';
@@ -143,16 +144,21 @@ class ObserverView extends Component {
                     ])
                 );
 
-                const countDissentUp = Object.entries(p.emotive).filter(
-                    (entry) => entry[1] === 'DISSENT_UP'
-                ).length;
-                const countDissentDown = Object.entries(p.emotive).filter(
-                    (entry) => entry[1] === 'DISSENT_DOWN'
-                ).length;
-                const dissent = `👇${countDissentDown}  👆${countDissentUp}`;
-                return {
+                const dissentUpNames = Object.entries(p.emotive)
+                    .filter((entry) => entry[1] === 'DISSENT_UP')
+                    .map((entry) => voterNamesByVoterId[entry[0]]);
+                const dissentDownNames = Object.entries(p.emotive)
+                    .filter((entry) => entry[1] === 'DISSENT_DOWN')
+                    .map((entry) => voterNamesByVoterId[entry[0]]);
+
+                const nameAmtAndDissent = {
                     name: name,
-                    dissent: dissent,
+                    amt: currencyFormatter.format(avg),
+                    dissentUpNames: dissentUpNames,
+                    dissentDownNames: dissentDownNames,
+                };
+                return {
+                    name_amt_and_dissent: nameAmtAndDissent,
                     x_domain: [0, maxVote],
                     max_vote: maxVote / 100,
                     votes_cents: Object.values(p.votes_cents),
@@ -161,6 +167,7 @@ class ObserverView extends Component {
                     bar_fill: colors[index + 1],
                     needs_upper: needs_upper,
                     needs_lower: needs_lower,
+                    empty: '',
                 };
             });
 
@@ -171,25 +178,26 @@ class ObserverView extends Component {
                 <ComposedChart width={720} height={480} data={recipientData} layout="vertical">
                     <YAxis
                         yAxisId={0}
-                        width={100}
+                        width={200}
                         type="category"
-                        dataKey="name"
+                        dataKey="empty"
                         tick={{ fontSize: 20 }}
                         orientation="left"
                         tickLine={false}
-                    />
-                    <YAxis
-                        yAxisId={1}
-                        width={100}
-                        type="category"
-                        dataKey="dissent"
-                        tick={{ fontSize: 20 }}
-                        orientation="left"
-                        tickLine={false}
-                        axisLine={false}
                     />
                     <XAxis type="number" axisLine={false} domain={[0, maxVote / 100]} />
-                    <Bar dataKey="max_vote" label={false} shape={<ViolinBarLine />} />
+                    /* If isAnimationActive is set to false on the bar chart, it seems to fully fix
+                    the missing LabelList issue:
+                    https://github.com/recharts/recharts/issues/1664#issuecomment-770315614
+                    https://github.com/recharts/recharts/issues/829 */
+                    <Bar
+                        dataKey="max_vote"
+                        label={false}
+                        shape={<ViolinBarLine />}
+                        isAnimationActive={false}
+                    >
+                        <LabelList dataKey="name_amt_and_dissent" content={<CustomNameLabel />} />
+                    </Bar>
                     <Scatter
                         shape={(props) => this.makeRectangleBar('#00FF00', props)}
                         dataKey="needs_upper"
