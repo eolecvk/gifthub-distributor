@@ -27,6 +27,9 @@ public class AdjustEvent implements Event {
       throw new PermissionsException();
     }
     GiftHubRoom room = roomDAO.getRoomByCode(roomCode);
+    if (!room.getRecipientsById().keySet().contains(recipientId)) {
+      return;
+    }
     Voter voter =
         room.getVotersById()
             .get(voterId)
