@@ -5,8 +5,9 @@ import InputSliderZoomedView from './InputSliderZoomedView';
 import RecipientInfo from './RecipientInfo';
 import { parseSliderStartingValue } from './utils';
 
-function RecipientSlide() {
-    const [recipientId, setRecipientId] = useState(1);
+function RecipientSlide(props) {
+    const { openAtRecipientId, progressBar } = props;
+    const [recipientId, setRecipientId] = useState(openAtRecipientId);
     let startingValue = parseSliderStartingValue(recipientId);
 
     useEffect(() => {
@@ -46,6 +47,7 @@ function RecipientSlide() {
 
     return (
         <div>
+            {progressBar}
             <ButtonGroup>
                 <CustomButton
                     title="Previous recipient"

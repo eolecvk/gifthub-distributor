@@ -17,6 +17,7 @@ import UpdateDefaultDistributionModal from './UpdateDefaultDistributionModal';
 import AddRecipientModal from './AddRecipientModal';
 import OfflineBoltIcon from '@material-ui/icons/OfflineBolt';
 import PageviewIcon from '@material-ui/icons/Pageview';
+import AmountDistributedProgressBar from './AmountDistributedProgressBar';
 import CustomButton from '../CustomButton';
 
 class ParticipantView extends Component {
@@ -112,9 +113,33 @@ class ParticipantView extends Component {
     };
 
     render() {
+        if (this.state.roomInfo.recipients.length === 0) {
+            return (
+                <div>
+                    <RoomInfo roomInfo={this.state.roomInfo} />
+                    <AddRecipientModal roomCode={this.state.roomInfo.room_code} />
+                </div>
+            );
+        }
+
         const slidersInitializationData = getSlidersInitializationData(
             this.state.roomInfo,
             this.state.defaultDistribution
+        );
+
+        const recipient = this.state.roomInfo.recipients[0];
+
+        const voterId = parseInt(sessionStorage.getItem('voterId'));
+
+        const voter = this.state.roomInfo.voters.filter((voter) => {
+            return voter.voter_id === voterId;
+        })[0];
+
+        const progressBar = (
+            <AmountDistributedProgressBar
+                amountDistributed={voter.distributed_cents / 100}
+                amountTotal={this.state.roomInfo.splitting_cents / 100}
+            />
         );
 
         const listView =
@@ -153,7 +178,7 @@ class ParticipantView extends Component {
                         hideQuickDistributionModal={this.hideQuickDistributionModal}
                         updateDefaultDistribution={this.updateDefaultDistribution}
                     />
-
+                    {progressBar}
                     <SlidersGrid
                         key={this.state.defaultDistribution + Date.now()} // force class rendering on defaultDistribution update!
                         distribution={this.state.defaultDistribution}
@@ -180,7 +205,10 @@ class ParticipantView extends Component {
                         this.setState({ view: 'list' });
                     }}
                 />
-                <RecipientSlide />
+                <RecipientSlide
+                    openAtRecipientId={recipient.recipient_id}
+                    progressBar={progressBar}
+                />
             </div>
         );
 

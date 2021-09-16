@@ -206,10 +206,6 @@ class SliderGrid extends Component {
 
         return (
             <div>
-                <AmountDistributedProgressBar
-                    amountDistributed={amountDistributed}
-                    amountTotal={amountTotal}
-                />
                 <ButtonsUndoRedo undoMove={this.undoMove} redoMove={this.redoMove} />
                 <div style={{ marginTop: 50 }}>{sliders}</div>
             </div>
