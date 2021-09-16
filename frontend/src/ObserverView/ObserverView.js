@@ -4,7 +4,6 @@ import {
     XAxis,
     YAxis,
     Bar,
-    Cell,
     LabelList,
     ResponsiveContainer,
     Scatter,
@@ -15,7 +14,7 @@ import axios from 'axios';
 import ViolinBarLine from './ViolinBarLine';
 import CustomNameLabel from './CustomNameLabel';
 import * as d3 from 'd3';
-import { quantile } from './utils';
+import RoomInfo from '../RoomInfo';
 import colors from './../ParticipantView/colors';
 import AmountDistributedProgressBar from '../ParticipantView/AmountDistributedProgressBar';
 
@@ -213,10 +212,8 @@ class ObserverView extends Component {
         );
 
         return (
-            <div style={{ marginLeft: 50 + 'px' }}>
-                <h1 style={{ textalign: 'center' }}>
-                    {roomName} [{roomCode}]
-                </h1>
+            <div>
+                <RoomInfo roomInfo={this.state} />
                 <AmountDistributedProgressBar
                     amountDistributed={totalDistributed}
                     amountTotal={totalAmountDollars}

@@ -92,41 +92,36 @@ function InputSliderShadow(props) {
     }
 
     return (
-        <div style={{ marginTop: 30 }}>
-            <MuiThemeProvider theme={theme}>
-                <Grid
-                    key={props.sliderId.toString() + 'grid'}
-                    container
-                    direction={'row'}
-                    spacing={1}
-                >
+        <MuiThemeProvider theme={theme}>
+            <Grid key={props.sliderId.toString() + 'grid'} container direction={'row'} spacing={8}>
+                <Grid container item xs={1}>
                     <RecipientFace
                         sliderId={sliderId}
                         title={title}
                         openRecipientModal={openRecipientModal}
                         currentAvg={groupVoteAvg}
                     />
-                    <Grid item xs={7}>
-                        <Slider
-                            key={props.sliderId.toString() + 'slider'}
-                            min={0}
-                            max={maxValue}
-                            value={startingValue ? startingValue : 0}
-                            onChange={() => {
-                                return null;
-                            }}
-                            onChangeCommitted={() => {
-                                return null;
-                            }}
-                            aria-labelledby={props.sliderId.toString() + 'slider'}
-                            marks={getMarks(surviveValue, thriveValue)}
-                            valueLabelDisplay="off"
-                            disabled={true}
-                        />
-                    </Grid>
                 </Grid>
-            </MuiThemeProvider>
-        </div>
+                <Grid item xs={9}>
+                    <Slider
+                        key={props.sliderId.toString() + 'slider'}
+                        min={0}
+                        max={maxValue}
+                        value={startingValue ? startingValue : 0}
+                        onChange={() => {
+                            return null;
+                        }}
+                        onChangeCommitted={() => {
+                            return null;
+                        }}
+                        aria-labelledby={props.sliderId.toString() + 'slider'}
+                        marks={getMarks(surviveValue, thriveValue)}
+                        valueLabelDisplay="off"
+                        disabled={true}
+                    />
+                </Grid>
+            </Grid>
+        </MuiThemeProvider>
     );
 }
 

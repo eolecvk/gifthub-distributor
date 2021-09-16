@@ -140,7 +140,7 @@ class ParticipantViewSwitch extends Component {
                     />
                 </div>
                 <br />
-                <div style={{ marginTop: 25 }}>{view}</div>
+                <div style={{ marginTop: 25, marginLeft: 25 }}>{view}</div>
             </div>
         );
     }

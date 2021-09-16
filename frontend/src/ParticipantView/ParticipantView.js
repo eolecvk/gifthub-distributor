@@ -3,7 +3,7 @@ import axios from 'axios';
 import isEqual from 'lodash.isequal';
 import { ButtonGroup } from '@material-ui/core';
 import ListIcon from '@material-ui/icons/List';
-import RoomInfo from './RoomInfo';
+import RoomInfo from '../RoomInfo';
 import SlidersGrid from './SliderGrid';
 import RecipientSlide from './RecipientSlide';
 import {
