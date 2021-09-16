@@ -20,9 +20,7 @@ function RecipientModal(props) {
                 />
             }
             show={openAtSlider !== '' ? true : false}
-            handleClose={() => {
-                closeRecipientModal();
-            }}
+            handleClose={closeRecipientModal}
         />
     );
 }
