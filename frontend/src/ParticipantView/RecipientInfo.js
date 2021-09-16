@@ -5,7 +5,7 @@ import EditRecipientModal from './EditRecipientModal';
 import { formatAsUSD } from '../utils';
 
 function RecipientInfo(props) {
-    const { recipientId } = props;
+    const { recipientId, closeRecipientModal } = props;
     const [roomInfo, setRoomInfo] = useState(JSON.parse(sessionStorage.getItem('roomInfo')));
 
     const refreshRoomInfo = () => {
@@ -68,22 +68,22 @@ function RecipientInfo(props) {
         />
     ) : null;
 
-    const body =
-        recipientId === '' ? (
-            <div />
-        ) : (
-            <Grid container direction="column" style={{ whiteSpace: 'pre-line' }}>
-                {dissentButtons}
-                <Grid item xs zeroMinWidth>
-                    {textBody}
-                </Grid>
-                {needsDescription}
-                <Grid>
-                    <EditRecipientModal recipientId={recipientId} roomInfo={roomInfo} />
-                </Grid>
+    return (
+        <Grid container direction="column" style={{ whiteSpace: 'pre-line' }}>
+            {dissentButtons}
+            <Grid item xs zeroMinWidth>
+                {textBody}
             </Grid>
-        );
-    return body;
+            {needsDescription}
+            <Grid>
+                <EditRecipientModal
+                    recipientId={recipientId}
+                    roomInfo={roomInfo}
+                    closeRecipientModal={closeRecipientModal}
+                />
+            </Grid>
+        </Grid>
+    );
 }
 
 export default RecipientInfo;

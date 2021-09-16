@@ -56,7 +56,10 @@ function RecipientSlide(props) {
                 <CustomButton title="Next recipient" onClick={handleSwitchToNextRecipient} />
             </ButtonGroup>
             <InputSliderZoomedView sliderId={recipientId} startingValue={startingValue} />
-            <RecipientInfo recipientId={recipientId} />
+            <RecipientInfo
+                recipientId={recipientId}
+                closeRecipientModal={handleSwitchToNextRecipient}
+            />
         </div>
     );
 }

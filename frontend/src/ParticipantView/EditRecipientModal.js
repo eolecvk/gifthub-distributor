@@ -8,6 +8,7 @@ import CustomModal from '../CustomModal';
 import './EditRecipientModal.css';
 
 function EditRecipientModal(props) {
+    const { recipientId, roomInfo, closeRecipientModal } = props;
     const [open, setOpen] = React.useState(false);
 
     const handleSubmit = (newUsername, newSurviveAmount, newThriveAmount, newNeedsDescription) => {
@@ -31,10 +32,6 @@ function EditRecipientModal(props) {
         setOpen(false);
     };
 
-    const handleCloseRecipientModal = () => {
-        props.handleClose();
-    };
-
     return (
         <div>
             <Grid container alignItems="center" justifyContent="flex-end" style={{ marginTop: 20 }}>
@@ -52,11 +49,11 @@ function EditRecipientModal(props) {
                     handleClose={handleCloseEditRecipientModal}
                     form={
                         <EditRecipientForm
-                            roomInfo={props.roomInfo}
-                            recipientId={props.recipientId}
+                            roomInfo={roomInfo}
+                            recipientId={recipientId}
                             handleSubmit={handleSubmit}
                             handleCloseEditRecipientModal={handleCloseEditRecipientModal}
-                            handleCloseRecipientModal={handleCloseRecipientModal}
+                            closeRecipientModal={closeRecipientModal}
                         />
                     }
                 />
