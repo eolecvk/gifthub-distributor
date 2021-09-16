@@ -109,6 +109,7 @@ class ParticipantView extends Component {
     };
 
     closeRecipientModal = () => {
+        console.log('YEET');
         this.openRecipientModal('');
     };
 
@@ -184,7 +185,7 @@ class ParticipantView extends Component {
                     <AddRecipientModal roomCode={this.state.roomInfo.room_code} />
                     <RecipientModal
                         recipientId={this.state.recipientModalOpenAtSlider}
-                        handleClose={this.closeRecipientModal}
+                        closeRecipientModal={this.closeRecipientModal}
                     />
                 </div>
             );

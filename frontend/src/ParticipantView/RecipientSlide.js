@@ -57,7 +57,10 @@ function RecipientSlide(props) {
             </ButtonGroup>
             <InputSliderZoomedView sliderId={recipientId} startingValue={startingValue} />
             <Grid container item xs={5}>
-                <RecipientInfo recipientId={recipientId} />
+                <RecipientInfo
+                    recipientId={recipientId}
+                    closeRecipientModal={handleSwitchToNextRecipient}
+                />
             </Grid>
         </div>
     );
