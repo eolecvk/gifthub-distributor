@@ -208,8 +208,6 @@ class ObserverView extends Component {
                     />
                     <Scatter shape="cross" dataKey="avg" />
                     <Tooltip content={(props) => this.makeTooltip(props, maxVote)} />
-                    //
-                    <Tooltip content={(props) => this.makeTooltip(props, maxVote)} />
                 </ComposedChart>
             </ResponsiveContainer>
         );
