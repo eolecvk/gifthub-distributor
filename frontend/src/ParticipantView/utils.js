@@ -58,19 +58,13 @@ function getSlidersInitializationData(roomInfo, defaultDistribution) {
         }));
     }
 
-    //for needs based distributions compute optional scaleDownRatio
-    //applicable when the max amounts set can only be a fraction of the actual needs amount
-    const scaleDownRatio = getNeedsScaleDownRatio(roomInfo, defaultDistribution);
-
     if (defaultDistribution === 'survive') {
         return roomInfo.recipients.map((recipientData) => ({
             recipientId: recipientData.recipient_id,
             title: recipientData.name,
             surviveValue: recipientData.needs_lower_bound_cents / 100,
             thriveValue: recipientData.needs_upper_bound_cents / 100,
-            startingValue: Math.floor(
-                (recipientData.needs_lower_bound_cents / 100) * scaleDownRatio
-            ),
+            startingValue: Math.floor(recipientData.needs_lower_bound_cents / 100),
             maxValue: roomInfo.splitting_cents / 100,
         }));
     }
@@ -81,9 +75,7 @@ function getSlidersInitializationData(roomInfo, defaultDistribution) {
             title: recipientData.name,
             surviveValue: recipientData.needs_lower_bound_cents / 100,
             thriveValue: recipientData.needs_upper_bound_cents / 100,
-            startingValue: Math.floor(
-                (recipientData.needs_upper_bound_cents / 100) * scaleDownRatio
-            ),
+            startingValue: Math.floor(recipientData.needs_upper_bound_cents / 100),
             maxValue: roomInfo.splitting_cents / 100,
         }));
     }
@@ -207,7 +199,6 @@ function parseSliderStartingValue(recipientId) {
 }
 
 export {
-    getNeedsScaleDownRatio,
     getSlidersInitializationData,
     getStartingValues,
     getStateObjectNewMoves,

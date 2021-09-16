@@ -84,29 +84,15 @@ class ParticipantView extends Component {
 
     updateDefaultDistribution = (defaultDistribution) => {
         const roomInfo = this.state.roomInfo;
-        //const needsScaleDownRatio = getNeedsScaleDownRatio(roomInfo, defaultDistribution);
+        const roomCode = roomInfo.room_code;
+
         const futureSlidersInitializationData = getSlidersInitializationData(
             roomInfo,
             defaultDistribution
         );
         const futureStartingValues = getStartingValues(futureSlidersInitializationData);
 
-        // Update grid state stored in memory (will be used for slider grid initialization upon re-rendering)
-        const storedSliderGridState = JSON.parse(sessionStorage.getItem('sliderGridState'));
-        const defaultSliderGridState = {
-            currentValues: futureStartingValues, // NEED TO DEPRECATED THIS
-            reset: false,
-            history: {
-                index: 0,
-                states: [futureStartingValues],
-            },
-        };
-        const currentSliderGridState = storedSliderGridState || defaultSliderGridState;
-        const futureSliderGridState = this.getStateObjectNewMoves(
-            currentSliderGridState,
-            futureStartingValues
-        );
-        sessionStorage.setItem('sliderGridState', JSON.stringify(futureSliderGridState));
+        registerVote(futureStartingValues, roomCode, true);
 
         this.setState({
             defaultDistribution: defaultDistribution,
