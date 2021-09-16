@@ -7,16 +7,20 @@ function RoomInfo(props) {
 
     const { roomInfo } = props;
 
-    let roomName;
+    let roomName, roomCode;
     try {
+        roomCode = roomInfo.room_code;
         roomName = roomInfo.room_name;
     } catch {
+        roomCode = '';
         roomName = '';
     }
 
     return (
         <div>
-            <h1 style={style}>{roomName}</h1>
+            <h1 style={style}>
+                {roomName} [{roomCode}]
+            </h1>
         </div>
     );
 }
