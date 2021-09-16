@@ -141,14 +141,8 @@ class ParticipantView extends Component {
                 amountTotal={this.state.roomInfo.splitting_cents / 100}
             />
         );
-
-        const listView =
-            this.state.roomInfo.recipients.length === 0 ? (
-                <div>
-                    <RoomInfo roomInfo={this.state.roomInfo} />
-                    <AddRecipientModal roomCode={this.state.roomInfo.room_code} />
-                </div>
-            ) : (
+        if (this.state.view === 'list') {
+            return (
                 <div>
                     <RoomInfo roomInfo={this.state.roomInfo} />
 
@@ -194,8 +188,9 @@ class ParticipantView extends Component {
                     />
                 </div>
             );
+        }
 
-        const zoomedView = (
+        return (
             <div>
                 <CustomButton
                     title="Back to list"
@@ -211,10 +206,6 @@ class ParticipantView extends Component {
                 />
             </div>
         );
-
-        const participantView = this.state.view === 'list' ? listView : zoomedView;
-
-        return participantView;
     }
 }
 
