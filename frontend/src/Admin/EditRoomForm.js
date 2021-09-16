@@ -50,8 +50,7 @@ function EditRoomForm(props) {
             .put(`/api/${roomCode}`, payload)
             .then((response) => {
                 if (response.status === 200) {
-                    const roomInfo = response.data;
-                    sessionStorage.setItem('roomInfo', JSON.stringify(roomInfo));
+                    sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
                 }
             })
             .catch((error) => {

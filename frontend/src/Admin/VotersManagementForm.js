@@ -31,7 +31,7 @@ function VotersManagementForm(props) {
     useEffect(() => {
         const interval = setInterval(refreshRoomInfo, 300);
         return () => clearInterval(interval);
-    }, []);
+    });
 
     const handleKickVoter = (e, voterId) => {
         e.preventDefault();

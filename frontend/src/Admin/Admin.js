@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import RoomManagement from './RoomManagement';
 import RecipientsManagement from './RecipientsManagement';
 import VotersManagement from './VotersManagement';
+import { refreshCachedRoomInfo } from '../utils';
 
 function Admin(props) {
     const { roomCode } = props.match.params;
+
+    useEffect(() => {
+        refreshCachedRoomInfo(roomCode);
+    });
 
     return (
         <div>
