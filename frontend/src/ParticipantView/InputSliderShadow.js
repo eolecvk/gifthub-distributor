@@ -20,6 +20,7 @@ const theme = createTheme({
             thumb: {
                 height: 0,
                 width: 0,
+                color: 'transparent',
             },
             track: {
                 height: 3,
