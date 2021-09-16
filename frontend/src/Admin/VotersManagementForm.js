@@ -68,12 +68,17 @@ function VotersManagementForm(props) {
         const distributedDollars = formatAsUSD(voter.distributed_cents / 100);
         const totalDollars = formatAsUSD(roomInfo.splitting_cents / 100);
         const progress = `${distributedDollars} / ${totalDollars}`;
-        const textColor = {color: voter.distributed_cents > roomInfo.splitting_cents ? "rgb(255 0 0)" : "rgb(0 0 0)"}
+        const textColor = {
+            color:
+                voter.distributed_cents > roomInfo.splitting_cents ? 'rgb(255 0 0)' : 'rgb(0 0 0)',
+        };
 
         return (
             <Grid container spacing={3} justify="flex-end" alignItems="center">
                 <Grid item>{name}</Grid>
-                <Grid style={textColor} item>{progress}</Grid>
+                <Grid style={textColor} item>
+                    {progress}
+                </Grid>
                 <Grid item>
                     <CustomButton
                         title="kick"
