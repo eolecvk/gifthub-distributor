@@ -144,17 +144,21 @@ class ObserverView extends Component {
                     ])
                 );
 
-                const countDissentUp = Object.entries(p.emotive).filter(
-                    (entry) => entry[1] === 'DISSENT_UP'
-                ).length;
-                const countDissentDown = Object.entries(p.emotive).filter(
-                    (entry) => entry[1] === 'DISSENT_DOWN'
-                ).length;
-                const dissent = `👇${countDissentDown}  👆${countDissentUp}`;
-                const nameAndAmt = { name: name, amt: currencyFormatter.format(avg) };
+                const dissentUpNames = Object.entries(p.emotive)
+                    .filter((entry) => entry[1] === 'DISSENT_UP')
+                    .map((entry) => voterNamesByVoterId[entry[0]]);
+                const dissentDownNames = Object.entries(p.emotive)
+                    .filter((entry) => entry[1] === 'DISSENT_DOWN')
+                    .map((entry) => voterNamesByVoterId[entry[0]]);
+
+                const nameAmtAndDissent = {
+                    name: name,
+                    amt: currencyFormatter.format(avg),
+                    dissentUpNames: dissentUpNames,
+                    dissentDownNames: dissentDownNames,
+                };
                 return {
-                    name_and_amt: nameAndAmt,
-                    dissent: dissent,
+                    name_amt_and_dissent: nameAmtAndDissent,
                     x_domain: [0, maxVote],
                     max_vote: maxVote / 100,
                     votes_cents: Object.values(p.votes_cents),
@@ -174,22 +178,12 @@ class ObserverView extends Component {
                 <ComposedChart width={720} height={480} data={recipientData} layout="vertical">
                     <YAxis
                         yAxisId={0}
-                        width={100}
+                        width={200}
                         type="category"
                         dataKey="empty"
                         tick={{ fontSize: 20 }}
                         orientation="left"
                         tickLine={false}
-                    />
-                    <YAxis
-                        yAxisId={1}
-                        width={100}
-                        type="category"
-                        dataKey="dissent"
-                        tick={{ fontSize: 20 }}
-                        orientation="left"
-                        tickLine={false}
-                        axisLine={false}
                     />
                     <XAxis type="number" axisLine={false} domain={[0, maxVote / 100]} />
                     /* If isAnimationActive is set to false on the bar chart, it seems to fully fix
@@ -202,7 +196,7 @@ class ObserverView extends Component {
                         shape={<ViolinBarLine />}
                         isAnimationActive={false}
                     >
-                        <LabelList dataKey="name_and_amt" content={<CustomNameLabel />} />
+                        <LabelList dataKey="name_amt_and_dissent" content={<CustomNameLabel />} />
                     </Bar>
                     <Scatter
                         shape={(props) => this.makeRectangleBar('#00FF00', props)}
@@ -213,6 +207,8 @@ class ObserverView extends Component {
                         dataKey="needs_lower"
                     />
                     <Scatter shape="cross" dataKey="avg" />
+                    <Tooltip content={(props) => this.makeTooltip(props, maxVote)} />
+                    //
                     <Tooltip content={(props) => this.makeTooltip(props, maxVote)} />
                 </ComposedChart>
             </ResponsiveContainer>
