@@ -47,7 +47,7 @@ function RecipientInfo(props) {
                         width: 300 + 'px',
                         maxHeight: 300 + 'px',
                         whiteSpace: 'pre-line',
-                        overflow: 'scroll',
+                        overflow: 'auto',
                         wordWrap: 'break-word',
                     }}
                 >

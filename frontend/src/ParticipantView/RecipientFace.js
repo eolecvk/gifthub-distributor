@@ -20,11 +20,23 @@ function RecipientFace(props) {
                     style={{ color: colors[sliderId] }}
                 />
             </Grid>
-            <Grid item onClick={handleOpenRecipientModal}>
-                <Typography id={'title' + sliderId.toString()}>{title}</Typography>
-                <Typography id={'amount' + sliderId.toString()}>
-                    {formatAsUSD(currentAvg)}
-                </Typography>
+            <Grid
+                container
+                item
+                onClick={handleOpenRecipientModal}
+                wrap="nowrap"
+                direction="column"
+                alignItems="center"
+                justifyContent="center"
+            >
+                <Grid>
+                    <Typography id={'title' + sliderId.toString()}>{title}</Typography>
+                </Grid>
+                <Grid>
+                    <Typography id={'amount' + sliderId.toString()}>
+                        {formatAsUSD(currentAvg)}
+                    </Typography>
+                </Grid>
             </Grid>
         </Grid>
     );
