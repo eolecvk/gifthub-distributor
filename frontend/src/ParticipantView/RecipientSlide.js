@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ButtonGroup } from '@material-ui/core';
+import { Grid, ButtonGroup } from '@material-ui/core';
 import CustomButton from '../CustomButton';
 import InputSliderZoomedView from './InputSliderZoomedView';
 import RecipientInfo from './RecipientInfo';
@@ -56,10 +56,12 @@ function RecipientSlide(props) {
                 <CustomButton title="Next recipient" onClick={handleSwitchToNextRecipient} />
             </ButtonGroup>
             <InputSliderZoomedView sliderId={recipientId} startingValue={startingValue} />
-            <RecipientInfo
-                recipientId={recipientId}
-                closeRecipientModal={handleSwitchToNextRecipient}
-            />
+            <Grid container item xs={5}>
+                <RecipientInfo
+                    recipientId={recipientId}
+                    closeRecipientModal={handleSwitchToNextRecipient}
+                />
+            </Grid>
         </div>
     );
 }

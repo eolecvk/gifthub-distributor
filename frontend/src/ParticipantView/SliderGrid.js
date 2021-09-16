@@ -178,7 +178,7 @@ class SliderGrid extends Component {
                     <InputSlider
                         key={slData.recipientId.toString() + 'inputSlider'}
                         sliderId={slData.recipientId.toString()}
-                        title={slData.title.toUpperCase()}
+                        title={slData.title}
                         surviveValue={slData.surviveValue}
                         thriveValue={slData.thriveValue}
                         startingValue={

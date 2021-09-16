@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import isEqual from 'lodash.isequal';
-import RoomInfo from './RoomInfo';
+import RoomInfo from '../RoomInfo';
 import SlidersGridShadow from './SliderGridShadow';
 import JoinAsVoterModal from './JoinAsVoterModal';
 import { getSlidersInitializationData } from './utils';

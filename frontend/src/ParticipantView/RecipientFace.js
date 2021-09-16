@@ -7,7 +7,7 @@ import { formatAsUSD } from '../utils';
 function RecipientFace(props) {
     const { sliderId, title, openRecipientModal, currentAvg } = props;
 
-    function handleClickFace() {
+    function handleOpenRecipientModal() {
         openRecipientModal(sliderId);
     }
 
@@ -15,16 +15,28 @@ function RecipientFace(props) {
         <Grid container direction="column" alignItems="center" justifyContent="center">
             <Grid item>
                 <FaceIcon
-                    onClick={handleClickFace}
+                    onClick={handleOpenRecipientModal}
                     fontSize="large"
                     style={{ color: colors[sliderId] }}
                 />
             </Grid>
-            <Grid item>
-                <Typography id={'title' + sliderId.toString()}>{title}</Typography>
-                <Typography id={'amount' + sliderId.toString()}>
-                    {formatAsUSD(currentAvg)}
-                </Typography>
+            <Grid
+                container
+                item
+                onClick={handleOpenRecipientModal}
+                wrap="nowrap"
+                direction="column"
+                alignItems="center"
+                justifyContent="center"
+            >
+                <Grid>
+                    <Typography id={'title' + sliderId.toString()}>{title}</Typography>
+                </Grid>
+                <Grid>
+                    <Typography id={'amount' + sliderId.toString()}>
+                        {formatAsUSD(currentAvg)}
+                    </Typography>
+                </Grid>
             </Grid>
         </Grid>
     );
