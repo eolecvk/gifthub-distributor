@@ -3,7 +3,7 @@ import RecipientInfo from './RecipientInfo';
 import CustomModal from '../CustomModal';
 
 function RecipientModal(props) {
-    const { recipientId, handleClose } = props;
+    const { recipientId, closeRecipientModal } = props;
     const [openAtSlider, setOpenAtSlider] = React.useState(recipientId);
 
     useEffect(() => {
@@ -13,9 +13,16 @@ function RecipientModal(props) {
     return (
         <CustomModal
             title="Recipient Info"
-            form={<RecipientInfo recipientId={openAtSlider} />}
+            form={
+                <RecipientInfo
+                    recipientId={openAtSlider}
+                    closeRecipientModal={closeRecipientModal}
+                />
+            }
             show={openAtSlider !== '' ? true : false}
-            handleClose={handleClose}
+            handleClose={() => {
+                closeRecipientModal();
+            }}
         />
     );
 }

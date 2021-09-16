@@ -83,7 +83,7 @@ class ParticipantViewShadow extends Component {
                 <AddRecipientModal roomCode={this.state.roomInfo.room_code} />
                 <RecipientModal
                     recipientId={this.state.recipientModalOpenAtSlider}
-                    handleClose={this.closeRecipientModal}
+                    closeRecipientModal={this.closeRecipientModal}
                 />
             </div>
         );

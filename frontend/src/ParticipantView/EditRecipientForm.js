@@ -273,9 +273,10 @@ class EditRecipientForm extends Component {
 
         this.props.handleCloseEditRecipientModal();
 
-        try {
-            this.props.handleCloseRecipientModal();
-        } catch {}
+        // closeRecipientModal is undefined for RecipientSlide
+        if (typeof this.props.closeRecipientModal === 'function') {
+            this.props.closeRecipientModal();
+        }
     };
 
     render() {
