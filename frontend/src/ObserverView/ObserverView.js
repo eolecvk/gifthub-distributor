@@ -16,16 +16,8 @@ import CustomNameLabel from './CustomNameLabel';
 import * as d3 from 'd3';
 import RoomInfo from '../RoomInfo';
 import colors from './../ParticipantView/colors';
+import { formatAsUSD } from '../utils';
 import AmountDistributedProgressBar from '../ParticipantView/AmountDistributedProgressBar';
-
-const currencyFormatter = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-
-    // These options are needed to round to whole numbers if that's what you want.
-    //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
-    //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
-});
 
 class ObserverView extends Component {
     constructor() {
@@ -76,7 +68,7 @@ class ObserverView extends Component {
         const attributedVotes = props.payload[0].payload.attributed_votes;
         const hoverValue =
             ((props.coordinate.x - props.viewBox.left) / props.viewBox.width) * maxVote;
-        const rangeDivider = maxVote / 40;
+        const rangeDivider = maxVote / 30;
         const range = [hoverValue - rangeDivider, hoverValue + rangeDivider];
 
         const labels = Object.entries(attributedVotes)
@@ -84,7 +76,7 @@ class ObserverView extends Component {
             .sort((entryA, entryB) => entryA[1] - entryB[1])
             .map((entry, index) => (
                 <p key={index}>
-                    <b>{entry[0]}:</b> {currencyFormatter.format(entry[1] / 100.0)}
+                    <b>{entry[0]}:</b> {formatAsUSD(entry[1] / 100.0)}
                 </p>
             ));
         if (labels.length == 0) {
@@ -152,7 +144,7 @@ class ObserverView extends Component {
 
                 const nameAmtAndDissent = {
                     name: name,
-                    amt: currencyFormatter.format(avg),
+                    amt: formatAsUSD(avg),
                     dissentUpNames: dissentUpNames,
                     dissentDownNames: dissentDownNames,
                 };
@@ -184,7 +176,12 @@ class ObserverView extends Component {
                         orientation="left"
                         tickLine={false}
                     />
-                    <XAxis type="number" axisLine={false} domain={[0, maxVote / 100]} />
+                    <XAxis
+                        type="number"
+                        axisLine={false}
+                        domain={[0, maxVote / 100]}
+                        tickFormatter={(tick) => formatAsUSD(tick)}
+                    />
                     /* If isAnimationActive is set to false on the bar chart, it seems to fully fix
                     the missing LabelList issue:
                     https://github.com/recharts/recharts/issues/1664#issuecomment-770315614
