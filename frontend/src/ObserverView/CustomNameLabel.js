@@ -34,9 +34,7 @@ const CustomNameLabel = (props) => {
                 </HtmlTooltip>
             </text>
             <text>
-                <tspan x={x - 90} dy={y + height / 2.5}>
-                    {name}
-                </tspan>
+                {calculateName(name, x, y, height)}
                 <tspan x={x - 90} dy={25}>
                     {amt}
                 </tspan>
@@ -44,5 +42,24 @@ const CustomNameLabel = (props) => {
         </g>
     );
 };
+
+function calculateName(name, x, y, height) {
+    const lineLimit = 11;
+    const names = name.split(' ');
+    const wrappedNames = [];
+    const wrappedNamesIndex = 0;
+    for (const namePart of names) {
+        if ((wrappedNames[wrappedNamesIndex] + ' ' + namePart).length < lineLimit) {
+            wrappedNames[wrappedNamesIndex] += ' ' + namePart;
+        } else if (namePart.length < lineLimit) {
+            wrappedNames.push(namePart);
+        } else {
+            wrappedNames.push(namePart.substring(0, lineLimit - 3) + '...');
+        }
+    }
+    return wrappedNames.map((namePart, index) => {
+        return <tspan x={x - 90} dy={index*((height-20)/wrappedNames.length)} y={y}>{namePart}</tspan>;
+    });
+}
 
 export default CustomNameLabel;
