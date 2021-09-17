@@ -56,7 +56,7 @@ function RecipientSlide(props) {
                 <CustomButton title="Next recipient" onClick={handleSwitchToNextRecipient} />
             </ButtonGroup>
             <InputSliderZoomedView sliderId={recipientId} startingValue={startingValue} />
-            <Grid container item xs={5}>
+            <Grid container item xs={11}>
                 <RecipientInfo
                     recipientId={recipientId}
                     closeRecipientModal={handleSwitchToNextRecipient}

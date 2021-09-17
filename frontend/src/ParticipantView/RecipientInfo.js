@@ -44,7 +44,6 @@ function RecipientInfo(props) {
                 <p style={{ marginTop: 10 + 'px' }}>Needs description:</p>
                 <p
                     style={{
-                        //width: 300 + 'px',
                         maxHeight: 300 + 'px',
                         whiteSpace: 'pre-line',
                         overflowX: 'hidden',
