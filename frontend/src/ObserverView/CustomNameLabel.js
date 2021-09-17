@@ -58,7 +58,11 @@ function calculateName(name, x, y, height) {
         }
     }
     return wrappedNames.map((namePart, index) => {
-        return <tspan x={x - 90} dy={index*((height-20)/wrappedNames.length)} y={y}>{namePart}</tspan>;
+        return (
+            <tspan x={x - 90} dy={index * ((height - 20) / wrappedNames.length)} y={y}>
+                {namePart}
+            </tspan>
+        );
     });
 }
 
