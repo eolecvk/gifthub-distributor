@@ -80,7 +80,6 @@ class ParticipantViewShadow extends Component {
                     justifyContent="center"
                     style={{ marginTop: 40 }}
                 ></Grid>
-                <AddRecipientModal roomCode={this.state.roomInfo.room_code} />
                 <RecipientModal
                     recipientId={this.state.recipientModalOpenAtSlider}
                     closeRecipientModal={this.closeRecipientModal}

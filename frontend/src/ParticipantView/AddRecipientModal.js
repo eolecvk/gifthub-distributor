@@ -1,5 +1,5 @@
-import React from 'react';
-import { Grid, Container } from '@material-ui/core';
+import React, { useEffect } from 'react';
+import { Grid } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import AddRecipientForm from './AddRecipientForm';
 import CustomButton from '../CustomButton';
@@ -7,38 +7,37 @@ import CustomModal from '../CustomModal';
 import './AddRecipientModal.css';
 
 function AddRecipientModal(props) {
-    const [open, setOpen] = React.useState(false);
+    const { show, handleCloseModal, handleOpenModal } = props;
+    const [open, setOpen] = React.useState(show);
 
-    const handleOpen = () => {
-        setOpen(true);
-    };
+    useEffect(() => {
+        setOpen(show);
+    }, [show]);
 
-    const handleClose = () => {
-        setOpen(false);
-    };
+    const addRecipientButton = (
+        <Grid container alignItems="center" justifyContent="center" style={{ marginTop: 40 }}>
+            <CustomButton
+                title="Add recipient"
+                startIcon={<AddCircleOutlineIcon />}
+                size="large"
+                onClick={handleOpenModal}
+            />
+        </Grid>
+    );
 
-    const body = <AddRecipientForm handleClose={handleClose} roomCode={props.roomCode} />;
+    const addRecipientModal = (
+        <CustomModal
+            show={open}
+            handleClose={handleCloseModal}
+            form={<AddRecipientForm handleClose={handleCloseModal} roomCode={props.roomCode} />}
+            title="New recipient"
+        />
+    );
 
     return (
         <div>
-            <Grid container alignItems="center" justifyContent="center" style={{ marginTop: 40 }}>
-                {' '}
-                <CustomButton
-                    title="Add recipient"
-                    startIcon={<AddCircleOutlineIcon />}
-                    size="large"
-                    onClick={() => handleOpen()}
-                />
-            </Grid>
-
-            <Container>
-                <CustomModal
-                    show={open}
-                    handleClose={handleClose}
-                    form={body}
-                    title="New recipient"
-                />
-            </Container>
+            {addRecipientButton}
+            {addRecipientModal}
         </div>
     );
 }
