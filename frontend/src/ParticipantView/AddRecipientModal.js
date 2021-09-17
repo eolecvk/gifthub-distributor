@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Grid } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import AddRecipientForm from './AddRecipientForm';
@@ -7,17 +7,13 @@ import CustomModal from '../CustomModal';
 import './AddRecipientModal.css';
 
 function AddRecipientModal(props) {
-    const { show, handleCloseModal } = props;
+    const { show, handleCloseModal, handleOpenModal } = props;
     const [open, setOpen] = React.useState(show);
 
-    const handleOpen = () => {
-        setOpen(true);
-    };
+    useEffect(()=> {
+        setOpen(show)
+    }, [show])
 
-    const handleClose = () => {
-        handleCloseModal();
-        setOpen(false);
-    };
 
     const addRecipientButton = (
         <Grid container alignItems="center" justifyContent="center" style={{ marginTop: 40 }}>
@@ -25,7 +21,7 @@ function AddRecipientModal(props) {
                 title="Add recipient"
                 startIcon={<AddCircleOutlineIcon />}
                 size="large"
-                onClick={handleOpen}
+                onClick={handleOpenModal}
             />
         </Grid>
     );
@@ -33,8 +29,8 @@ function AddRecipientModal(props) {
     const addRecipientModal = (
         <CustomModal
             show={open}
-            handleClose={handleClose}
-            form={<AddRecipientForm handleClose={handleClose} roomCode={props.roomCode} />}
+            handleClose={handleCloseModal}
+            form={<AddRecipientForm handleClose={handleCloseModal} roomCode={props.roomCode} />}
             title="New recipient"
         />
     );

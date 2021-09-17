@@ -129,8 +129,19 @@ class ParticipantView extends Component {
                 roomCode={this.state.roomInfo.room_code}
                 show={this.state.showAddRecipientModal}
                 handleCloseModal={this.hideAddRecipientModal}
+                handleOpenModal={this.showAddRecipientModal}
             />
         );
+
+
+        if (this.state.shadow) {
+            return (
+                <div>
+                    <ParticipantViewShadow />
+                    {addRecipientModal}
+                </div>
+            );
+        }
 
         if (this.state.roomInfo.recipients.length === 0) {
             return (
@@ -141,14 +152,6 @@ class ParticipantView extends Component {
             );
         }
 
-        if (this.state.shadow) {
-            return (
-                <div>
-                    <ParticipantViewShadow />
-                    {addRecipientModal}
-                </div>
-            );
-        }
 
         const slidersInitializationData = getSlidersInitializationData(
             this.state.roomInfo,
