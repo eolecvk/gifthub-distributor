@@ -10,10 +10,9 @@ function AddRecipientModal(props) {
     const { show, handleCloseModal, handleOpenModal } = props;
     const [open, setOpen] = React.useState(show);
 
-    useEffect(()=> {
-        setOpen(show)
-    }, [show])
-
+    useEffect(() => {
+        setOpen(show);
+    }, [show]);
 
     const addRecipientButton = (
         <Grid container alignItems="center" justifyContent="center" style={{ marginTop: 40 }}>

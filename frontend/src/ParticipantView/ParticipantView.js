@@ -133,7 +133,6 @@ class ParticipantView extends Component {
             />
         );
 
-
         if (this.state.shadow) {
             return (
                 <div>
@@ -151,7 +150,6 @@ class ParticipantView extends Component {
                 </div>
             );
         }
-
 
         const slidersInitializationData = getSlidersInitializationData(
             this.state.roomInfo,
