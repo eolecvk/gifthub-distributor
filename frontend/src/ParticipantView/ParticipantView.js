@@ -74,7 +74,7 @@ class ParticipantView extends Component {
             sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
 
             // call getData() again in 5 seconds
-            this.intervalID = setTimeout(this.getData.bind(this), 2000);
+            this.intervalID = setTimeout(this.getData.bind(this), 10000);
         });
     };
 
