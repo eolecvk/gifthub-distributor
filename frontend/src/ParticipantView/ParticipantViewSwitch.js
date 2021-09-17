@@ -108,8 +108,6 @@ class ParticipantViewSwitch extends Component {
     };
 
     render() {
-        //const { history } = this.props
-
         //roomInfo not yet loaded
         if (!this.state.isReady) {
             return null;
@@ -118,10 +116,8 @@ class ParticipantViewSwitch extends Component {
         let view;
         if (this.state.isObserverView) {
             view = <ObserverView />;
-        } else if (this.path) {
-            view = <ParticipantView />;
         } else {
-            view = <ParticipantViewShadow />;
+            view = <ParticipantView shadow={this.path ? false : true} />;
         }
 
         return (

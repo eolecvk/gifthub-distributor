@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import isEqual from 'lodash.isequal';
-import { ButtonGroup } from '@material-ui/core';
+import { ButtonGroup, Grid } from '@material-ui/core';
 import ListIcon from '@material-ui/icons/List';
 import RoomInfo from '../RoomInfo';
 import SlidersGrid from './SliderGrid';
+import ParticipantViewShadow from './ParticipantViewShadow';
 import RecipientSlide from './RecipientSlide';
 import {
     getSlidersInitializationData,
@@ -24,6 +25,7 @@ class ParticipantView extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            shadow: props.shadow,
             view: sessionStorage['participantView'] || 'list',
             defaultDistribution: 'zero',
             reset: false,
@@ -31,6 +33,7 @@ class ParticipantView extends Component {
             recipientModalOpenAtSlider: '',
             slideOpenAtSlider: '',
             showDefaultDistributionModal: false,
+            showAddRecipientModal: false,
         };
         this.getStateObjectNewMoves = getStateObjectNewMoves;
     }
@@ -83,6 +86,14 @@ class ParticipantView extends Component {
         this.setState({ showDefaultDistributionModal: false });
     };
 
+    showAddRecipientModal = () => {
+        this.setState({ showAddRecipientModal: true });
+    };
+
+    hideAddRecipientModal = () => {
+        this.setState({ showAddRecipientModal: false });
+    };
+
     updateDefaultDistribution = (defaultDistribution) => {
         const roomInfo = this.state.roomInfo;
         const roomCode = roomInfo.room_code;
@@ -109,16 +120,32 @@ class ParticipantView extends Component {
     };
 
     closeRecipientModal = () => {
-        console.log('YEET');
         this.openRecipientModal('');
     };
 
     render() {
+        const addRecipientModal = (
+            <AddRecipientModal
+                roomCode={this.state.roomInfo.room_code}
+                show={this.state.showAddRecipientModal}
+                handleCloseModal={this.hideAddRecipientModal}
+            />
+        );
+
         if (this.state.roomInfo.recipients.length === 0) {
             return (
                 <div>
                     <RoomInfo roomInfo={this.state.roomInfo} />
-                    <AddRecipientModal roomCode={this.state.roomInfo.room_code} />
+                    {addRecipientModal}
+                </div>
+            );
+        }
+
+        if (this.state.shadow) {
+            return (
+                <div>
+                    <ParticipantViewShadow />
+                    {addRecipientModal}
                 </div>
             );
         }
@@ -182,7 +209,7 @@ class ParticipantView extends Component {
                         reset={this.state.reset}
                         openRecipientModal={this.openRecipientModal}
                     />
-                    <AddRecipientModal roomCode={this.state.roomInfo.room_code} />
+                    {addRecipientModal}
                     <RecipientModal
                         recipientId={this.state.recipientModalOpenAtSlider}
                         closeRecipientModal={this.closeRecipientModal}
