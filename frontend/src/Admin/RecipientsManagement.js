@@ -40,8 +40,8 @@ function RecipientsManagement(props) {
                 return {
                     kind: 'RECIPIENT_ADD',
                     name: name,
-                    needs_upper_bound_cents: surviveCents,
-                    needs_lower_bound_cents: thriveCents,
+                    needs_upper_bound_cents: thriveCents,
+                    needs_lower_bound_cents: surviveCents,
                     needs_description: description,
                 };
             });
@@ -52,6 +52,7 @@ function RecipientsManagement(props) {
             .then((response) => {
                 if (response.status === 200) {
                     sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
+                    alert(`Recipient upload successful!`);
                 }
             })
             .catch((err) => {
@@ -71,6 +72,7 @@ function RecipientsManagement(props) {
     return (
         <div>
             <h3>Recipients</h3>
+            <p>Upload CSV with columns labeled 'name', 'survive', 'thrive' and 'description'</p>
             <div style={{ margin: 15 + 'px' }}>
                 <ReactFileReader
                     handleFiles={handleUploadRecipients}
