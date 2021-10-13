@@ -35,8 +35,6 @@ public class GifthubWebserverTest {
 
   @Test
   public void getRoomInfoReturnsValidInfo() {
-    Request request = mock(Request.class);
-    Response response = mock(Response.class);
     when(roomDAO.getRoomByCode("ABCD"))
         .thenReturn(
             GiftHubRoom.EMPTY_ROOM.toBuilder()

@@ -23,6 +23,7 @@ public class WordGeneratorTest {
 
   @Test
   public void generatingOneWordExcludesJoiningChar() {
+    when(random.ints(any(), any(), any())).thenReturn(IntStream.of(1));
     assertThat(generator.getWords(1, " ")).doesNotContain(" ");
   }
 
@@ -30,7 +31,7 @@ public class WordGeneratorTest {
   public void shortWordsFiltered() {
     List<String> expectedResult = ImmutableList.of("test", "word", "monkey");
     for (int i = 0; i < 3; i++) {
-      when(random.ints(1, 0, 3)).thenReturn(IntStream.of(i));
+      when(random.ints(any(), any(), any())).thenReturn(IntStream.of(i));
       assertThat(generator.getWords(1, "")).isEqualTo(expectedResult.get(i));
     }
   }
