@@ -53,4 +53,16 @@ public class GifthubWebserverTest {
     when(session.attribute(GiftHubWebserver.SESSION_ROOM_KEY)).thenReturn("BCDE");
     assertThrows(PermissionsException.class, () -> instance.getRoomInfo(request, response));
   }
+
+  @Test
+  public void processEventsSuccessfullyProcesses() {
+    when(request.body()).thenReturn("");
+    assertThrows(PermissionsException.class, () -> instance.processEvents(request, response));
+  }
+
+  @Test
+  public void processEventsThrowsExceptionIfNoValidSession() {
+    when(session.attribute(GiftHubWebserver.SESSION_ROOM_KEY)).thenReturn("BCDE");
+    assertThrows(PermissionsException.class, () -> instance.processEvents(request, response));
+  }
 }
