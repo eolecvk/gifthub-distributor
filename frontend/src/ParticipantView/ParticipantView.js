@@ -36,6 +36,7 @@ class ParticipantView extends Component {
             showAddRecipientModal: false,
         };
         this.getStateObjectNewMoves = getStateObjectNewMoves;
+        this.isActiveSlider = false;
     }
     intervalID;
 
@@ -47,6 +48,16 @@ class ParticipantView extends Component {
     componentWillUnmount() {
         clearTimeout(this.intervalID);
     }
+
+    // Variable isActiveSlider and the function setActiveSlider below are here to temporarily fix the snapback bug
+    // This is set in SliderGrid based on whether or not the user is currently moving a slider
+    // If they are, the avg doesn't get updated until the vote completes and the next GET is performed
+    // If they aren't (or just finished), the avg will get updated accordingly
+    isActiveSlider;
+
+    setActiveSlider = (mouseInput) => {
+        this.isActiveSlider = mouseInput;
+    };
 
     getData = () => {
         axios.get('/api/' + this.state.roomInfo.room_code).then((response) => {
@@ -66,15 +77,15 @@ class ParticipantView extends Component {
             }
 
             // Case: no new recipient detected but average has moved?
-            if (!isEqual(this.state.roomInfo, response.data)) {
+            if (!isEqual(this.state.roomInfo, response.data) && !this.isActiveSlider) {
                 this.setState({ roomInfo: response.data, reset: false });
             }
 
             //Always update the local representation of room info
             sessionStorage.setItem('roomInfo', JSON.stringify(response.data));
 
-            // call getData() again in 5 seconds
-            this.intervalID = setTimeout(this.getData.bind(this), 10000);
+            // call getData() again in 2 seconds
+            this.intervalID = setTimeout(this.getData.bind(this), 2000);
         });
     };
 
@@ -209,6 +220,7 @@ class ParticipantView extends Component {
                         roomInfo={this.state.roomInfo}
                         reset={this.state.reset}
                         openRecipientModal={this.openRecipientModal}
+                        isActiveSlider={this.setActiveSlider}
                     />
                     {addRecipientModal}
                     <RecipientModal
