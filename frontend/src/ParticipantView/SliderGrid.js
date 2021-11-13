@@ -130,7 +130,11 @@ class SliderGrid extends Component {
             const voteData = { [`${id}`]: actualNewValue };
             const roomCode = JSON.parse(sessionStorage.getItem('roomInfo')).room_code;
             registerVote(voteData, roomCode);
+            this.props.isActiveSlider(false);
+        } else {
+            this.props.isActiveSlider(true);
         }
+
         this.setState(futureState);
     };
 
