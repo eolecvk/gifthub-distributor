@@ -38,7 +38,6 @@ function highResHistogram(data, ticks, domain) {
     for (let d = 0; d < data.length; d++) {
         const point = data[d];
         var adjustedPoint = Math.floor((point * ticks) / domain);
-        console.log(adjustedPoint);
         histogram[adjustedPoint][0] += 6;
 
         if (adjustedPoint > 0) {
