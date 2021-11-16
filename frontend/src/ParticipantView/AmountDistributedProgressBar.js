@@ -3,7 +3,7 @@ import { formatAsUSD } from '../utils';
 
 function AmountDistributedProgressBar(props) {
     const { amountDistributed, amountTotal } = props;
-    const progress = Math.floor((amountDistributed / amountTotal) * 100);
+    const progress = Math.floor((1- (amountDistributed / amountTotal)) * 100);
     return (
         <div
             style={{
@@ -13,14 +13,14 @@ function AmountDistributedProgressBar(props) {
         >
             <Box>
                 <Typography variant="body1" color="textPrimary">
-                    Amount distributed:
+                    Amount remaining:
                 </Typography>
                 <Box display="flex" alignItems="center">
                     <Box width="55%" mr={2}>
                         <LinearProgress variant="determinate" value={progress} />
                     </Box>
                     <Typography variant="body1" color="textSecondary">{`${formatAsUSD(
-                        amountDistributed
+                        amountTotal - amountDistributed
                     )}/${formatAsUSD(amountTotal)}`}</Typography>
                 </Box>
             </Box>
