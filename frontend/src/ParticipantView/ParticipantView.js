@@ -147,7 +147,7 @@ class ParticipantView extends Component {
     }
 
     closeRecipientModal = () => {
-        this.openSingleRecipientView('');
+        this.openRecipientModal('');
     };
 
     render() {
