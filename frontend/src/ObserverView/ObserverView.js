@@ -98,6 +98,40 @@ class ObserverView extends Component {
         );
     }
 
+    highResHistogram(data, ticks, domain) {
+        const histogram = [];
+        for (let i = 0; i < ticks; i++) {
+            histogram.push([0]);
+            histogram[i].x0 = Math.floor((domain * i) / ticks);
+            histogram[i].x1 = Math.floor((domain * (i + 1)) / ticks);
+        }
+        for (let d = 0; d < data.length; d++) {
+            const point = data[d];
+            var adjustedPoint = Math.floor((point * ticks) / domain);
+            histogram[adjustedPoint][0] += 6;
+
+            if (adjustedPoint > 0) {
+                histogram[adjustedPoint - 1][0] += 5;
+            }
+            if (adjustedPoint < ticks - 1) {
+                histogram[adjustedPoint + 1][0] += 5;
+            }
+            if (adjustedPoint > 1) {
+                histogram[adjustedPoint - 2][0] += 3;
+            }
+            if (adjustedPoint < ticks - 2) {
+                histogram[adjustedPoint + 2][0] += 3;
+            }
+            if (adjustedPoint > 2) {
+                histogram[adjustedPoint - 3][0] += 1;
+            }
+            if (adjustedPoint < ticks - 3) {
+                histogram[adjustedPoint + 3][0] += 1;
+            }
+        }
+        return histogram;
+    }
+
     getData = () => {
         axios
             .get('/api/' + this.state.room_code)
@@ -120,6 +154,17 @@ class ObserverView extends Component {
         const voterNamesByVoterId = Object.fromEntries(
             this.state.voters.map((voter) => [voter.voter_id, voter.name])
         );
+
+        const histogramsByRecipientId = Object.fromEntries(
+            recipients.map((recipient) => {
+                return [
+                    recipient.recipient_id,
+                    this.highResHistogram(Object.values(recipient.votes_cents), 200, maxVote),
+                ];
+            })
+        );
+
+        const maxHeight = Math.max(...Object.values(histogramsByRecipientId).flat());
 
         const recipientData = recipients
             .sort((p1, p2) => p1.recipient_id - p2.recipient_id)
@@ -151,6 +196,8 @@ class ObserverView extends Component {
                 return {
                     name_amt_and_dissent: nameAmtAndDissent,
                     x_domain: [0, maxVote],
+                    max_height: maxHeight,
+                    histogram: histogramsByRecipientId[p.recipient_id],
                     max_vote: maxVote / 100,
                     votes_cents: Object.values(p.votes_cents),
                     attributed_votes: attributedVotes,

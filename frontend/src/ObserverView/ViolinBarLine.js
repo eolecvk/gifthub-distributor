@@ -6,15 +6,9 @@ const ViolinBarLine = (props) => {
 
     var x = d3.scaleLinear().domain(props.x_domain).range([0, props.width]);
 
-    var histogram = d3
-        .histogram()
-        .domain(x.domain())
-        .thresholds(x.ticks(30))
-        .value((d) => d);
+    var binnedValues = props.histogram;
 
-    var binnedValues = histogram(data);
-
-    var maxY = d3.max(binnedValues.map((bin) => bin.length));
+    var maxY = props.max_height;
 
     var heightScale = d3.scaleLinear().range([0, props.height]).domain([-maxY, maxY]);
 
@@ -24,10 +18,10 @@ const ViolinBarLine = (props) => {
             return x(d.x0) + props.x;
         })
         .y0(function (d) {
-            return heightScale(-d.length) + props.y;
+            return heightScale(-d[0]) + props.y;
         })
         .y1(function (d) {
-            return heightScale(d.length) + props.y;
+            return heightScale(d[0]) + props.y;
         })
         .curve(d3.curveMonotoneX);
 
