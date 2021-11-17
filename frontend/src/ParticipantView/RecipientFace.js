@@ -5,17 +5,22 @@ import colors from './colors';
 import { formatAsUSD } from '../utils';
 
 function RecipientFace(props) {
-    const { sliderId, title, openRecipientModal, currentAvg } = props;
+    const { sliderId, title, openSingleRecipientView, openRecipientModal, currentAvg } = props;
 
-    function handleOpenRecipientModal() {
-        openRecipientModal(sliderId);
+    function handleOpenSingleRecipientView() {
+        if(openSingleRecipientView){ // Only allow voters to open single recipient view
+            openSingleRecipientView(sliderId);
+        }
+        else{ // For observers, open modal to allow editing
+            openRecipientModal(sliderId);
+        }
     }
 
     return (
         <Grid container direction="column" alignItems="center" justifyContent="center">
             <Grid item>
                 <FaceIcon
-                    onClick={handleOpenRecipientModal}
+                    onClick={handleOpenSingleRecipientView}
                     fontSize="large"
                     style={{ color: colors[sliderId] }}
                 />
@@ -23,7 +28,7 @@ function RecipientFace(props) {
             <Grid
                 container
                 item
-                onClick={handleOpenRecipientModal}
+                onClick={handleOpenSingleRecipientView}
                 wrap="nowrap"
                 direction="column"
                 alignItems="center"

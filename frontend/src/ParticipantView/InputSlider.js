@@ -68,6 +68,7 @@ function InputSlider(props) {
         startingValue,
         maxValue,
         handleOpenRecipientModal,
+        handleOpenSingleRecipientView,
         recipientInfo,
     } = props;
     const groupVoteAvg = recipientInfo.avg_cents / 100;
@@ -130,6 +131,7 @@ function InputSlider(props) {
                     <RecipientFace
                         sliderId={sliderId}
                         title={title}
+                        openSingleRecipientView={handleOpenSingleRecipientView}
                         openRecipientModal={handleOpenRecipientModal}
                         currentAvg={groupVoteAvg}
                     />

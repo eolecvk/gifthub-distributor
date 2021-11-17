@@ -37,8 +37,10 @@ class ParticipantView extends Component {
         };
         this.getStateObjectNewMoves = getStateObjectNewMoves;
         this.isActiveSlider = false;
+        this.recipient = this.state.roomInfo.recipients[0];
     }
     intervalID;
+    recipient;
 
     componentDidMount() {
         document.title = 'Participant';
@@ -74,6 +76,11 @@ class ParticipantView extends Component {
                 }
                 registerVote(newSliderValues, roomCode);
                 this.setState({ roomInfo: response.data, reset: true });
+            }
+
+            // Case: Setting recipient var initially after first recipient is added
+            if(!this.recipient && response.data.recipients.length > 0 ){
+                this.recipient = this.state.roomInfo.recipients[0];
             }
 
             // Case: no new recipient detected but average has moved?
@@ -123,15 +130,24 @@ class ParticipantView extends Component {
         });
     };
 
+    openSingleRecipientView = (sliderId) => {
+        if (this.state.roomInfo.recipients.length === 0) {
+            return;
+        }
+        this.recipient = this.state.roomInfo.recipients.find(recipient => recipient.recipient_id === parseInt(sliderId));
+        sessionStorage.setItem('participantView', 'zoomed');
+        this.setState({ view: 'zoomed' });
+    };
+
     openRecipientModal = (sliderId) => {
         this.setState({
             ...this.state,
             recipientModalOpenAtSlider: sliderId === '' ? '' : parseInt(sliderId),
         });
-    };
+    }
 
     closeRecipientModal = () => {
-        this.openRecipientModal('');
+        this.openSingleRecipientView('');
     };
 
     render() {
@@ -166,8 +182,6 @@ class ParticipantView extends Component {
             this.state.roomInfo,
             this.state.defaultDistribution
         );
-
-        const recipient = this.state.roomInfo.recipients[0];
 
         const voterId = parseInt(sessionStorage.getItem('voterId'));
 
@@ -219,6 +233,7 @@ class ParticipantView extends Component {
                         slidersInitializationData={slidersInitializationData}
                         roomInfo={this.state.roomInfo}
                         reset={this.state.reset}
+                        openSingleRecipientView={this.openSingleRecipientView}
                         openRecipientModal={this.openRecipientModal}
                         isActiveSlider={this.setActiveSlider}
                     />
@@ -242,7 +257,7 @@ class ParticipantView extends Component {
                     }}
                 />
                 <RecipientSlide
-                    openAtRecipientId={recipient.recipient_id}
+                    openAtRecipientId={this.recipient.recipient_id}
                     progressBar={progressBar}
                 />
             </div>
