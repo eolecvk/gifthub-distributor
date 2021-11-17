@@ -139,6 +139,13 @@ class ParticipantView extends Component {
         this.setState({ view: 'zoomed' });
     };
 
+    openRecipientModal = (sliderId) => {
+        this.setState({
+            ...this.state,
+            recipientModalOpenAtSlider: sliderId === '' ? '' : parseInt(sliderId),
+        });
+    }
+
     closeRecipientModal = () => {
         this.openSingleRecipientView('');
     };
@@ -227,6 +234,7 @@ class ParticipantView extends Component {
                         roomInfo={this.state.roomInfo}
                         reset={this.state.reset}
                         openSingleRecipientView={this.openSingleRecipientView}
+                        openRecipientModal={this.openRecipientModal}
                         isActiveSlider={this.setActiveSlider}
                     />
                     {addRecipientModal}
