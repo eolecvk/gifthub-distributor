@@ -32,7 +32,6 @@ function RecipientInfo(props) {
 
     const textBody =
         `Recipient: ${recipientData.name}\n` +
-        `Current amount: ${formatAsUSD(recipientData.avg_cents / 100)}\n` +
         `Survive amount: ${formatAsUSD(recipientData.needs_lower_bound_cents / 100)}\n` +
         `Thrive amount: ${formatAsUSD(recipientData.needs_upper_bound_cents / 100)}`;
 

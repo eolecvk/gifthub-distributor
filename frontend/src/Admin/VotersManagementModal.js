@@ -13,7 +13,7 @@ function VotersManagementModal(props) {
 
     return (
         <CustomModal
-            title="Manage Voters"
+            title="Manage Distributors"
             form={<VotersManagementForm roomCode={roomCode} />}
             show={open}
             handleClose={handleClose}

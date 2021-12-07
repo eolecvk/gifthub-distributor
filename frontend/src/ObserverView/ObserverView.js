@@ -15,7 +15,7 @@ import ViolinBarLine from './ViolinBarLine';
 import CustomNameLabel from './CustomNameLabel';
 import * as d3 from 'd3';
 import RoomInfo from '../RoomInfo';
-import colors from './../ParticipantView/colors';
+import getColor from './../ParticipantView/colors';
 import { formatAsUSD } from '../utils';
 import AmountDistributedProgressBar from '../ParticipantView/AmountDistributedProgressBar';
 
@@ -108,25 +108,25 @@ class ObserverView extends Component {
         for (let d = 0; d < data.length; d++) {
             const point = data[d];
             var adjustedPoint = Math.floor((point * ticks) / domain);
-            histogram[adjustedPoint][0] += 6;
+            histogram[adjustedPoint][0] += 5;
 
             if (adjustedPoint > 0) {
-                histogram[adjustedPoint - 1][0] += 5;
+                histogram[adjustedPoint - 1][0] += 3;
             }
             if (adjustedPoint < ticks - 1) {
-                histogram[adjustedPoint + 1][0] += 5;
+                histogram[adjustedPoint + 1][0] += 3;
             }
             if (adjustedPoint > 1) {
-                histogram[adjustedPoint - 2][0] += 3;
+                histogram[adjustedPoint - 2][0] += 1;
             }
             if (adjustedPoint < ticks - 2) {
-                histogram[adjustedPoint + 2][0] += 3;
+                histogram[adjustedPoint + 2][0] += 1;
             }
             if (adjustedPoint > 2) {
-                histogram[adjustedPoint - 3][0] += 1;
+                histogram[adjustedPoint - 3][0] += 0;
             }
             if (adjustedPoint < ticks - 3) {
-                histogram[adjustedPoint + 3][0] += 1;
+                histogram[adjustedPoint + 3][0] += 0;
             }
         }
         return histogram;
@@ -202,7 +202,7 @@ class ObserverView extends Component {
                     votes_cents: Object.values(p.votes_cents),
                     attributed_votes: attributedVotes,
                     avg: avg,
-                    bar_fill: colors[index + 1],
+                    bar_fill: getColor(index + 1),
                     needs_upper: needs_upper,
                     needs_lower: needs_lower,
                     empty: '',
@@ -212,7 +212,7 @@ class ObserverView extends Component {
         const totalDistributed = recipientData.map((p) => p.avg).reduce((p1, p2) => p1 + p2, 0);
 
         const barchart = (
-            <ResponsiveContainer width="95%" height="80%" minHeight={100 * recipients.length}>
+            <ResponsiveContainer width="95%" height="80%" minHeight={60 * recipients.length}>
                 <ComposedChart width={720} height={480} data={recipientData} layout="vertical">
                     <YAxis
                         yAxisId={0}

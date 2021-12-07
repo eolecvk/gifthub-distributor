@@ -29,7 +29,7 @@ import spark.Response;
 
 @Singleton
 public class GiftHubWebserver {
-  private static final boolean CACHE_DISABLED = false;
+  private static final boolean CACHE_DISABLED = true;
   private static final String SESSION_ROOM_KEY = "room";
   private static final String SESSION_VOTER_ID_KEY = "voter_id";
 
