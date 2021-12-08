@@ -30,8 +30,8 @@ import spark.Response;
 @Singleton
 public class GiftHubWebserver {
   private static final boolean CACHE_DISABLED = false;
-  private static final String SESSION_ROOM_KEY = "room";
-  private static final String SESSION_VOTER_ID_KEY = "voter_id";
+  static final String SESSION_ROOM_KEY = "room";
+  static final String SESSION_VOTER_ID_KEY = "voter_id";
 
   private final GiftHubRoomDAO roomDAO;
   private final Gson gson;
@@ -94,7 +94,7 @@ public class GiftHubWebserver {
         });
   }
 
-  private GiftHubRoom processEvents(Request request, Response response) {
+  GiftHubRoom processEvents(Request request, Response response) {
     UpdateRequest voteRequest = gson.fromJson(request.body(), UpdateRequest.class);
     String roomCode = request.params(":roomCode");
     if (!request.session().attribute(SESSION_ROOM_KEY).equals(roomCode)) {
@@ -107,7 +107,7 @@ public class GiftHubWebserver {
     return roomDAO.getRoomByCode(roomCode);
   }
 
-  private GiftHubRoom joinRoom(Request request, Response response) {
+  GiftHubRoom joinRoom(Request request, Response response) {
     String roomCode = request.params(":roomCode");
     JoinRoomRequest joinRequest = gson.fromJson(request.body(), JoinRoomRequest.class);
     GiftHubRoom room = roomDAO.getRoomByCode(roomCode);
@@ -116,7 +116,7 @@ public class GiftHubWebserver {
     return room;
   }
 
-  private String voterJoinRoom(Request request, Response response) {
+  String voterJoinRoom(Request request, Response response) {
     String roomCode = request.params(":roomCode");
     VoterJoinRequest joinRequest = gson.fromJson(request.body(), VoterJoinRequest.class);
     GiftHubRoom room = roomDAO.getRoomByCode(roomCode);
@@ -137,7 +137,7 @@ public class GiftHubWebserver {
     return buildJoinRoomResponse(voter, toRoomInfoResponse(room));
   }
 
-  private GiftHubRoom createRoom(Request request, Response response) {
+  GiftHubRoom createRoom(Request request, Response response) {
     CreateRoomRequest createRequest = gson.fromJson(request.body(), CreateRoomRequest.class);
     GiftHubRoom room =
         roomDAO.createRoom(createRequest.getSplittingCents(), createRequest.getRoomName());
@@ -146,9 +146,9 @@ public class GiftHubWebserver {
     return room;
   }
 
-  private GiftHubRoom getRoomInfo(Request request, Response response) {
+  GiftHubRoom getRoomInfo(Request request, Response response) {
     String roomCode = request.params(":roomCode");
-    if (!request.session().attribute(SESSION_ROOM_KEY).equals(roomCode)) {
+    if (!roomCode.equals(request.session().attribute(SESSION_ROOM_KEY))) {
       throw new PermissionsException();
     }
     return roomDAO.getRoomByCode(roomCode);
