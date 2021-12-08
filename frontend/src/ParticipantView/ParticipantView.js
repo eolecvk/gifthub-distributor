@@ -79,7 +79,7 @@ class ParticipantView extends Component {
             }
 
             // Case: Setting recipient var initially after first recipient is added
-            if(!this.recipient && response.data.recipients.length > 0 ){
+            if (!this.recipient && response.data.recipients.length > 0) {
                 this.recipient = this.state.roomInfo.recipients[0];
             }
 
@@ -134,7 +134,9 @@ class ParticipantView extends Component {
         if (this.state.roomInfo.recipients.length === 0) {
             return;
         }
-        this.recipient = this.state.roomInfo.recipients.find(recipient => recipient.recipient_id === parseInt(sliderId));
+        this.recipient = this.state.roomInfo.recipients.find(
+            (recipient) => recipient.recipient_id === parseInt(sliderId)
+        );
         sessionStorage.setItem('participantView', 'zoomed');
         this.setState({ view: 'zoomed' });
     };
@@ -144,7 +146,7 @@ class ParticipantView extends Component {
             ...this.state,
             recipientModalOpenAtSlider: sliderId === '' ? '' : parseInt(sliderId),
         });
-    }
+    };
 
     closeRecipientModal = () => {
         this.openSingleRecipientView('');

@@ -1,17 +1,18 @@
 import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
 import FaceIcon from '@material-ui/icons/Face';
-import colors from './colors';
+import getColor from './colors';
 import { formatAsUSD } from '../utils';
 
 function RecipientFace(props) {
     const { sliderId, title, openSingleRecipientView, openRecipientModal, currentAvg } = props;
 
     function handleOpenSingleRecipientView() {
-        if(openSingleRecipientView){ // Only allow voters to open single recipient view
+        if (openSingleRecipientView) {
+            // Only allow voters to open single recipient view
             openSingleRecipientView(sliderId);
-        }
-        else{ // For observers, open modal to allow editing
+        } else {
+            // For observers, open modal to allow editing
             openRecipientModal(sliderId);
         }
     }
@@ -22,7 +23,7 @@ function RecipientFace(props) {
                 <FaceIcon
                     onClick={handleOpenSingleRecipientView}
                     fontSize="large"
-                    style={{ color: colors[sliderId] }}
+                    style={{ color: getColor(sliderId) }}
                 />
             </Grid>
             <Grid

@@ -3,7 +3,7 @@ import { formatAsUSD } from '../utils';
 
 function AmountDistributedProgressBar(props) {
     const { amountDistributed, amountTotal } = props;
-    const progress = Math.floor((1- (amountDistributed / amountTotal)) * 100);
+    const progress = Math.floor((1 - amountDistributed / amountTotal) * 100);
     return (
         <div
             style={{

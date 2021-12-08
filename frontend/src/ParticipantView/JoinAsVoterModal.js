@@ -22,10 +22,10 @@ function JoinAsVoterModal(props) {
 
     return (
         <div>
-            <CustomButton title="Join as voter" onClick={handleOpen} />
+            <CustomButton title="Join as distributor" onClick={handleOpen} />
             <Container>
                 <CustomModal
-                    title="Join as voter"
+                    title="Join as distributor"
                     form={<JoinAsVoterForm handleClose={handleClose} roomCode={props.roomCode} />}
                     show={open}
                     handleClose={handleClose}

@@ -35,7 +35,7 @@ const CustomNameLabel = (props) => {
             </text>
             <text>
                 {calculateName(name, x, y, height)}
-                <tspan x={x - 90} dy={25}>
+                <tspan x={x - 90} dy={height / 3}>
                     {amt}
                 </tspan>
             </text>
@@ -59,7 +59,7 @@ function calculateName(name, x, y, height) {
     }
     return wrappedNames.map((namePart, index) => {
         return (
-            <tspan x={x - 90} dy={index * ((height - 20) / wrappedNames.length)} y={y}>
+            <tspan x={x - 90} dy={index * ((height * 0.75) / wrappedNames.length)} y={y + 8}>
                 {namePart}
             </tspan>
         );

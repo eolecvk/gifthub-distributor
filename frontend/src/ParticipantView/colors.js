@@ -17,4 +17,8 @@ const colors = [
     '#000000',
 ];
 
-export default colors;
+function getColor(userIndex) {
+    return colors[userIndex % colors.length];
+}
+
+export default getColor;

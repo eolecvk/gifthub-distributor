@@ -5,6 +5,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import { refreshCachedRoomInfo } from '../utils';
 import CustomButton from '../CustomButton';
 import CustomModal from '../CustomModal';
+import Papa from 'papaparse';
 import EditRoomForm from './EditRoomForm';
 
 function RoomManagement(props) {
@@ -40,10 +41,30 @@ function RoomManagement(props) {
         e.preventDefault();
         refreshCachedRoomInfo(roomCode);
         const roomInfo = JSON.parse(sessionStorage.getItem('roomInfo'));
+
+        const voterNamesById = Object.fromEntries(
+            roomInfo.voters.map(function (voter) {
+                return [voter.voter_id, voter.name];
+            })
+        );
+        const csvData = roomInfo.recipients.map(function (recipient) {
+            const output = {
+                name: recipient.name,
+                received_amount: recipient.avg_cents,
+                survive: recipient.needs_lower_bound_cents,
+                thrive: recipient.needs_upper_bound_cents,
+                description: recipient.needs_description,
+            };
+            Object.entries(recipient.votes_cents).forEach(function (vote) {
+                output[voterNamesById[parseInt(vote[0])]] = vote[1];
+            });
+            return output;
+        });
+
         downloadFile({
-            data: JSON.stringify(roomInfo, null, '\t'),
-            fileName: `${roomCode}.json`,
-            fileType: 'text/json',
+            data: Papa.unparse(csvData),
+            fileName: `${roomCode}.csv`,
+            fileType: 'text/csv',
         });
     };
 

@@ -18,10 +18,10 @@ function VotersManagement(props) {
 
     return (
         <div>
-            <h3>Voters</h3>
+            <h3>Distributors</h3>
             <div style={{ margin: 15 + 'px' }}>
                 <CustomButton
-                    title="MANAGE VOTERS"
+                    title="MANAGE DISTRIBUTORS"
                     startIcon={<HighlightOffIcon />}
                     size="medium"
                     onClick={handleOpenVotersManagementModal}
@@ -29,7 +29,7 @@ function VotersManagement(props) {
             </div>
 
             <CustomModal
-                title="Manage Voters"
+                title="Manage Distributors"
                 form={<VotersManagementForm roomCode={roomCode} />}
                 show={openVotersManagementModal}
                 handleClose={handleCloseVotersManagementModal}

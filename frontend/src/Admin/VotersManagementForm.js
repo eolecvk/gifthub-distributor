@@ -36,7 +36,7 @@ function VotersManagementForm(props) {
     const handleKickVoter = (e, voterId) => {
         e.preventDefault();
 
-        const confirmRes = window.confirm('Are you sure you want to kick the voter?');
+        const confirmRes = window.confirm('Are you sure you want to kick the distributor?');
         if (confirmRes === false) {
             return;
         }
