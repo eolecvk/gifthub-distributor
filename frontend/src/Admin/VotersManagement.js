@@ -18,7 +18,7 @@ function VotersManagement(props) {
 
     return (
         <div>
-            <h3>Voters</h3>
+            <h3>Distributors</h3>
             <div style={{ margin: 15 + 'px' }}>
                 <CustomButton
                     title="MANAGE DISTRIBUTORS"
