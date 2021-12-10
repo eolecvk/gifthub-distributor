@@ -161,10 +161,10 @@ function InputSliderZoomedView(props) {
     }
 
     function handleGiveRemainingAmount() {
-        if(amountLeftToDistribute > 0 ){
-            const newValue = amountLeftToDistribute + currentValue
+        if (amountLeftToDistribute > 0) {
+            const newValue = amountLeftToDistribute + currentValue;
 
-            handleSliderChange(null, newValue, true)
+            handleSliderChange(null, newValue, true);
         }
     }
 
@@ -209,7 +209,10 @@ function InputSliderZoomedView(props) {
                     </Grid>
 
                     <Grid item xs>
-                        <CustomButton title="Give remaining amount" onClick={handleGiveRemainingAmount} />
+                        <CustomButton
+                            title="Give remaining amount"
+                            onClick={handleGiveRemainingAmount}
+                        />
                     </Grid>
                 </Grid>
             </MuiThemeProvider>

@@ -9,7 +9,8 @@ function RecipientSlide(props) {
     const { openAtRecipientId, progressBar } = props;
     const [recipientId, setRecipientId] = useState(openAtRecipientId);
     let startingValue = parseSliderStartingValue(recipientId);
-    let amountLeftToDistribute = progressBar.props.amountTotal - progressBar.props.amountDistributed;
+    let amountLeftToDistribute =
+        progressBar.props.amountTotal - progressBar.props.amountDistributed;
 
     useEffect(() => {
         const newStartingValue = parseSliderStartingValue(recipientId);
@@ -56,7 +57,11 @@ function RecipientSlide(props) {
                 />
                 <CustomButton title="Next recipient" onClick={handleSwitchToNextRecipient} />
             </ButtonGroup>
-            <InputSliderZoomedView sliderId={recipientId} startingValue={startingValue} amountLeftToDistribute={amountLeftToDistribute} />
+            <InputSliderZoomedView
+                sliderId={recipientId}
+                startingValue={startingValue}
+                amountLeftToDistribute={amountLeftToDistribute}
+            />
             <Grid container item xs={11}>
                 <RecipientInfo
                     recipientId={recipientId}
