@@ -1,6 +1,6 @@
 import React from 'react';
 import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
-import { Slider, Grid } from '@material-ui/core';
+import { Slider, Grid, Input } from '@material-ui/core';
 import RecipientFace from './RecipientFace';
 import { formatAsUSD } from '../utils';
 
@@ -124,10 +124,26 @@ function InputSlider(props) {
         props.handleUpdateSlider(props.sliderId, newValue, isVote);
     }
 
+    function handleInputChange(event) {
+        const newValue = event.target.value === '' ? '' : Number(event.target.value);
+        handleSliderChange(event, newValue, false);
+    }
+
+    function handleBlur(event) {
+        if (props.startingValue < 0) {
+            handleSliderChange(sliderId, 0, false);
+        } else if (props.startingValue > props.maxValue) {
+            handleSliderChange(sliderId, props.maxValue, false);
+        } else {
+            const newValue = event.target.value === '' ? '' : Number(event.target.value);
+            handleSliderChange(sliderId, newValue, true);
+        }
+    }
+
     return (
         <MuiThemeProvider theme={theme}>
-            <Grid key={props.sliderId.toString() + 'grid'} container direction={'row'} spacing={8}>
-                <Grid container item xs={1}>
+            <Grid key={props.sliderId.toString() + 'grid'} container direction={'row'} spacing={1}>
+                <Grid container item xs={2} sm={1}>
                     <RecipientFace
                         sliderId={sliderId}
                         title={title}
@@ -136,7 +152,7 @@ function InputSlider(props) {
                         currentAvg={groupVoteAvg}
                     />
                 </Grid>
-                <Grid item xs={9}>
+                <Grid item xs={8} sm={9}>
                     <Slider
                         key={props.sliderId.toString() + 'slider'}
                         min={0}
@@ -147,6 +163,22 @@ function InputSlider(props) {
                         aria-labelledby={props.sliderId.toString() + 'slider'}
                         marks={getMarks(surviveValue, thriveValue)}
                         valueLabelDisplay="on"
+                    />
+                </Grid>
+                <Grid item xs>
+                    <Input
+                        key={props.sliderId.toString() + 'input'}
+                        value={startingValue !== '' ? startingValue : ''}
+                        margin="dense"
+                        onChange={handleInputChange}
+                        onBlur={handleBlur}
+                        inputProps={{
+                            step: 1,
+                            min: 0,
+                            max: maxValue,
+                            type: 'number',
+                            'aria-labelledby': 'input-slider',
+                        }}
                     />
                 </Grid>
             </Grid>
