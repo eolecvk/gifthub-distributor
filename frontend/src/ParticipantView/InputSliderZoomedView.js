@@ -163,8 +163,6 @@ function InputSliderZoomedView(props) {
     function handleGiveRemainingAmount() {
         if(amountLeftToDistribute > 0 ){
             const newValue = amountLeftToDistribute + currentValue
-            console.log(amountLeftToDistribute)
-            console.log(amountLeftToDistribute > 0)
 
             handleSliderChange(null, newValue, true)
         }
