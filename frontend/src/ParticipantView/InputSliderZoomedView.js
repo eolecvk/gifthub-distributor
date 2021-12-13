@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
 import { Slider, Input, Grid } from '@material-ui/core';
 import { parseSliderStartingValue, registerVote } from './utils';
+import CustomButton from '../CustomButton';
 
 const theme = createTheme({
     overrides: {
@@ -59,7 +60,7 @@ const theme = createTheme({
 });
 
 function InputSliderZoomedView(props) {
-    const { sliderId } = props;
+    const { sliderId, amountLeftToDistribute } = props;
     const startingValue = parseSliderStartingValue(sliderId);
     const [currentValue, setCurrentValue] = useState(startingValue);
 
@@ -159,6 +160,11 @@ function InputSliderZoomedView(props) {
         }
     }
 
+    function handleGiveRemainingAmount() {
+            const newValue = amountLeftToDistribute + currentValue;
+            handleSliderChange(null, newValue, true);
+    }
+
     const InputSliderZoomedView = recipientInfo ? (
         <div style={{ marginTop: 60, marginBottom: 40 }}>
             <MuiThemeProvider theme={theme}>
@@ -196,6 +202,13 @@ function InputSliderZoomedView(props) {
                                 type: 'number',
                                 'aria-labelledby': 'input-slider',
                             }}
+                        />
+                    </Grid>
+
+                    <Grid item xs>
+                        <CustomButton
+                            title={(amountLeftToDistribute >= 0 ? "Give" : "Remove") + ' remaining amount'}
+                            onClick={handleGiveRemainingAmount}
                         />
                     </Grid>
                 </Grid>
