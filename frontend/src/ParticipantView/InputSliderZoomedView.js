@@ -161,8 +161,8 @@ function InputSliderZoomedView(props) {
     }
 
     function handleGiveRemainingAmount() {
-            const newValue = amountLeftToDistribute + currentValue;
-            handleSliderChange(null, newValue, true);
+        const newValue = amountLeftToDistribute + currentValue;
+        handleSliderChange(null, newValue, true);
     }
 
     const InputSliderZoomedView = recipientInfo ? (
@@ -207,7 +207,10 @@ function InputSliderZoomedView(props) {
 
                     <Grid item xs>
                         <CustomButton
-                            title={(amountLeftToDistribute >= 0 ? "Give" : "Remove") + ' remaining amount'}
+                            title={
+                                (amountLeftToDistribute >= 0 ? 'Give' : 'Remove') +
+                                ' remaining amount'
+                            }
                             onClick={handleGiveRemainingAmount}
                         />
                     </Grid>
